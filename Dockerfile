@@ -4,7 +4,7 @@
 # results are reproducible across machines.
 #
 # Build:
-#   docker build -t llm-crawler-bench .
+#   docker build -t llm-crawler-benchmarks .
 #
 # Run (pass API keys for firecrawl / answer-quality benchmarks):
 #   docker run --rm \
@@ -12,7 +12,7 @@
 #     -e OPENAI_API_KEY \
 #     -v $(pwd)/reports:/app/reports \
 #     -v $(pwd)/runs:/app/runs \
-#     llm-crawler-bench
+#     llm-crawler-benchmarks
 #
 # The volume mount lets results write back to your host.
 
@@ -52,24 +52,30 @@ WORKDIR /app
 # Copy the Go binary
 COPY --from=go-builder /build/colly_crawler/colly_crawler /usr/local/bin/colly_crawler
 
-# Install markcrawl from PyPI and benchmark dependencies
+# Install benchmark dependencies (includes markcrawl from PyPI)
 COPY pyproject.toml README.md ./
-RUN pip install --no-cache-dir -e ".[dev]"
+RUN pip install --no-cache-dir ".[dev]"
 
-# Install Playwright Chromium browser (used by crawlee and playwright-raw)
-RUN python -m playwright install chromium
-
+# Install Playwright Chromium to a shared path accessible by non-root user.
 # crawl4ai uses patchright (a Playwright fork) with its own browser binaries.
-RUN python -m patchright install chromium
+# Without the patchright install, crawl4ai imports fine but fails at runtime
+# with "BrowserType.launch: Executable doesn't exist".
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/browsers
+RUN python -m playwright install chromium && \
+    python -m patchright install chromium && \
+    chmod -R o+rx /opt/browsers && \
+    # patchright may cache to /root — make accessible too
+    chmod -R o+rx /root/.cache 2>/dev/null && chmod o+x /root || true
 
 # Copy benchmark scripts and reports
 COPY benchmark_*.py quality_scorer.py crawlee_worker.py lint_reports.py preflight.py ./
 COPY reports/ reports/
 COPY self_improvement/ self_improvement/
 COPY tests/ tests/
+COPY tools/ tools/
 
 # Non-root user
-RUN groupadd -r bench && useradd -r -g bench bench
+RUN groupadd -r bench && useradd -r -g bench -d /app bench
 USER bench
 
 # Default: run the head-to-head comparison
