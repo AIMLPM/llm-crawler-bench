@@ -1,4 +1,4 @@
-.PHONY: test lint invariants preflight check check-invariants check-consistency check-lint
+.PHONY: test lint invariants preflight check check-invariants check-consistency check-lint review
 
 PYTHON ?= .venv/bin/python
 
@@ -26,3 +26,15 @@ check-consistency:
 
 check-lint:
 	$(PYTHON) lint_reports.py
+
+# Full self-improvement review: validate + show what changed
+review: check
+	@echo ""
+	@echo "══ Changes ══════════════════════════════════════════"
+	@if git diff --quiet && git diff --cached --quiet; then \
+		echo "No changes detected."; \
+	else \
+		git diff --stat; \
+		echo ""; \
+		git diff; \
+	fi
