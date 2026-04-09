@@ -74,8 +74,9 @@ COPY self_improvement/ self_improvement/
 COPY tests/ tests/
 COPY tools/ tools/
 
-# Non-root user
-RUN groupadd -r bench && useradd -r -g bench -d /app bench
+# Non-root user — owns /app so benchmarks can write caches and results
+RUN groupadd -r bench && useradd -r -g bench -d /app bench && \
+    chown -R bench:bench /app
 USER bench
 
 # Default: run the head-to-head comparison
