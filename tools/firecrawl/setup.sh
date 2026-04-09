@@ -36,12 +36,14 @@ start() {
 PORT=3002
 HOST=0.0.0.0
 USE_DB_AUTHENTICATION=false
-NUM_WORKERS_PER_QUEUE=2
+NUM_WORKERS_PER_QUEUE=1
 BULL_AUTH_KEY=benchmarkonly
-CRAWL_CONCURRENT_REQUESTS=3
-MAX_CONCURRENT_JOBS=2
-BROWSER_POOL_SIZE=2
+CRAWL_CONCURRENT_REQUESTS=1
+MAX_CONCURRENT_JOBS=1
+BROWSER_POOL_SIZE=1
 BLOCK_MEDIA=true
+# Increase Node heap to avoid OOM on large crawls
+NODE_OPTIONS=--max-old-space-size=6144
 ENVEOF
 
     echo "Building and starting Firecrawl (first time takes a few minutes)..."

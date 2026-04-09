@@ -832,47 +832,107 @@ def run_firecrawl(url: str, out_dir: str, max_pages: int, url_list: Optional[Lis
     os.makedirs(out_dir, exist_ok=True)
     jsonl_path = os.path.join(out_dir, "pages.jsonl")
 
-    # Retry with backoff on rate-limit errors (free tier: 3 req/min).
+    # Retry with backoff on rate-limit AND connection errors.
     # Track total wait so run_single can subtract it from elapsed time.
     max_retries = 5
-    result = None
     rate_limit_wait = 0.0
-    for attempt in range(max_retries):
-        try:
-            if url_list:
-                # Batch-scrape the pre-discovered URLs (same pages as other tools)
-                result = app.batch_scrape(
-                    url_list[:max_pages],
-                    formats=["markdown"],
-                )
-            else:
+    is_self_hosted = bool(api_url)
+
+    all_data: list = []
+    urls_to_scrape = url_list[:max_pages] if url_list else None
+
+    def _scrape_single(page_url: str) -> object:
+        """Scrape one URL with retry logic. Returns a Document or None."""
+        for attempt in range(max_retries):
+            try:
+                return app.scrape(page_url, formats=["markdown"])
+            except Exception as exc:
+                msg = str(exc)
+                is_rate_limit = "Rate Limit" in msg
+                is_connection = any(s in msg for s in (
+                    "Connection aborted", "RemoteDisconnected",
+                    "ConnectionError", "ConnectionReset",
+                ))
+                if not is_rate_limit and not is_connection:
+                    raise
+                wait = (int(_re.search(r"retry after (\d+)s", msg).group(1)) + 2
+                        if is_rate_limit and _re.search(r"retry after (\d+)s", msg)
+                        else 10 * (attempt + 1))
+                if attempt < max_retries - 1:
+                    nonlocal rate_limit_wait
+                    rate_limit_wait += wait
+                    time.sleep(wait)
+                else:
+                    logger.warning(f"    [firecrawl] gave up on {page_url} after {max_retries} attempts")
+                    return None
+        return None
+
+    if urls_to_scrape and is_self_hosted:
+        # Self-hosted: scrape one URL at a time to avoid overwhelming
+        # the RabbitMQ/worker stack (batch_scrape crashes self-hosted).
+        # Small delay between requests to let the Node.js GC keep up.
+        for i, page_url in enumerate(urls_to_scrape):
+            doc = _scrape_single(page_url)
+            if doc is not None:
+                all_data.append(doc)
+            if (i + 1) % 50 == 0:
+                logger.info(f"    [firecrawl] {i + 1}/{len(urls_to_scrape)} pages scraped")
+            time.sleep(0.5)  # breathing room for self-hosted GC
+    elif urls_to_scrape:
+        # SaaS API: batch_scrape is reliable and faster
+        for attempt in range(max_retries):
+            try:
+                result = app.batch_scrape(urls_to_scrape, formats=["markdown"])
+                all_data.extend(getattr(result, "data", []) or [])
+                break
+            except Exception as exc:
+                msg = str(exc)
+                is_rate_limit = "Rate Limit" in msg
+                is_connection = any(s in msg for s in (
+                    "Connection aborted", "RemoteDisconnected",
+                    "ConnectionError", "ConnectionReset",
+                ))
+                if not is_rate_limit and not is_connection:
+                    raise
+                wait = (int(_re.search(r"retry after (\d+)s", msg).group(1)) + 2
+                        if is_rate_limit and _re.search(r"retry after (\d+)s", msg)
+                        else 10 * (attempt + 1))
+                if attempt < max_retries - 1:
+                    logger.warning(f"    [firecrawl] retrying batch_scrape, waiting {wait}s (attempt {attempt + 1}/{max_retries})...")
+                    rate_limit_wait += wait
+                    time.sleep(wait)
+                else:
+                    raise
+    else:
+        # No URL list — let firecrawl crawl/discover on its own
+        for attempt in range(max_retries):
+            try:
                 result = app.crawl(
                     url,
                     limit=max_pages,
                     scrape_options=ScrapeOptions(formats=["markdown"]),
                 )
-            break
-        except Exception as exc:
-            msg = str(exc)
-            if "Rate Limit" not in msg:
-                raise
-            match = _re.search(r"retry after (\d+)s", msg)
-            wait = int(match.group(1)) + 2 if match else 15
-            if attempt < max_retries - 1:
-                logger.warning(f"    [firecrawl] rate limited, waiting {wait}s (attempt {attempt + 1}/{max_retries})...")
-                rate_limit_wait += wait
-                time.sleep(wait)
-            else:
-                raise
+                all_data.extend(getattr(result, "data", []) or [])
+                break
+            except Exception as exc:
+                msg = str(exc)
+                is_rate_limit = "Rate Limit" in msg
+                if not is_rate_limit:
+                    raise
+                match = _re.search(r"retry after (\d+)s", msg)
+                wait = int(match.group(1)) + 2 if match else 15
+                if attempt < max_retries - 1:
+                    logger.warning(f"    [firecrawl] rate limited, waiting {wait}s (attempt {attempt + 1}/{max_retries})...")
+                    rate_limit_wait += wait
+                    time.sleep(wait)
+                else:
+                    raise
 
     # Stash wait time where run_single can find it
     run_firecrawl._rate_limit_wait = rate_limit_wait
 
-    if result is None:
-        return 0
-
     pages_saved = 0
-    data = getattr(result, "data", []) or []
+    data = all_data
     for page in data:
         markdown = getattr(page, "markdown", "") or ""
         meta = getattr(page, "metadata", None)
