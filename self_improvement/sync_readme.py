@@ -127,7 +127,7 @@ def generate_details_section(
     annual_costs: dict[str, float],
 ) -> str:
     """Generate the <details> section for markcrawl's README."""
-    base = "https://github.com/AIMLPM/llm-crawler-bench/blob/main/reports"
+    base = "https://github.com/AIMLPM/llm-crawler-benchmarks/blob/main/reports"
 
     # Speed narrative
     if speed_rankings:

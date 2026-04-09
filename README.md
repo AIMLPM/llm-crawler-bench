@@ -1,4 +1,4 @@
-# llm-crawler-bench
+# llm-crawler-benchmarks
 
 Head-to-head benchmark suite for web crawlers used in LLM/RAG pipelines.
 
@@ -46,12 +46,12 @@ python benchmark_markcrawl.py
 ## Docker
 
 ```bash
-docker build -t llm-crawler-bench .
+docker build -t llm-crawler-benchmarks .
 docker run --rm \
   -e OPENAI_API_KEY \
   -v $(pwd)/reports:/app/reports \
   -v $(pwd)/runs:/app/runs \
-  llm-crawler-bench
+  llm-crawler-benchmarks
 ```
 
 ## Self-improvement framework

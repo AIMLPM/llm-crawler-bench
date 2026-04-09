@@ -435,12 +435,12 @@ playwright install chromium
 For the Colly binary (Go 1.18+ required):
 
 ```bash
-cd colly_crawler
+cd tools/colly_crawler
 go build -o colly_crawler .
 cd ../..
 ```
 
-The script checks for the binary at `colly_crawler/colly_crawler` and skips `colly+md` if it is not found.
+The script checks for the binary at `tools/colly_crawler/colly_crawler` and skips `colly+md` if it is not found.
 
 </details>
 

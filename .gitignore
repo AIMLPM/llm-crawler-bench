@@ -38,4 +38,4 @@ storage/
 results_*
 
 # Compiled binaries
-colly_crawler/colly_crawler/
+tools/colly_crawler/colly_crawler/

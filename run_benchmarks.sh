@@ -13,7 +13,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$SCRIPT_DIR"
-IMAGE_NAME="llm-crawler-bench"
+IMAGE_NAME="llm-crawler-benchmarks"
 
 MODE=""
 BENCH_ARGS=()

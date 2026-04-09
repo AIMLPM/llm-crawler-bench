@@ -1,5 +1,5 @@
 [project]
-name = "llm-crawler-bench"
+name = "llm-crawler-benchmarks"
 version = "0.1.0"
 description = "Head-to-head benchmark suite for web crawlers used in LLM/RAG pipelines"
 readme = "README.md"

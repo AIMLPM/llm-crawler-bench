@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-Project-level instructions for AI assistants working on llm-crawler-bench.
+Project-level instructions for AI assistants working on llm-crawler-benchmarks.
 
 ## Project overview
 
-llm-crawler-bench is a head-to-head benchmark suite for web crawlers used in
+llm-crawler-benchmarks is a head-to-head benchmark suite for web crawlers used in
 LLM/RAG pipelines. It compares 7 tools across 8 real-world sites on speed,
 extraction quality, retrieval quality, LLM answer quality, and cost at scale.
 Reports live in `reports/`, benchmark scripts at the root.

@@ -40,7 +40,7 @@ RUN wget -q "https://go.dev/dl/go${GO_VERSION}.linux-$(dpkg --print-architecture
     && rm /tmp/go.tar.gz
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-COPY colly_crawler /build/colly_crawler
+COPY tools/colly_crawler /build/colly_crawler
 WORKDIR /build/colly_crawler
 RUN go build -o colly_crawler .
 

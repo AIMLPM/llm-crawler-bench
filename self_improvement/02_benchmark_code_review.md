@@ -21,7 +21,7 @@ before a major benchmark run.
 | `crawlee_worker.py` | ~77 | Crawlee subprocess wrapper |
 | `lint_reports.py` | ~245 | Report style guide linter |
 | `preflight.py` | ~varies | Environment and dependency checks |
-| `colly_crawler/main.go` | ~127 | Go crawler for colly+md tool |
+| `tools/colly_crawler/main.go` | ~127 | Go crawler for colly+md tool |
 
 ---
 
@@ -63,8 +63,8 @@ Verify these are still hardcoded and flag any that have been externalized:
 | TOP_K retrieval | `benchmark_retrieval.py` | 50 |
 | TOP_K for answers | `benchmark_answer_quality.py` | 10 |
 | Subprocess timeout | `benchmark_all_tools.py` | 300s |
-| Colly parallelism | `colly_crawler/main.go` | 5 |
-| Colly request timeout | `colly_crawler/main.go` | 30s |
+| Colly parallelism | `tools/colly_crawler/main.go` | 5 |
+| Colly request timeout | `tools/colly_crawler/main.go` | 30s |
 | URL filename max | `crawlee_worker.py` | 80 chars |
 | Max runs kept | `benchmark_all_tools.py` | 10 |
 | Junk phrases | `quality_scorer.py` | 54 phrases |
@@ -72,7 +72,7 @@ Verify these are still hardcoded and flag any that have been externalized:
 ```bash
 # Quick scan for hardcoded values
 grep -n "gpt-4o\|text-embedding\|ms-marco" *.py
-grep -n "timeout.*=.*300\|max_pages.*=\|parallelism.*=" *.py colly_crawler/main.go
+grep -n "timeout.*=.*300\|max_pages.*=\|parallelism.*=" *.py tools/colly_crawler/main.go
 ```
 
 ### 3. Error handling patterns
@@ -127,9 +127,9 @@ For each tool runner in `benchmark_all_tools.py`, verify:
 
 ```bash
 # Check for error handling
-grep -n "err !=" colly_crawler/main.go
+grep -n "err !=" tools/colly_crawler/main.go
 # Check for async + timeout (fixed in recent session)
-grep -n "Async\|Timeout\|Limit" colly_crawler/main.go
+grep -n "Async\|Timeout\|Limit" tools/colly_crawler/main.go
 ```
 
 - [ ] Async mode enabled with timeouts
@@ -140,7 +140,7 @@ grep -n "Async\|Timeout\|Limit" colly_crawler/main.go
 ```bash
 # Check if binary matches source
 ls -la colly_benchmark
-ls -la colly_crawler/main.go
+ls -la tools/colly_crawler/main.go
 # Recompile if source is newer than binary
 ```
 

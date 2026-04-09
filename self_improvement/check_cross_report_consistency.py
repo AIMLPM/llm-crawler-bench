@@ -15,7 +15,7 @@ report data inconsistencies were the only CRITICAL finding — and Spec 05
 was entirely manual at that time.
 
 Note: README consistency checks (X1-X3, X5, X6) were removed when this
-script moved to the standalone llm-crawler-bench repo.  The README lives
+script moved to the standalone llm-crawler-benchmarks repo.  The README lives
 in the markcrawl repo and is validated by sync_readme.py instead.
 """
 

@@ -368,14 +368,14 @@ def _validate_urls(urls: List[str], concurrency: int = 20) -> tuple[List[str], L
     def _check(url: str) -> None:
         try:
             req = urllib.request.Request(url, method="HEAD")
-            req.add_header("User-Agent", "llm-crawler-bench/1.0")
+            req.add_header("User-Agent", "llm-crawler-benchmarks/1.0")
             resp = urllib.request.urlopen(req, timeout=10)
             code = resp.getcode()
         except (urllib.error.URLError, urllib.error.HTTPError, OSError):
             # HEAD rejected — try GET
             try:
                 req = urllib.request.Request(url)
-                req.add_header("User-Agent", "llm-crawler-bench/1.0")
+                req.add_header("User-Agent", "llm-crawler-benchmarks/1.0")
                 resp = urllib.request.urlopen(req, timeout=10)
                 code = resp.getcode()
             except (urllib.error.URLError, urllib.error.HTTPError, OSError):
@@ -928,7 +928,7 @@ def _find_colly_bin() -> Optional[str]:
     """
     candidates = [
         "/usr/local/bin/colly_crawler",
-        os.path.join(os.path.dirname(__file__), "colly_crawler", "colly_crawler"),
+        os.path.join(os.path.dirname(__file__), "tools", "colly_crawler", "colly_crawler"),
     ]
     for path in candidates:
         if os.path.isfile(path) and _colly_bin_works(path):
