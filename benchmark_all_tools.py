@@ -569,30 +569,57 @@ def run_crawl4ai(url: str, out_dir: str, max_pages: int, url_list: Optional[List
 
     async def _crawl():
         nonlocal pages_saved
-        # In Docker / containerised environments, Chromium needs --no-sandbox
+        # In Docker / containerised environments, Chromium needs --no-sandbox.
+        # Additional flags reduce per-tab memory so more pages can run concurrently
+        # without crashing the renderer ("Page.evaluate: Target crashed").
         in_container = os.getuid() == 0 or os.path.exists("/.dockerenv")
-        extra = ["--no-sandbox", "--disable-setuid-sandbox"] if in_container else None
-        browser_config = BrowserConfig(headless=True, extra_args=extra)
+        extra_args = []
+        if in_container:
+            extra_args += ["--no-sandbox", "--disable-setuid-sandbox"]
+        extra_args += [
+            "--disable-dev-shm-usage",   # write /dev/shm to disk — avoids OOM in Docker
+            "--disable-gpu",             # no GPU compositing
+            "--disable-extensions",      # no extension overhead
+            "--js-flags=--max-old-space-size=256",  # limit V8 heap per renderer
+        ]
+        browser_config = BrowserConfig(headless=True, extra_args=extra_args)
         run_config = CrawlerRunConfig(
             page_timeout=30000,    # 30s per page (default 60s)
         )
 
         async with AsyncWebCrawler(config=browser_config) as crawler:
             if urls_to_fetch:
-                # Sequential per-URL crawling.  arun_many() is faster but
-                # blocks until ALL URLs finish — if any page crashes the
-                # Chromium renderer ("Target crashed"), internal retries hang
-                # the entire batch and zero files are written.  Sequential
-                # arun() writes each page immediately and skips failures.
-                for page_url in urls_to_fetch[:max_pages]:
+                # Use arun_many() with streaming + concurrency-limited dispatcher.
+                #
+                # Why streaming: default arun_many() blocks until ALL URLs finish.
+                # If one page hangs or crashes, zero files are written. Streaming
+                # yields each result as it completes — files are written immediately
+                # and single-page failures don't block the rest.
+                #
+                # Why limited concurrency: default MemoryAdaptiveDispatcher allows
+                # 20 concurrent Chromium tabs.  Heavy pages (100KB-1.4MB HTML)
+                # cause renderer OOM crashes ("Page.evaluate: Target crashed").
+                # Cap at 5 concurrent sessions to stay within memory budget.
+                from crawl4ai.async_dispatcher import MemoryAdaptiveDispatcher
+                stream_config = CrawlerRunConfig(
+                    page_timeout=30000,
+                    stream=True,
+                )
+                dispatcher = MemoryAdaptiveDispatcher(
+                    max_session_permit=5,
+                )
+                async for result in await crawler.arun_many(
+                    urls=urls_to_fetch[:max_pages],
+                    config=stream_config,
+                    dispatcher=dispatcher,
+                ):
                     try:
-                        result = await crawler.arun(url=page_url, config=run_config)
                         if not result.success or not result.markdown:
                             continue
-                        _write_output(out_dir, jsonl_path, page_url, result)
+                        _write_output(out_dir, jsonl_path, result.url, result)
                         pages_saved += 1
                     except Exception as exc:
-                        logger.debug("crawl4ai: skipping %s: %s", page_url, exc)
+                        logger.debug("crawl4ai: skipping result: %s", exc)
                         continue
             else:
                 # Discovery mode — follow links (sequential, can't batch)
