@@ -573,7 +573,9 @@ def run_crawl4ai(url: str, out_dir: str, max_pages: int, url_list: Optional[List
         in_container = os.getuid() == 0 or os.path.exists("/.dockerenv")
         extra = ["--no-sandbox", "--disable-setuid-sandbox"] if in_container else None
         browser_config = BrowserConfig(headless=True, extra_args=extra)
-        run_config = CrawlerRunConfig()
+        run_config = CrawlerRunConfig(
+            page_timeout=30000,    # 30s per page (default 60s)
+        )
 
         async with AsyncWebCrawler(config=browser_config) as crawler:
             if urls_to_fetch:
