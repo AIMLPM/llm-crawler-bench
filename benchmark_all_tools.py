@@ -569,26 +569,28 @@ def run_crawl4ai(url: str, out_dir: str, max_pages: int, url_list: Optional[List
 
     async def _crawl():
         nonlocal pages_saved
-        # In Docker (running as root), Chromium needs --no-sandbox
-        extra = ["--no-sandbox", "--disable-setuid-sandbox"] if os.getuid() == 0 else None
+        # In Docker / containerised environments, Chromium needs --no-sandbox
+        in_container = os.getuid() == 0 or os.path.exists("/.dockerenv")
+        extra = ["--no-sandbox", "--disable-setuid-sandbox"] if in_container else None
         browser_config = BrowserConfig(headless=True, extra_args=extra)
         run_config = CrawlerRunConfig()
 
         async with AsyncWebCrawler(config=browser_config) as crawler:
             if urls_to_fetch:
-                # Batch mode — crawl4ai handles concurrency internally
-                results = await crawler.arun_many(
-                    urls=urls_to_fetch[:max_pages],
-                    config=run_config,
-                )
-                for result in results:
+                # Sequential per-URL crawling.  arun_many() is faster but
+                # blocks until ALL URLs finish — if any page crashes the
+                # Chromium renderer ("Target crashed"), internal retries hang
+                # the entire batch and zero files are written.  Sequential
+                # arun() writes each page immediately and skips failures.
+                for page_url in urls_to_fetch[:max_pages]:
                     try:
+                        result = await crawler.arun(url=page_url, config=run_config)
                         if not result.success or not result.markdown:
                             continue
-                        _write_output(out_dir, jsonl_path, result.url, result)
+                        _write_output(out_dir, jsonl_path, page_url, result)
                         pages_saved += 1
-                    except (OSError, ValueError, KeyError, AttributeError) as exc:
-                        logger.debug("crawl4ai batch: skipping result: %s", exc)
+                    except Exception as exc:
+                        logger.debug("crawl4ai: skipping %s: %s", page_url, exc)
                         continue
             else:
                 # Discovery mode — follow links (sequential, can't batch)
@@ -650,7 +652,8 @@ def run_crawl4ai_raw(url: str, out_dir: str, max_pages: int, url_list: Optional[
 
     async def _crawl():
         nonlocal pages_saved
-        extra = ["--no-sandbox", "--disable-setuid-sandbox"] if os.getuid() == 0 else None
+        in_container = os.getuid() == 0 or os.path.exists("/.dockerenv")
+        extra = ["--no-sandbox", "--disable-setuid-sandbox"] if in_container else None
         browser_config = BrowserConfig(headless=True, extra_args=extra)
         run_config = CrawlerRunConfig()
 
@@ -1132,8 +1135,8 @@ def run_playwright_raw(url: str, out_dir: str, max_pages: int, url_list: Optiona
             "--disable-dev-shm-usage",
             "--no-first-run",
         ]
-        # In Docker (running as root), Chromium needs --no-sandbox
-        if os.getuid() == 0:
+        # In Docker / containerised environments, Chromium needs --no-sandbox
+        if os.getuid() == 0 or os.path.exists("/.dockerenv"):
             launch_args.extend(["--no-sandbox", "--disable-setuid-sandbox"])
         browser = p.chromium.launch(headless=True, args=launch_args)
 
@@ -1528,18 +1531,29 @@ def analyze_output(out_dir: str) -> dict:
 
 
 class _Heartbeat:
-    """Logs periodic progress during tool execution by counting output files."""
+    """Logs periodic progress during tool execution by counting output files.
+
+    Detects two stall conditions and sets timed_out for run_single to check:
+      - Zero-output stall: 0 pages after zero_stall_s (default 120s)
+      - Progress stall: no new pages for stall_s consecutive seconds
+    """
 
     def __init__(self, tool_name: str, site_name: str, out_dir: str,
-                 max_pages: int, interval: float = 30.0):
+                 max_pages: int, interval: float = 30.0,
+                 zero_stall_s: float = 120.0, stall_s: float = 180.0):
         self.tool_name = tool_name
         self.site_name = site_name
         self.out_dir = out_dir
         self.max_pages = max_pages
         self.interval = interval
+        self.zero_stall_s = zero_stall_s
+        self.stall_s = stall_s
         self._running = False
         self._thread: Optional[threading.Thread] = None
         self._last_count = 0
+        self._last_progress_time: float = 0.0
+        self.timed_out = False
+        self.timeout_reason = ""
 
     def start(self):
         self._running = True
@@ -1560,20 +1574,43 @@ class _Heartbeat:
                 count = sum(1 for f in Path(self.out_dir).glob("*.md") if f.stat().st_size > 0)
             except OSError:
                 count = self._last_count
-            elapsed = time.time() - self._start_time
+            now = time.time()
+            elapsed = now - self._start_time
             status = f"{count}/{self.max_pages} pages"
             if count > self._last_count:
                 delta = count - self._last_count
                 status += f" (+{delta})"
+                self._last_progress_time = now
             elif count == self._last_count and self._last_count > 0:
-                status += " (stalled)"
+                stall_dur = now - self._last_progress_time
+                status += f" (stalled {stall_dur:.0f}s)"
+                if stall_dur >= self.stall_s:
+                    self.timed_out = True
+                    self.timeout_reason = f"no new pages for {stall_dur:.0f}s"
+                    logger.warning(f"      [{self.tool_name}/{self.site_name}] STALL TIMEOUT: {self.timeout_reason}")
             status += f", {elapsed:.0f}s elapsed"
             logger.info(f"      [{self.tool_name}/{self.site_name}] heartbeat: {status}")
             self._last_count = count
 
+            # Zero-output stall: tool started but produced nothing
+            if count == 0 and elapsed >= self.zero_stall_s:
+                self.timed_out = True
+                self.timeout_reason = f"0 pages after {elapsed:.0f}s"
+                logger.warning(f"      [{self.tool_name}/{self.site_name}] ZERO-OUTPUT TIMEOUT: {self.timeout_reason}")
+
     def set_start_time(self, t: float):
         self._start_time = t
         self._last_count = 0
+        self._last_progress_time = t
+        self.timed_out = False
+        self.timeout_reason = ""
+
+
+# Hard wall-clock timeout per run.  Scales with max_pages so large sites
+# (500 pages) get more time than small ones (15 pages).
+# Formula: base + per_page * max_pages.  e.g. 500 pages → 60 + 2*500 = 1060s ≈ 18 min.
+_RUN_TIMEOUT_BASE_S = 60
+_RUN_TIMEOUT_PER_PAGE_S = 2
 
 
 def run_single(
@@ -1593,6 +1630,7 @@ def run_single(
 
     url = site_config["url"]
     max_pages = site_config["max_pages"]
+    wall_timeout = _RUN_TIMEOUT_BASE_S + _RUN_TIMEOUT_PER_PAGE_S * max_pages
 
     heartbeat = _Heartbeat(tool_name, site_name, out_dir, max_pages)
     mem = MemoryTracker()
@@ -1601,14 +1639,43 @@ def run_single(
     heartbeat.set_start_time(start)
     heartbeat.start()
 
-    try:
-        pages = run_fn(url, out_dir, max_pages, url_list=url_list, concurrency=concurrency)
-        error = None
-    except Exception as exc:
-        pages = 0
-        error = str(exc)
-    finally:
-        heartbeat.stop()
+    # Run the tool in a thread so we can enforce a hard wall-clock timeout
+    # and also abort early when the heartbeat detects a stall.
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(
+            run_fn, url, out_dir, max_pages,
+            url_list=url_list, concurrency=concurrency,
+        )
+        try:
+            # Poll every 5s so we can check the heartbeat stall flag
+            deadline = start + wall_timeout
+            while True:
+                remaining = deadline - time.time()
+                if remaining <= 0:
+                    raise TimeoutError(f"wall-clock timeout after {wall_timeout}s")
+                if heartbeat.timed_out:
+                    raise TimeoutError(f"heartbeat stall: {heartbeat.timeout_reason}")
+                try:
+                    pages = future.result(timeout=min(5.0, remaining))
+                    error = None
+                    break
+                except TimeoutError:
+                    # future.result timeout — re-check stall / wall clock
+                    if future.done():
+                        pages = future.result()
+                        error = None
+                        break
+                    continue
+        except TimeoutError as exc:
+            pages = 0
+            error = str(exc)
+            future.cancel()
+            logger.warning(f"    [{tool_name}/{site_name}] ABORTED: {error}")
+        except Exception as exc:
+            pages = 0
+            error = str(exc)
+        finally:
+            heartbeat.stop()
 
     elapsed = time.time() - start
 
