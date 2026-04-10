@@ -1,4 +1,4 @@
-.PHONY: test lint invariants preflight check check-invariants check-consistency check-lint review
+.PHONY: test lint invariants preflight check check-invariants check-consistency check-lint review smoke
 
 PYTHON ?= .venv/bin/python
 
@@ -26,6 +26,10 @@ check-consistency:
 
 check-lint:
 	$(PYTHON) lint_reports.py
+
+# Graduated smoke test: 5/30/100 pages per tool
+smoke:
+	$(PYTHON) benchmark_all_tools.py --smoke-only
 
 # Full self-improvement review: validate + show what changed
 review: check

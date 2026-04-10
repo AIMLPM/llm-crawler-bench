@@ -27,9 +27,9 @@ async def _run():
     from crawlee.crawlers import PlaywrightCrawler, PlaywrightCrawlingContext
     from markdownify import markdownify as md
 
-    # In Docker (running as root), Chromium needs --no-sandbox
+    # In Docker / containerised environments, Chromium needs --no-sandbox
     launch_options = {}
-    if os.getuid() == 0:
+    if os.getuid() == 0 or os.path.exists("/.dockerenv"):
         launch_options["args"] = ["--no-sandbox", "--disable-setuid-sandbox"]
 
     crawler = PlaywrightCrawler(

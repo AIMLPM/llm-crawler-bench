@@ -1198,6 +1198,317 @@ BROWSER_TOOLS = {"crawl4ai", "crawl4ai-raw", "crawlee", "playwright"}
 HTTP_TOOLS = {"markcrawl", "scrapy+md", "colly+md", "firecrawl"}
 
 
+# ---------------------------------------------------------------------------
+# Graduated smoke test — catch scale-dependent failures early
+# ---------------------------------------------------------------------------
+
+SMOKE_TIERS = [
+    {
+        "name": "sanity",
+        "site": "quotes-toscrape",
+        "max_pages": 5,
+        "timeout": 60,
+        "description": "Basic functionality (5 pages)",
+        "exclude_on_fail": True,
+    },
+    {
+        "name": "small",
+        "site": "books-toscrape",
+        "max_pages": 30,
+        "timeout": 90,
+        "description": "Small scale stability (30 pages)",
+        "exclude_on_fail": True,
+    },
+    {
+        "name": "medium",
+        "site": "python-docs",
+        "max_pages": 100,
+        "timeout": 180,
+        "description": "Medium scale / memory pressure (100 pages)",
+        "exclude_on_fail": False,
+    },
+]
+
+
+@dataclass
+class SmokeResult:
+    tool: str
+    tier: str
+    site: str
+    max_pages: int
+    pages_returned: int
+    time_seconds: float
+    peak_memory_mb: float
+    passed: bool
+    error: Optional[str] = None
+    skipped: bool = False
+
+
+@dataclass
+class SmokeReport:
+    results: List[SmokeResult]
+
+    def get_excluded_tools(self, strict: bool = False) -> set:
+        """Return tools that should be excluded from the full run."""
+        excluded = set()
+        for r in self.results:
+            if r.skipped:
+                continue
+            if not r.passed:
+                tier_cfg = next(t for t in SMOKE_TIERS if t["name"] == r.tier)
+                if tier_cfg["exclude_on_fail"] or strict:
+                    excluded.add(r.tool)
+        return excluded
+
+    def get_warned_tools(self) -> set:
+        """Return tools that failed a non-excluding tier."""
+        warned = set()
+        excluded = self.get_excluded_tools()
+        for r in self.results:
+            if r.skipped or r.passed:
+                continue
+            if r.tool not in excluded:
+                warned.add(r.tool)
+        return warned
+
+    def print_matrix(self) -> None:
+        """Print a console-friendly matrix of results."""
+        # Collect all tools in order
+        tools_seen = []
+        for r in self.results:
+            if r.tool not in tools_seen:
+                tools_seen.append(r.tool)
+
+        tier_names = [t["name"] for t in SMOKE_TIERS]
+
+        print("\n═══ Graduated Smoke Test ═══════════════════════════════\n")
+
+        # Per-tier detail
+        for tier_cfg in SMOKE_TIERS:
+            tn = tier_cfg["name"]
+            tier_results = [r for r in self.results if r.tier == tn]
+            if not tier_results:
+                continue
+            print(f"  Tier: {tn} ({tier_cfg['site']}, {tier_cfg['max_pages']} pages, {tier_cfg['timeout']}s timeout)")
+            for r in tier_results:
+                label = f"{r.tool:<16}"
+                if r.skipped:
+                    print(f"    ⊘  {label} skipped (failed earlier tier)")
+                elif r.passed:
+                    print(f"    ✓  {label} {r.pages_returned:>3}/{r.max_pages} pages  {r.time_seconds:>6.1f}s  {r.peak_memory_mb:>5.0f}MB")
+                else:
+                    err_short = (r.error or "unknown")[:70]
+                    print(f"    ✗  {label} {r.pages_returned:>3}/{r.max_pages} pages  {r.time_seconds:>6.1f}s  {r.peak_memory_mb:>5.0f}MB")
+                    print(f"       → {err_short}")
+            print()
+
+        # Summary
+        print("  ── Summary ──────────────────────────────────────────")
+        excluded = self.get_excluded_tools()
+        warned = self.get_warned_tools()
+        for tool in tools_seen:
+            parts = []
+            for tn in tier_names:
+                r = next((r for r in self.results if r.tool == tool and r.tier == tn), None)
+                if r is None:
+                    parts.append("  ")
+                elif r.skipped:
+                    parts.append("⊘")
+                elif r.passed:
+                    parts.append("✓")
+                else:
+                    parts.append("✗")
+            tier_str = "  ".join(f"T{i+1} {p}" for i, p in enumerate(parts))
+            if tool in excluded:
+                verdict = "→ Excluded"
+            elif tool in warned:
+                verdict = "→ Warning (may fail on large sites)"
+            else:
+                verdict = "→ Ready"
+            print(f"    {tool:<16} {tier_str}  {verdict}")
+
+        if excluded:
+            print(f"\n  Excluded from full run: {', '.join(sorted(excluded))}")
+        if warned:
+            print(f"  Warnings: {', '.join(sorted(warned))}")
+        print()
+
+    def to_json(self) -> dict:
+        """Serialize for JSON output."""
+        return {
+            "tiers": [{k: v for k, v in t.items()} for t in SMOKE_TIERS],
+            "results": [
+                {
+                    "tool": r.tool, "tier": r.tier, "site": r.site,
+                    "max_pages": r.max_pages, "pages_returned": r.pages_returned,
+                    "time_seconds": round(r.time_seconds, 2),
+                    "peak_memory_mb": round(r.peak_memory_mb, 1),
+                    "passed": r.passed, "error": r.error, "skipped": r.skipped,
+                }
+                for r in self.results
+            ],
+            "excluded_tools": sorted(self.get_excluded_tools()),
+            "warned_tools": sorted(self.get_warned_tools()),
+        }
+
+
+def _run_smoke_single(
+    tool_name: str,
+    tier: dict,
+    base_dir: str,
+    url_list: List[str],
+    concurrency: int,
+) -> SmokeResult:
+    """Run a single tool on a single smoke tier."""
+    site_name = tier["site"]
+    site_config = {
+        **COMPARISON_SITES[site_name],
+        "max_pages": tier["max_pages"],
+    }
+    urls = url_list[:tier["max_pages"]]
+
+    out_dir = os.path.join(base_dir, f"smoke_{tool_name}_{tier['name']}")
+    os.makedirs(out_dir, exist_ok=True)
+
+    run_fn = TOOLS[tool_name]["run"]
+    mem = MemoryTracker()
+    mem.start()
+    start = time.time()
+
+    try:
+        pages = run_fn(
+            site_config["url"], out_dir, tier["max_pages"],
+            url_list=urls, concurrency=concurrency,
+        )
+        error = None
+    except Exception as exc:
+        pages = 0
+        error = str(exc)
+    finally:
+        peak_mem = mem.stop()
+
+    elapsed = time.time() - start
+
+    # Subtract firecrawl rate-limit wait
+    rl_wait = getattr(run_fn, "_rate_limit_wait", 0.0)
+    if rl_wait > 0:
+        elapsed = max(0.1, elapsed - rl_wait)
+        run_fn._rate_limit_wait = 0.0
+
+    passed = pages > 0 and error is None
+    shutil.rmtree(out_dir, ignore_errors=True)
+
+    return SmokeResult(
+        tool=tool_name, tier=tier["name"], site=site_name,
+        max_pages=tier["max_pages"], pages_returned=pages,
+        time_seconds=elapsed, peak_memory_mb=peak_mem,
+        passed=passed, error=error,
+    )
+
+
+def _run_smoke_tier(
+    tier: dict,
+    tools: List[str],
+    base_dir: str,
+    url_list: List[str],
+    concurrency: int,
+) -> List[SmokeResult]:
+    """Execute one smoke tier across all provided tools."""
+    results = []
+    browser_sem = threading.Semaphore(1)
+
+    def _run_one(tool_name: str) -> SmokeResult:
+        is_browser = tool_name in BROWSER_TOOLS
+        if is_browser:
+            browser_sem.acquire()
+        try:
+            return _run_smoke_single(tool_name, tier, base_dir, url_list, concurrency)
+        finally:
+            if is_browser:
+                browser_sem.release()
+
+    with ThreadPoolExecutor(max_workers=len(tools)) as executor:
+        futures = {executor.submit(_run_one, t): t for t in tools}
+        for future in as_completed(futures):
+            tool_name = futures[future]
+            try:
+                result = future.result(timeout=tier["timeout"] + 30)
+            except Exception as exc:
+                result = SmokeResult(
+                    tool=tool_name, tier=tier["name"], site=tier["site"],
+                    max_pages=tier["max_pages"], pages_returned=0,
+                    time_seconds=tier["timeout"], peak_memory_mb=0,
+                    passed=False, error=f"timeout: {exc}",
+                )
+            results.append(result)
+
+    return results
+
+
+def run_smoke_tests(
+    available_tools: List[str],
+    concurrency: int = 5,
+    strict: bool = False,
+) -> SmokeReport:
+    """Run graduated smoke tests (sanity → small → medium).
+
+    Tests each tool at increasing page counts. Tools that fail a tier
+    are skipped for subsequent tiers.
+    """
+    all_results: List[SmokeResult] = []
+    surviving_tools = list(available_tools)
+    base_dir = tempfile.mkdtemp(prefix="smoke_")
+
+    for tier in SMOKE_TIERS:
+        site_name = tier["site"]
+        site_config = COMPARISON_SITES.get(site_name)
+        if not site_config:
+            logger.warning(f"Smoke tier '{tier['name']}': site '{site_name}' not in COMPARISON_SITES, skipping")
+            continue
+
+        # Discover URLs for this tier's site
+        urls = discover_urls(
+            site_name=site_name,
+            url=site_config["url"],
+            max_pages=tier["max_pages"],
+            skip_patterns=site_config.get("skip_patterns"),
+        )
+
+        if not urls:
+            logger.warning(f"Smoke tier '{tier['name']}': no URLs discovered for {site_name}, skipping")
+            continue
+
+        # Run tier for surviving tools
+        tier_results = _run_smoke_tier(tier, surviving_tools, base_dir, urls, concurrency)
+        all_results.extend(tier_results)
+
+        # Log results inline
+        for r in tier_results:
+            if r.passed:
+                logger.info(f"    ✓ {r.tool}: {r.pages_returned}/{r.max_pages} pages in {r.time_seconds:.1f}s")
+            else:
+                logger.warning(f"    ✗ {r.tool}: {r.pages_returned}/{r.max_pages} pages — {(r.error or 'unknown')[:60]}")
+
+        # Remove failed tools from subsequent tiers
+        failed = {r.tool for r in tier_results if not r.passed}
+        if failed:
+            surviving_tools = [t for t in surviving_tools if t not in failed]
+            # Add skip markers for failed tools in remaining tiers
+            remaining_tiers = [t for t in SMOKE_TIERS if t["name"] != tier["name"]
+                               and SMOKE_TIERS.index(t) > SMOKE_TIERS.index(tier)]
+            for rt in remaining_tiers:
+                for ft in failed:
+                    all_results.append(SmokeResult(
+                        tool=ft, tier=rt["name"], site=rt["site"],
+                        max_pages=rt["max_pages"], pages_returned=0,
+                        time_seconds=0, peak_memory_mb=0,
+                        passed=False, skipped=True,
+                    ))
+
+    shutil.rmtree(base_dir, ignore_errors=True)
+    return SmokeReport(results=all_results)
+
+
 def analyze_output(out_dir: str) -> dict:
     """Analyze Markdown output quality."""
     total_words = 0
@@ -1538,6 +1849,12 @@ def main():
                         help="FireCrawl account tier. 'free' skips warmup to save credits, "
                              "'paid' enables warmup. Auto-detected from FIRECRAWL_TIER env var, "
                              "defaults to 'free'.")
+    parser.add_argument("--smoke-test", action="store_true",
+                        help="Run graduated smoke tests before the full benchmark; exclude failing tools")
+    parser.add_argument("--smoke-only", action="store_true",
+                        help="Run smoke tests and exit (no full benchmark)")
+    parser.add_argument("--smoke-strict", action="store_true",
+                        help="Exclude tools that fail any smoke tier (default: only tiers 1-2 exclude)")
     parser.add_argument("--no-resume", action="store_true",
                         help="Ignore any saved checkpoint and start fresh")
     parser.add_argument("--refresh-urls", action="store_true",
@@ -1618,6 +1935,28 @@ def main():
         logger.info("Pre-flight passed -- all tools ready.\n")
     except ImportError:
         logger.warning("  preflight.py not found, skipping pre-flight checks.\n")
+
+    # --- Graduated smoke test (optional) ---
+    if args.smoke_test or args.smoke_only:
+        logger.info("\n--- Graduated Smoke Test ---")
+        smoke_report = run_smoke_tests(
+            available_tools=available,
+            concurrency=args.concurrency,
+            strict=args.smoke_strict,
+        )
+        smoke_report.print_matrix()
+
+        excluded = smoke_report.get_excluded_tools(strict=args.smoke_strict)
+        if excluded:
+            logger.warning(f"Smoke test exclusions: {', '.join(sorted(excluded))}")
+            available = [t for t in available if t not in excluded]
+
+        if args.smoke_only:
+            sys.exit(0 if not excluded else 1)
+
+        if not available:
+            logger.error("All tools failed smoke tests. Aborting.")
+            sys.exit(1)
 
     mode = "parallel" if args.parallel else "sequential"
     logger.info(f"\nRunning comparison: {len(available)} tool(s) x {len(sites)} site(s) x {args.iterations} iteration(s) [{mode}]")
