@@ -69,6 +69,54 @@ QUERY_INPUT_PRICE_PER_1M = float(os.environ.get("QUERY_INPUT_PRICE_PER_1M", "0.1
 QUERY_OUTPUT_PRICE_PER_1M = float(os.environ.get("QUERY_OUTPUT_PRICE_PER_1M", "0.60"))  # gpt-4o-mini output
 EMBED_PARALLEL_BATCHES = int(os.environ.get("EMBED_PARALLEL_BATCHES", "4"))
 
+CHECKPOINT_DIR = BENCH_DIR / ".pipeline_checkpoints"
+
+
+# ---------------------------------------------------------------------------
+# Checkpoint / resume
+# ---------------------------------------------------------------------------
+
+def _checkpoint_key(run_id: str, tool: str, site: str) -> str:
+    return f"{run_id}__{tool}__{site}".replace("/", "_")
+
+
+def _save_checkpoint(run_id: str, timing: "PhaseTimings") -> None:
+    """Atomically save a completed tool/site timing to disk."""
+    CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
+    key = _checkpoint_key(run_id, timing.tool, timing.site)
+    data = {
+        "tool": timing.tool, "site": timing.site,
+        "scrape_seconds": timing.scrape_seconds, "pages_scraped": timing.pages_scraped,
+        "chunk_seconds": timing.chunk_seconds, "chunks_created": timing.chunks_created,
+        "embed_seconds": timing.embed_seconds, "embed_tokens": timing.embed_tokens,
+        "embed_cost_usd": timing.embed_cost_usd,
+        "query_seconds": timing.query_seconds,
+        "query_input_tokens": timing.query_input_tokens,
+        "query_output_tokens": timing.query_output_tokens,
+        "query_cost_usd": timing.query_cost_usd,
+        "queries_run": timing.queries_run,
+        "total_seconds": timing.total_seconds, "total_cost_usd": timing.total_cost_usd,
+    }
+    path = CHECKPOINT_DIR / f"{key}.json"
+    tmp = path.with_suffix(".json.tmp")
+    with open(tmp, "w") as f:
+        json.dump(data, f)
+    tmp.replace(path)
+
+
+def _load_checkpoint(run_id: str, tool: str, site: str) -> Optional["PhaseTimings"]:
+    """Load a previously saved timing, or return None."""
+    key = _checkpoint_key(run_id, tool, site)
+    path = CHECKPOINT_DIR / f"{key}.json"
+    if not path.is_file():
+        return None
+    try:
+        with open(path) as f:
+            d = json.load(f)
+        return PhaseTimings(**{k: v for k, v in d.items() if k in PhaseTimings.__dataclass_fields__})
+    except (json.JSONDecodeError, TypeError):
+        return None
+
 
 # ---------------------------------------------------------------------------
 # Data classes
@@ -209,9 +257,39 @@ class QueryCost:
     elapsed_seconds: float = 0.0
 
 
+def _llm_with_retry(client, model: str, messages: list, max_tokens: int,
+                     temperature: float = 0, max_retries: int = 4) -> object:
+    """Call chat completions with exponential backoff retry."""
+    for attempt in range(max_retries):
+        try:
+            return client.chat.completions.create(
+                model=model,
+                messages=messages,
+                max_tokens=max_tokens,
+                temperature=temperature,
+                timeout=30,
+            )
+        except Exception as exc:
+            exc_str = str(exc)
+            if "400" in exc_str or "BadRequest" in type(exc).__name__:
+                raise
+            is_rate_limit = "429" in exc_str or "RateLimit" in type(exc).__name__
+            if is_rate_limit or attempt < max_retries - 1:
+                wait = min(2 ** attempt * 2, 60)
+                logger.warning(f"    LLM call error (attempt {attempt+1}/{max_retries}): {exc}")
+                time.sleep(wait)
+            else:
+                raise
+
+
 def query_pipeline(client, chunks: List[dict], vectors: list,
-                   queries: List[Dict], model: str = ANSWER_MODEL) -> QueryCost:
-    """Run retrieval + LLM answer for each query. Returns QueryCost with token tracking."""
+                   queries: List[Dict], query_vectors: Optional[list] = None,
+                   model: str = ANSWER_MODEL) -> QueryCost:
+    """Run retrieval + LLM answer for each query. Returns QueryCost with token tracking.
+
+    If query_vectors is provided, uses pre-embedded queries instead of
+    embedding each query individually (saves N-1 API calls).
+    """
     import numpy as np
 
     if not chunks or not vectors or not queries:
@@ -221,34 +299,36 @@ def query_pipeline(client, chunks: List[dict], vectors: list,
     start = time.time()
     cost = QueryCost()
 
-    for q in queries:
+    for qi, q in enumerate(queries):
         query_text = q["query"]
-        # Embed query
-        query_vec = embed_texts(client, [query_text])[0]
+
+        # Use pre-embedded query vector if available, otherwise embed individually
+        if query_vectors is not None:
+            query_vec = query_vectors[qi]
+        else:
+            query_vec = embed_texts(client, [query_text])[0]
 
         # Retrieve top-K chunks
         scores = cosine_similarity(query_vec, vec_matrix)
         top_indices = list(np.argsort(scores)[-TOP_K_FOR_ANSWER:][::-1])
         context = "\n\n---\n\n".join(chunks[i]["text"] for i in top_indices)
 
-        # Generate answer
+        # Generate answer with retry
         try:
-            response = client.chat.completions.create(
-                model=model,
+            response = _llm_with_retry(
+                client, model,
                 messages=[{
                     "role": "user",
                     "content": f"Answer using ONLY this context:\n\n{context}\n\nQuestion: {query_text}\n\nAnswer:",
                 }],
                 max_tokens=300,
-                temperature=0,
-                timeout=30,
             )
             cost.queries_run += 1
             if response.usage:
                 cost.input_tokens += response.usage.prompt_tokens
                 cost.output_tokens += response.usage.completion_tokens
         except Exception as exc:
-            logger.warning(f"Query failed: {exc}")
+            logger.warning(f"Query failed after retries: {exc}")
             cost.queries_run += 1
 
     cost.elapsed_seconds = time.time() - start
@@ -462,9 +542,16 @@ def main():
     parser.add_argument("--sites", help="Comma-separated site names to include")
     parser.add_argument("--tools", help="Comma-separated tool names to include")
     parser.add_argument("--output", default="reports/PIPELINE_TIMING.md")
+    parser.add_argument("--fresh", action="store_true",
+                        help="Clear checkpoints and re-run everything")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+    if args.fresh and CHECKPOINT_DIR.exists():
+        import shutil
+        shutil.rmtree(CHECKPOINT_DIR)
+        logger.info("Cleared pipeline checkpoints.")
 
     # Find run directory
     runs_base = BENCH_DIR / "runs"
@@ -519,12 +606,35 @@ def main():
 
     result = PipelineResult(run_id=run_id, sites=sites, tools=tools)
     pipeline_start = time.time()
+    resumed = 0
 
     for site in sites:
         logger.info(f"\n--- {site} ---")
         queries = TEST_QUERIES.get(site, [])
 
+        # Batch-embed queries once per site (instead of per-tool per-query)
+        query_vectors = None
+        if queries and client:
+            needs_work = any(
+                _load_checkpoint(run_id, t, site) is None
+                and (run_dir / t / site / "pages.jsonl").exists()
+                for t in tools
+            )
+            if needs_work:
+                query_texts = [q["query"] for q in queries]
+                logger.info(f"  Embedding {len(query_texts)} queries for {site}...")
+                query_vectors = embed_texts(client, query_texts)
+
         for tool in tools:
+            # Check checkpoint first
+            cached = _load_checkpoint(run_id, tool, site)
+            if cached is not None:
+                result.timings.append(cached)
+                resumed += 1
+                logger.info(f"  {tool}: RESUMED (total={cached.total_seconds:.1f}s, "
+                            f"cost=${cached.total_cost_usd:.4f})")
+                continue
+
             # Load pages
             jsonl_path = run_dir / tool / site / "pages.jsonl"
             if not jsonl_path.exists():
@@ -560,7 +670,8 @@ def main():
             # Phase 4: Query (only for sites with test queries, requires API key)
             if queries and client and vectors:
                 logger.info(f"  {tool}: running {len(queries)} queries...")
-                qcost = query_pipeline(client, chunks, vectors, queries)
+                qcost = query_pipeline(client, chunks, vectors, queries,
+                                       query_vectors=query_vectors)
                 timing.query_seconds = qcost.elapsed_seconds
                 timing.queries_run = qcost.queries_run
                 timing.query_input_tokens = qcost.input_tokens
@@ -580,6 +691,10 @@ def main():
                         f"cost=${timing.total_cost_usd:.4f}")
 
             result.timings.append(timing)
+            _save_checkpoint(run_id, timing)
+
+    if resumed:
+        logger.info(f"\nResumed {resumed} tool/site combos from checkpoint")
 
     pipeline_elapsed = time.time() - pipeline_start
     logger.info(f"\nPipeline benchmark completed in {pipeline_elapsed:.1f}s")

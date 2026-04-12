@@ -136,6 +136,27 @@ class ToolAnswerSummary:
 
 
 # ---------------------------------------------------------------------------
+# Resilience helpers
+# ---------------------------------------------------------------------------
+
+def _embed_with_retry(client, texts: list, max_retries: int = 4) -> list:
+    """Wrap embed_texts with retry + exponential backoff."""
+    for attempt in range(max_retries):
+        try:
+            return embed_texts(client, texts)
+        except Exception as exc:
+            exc_str = str(exc)
+            if "400" in exc_str or "BadRequest" in type(exc).__name__:
+                raise
+            if attempt < max_retries - 1:
+                wait = min(2 ** attempt * 2, 60)
+                logger.warning(f"    Embed error (attempt {attempt+1}/{max_retries}): {exc}")
+                time.sleep(wait)
+            else:
+                raise
+
+
+# ---------------------------------------------------------------------------
 # Core logic
 # ---------------------------------------------------------------------------
 
@@ -275,7 +296,7 @@ def run_answer_quality_test(
 
     # Embed chunks
     logger.info(f"    Embedding {len(chunk_texts)} chunks...")
-    chunk_vectors = embed_texts(client, chunk_texts)
+    chunk_vectors = _embed_with_retry(client, chunk_texts)
     vec_matrix = chunk_vectors
 
     results = []
@@ -541,7 +562,7 @@ def main():
         if needs_work:
             query_texts = [q["query"] for q in queries]
             logger.info(f"  Embedding {len(query_texts)} queries...")
-            query_vectors = embed_texts(client, query_texts)
+            query_vectors = _embed_with_retry(client, query_texts)
 
         for tool in available_tools:
             # Check checkpoint
