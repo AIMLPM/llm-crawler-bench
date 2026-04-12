@@ -20,11 +20,13 @@ Requires:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import logging
 import os
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -61,6 +63,12 @@ logger = logging.getLogger(__name__)
 ANSWER_MODEL = os.environ.get("ANSWER_MODEL", "gpt-4o-mini")
 TOP_K_FOR_ANSWER = 10
 
+# OpenAI pricing (USD per 1M tokens) — update when pricing changes
+EMBED_PRICE_PER_1M = float(os.environ.get("EMBED_PRICE_PER_1M", "0.02"))   # text-embedding-3-small
+QUERY_INPUT_PRICE_PER_1M = float(os.environ.get("QUERY_INPUT_PRICE_PER_1M", "0.15"))  # gpt-4o-mini input
+QUERY_OUTPUT_PRICE_PER_1M = float(os.environ.get("QUERY_OUTPUT_PRICE_PER_1M", "0.60"))  # gpt-4o-mini output
+EMBED_PARALLEL_BATCHES = int(os.environ.get("EMBED_PARALLEL_BATCHES", "4"))
+
 
 # ---------------------------------------------------------------------------
 # Data classes
@@ -76,9 +84,15 @@ class PhaseTimings:
     chunk_seconds: float = 0.0
     chunks_created: int = 0
     embed_seconds: float = 0.0
+    embed_tokens: int = 0
+    embed_cost_usd: float = 0.0
     query_seconds: float = 0.0
+    query_input_tokens: int = 0
+    query_output_tokens: int = 0
+    query_cost_usd: float = 0.0
     queries_run: int = 0
     total_seconds: float = 0.0
+    total_cost_usd: float = 0.0
 
 
 @dataclass
@@ -156,35 +170,56 @@ def chunk_tool_site(pages: List[Dict], max_words: int = CHUNK_MAX_WORDS,
 
 
 # ---------------------------------------------------------------------------
-# Phase 3: Embed
+# Phase 3: Embed (with token counting)
 # ---------------------------------------------------------------------------
 
-def embed_chunks(client, chunks: List[dict]) -> tuple[list, float]:
-    """Embed all chunks. Returns (vectors, elapsed_seconds)."""
+def _count_tokens(texts: List[str]) -> int:
+    """Count embedding tokens using tiktoken."""
+    try:
+        import tiktoken
+        enc = tiktoken.encoding_for_model("text-embedding-3-small")
+        return sum(len(enc.encode(t)) for t in texts)
+    except ImportError:
+        # Rough estimate: ~0.75 tokens per word
+        return sum(int(len(t.split()) * 0.75) for t in texts)
+
+
+def embed_chunks(client, chunks: List[dict]) -> tuple[list, float, int]:
+    """Embed all chunks. Returns (vectors, elapsed_seconds, token_count)."""
     texts = [c["text"] for c in chunks]
     if not texts:
-        return [], 0.0
+        return [], 0.0, 0
+    token_count = _count_tokens(texts)
     start = time.time()
     vectors = embed_texts(client, texts)
     elapsed = time.time() - start
-    return vectors, elapsed
+    return vectors, elapsed, token_count
 
 
 # ---------------------------------------------------------------------------
 # Phase 4: Query (retrieval + LLM answer)
 # ---------------------------------------------------------------------------
 
+@dataclass
+class QueryCost:
+    """Token usage from the query phase."""
+    queries_run: int = 0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    elapsed_seconds: float = 0.0
+
+
 def query_pipeline(client, chunks: List[dict], vectors: list,
-                   queries: List[Dict], model: str = ANSWER_MODEL) -> tuple[int, float]:
-    """Run retrieval + LLM answer for each query. Returns (queries_run, elapsed_seconds)."""
+                   queries: List[Dict], model: str = ANSWER_MODEL) -> QueryCost:
+    """Run retrieval + LLM answer for each query. Returns QueryCost with token tracking."""
     import numpy as np
 
     if not chunks or not vectors or not queries:
-        return 0, 0.0
+        return QueryCost()
 
     vec_matrix = np.array(vectors)
     start = time.time()
-    queries_run = 0
+    cost = QueryCost()
 
     for q in queries:
         query_text = q["query"]
@@ -208,18 +243,32 @@ def query_pipeline(client, chunks: List[dict], vectors: list,
                 temperature=0,
                 timeout=30,
             )
-            queries_run += 1
+            cost.queries_run += 1
+            if response.usage:
+                cost.input_tokens += response.usage.prompt_tokens
+                cost.output_tokens += response.usage.completion_tokens
         except Exception as exc:
             logger.warning(f"Query failed: {exc}")
-            queries_run += 1  # Count it even if it failed
+            cost.queries_run += 1
 
-    elapsed = time.time() - start
-    return queries_run, elapsed
+    cost.elapsed_seconds = time.time() - start
+    return cost
 
 
 # ---------------------------------------------------------------------------
 # Report generation
 # ---------------------------------------------------------------------------
+
+def _fmt_cost(usd: float) -> str:
+    """Format a dollar amount per the style guide: no decimals above $10, two below $1."""
+    if usd >= 10:
+        return f"${usd:.0f}"
+    if usd >= 1:
+        return f"${usd:.2f}"
+    if usd >= 0.01:
+        return f"${usd:.3f}"
+    return f"${usd:.4f}"
+
 
 def generate_report(result: PipelineResult) -> str:
     """Generate PIPELINE_TIMING.md report."""
@@ -234,18 +283,15 @@ def generate_report(result: PipelineResult) -> str:
                  f"**Embedding model:** {EMBEDDING_MODEL} | **Answer model:** {ANSWER_MODEL}")
     lines.append("")
 
-    # --- Per-tool aggregate summary ---
-    lines.append("## Summary: Total Pipeline Time by Tool")
-    lines.append("")
-    lines.append("| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | **Total (s)** | Pages | Chunks |")
-    lines.append("|------|-----------|----------|----------|----------|--------------|-------|--------|")
-
     # Aggregate per tool
     tool_agg: Dict[str, dict] = {}
     for t in result.timings:
         agg = tool_agg.setdefault(t.tool, {
             "scrape": 0, "chunk": 0, "embed": 0, "query": 0,
             "total": 0, "pages": 0, "chunks": 0,
+            "embed_tokens": 0, "embed_cost": 0,
+            "query_input_tokens": 0, "query_output_tokens": 0,
+            "query_cost": 0, "total_cost": 0,
         })
         agg["scrape"] += t.scrape_seconds
         agg["chunk"] += t.chunk_seconds
@@ -254,18 +300,54 @@ def generate_report(result: PipelineResult) -> str:
         agg["total"] += t.total_seconds
         agg["pages"] += t.pages_scraped
         agg["chunks"] += t.chunks_created
+        agg["embed_tokens"] += t.embed_tokens
+        agg["embed_cost"] += t.embed_cost_usd
+        agg["query_input_tokens"] += t.query_input_tokens
+        agg["query_output_tokens"] += t.query_output_tokens
+        agg["query_cost"] += t.query_cost_usd
+        agg["total_cost"] += t.total_cost_usd
 
     # Sort by total time ascending (fastest first)
     sorted_tools = sorted(tool_agg.items(), key=lambda x: x[1]["total"])
+
+    # --- Per-tool aggregate summary ---
+    lines.append("## Summary: Total Pipeline Time by Tool")
+    lines.append("")
+    lines.append("| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | **Total (s)** | Pages | Chunks | Cost |")
+    lines.append("|------|-----------|----------|----------|----------|--------------|-------|--------|------|")
 
     for tool, agg in sorted_tools:
         bold = "**" if tool == "markcrawl" else ""
         lines.append(
             f"| {bold}{tool}{bold} | {agg['scrape']:.1f} | {agg['chunk']:.1f} | "
             f"{agg['embed']:.1f} | {agg['query']:.1f} | "
-            f"**{agg['total']:.1f}** | {agg['pages']} | {agg['chunks']} |"
+            f"**{agg['total']:.1f}** | {agg['pages']} | {agg['chunks']} | "
+            f"{_fmt_cost(agg['total_cost'])} |"
         )
 
+    lines.append("")
+    lines.append(f"*(Cost uses OpenAI `{EMBEDDING_MODEL}` at ${EMBED_PRICE_PER_1M}/1M tokens, "
+                 f"`{ANSWER_MODEL}` at ${QUERY_INPUT_PRICE_PER_1M}/${QUERY_OUTPUT_PRICE_PER_1M} "
+                 f"per 1M input/output tokens)*")
+    lines.append("")
+
+    # --- Per-page normalized ---
+    lines.append("## Per-Page Pipeline Cost (normalized)")
+    lines.append("")
+    lines.append("Since scrapy+md fetched fewer pages (due to timeouts), this table normalizes")
+    lines.append("time and cost per page for a fairer comparison.")
+    lines.append("")
+    lines.append("| Tool | Pages | Total (s) | s/page | Cost/page | Chunks/page |")
+    lines.append("|------|-------|----------|--------|-----------|-------------|")
+
+    for tool, agg in sorted_tools:
+        pages = agg["pages"] or 1
+        bold = "**" if tool == "markcrawl" else ""
+        lines.append(
+            f"| {bold}{tool}{bold} | {agg['pages']} | {agg['total']:.1f} | "
+            f"{agg['total']/pages:.2f} | {_fmt_cost(agg['total_cost']/pages)} | "
+            f"{agg['chunks']/pages:.1f} |"
+        )
     lines.append("")
 
     # --- Phase breakdown as % of total ---
@@ -281,6 +363,24 @@ def generate_report(result: PipelineResult) -> str:
         )
     lines.append("")
 
+    # --- Cost breakdown ---
+    lines.append("## API Cost Breakdown")
+    lines.append("")
+    lines.append(f"*(Pricing: `{EMBEDDING_MODEL}` at ${EMBED_PRICE_PER_1M}/1M tokens, "
+                 f"`{ANSWER_MODEL}` input at ${QUERY_INPUT_PRICE_PER_1M}/1M, "
+                 f"output at ${QUERY_OUTPUT_PRICE_PER_1M}/1M)*")
+    lines.append("")
+    lines.append("| Tool | Embed tokens | Embed cost | Query in tokens | Query out tokens | Query cost | **Total cost** |")
+    lines.append("|------|-------------|-----------|----------------|-----------------|-----------|---------------|")
+    for tool, agg in sorted_tools:
+        bold = "**" if tool == "markcrawl" else ""
+        lines.append(
+            f"| {bold}{tool}{bold} | {agg['embed_tokens']:,} | {_fmt_cost(agg['embed_cost'])} | "
+            f"{agg['query_input_tokens']:,} | {agg['query_output_tokens']:,} | "
+            f"{_fmt_cost(agg['query_cost'])} | **{_fmt_cost(agg['total_cost'])}** |"
+        )
+    lines.append("")
+
     # --- Per-site detail ---
     lines.append("## Per-Site Breakdown")
     lines.append("")
@@ -290,14 +390,15 @@ def generate_report(result: PipelineResult) -> str:
             continue
         lines.append(f"### {site}")
         lines.append("")
-        lines.append("| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks |")
-        lines.append("|------|-----------|----------|----------|----------|----------|-------|--------|")
+        lines.append("| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |")
+        lines.append("|------|-----------|----------|----------|----------|----------|-------|--------|------|")
         for t in sorted(site_timings, key=lambda x: x.total_seconds):
             bold = "**" if t.tool == "markcrawl" else ""
             lines.append(
                 f"| {bold}{t.tool}{bold} | {t.scrape_seconds:.1f} | {t.chunk_seconds:.1f} | "
                 f"{t.embed_seconds:.1f} | {t.query_seconds:.1f} | "
-                f"{t.total_seconds:.1f} | {t.pages_scraped} | {t.chunks_created} |"
+                f"{t.total_seconds:.1f} | {t.pages_scraped} | {t.chunks_created} | "
+                f"{_fmt_cost(t.total_cost_usd)} |"
             )
         lines.append("")
 
@@ -325,6 +426,13 @@ def generate_report(result: PipelineResult) -> str:
             lines.append(f"- **{tool}:** {dominant[0]} dominates at "
                          f"{dominant[1]/total*100:.0f}% of pipeline time")
 
+        # Cost insight
+        cheapest = sorted_tools[0]
+        most_expensive = max(sorted_tools, key=lambda x: x[1]["total_cost"])
+        lines.append(f"- **Cheapest API cost:** {cheapest[0]} ({_fmt_cost(cheapest[1]['total_cost'])})")
+        lines.append(f"- **Most expensive API cost:** {most_expensive[0]} "
+                     f"({_fmt_cost(most_expensive[1]['total_cost'])})")
+
     lines.append("")
     lines.append("## Methodology")
     lines.append("")
@@ -334,6 +442,10 @@ def generate_report(result: PipelineResult) -> str:
     lines.append(f"- **Embed timing** uses OpenAI `{EMBEDDING_MODEL}` (cached after first run)")
     lines.append(f"- **Query timing** includes embedding the query, cosine retrieval, "
                  f"and `{ANSWER_MODEL}` answer generation")
+    lines.append(f"- **Cost tracking** counts actual tokens from API responses (embed tokens "
+                 f"estimated via tiktoken, query tokens from response.usage)")
+    lines.append("- **Embedding cache** — chunks are cached by content hash; re-runs with "
+                 "unchanged pages.jsonl skip API calls entirely")
     lines.append("- See [METHODOLOGY.md](METHODOLOGY.md) for full test setup")
     lines.append("")
 
@@ -440,22 +552,32 @@ def main():
             vectors = []
             if client:
                 logger.info(f"  {tool}: embedding {len(chunks)} chunks...")
-                vectors, embed_time = embed_chunks(client, chunks)
+                vectors, embed_time, embed_tokens = embed_chunks(client, chunks)
                 timing.embed_seconds = embed_time
+                timing.embed_tokens = embed_tokens
+                timing.embed_cost_usd = embed_tokens / 1_000_000 * EMBED_PRICE_PER_1M
 
             # Phase 4: Query (only for sites with test queries, requires API key)
             if queries and client and vectors:
                 logger.info(f"  {tool}: running {len(queries)} queries...")
-                queries_run, query_time = query_pipeline(client, chunks, vectors, queries)
-                timing.query_seconds = query_time
-                timing.queries_run = queries_run
+                qcost = query_pipeline(client, chunks, vectors, queries)
+                timing.query_seconds = qcost.elapsed_seconds
+                timing.queries_run = qcost.queries_run
+                timing.query_input_tokens = qcost.input_tokens
+                timing.query_output_tokens = qcost.output_tokens
+                timing.query_cost_usd = (
+                    qcost.input_tokens / 1_000_000 * QUERY_INPUT_PRICE_PER_1M +
+                    qcost.output_tokens / 1_000_000 * QUERY_OUTPUT_PRICE_PER_1M
+                )
 
             timing.total_seconds = (timing.scrape_seconds + timing.chunk_seconds +
                                     timing.embed_seconds + timing.query_seconds)
+            timing.total_cost_usd = timing.embed_cost_usd + timing.query_cost_usd
 
             logger.info(f"  {tool}: total={timing.total_seconds:.1f}s "
                         f"(scrape={timing.scrape_seconds:.1f} chunk={timing.chunk_seconds:.1f} "
-                        f"embed={timing.embed_seconds:.1f} query={timing.query_seconds:.1f})")
+                        f"embed={timing.embed_seconds:.1f} query={timing.query_seconds:.1f}) "
+                        f"cost=${timing.total_cost_usd:.4f}")
 
             result.timings.append(timing)
 
@@ -477,6 +599,13 @@ def main():
         "tools": tools,
         "sites": sites,
         "pipeline_wall_time_s": pipeline_elapsed,
+        "pricing": {
+            "embed_model": EMBEDDING_MODEL,
+            "embed_price_per_1m": EMBED_PRICE_PER_1M,
+            "answer_model": ANSWER_MODEL,
+            "query_input_price_per_1m": QUERY_INPUT_PRICE_PER_1M,
+            "query_output_price_per_1m": QUERY_OUTPUT_PRICE_PER_1M,
+        },
         "timings": [
             {
                 "tool": t.tool,
@@ -486,9 +615,15 @@ def main():
                 "chunk_s": t.chunk_seconds,
                 "chunks": t.chunks_created,
                 "embed_s": t.embed_seconds,
+                "embed_tokens": t.embed_tokens,
+                "embed_cost_usd": t.embed_cost_usd,
                 "query_s": t.query_seconds,
+                "query_input_tokens": t.query_input_tokens,
+                "query_output_tokens": t.query_output_tokens,
+                "query_cost_usd": t.query_cost_usd,
                 "queries": t.queries_run,
                 "total_s": t.total_seconds,
+                "total_cost_usd": t.total_cost_usd,
             }
             for t in result.timings
         ],

@@ -861,11 +861,20 @@ def embed_texts(client, texts: List[str], model: str = EMBEDDING_MODEL) -> List[
                 else:
                     raise
 
-    # Run batches sequentially to avoid rate limit collisions
+    # Run batches with configurable parallelism (default: sequential)
+    embed_workers = int(os.environ.get("EMBED_PARALLEL_BATCHES", "1"))
     results = {}
-    for batch_args in batches:
-        idx, vectors = _embed_batch(batch_args)
-        results[idx] = vectors
+    if embed_workers > 1 and len(batches) > 1:
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        with ThreadPoolExecutor(max_workers=min(embed_workers, len(batches))) as pool:
+            futures = {pool.submit(_embed_batch, b): b for b in batches}
+            for future in as_completed(futures):
+                idx, vectors = future.result()
+                results[idx] = vectors
+    else:
+        for batch_args in batches:
+            idx, vectors = _embed_batch(batch_args)
+            results[idx] = vectors
 
     # Reassemble in order
     all_vectors = []

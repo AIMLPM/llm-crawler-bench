@@ -8,85 +8,118 @@ scraping, chunking, embedding, and querying.
 
 ## Summary: Total Pipeline Time by Tool
 
-| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | **Total (s)** | Pages | Chunks |
-|------|-----------|----------|----------|----------|--------------|-------|--------|
-| scrapy+md | 73.3 | 0.8 | 119.4 | 158.3 | **351.8** | 556 | 14104 |
-| colly+md | 62.7 | 1.6 | 129.6 | 189.2 | **383.1** | 728 | 17037 |
-| **markcrawl** | 113.1 | 2.4 | 146.5 | 143.7 | **405.7** | 728 | 12901 |
-| crawlee | 201.5 | 1.2 | 131.5 | 143.9 | **478.1** | 728 | 17108 |
-| playwright | 168.5 | 0.9 | 129.0 | 187.1 | **485.5** | 728 | 17109 |
-| crawl4ai | 162.8 | 1.0 | 185.9 | 149.7 | **499.3** | 728 | 17908 |
-| crawl4ai-raw | 342.3 | 1.2 | 133.5 | 130.1 | **607.1** | 728 | 17908 |
+| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | **Total (s)** | Pages | Chunks | Cost |
+|------|-----------|----------|----------|----------|--------------|-------|--------|------|
+| colly+md | 62.7 | 1.1 | 5.2 | 190.6 | **259.6** | 728 | 17037 | $0.187 |
+| scrapy+md | 73.3 | 0.6 | 3.6 | 190.5 | **268.0** | 556 | 14104 | $0.154 |
+| **markcrawl** | 113.1 | 1.0 | 4.1 | 182.6 | **300.8** | 728 | 12901 | $0.162 |
+| playwright | 168.5 | 1.5 | 5.4 | 160.9 | **336.3** | 728 | 17109 | $0.196 |
+| crawl4ai | 162.8 | 0.8 | 4.1 | 176.8 | **344.6** | 728 | 17908 | $0.240 |
+| crawlee | 201.5 | 1.2 | 5.1 | 176.9 | **384.7** | 728 | 17108 | $0.196 |
+| crawl4ai-raw | 342.3 | 0.8 | 4.2 | 176.0 | **523.3** | 728 | 17908 | $0.240 |
+
+*(Cost uses OpenAI `text-embedding-3-small` at $0.02/1M tokens, `gpt-4o-mini` at $0.15/$0.6 per 1M input/output tokens)*
+
+## Per-Page Pipeline Cost (normalized)
+
+Since scrapy+md fetched fewer pages (due to timeouts), this table normalizes
+time and cost per page for a fairer comparison.
+
+| Tool | Pages | Total (s) | s/page | Cost/page | Chunks/page |
+|------|-------|----------|--------|-----------|-------------|
+| colly+md | 728 | 259.6 | 0.36 | $0.0003 | 23.4 |
+| scrapy+md | 556 | 268.0 | 0.48 | $0.0003 | 25.4 |
+| **markcrawl** | 728 | 300.8 | 0.41 | $0.0002 | 17.7 |
+| playwright | 728 | 336.3 | 0.46 | $0.0003 | 23.5 |
+| crawl4ai | 728 | 344.6 | 0.47 | $0.0003 | 24.6 |
+| crawlee | 728 | 384.7 | 0.53 | $0.0003 | 23.5 |
+| crawl4ai-raw | 728 | 523.3 | 0.72 | $0.0003 | 24.6 |
 
 ## Phase Breakdown (% of Total Pipeline Time)
 
 | Tool | Scrape % | Chunk % | Embed % | Query % |
 |------|---------|--------|--------|--------|
-| scrapy+md | 20.8% | 0.2% | 33.9% | 45.0% |
-| colly+md | 16.4% | 0.4% | 33.8% | 49.4% |
-| markcrawl | 27.9% | 0.6% | 36.1% | 35.4% |
-| crawlee | 42.2% | 0.3% | 27.5% | 30.1% |
-| playwright | 34.7% | 0.2% | 26.6% | 38.5% |
-| crawl4ai | 32.6% | 0.2% | 37.2% | 30.0% |
-| crawl4ai-raw | 56.4% | 0.2% | 22.0% | 21.4% |
+| colly+md | 24.2% | 0.4% | 2.0% | 73.4% |
+| scrapy+md | 27.4% | 0.2% | 1.3% | 71.1% |
+| markcrawl | 37.6% | 0.3% | 1.4% | 60.7% |
+| playwright | 50.1% | 0.5% | 1.6% | 47.8% |
+| crawl4ai | 47.2% | 0.2% | 1.2% | 51.3% |
+| crawlee | 52.4% | 0.3% | 1.3% | 46.0% |
+| crawl4ai-raw | 65.4% | 0.1% | 0.8% | 33.6% |
+
+## API Cost Breakdown
+
+*(Pricing: `text-embedding-3-small` at $0.02/1M tokens, `gpt-4o-mini` input at $0.15/1M, output at $0.6/1M)*
+
+| Tool | Embed tokens | Embed cost | Query in tokens | Query out tokens | Query cost | **Total cost** |
+|------|-------------|-----------|----------------|-----------------|-----------|---------------|
+| colly+md | 7,242,268 | $0.145 | 250,565 | 7,997 | $0.042 | **$0.187** |
+| scrapy+md | 5,618,112 | $0.112 | 243,768 | 7,984 | $0.041 | **$0.154** |
+| **markcrawl** | 6,187,564 | $0.124 | 223,139 | 8,169 | $0.038 | **$0.162** |
+| playwright | 7,696,966 | $0.154 | 248,793 | 7,753 | $0.042 | **$0.196** |
+| crawl4ai | 9,536,889 | $0.191 | 301,452 | 6,620 | $0.049 | **$0.240** |
+| crawlee | 7,694,726 | $0.154 | 249,796 | 7,814 | $0.042 | **$0.196** |
+| crawl4ai-raw | 9,536,790 | $0.191 | 301,450 | 6,566 | $0.049 | **$0.240** |
 
 ## Per-Site Breakdown
 
 ### books-toscrape
 
-| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks |
-|------|-----------|----------|----------|----------|----------|-------|--------|
-| **markcrawl** | 9.5 | 0.0 | 1.4 | 41.9 | 52.8 | 60 | 112 |
-| crawl4ai | 11.8 | 0.0 | 4.8 | 36.2 | 52.9 | 60 | 628 |
-| crawlee | 15.9 | 0.0 | 1.5 | 42.5 | 59.8 | 60 | 134 |
-| crawl4ai-raw | 26.8 | 0.0 | 5.1 | 32.4 | 64.2 | 60 | 628 |
-| colly+md | 5.9 | 0.0 | 4.0 | 63.4 | 73.3 | 60 | 134 |
-| scrapy+md | 4.6 | 0.1 | 16.9 | 60.1 | 81.8 | 60 | 130 |
-| playwright | 23.5 | 0.0 | 1.3 | 81.5 | 106.4 | 60 | 134 |
+| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
+|------|-----------|----------|----------|----------|----------|-------|--------|------|
+| crawl4ai | 11.8 | 0.0 | 0.1 | 50.8 | 62.8 | 60 | 628 | $0.021 |
+| **markcrawl** | 9.5 | 0.0 | 0.0 | 55.5 | 65.0 | 60 | 112 | $0.013 |
+| playwright | 23.5 | 0.0 | 0.0 | 52.1 | 75.6 | 60 | 134 | $0.018 |
+| scrapy+md | 4.6 | 0.0 | 0.0 | 71.0 | 75.7 | 60 | 130 | $0.018 |
+| crawlee | 15.9 | 0.0 | 0.0 | 60.0 | 75.9 | 60 | 134 | $0.018 |
+| crawl4ai-raw | 26.8 | 0.1 | 0.1 | 49.9 | 76.9 | 60 | 628 | $0.021 |
+| colly+md | 5.9 | 0.0 | 0.0 | 73.4 | 79.4 | 60 | 134 | $0.018 |
 
 ### fastapi-docs
 
-| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks |
-|------|-----------|----------|----------|----------|----------|-------|--------|
-| scrapy+md | 17.2 | 0.1 | 29.7 | 49.9 | 97.0 | 153 | 3739 |
-| colly+md | 18.9 | 1.0 | 30.3 | 54.0 | 104.2 | 153 | 3869 |
-| crawl4ai | 60.0 | 0.3 | 28.9 | 47.7 | 136.9 | 153 | 4147 |
-| playwright | 60.0 | 0.3 | 29.0 | 56.0 | 145.2 | 153 | 3857 |
-| **markcrawl** | 30.0 | 0.3 | 72.8 | 47.5 | 150.5 | 153 | 3288 |
-| crawl4ai-raw | 119.8 | 0.2 | 27.7 | 49.6 | 197.2 | 153 | 4147 |
-| crawlee | 125.7 | 0.2 | 30.2 | 52.5 | 208.5 | 153 | 3856 |
+| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
+|------|-----------|----------|----------|----------|----------|-------|--------|------|
+| colly+md | 18.9 | 0.3 | 1.5 | 59.3 | 80.0 | 153 | 3869 | $0.035 |
+| scrapy+md | 17.2 | 0.2 | 0.8 | 61.9 | 80.1 | 153 | 3739 | $0.031 |
+| **markcrawl** | 30.0 | 0.1 | 0.8 | 54.0 | 84.8 | 153 | 3288 | $0.022 |
+| crawl4ai | 60.0 | 0.2 | 1.0 | 49.7 | 110.9 | 153 | 4147 | $0.043 |
+| playwright | 60.0 | 0.3 | 1.6 | 54.6 | 116.5 | 153 | 3857 | $0.041 |
+| crawl4ai-raw | 119.8 | 0.1 | 0.8 | 51.0 | 171.7 | 153 | 4147 | $0.043 |
+| crawlee | 125.7 | 0.4 | 1.0 | 53.8 | 180.8 | 153 | 3856 | $0.041 |
 
 ### python-docs
 
-| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks |
-|------|-----------|----------|----------|----------|----------|-------|--------|
-| scrapy+md | 46.9 | 0.5 | 72.3 | 28.1 | 147.7 | 328 | 10210 |
-| colly+md | 34.5 | 0.6 | 94.7 | 47.6 | 177.5 | 500 | 13006 |
-| **markcrawl** | 69.5 | 2.2 | 71.8 | 35.1 | 178.6 | 500 | 9477 |
-| crawlee | 52.8 | 1.0 | 99.3 | 30.2 | 183.4 | 500 | 13090 |
-| playwright | 79.5 | 0.6 | 98.5 | 29.7 | 208.4 | 500 | 13090 |
-| crawl4ai | 86.5 | 0.6 | 151.7 | 30.3 | 269.0 | 500 | 13110 |
-| crawl4ai-raw | 186.7 | 1.0 | 100.6 | 25.1 | 313.4 | 500 | 13110 |
+| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
+|------|-----------|----------|----------|----------|----------|-------|--------|------|
+| colly+md | 34.5 | 0.7 | 3.7 | 32.9 | 71.8 | 500 | 13006 | $0.123 |
+| scrapy+md | 46.9 | 0.4 | 2.7 | 33.8 | 84.0 | 328 | 10210 | $0.094 |
+| crawlee | 52.8 | 0.8 | 4.0 | 39.1 | 96.8 | 500 | 13090 | $0.126 |
+| playwright | 79.5 | 1.2 | 3.8 | 35.5 | 120.0 | 500 | 13090 | $0.126 |
+| **markcrawl** | 69.5 | 0.9 | 3.3 | 50.0 | 123.7 | 500 | 9477 | $0.117 |
+| crawl4ai | 86.5 | 0.6 | 3.0 | 40.3 | 130.4 | 500 | 13110 | $0.162 |
+| crawl4ai-raw | 186.7 | 0.5 | 3.2 | 36.6 | 227.1 | 500 | 13110 | $0.162 |
 
 ### quotes-toscrape
 
-| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks |
-|------|-----------|----------|----------|----------|----------|-------|--------|
-| **markcrawl** | 4.0 | 0.0 | 0.5 | 19.3 | 23.8 | 15 | 24 |
-| scrapy+md | 4.6 | 0.0 | 0.4 | 20.2 | 25.3 | 15 | 25 |
-| playwright | 5.4 | 0.0 | 0.2 | 19.9 | 25.5 | 15 | 28 |
-| crawlee | 7.1 | 0.0 | 0.5 | 18.7 | 26.3 | 15 | 28 |
-| colly+md | 3.3 | 0.0 | 0.6 | 24.2 | 28.2 | 15 | 28 |
-| crawl4ai-raw | 9.1 | 0.0 | 0.2 | 23.0 | 32.3 | 15 | 23 |
-| crawl4ai | 4.5 | 0.0 | 0.5 | 35.5 | 40.4 | 15 | 23 |
+| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
+|------|-----------|----------|----------|----------|----------|-------|--------|------|
+| playwright | 5.4 | 0.0 | 0.0 | 18.7 | 24.1 | 15 | 28 | $0.010 |
+| **markcrawl** | 4.0 | 0.0 | 0.0 | 23.2 | 27.2 | 15 | 24 | $0.010 |
+| scrapy+md | 4.6 | 0.0 | 0.0 | 23.7 | 28.3 | 15 | 25 | $0.011 |
+| colly+md | 3.3 | 0.0 | 0.0 | 25.0 | 28.3 | 15 | 28 | $0.010 |
+| crawlee | 7.1 | 0.0 | 0.0 | 24.0 | 31.1 | 15 | 28 | $0.010 |
+| crawl4ai | 4.5 | 0.0 | 0.0 | 36.1 | 40.6 | 15 | 23 | $0.014 |
+| crawl4ai-raw | 9.1 | 0.0 | 0.0 | 38.5 | 47.6 | 15 | 23 | $0.014 |
 
 ## Key Findings
 
-- **Fastest end-to-end:** scrapy+md (351.8s total)
-- **Slowest end-to-end:** crawl4ai-raw (607.1s total)
-- **scrapy+md:** querying dominates at 45% of pipeline time
-- **colly+md:** querying dominates at 49% of pipeline time
-- **markcrawl:** embedding dominates at 36% of pipeline time
+- **Fastest end-to-end:** colly+md (259.6s total)
+- **Slowest end-to-end:** crawl4ai-raw (523.3s total)
+- **colly+md:** querying dominates at 73% of pipeline time
+- **scrapy+md:** querying dominates at 71% of pipeline time
+- **markcrawl:** querying dominates at 61% of pipeline time
+- **Cheapest API cost:** colly+md ($0.187)
+- **Most expensive API cost:** crawl4ai ($0.240)
 
 ## Methodology
 
@@ -94,4 +127,6 @@ scraping, chunking, embedding, and querying.
 - **Chunk timing** uses markcrawl's `chunk_markdown()` with 400-word chunks and 50-word overlap
 - **Embed timing** uses OpenAI `text-embedding-3-small` (cached after first run)
 - **Query timing** includes embedding the query, cosine retrieval, and `gpt-4o-mini` answer generation
+- **Cost tracking** counts actual tokens from API responses (embed tokens estimated via tiktoken, query tokens from response.usage)
+- **Embedding cache** — chunks are cached by content hash; re-runs with unchanged pages.jsonl skip API calls entirely
 - See [METHODOLOGY.md](METHODOLOGY.md) for full test setup
