@@ -311,16 +311,16 @@ The chunking, embedding, and retrieval pipeline is identical for all tools — t
 variable is extraction quality. This isolates the question: does cleaner extraction produce
 better retrieval?
 
-**Test sites** (8 sites, 92 queries):
+**Test sites** (8 sites, 109 queries):
 | Site | Type | Queries | Why included |
 |---|---|---|---|
-| quotes-toscrape | Simple HTML | 12 | Paginated content, tag/author pages |
-| books-toscrape | E-commerce | 13 | Category pages, product detail |
-| fastapi-docs | API documentation | 15 | Code blocks, tutorials, reference |
-| python-docs | Standard library docs | 12 | Glossary, release notes, how-tos |
-| react-dev | SPA (JS-rendered) | 12 | Tests JS rendering, interactive docs |
+| quotes-toscrape | Simple HTML | 8 | Paginated content, tag/author pages |
+| books-toscrape | E-commerce | 10 | Category pages, product detail |
+| fastapi-docs | API documentation | 20 | Code blocks, tutorials, reference |
+| python-docs | Standard library docs | 19 | Glossary, release notes, how-tos |
+| react-dev | SPA (JS-rendered) | 16 | Tests JS rendering, interactive docs |
 | wikipedia-python | Wiki | 10 | Tables, infoboxes, citations |
-| stripe-docs | API docs (tabbed) | 10 | Tabbed content, code samples |
+| stripe-docs | API docs (tabbed) | 18 | Tabbed content, code samples |
 | blog-engineering | Tech blog | 8 | Article extraction, images |
 
 Results are published in [RETRIEVAL_COMPARISON.md](RETRIEVAL_COMPARISON.md).

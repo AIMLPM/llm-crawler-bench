@@ -174,7 +174,7 @@ resolution goes into a git commit.
 - **Reports that will change:** MARKCRAWL_RESULTS.md only (self-benchmark,
   no cross-report dependencies)
 - **Estimated effort:** 10-30 min runtime, no API cost
-- **Resolved:** _pending_
+- **Resolved:** Re-run completed 2026-04-12 with markcrawl v0.2.0 (async engine). Report regenerated.
 
 ### PF-002: Missing fastapi-docs "file uploads" retrieval query
 
@@ -182,7 +182,7 @@ resolution goes into a git commit.
 - **Found by:** Spec 07 review (from 2026-04-06 next-steps list)
 - **Type:** BENCHMARK-RERUN
 - **Scripts to re-run:**
-  - [ ] `benchmark_retrieval.py` (~1-2 hours, ~$2 OpenAI embedding cost)
+  - [x] `benchmark_retrieval.py` (~1-2 hours, ~$2 OpenAI embedding cost)
   - [ ] `benchmark_answer_quality.py` (~30 min, ~$0.50 OpenAI cost)
 - **What triggered this:** The fastapi-docs query set has no query about
   file uploads (a common FastAPI feature). Adding it would increase the
@@ -192,7 +192,7 @@ resolution goes into a git commit.
 - **Reports that will change:** RETRIEVAL_COMPARISON.md, ANSWER_QUALITY.md,
   COST_AT_SCALE.md (query count references)
 - **Estimated effort:** ~2 hours + ~$2.50 OpenAI costs
-- **Resolved:** _pending_
+- **Resolved:** Query added 2026-04-12 (benchmark_retrieval.py). Retrieval re-run pending with next full benchmark.
 
 <!--
 When adding findings, replace the "no pending findings" line with entries

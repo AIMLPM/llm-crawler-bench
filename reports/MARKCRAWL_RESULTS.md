@@ -1,16 +1,16 @@
 # MarkCrawl Self-Benchmark (MarkCrawl only — no competitors)
-
-<!-- style: v2, 2026-04-07 -->
+<!-- style: v2, 2026-04-12 -->
 
 > **Looking for the head-to-head comparison vs Crawl4AI and Scrapy?** See [SPEED_COMPARISON.md](SPEED_COMPARISON.md).
 
-MarkCrawl achieves 5.99 pages/sec overall, extracting 227 pages across 7 test sites with 100% title extraction and zero junk detection. This report measures MarkCrawl's own performance and extraction quality — no other tools are involved.
+This report measures MarkCrawl's own performance and extraction quality across test sites.
+No other tools are involved — this is a self-assessment of speed, content quality, and output completeness.
 
-Generated: 2026-04-05 03:46:44 UTC
+Generated: 2026-04-12 17:12:54 UTC
 
 ## What this measures
 
-Each benchmark runs the **full MarkCrawl pipeline** end-to-end (no other tools):
+Each benchmark runs the **full MarkCrawl pipeline** end-to-end:
 
 ```
 1. Discover URLs     — fetch robots.txt, parse sitemap or follow links
@@ -32,32 +32,32 @@ Source: [`benchmark_markcrawl.py`](benchmark_markcrawl.py)
 
 - **Sites tested:** 7
 - **Total pages crawled:** 227
-- **Total time:** 37.9s
-- **Overall pages/second:** 5.99
+- **Total time:** 46.4s
+- **Overall pages/second:** 4.90
 
 ## Performance
 
-### Small (1-5 pages) — 7 pages in 2.5s (2.8 p/s), 56 KB output
+### Small (1-5 pages) — 7 pages in 2.5s (2.8 p/s), 61 KB output
 
 | Site | Description | Pages | Time (s) | Pages/sec | Avg words | Output KB | Peak MB |
 |---|---|---|---|---|---|---|---|
-| httpbin | Simple HTTP test service (minimal HTML, 1-2 pages) | 2 | 1.0 | 1.98 | 37 | 2 | 47 |
-| scrapethissite | Scraping practice site (structured data tables) | 5 | 1.5 | 3.31 | 570 | 54 | 46 |
+| httpbin | Simple HTTP test service (minimal HTML, 1-2 pages) | 2 | 1.0 | 1.99 | 32 | 2 | 65 |
+| scrapethissite | Scraping practice site (structured data tables) | 5 | 1.5 | 3.31 | 676 | 59 | 61 |
 
-### Medium (15-30 pages) — 60 pages in 12.7s (4.7 p/s), 2280 KB output
-
-| Site | Description | Pages | Time (s) | Pages/sec | Avg words | Output KB | Peak MB |
-|---|---|---|---|---|---|---|---|
-| fastapi-docs | FastAPI framework docs (API docs with code examples, tutorials) | 25 | 7.6 | 3.27 | 3383 | 1741 | 143 |
-| python-docs | Python standard library index + module pages | 20 | 2.5 | 7.91 | 1004 | 464 | 101 |
-| quotes-toscrape | Paginated quotes (tests link-following across 10+ pages) | 15 | 2.5 | 5.94 | 225 | 75 | 101 |
-
-### Large (50-100 pages) — 160 pages in 22.7s (7.1 p/s), 847 KB output
+### Medium (15-30 pages) — 60 pages in 12.1s (4.9 p/s), 1439 KB output
 
 | Site | Description | Pages | Time (s) | Pages/sec | Avg words | Output KB | Peak MB |
 |---|---|---|---|---|---|---|---|
-| books-toscrape | E-commerce catalog (50+ product pages, pagination, categories) | 60 | 8.1 | 7.43 | 288 | 492 | 98 |
-| quotes-toscrape-large | Paginated quotes (100 page deep crawl, link-following stress test) | 100 | 14.6 | 6.84 | 170 | 355 | 70 |
+| fastapi-docs | FastAPI framework docs (API docs with code examples, tutorials) | 25 | 6.6 | 3.80 | 2086 | 1114 | 102 |
+| python-docs | Python standard library index + module pages | 20 | 1.5 | 13.25 | 625 | 241 | 76 |
+| quotes-toscrape | Paginated quotes (tests link-following across 10+ pages) | 15 | 4.0 | 3.72 | 311 | 83 | 57 |
+
+### Large (50-100 pages) — 160 pages in 31.7s (5.0 p/s), 850 KB output
+
+| Site | Description | Pages | Time (s) | Pages/sec | Avg words | Output KB | Peak MB |
+|---|---|---|---|---|---|---|---|
+| books-toscrape | E-commerce catalog (50+ product pages, pagination, categories) | 60 | 10.4 | 5.78 | 372 | 542 | 61 |
+| quotes-toscrape-large | Paginated quotes (100 page deep crawl, link-following stress test) | 100 | 21.4 | 4.68 | 183 | 309 | 62 |
 
 
 ## Extraction Quality
@@ -67,7 +67,7 @@ Source: [`benchmark_markcrawl.py`](benchmark_markcrawl.py)
 | httpbin | 0 | 50% | 100% | 100% |
 | scrapethissite | 0 | 100% | 100% | 100% |
 | fastapi-docs | 0 | 100% | 100% | 100% |
-| python-docs | 6 | 100% | 100% | 100% |
+| python-docs | 0 | 100% | 100% | 100% |
 | quotes-toscrape | 0 | 100% | 100% | 100% |
 | books-toscrape | 0 | 100% | 100% | 100% |
 | quotes-toscrape-large | 0 | 100% | 100% | 100% |
@@ -79,15 +79,8 @@ Source: [`benchmark_markcrawl.py`](benchmark_markcrawl.py)
 | Title extraction rate | 93% | >90% | PASS |
 | Citation completeness | 100% | 100% | PASS |
 | JSONL field completeness | 100% | 100% | PASS |
-| Junk in output | 6 matches | 0 | NEEDS WORK |
+| Junk in output | 0 matches | 0 | PASS |
 | Min pages crawled | all met | all sites | PASS |
-
-## Junk Detection Details
-
-### python-docs
-- ©\s*\d{4}.*all rights reserved: 3 match(es)
-- all rights reserved: 3 match(es)
-
 
 ## What these metrics mean
 

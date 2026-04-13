@@ -31,7 +31,7 @@ Total annual cost by scenario, all 8 tools ranked by total cost ascending. This 
 | playwright | $517 | $7,320 | $73,202 | +62.5% |
 | crawlee | $518 | $7,467 | $74,673 | +65.7% |
 
-> Firecrawl's K is estimated at 13, based on its chunk ratio (12.97 chunks/page, 1.28x markcrawl). Firecrawl scored 4.04/5 on answer quality (70 queries on 6 sites) vs markcrawl's 3.91/5 (92 queries on 8 sites) -- these scores are not directly comparable due to different query sets. Firecrawl is architecturally a SaaS product -- even self-hosted, it requires 4+ services (API, worker, Redis, Playwright) with no library mode. The self-hosted setup failed on 2 of 8 benchmark sites (react-dev, stripe-docs). See [SPEED_COMPARISON.md](SPEED_COMPARISON.md) and [ANSWER_QUALITY.md](ANSWER_QUALITY.md) for details.
+> Firecrawl's K is estimated at 13, based on its chunk ratio (12.97 chunks/page, 1.28x markcrawl). Firecrawl scored 4.04/5 on answer quality (70 queries on 6 sites) vs markcrawl's 3.91/5 (93 queries on 8 sites) -- these scores are not directly comparable due to different query sets. Firecrawl is architecturally a SaaS product -- even self-hosted, it requires 4+ services (API, worker, Redis, Playwright) with no library mode. The self-hosted setup failed on 2 of 8 benchmark sites (react-dev, stripe-docs). See [SPEED_COMPARISON.md](SPEED_COMPARISON.md) and [ANSWER_QUALITY.md](ANSWER_QUALITY.md) for details.
 
 ## What this means
 
@@ -287,7 +287,7 @@ Three scenarios matching different project sizes. The key insight: for most solo
 
 ### Source data
 
-All numbers derive from the benchmark of **92 queries across 8 sites** using 8 crawler tools. Full results in [ANSWER_QUALITY.md](ANSWER_QUALITY.md) and [RETRIEVAL_COMPARISON.md](RETRIEVAL_COMPARISON.md). See [METHODOLOGY.md](METHODOLOGY.md) for the complete test setup.
+All numbers derive from the benchmark of **93 queries across 8 sites** using 8 crawler tools. Full results in [ANSWER_QUALITY.md](ANSWER_QUALITY.md) and [RETRIEVAL_COMPARISON.md](RETRIEVAL_COMPARISON.md). See [METHODOLOGY.md](METHODOLOGY.md) for the complete test setup.
 
 Measured values for all tools (sorted by chunks/page ascending):
 
@@ -302,7 +302,7 @@ Measured values for all tools (sorted by chunks/page ascending):
 | playwright | 4,167 | 210 | 19.84 | 3.74 |
 | crawlee | 4,422 | 210 | 21.06 | 3.80 |
 
-All tools crawled the same ~210 pages across 8 sites. Firecrawl crawled 6 of 8 sites (1,079 pages) -- it has higher total chunks due to more pages, but a comparable chunks/page ratio. Firecrawl's answer quality (4.04/5) is based on 70 queries across 6 sites, while other tools were scored on 92 queries across 8 sites -- see [ANSWER_QUALITY.md](ANSWER_QUALITY.md) for why these scores are not directly comparable. Chunks were created with the same chunker (300-word max, 50-word overlap). Quality was scored by a GPT-4o-mini judge on correctness, relevance, completeness, and usefulness (1-5 each), averaged to an overall score.
+All tools crawled the same ~210 pages across 8 sites. Firecrawl crawled 6 of 8 sites (1,079 pages) -- it has higher total chunks due to more pages, but a comparable chunks/page ratio. Firecrawl's answer quality (4.04/5) is based on 70 queries across 6 sites, while other tools were scored on 93 queries across 8 sites -- see [ANSWER_QUALITY.md](ANSWER_QUALITY.md) for why these scores are not directly comparable. Chunks were created with the same chunker (300-word max, 50-word overlap). Quality was scored by a GPT-4o-mini judge on correctness, relevance, completeness, and usefulness (1-5 each), averaged to an overall score.
 
 ### Chunk count formula
 

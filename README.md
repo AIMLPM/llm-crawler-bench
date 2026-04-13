@@ -13,18 +13,19 @@ benchmark is reproducible from a single command.
 
 | Dimension | Winner | Key metric | Runner-up |
 |-----------|--------|------------|-----------|
-| [Speed](reports/SPEED_COMPARISON.md) | scrapy+md | 9.1 pages/sec | colly+md (5.8 p/s) |
-| [Extraction quality](reports/QUALITY_COMPARISON.md) | **markcrawl** | 100% content signal, 4 words preamble | scrapy+md (97%, 23 words) |
-| [Retrieval quality](reports/RETRIEVAL_COMPARISON.md) | crawlee | 85% Hit@5, 0.787 MRR | playwright (85%, 0.787) |
-| [LLM answer quality](reports/ANSWER_QUALITY.md) | **markcrawl** | 3.91/5 overall score | scrapy+md (3.86/5) |
+| [Speed](reports/SPEED_COMPARISON.md) | **markcrawl** | 14.0 pages/sec | scrapy+md (9.3 p/s) |
+| [Extraction quality](reports/QUALITY_COMPARISON.md) | **markcrawl** | 100% content signal, 12 words preamble | scrapy+md (97%, 23 words) |
+| [Retrieval quality](reports/RETRIEVAL_COMPARISON.md) | playwright | 94% Hit@10, 0.799 MRR | scrapy+md (93%, 0.757) |
+| [LLM answer quality](reports/ANSWER_QUALITY.md) | scrapy+md | 4.41/5 overall score | playwright (4.38/5) |
 | [Cost at scale](reports/COST_AT_SCALE.md) | **markcrawl** | $4,505/yr (100K pages, 1K q/day) | scrapy+md ($5,464/yr) |
-| [Pipeline timing](reports/PIPELINE_TIMING.md) | colly+md | 259.6s end-to-end | scrapy+md (268.0s) |
+| [Pipeline timing](reports/PIPELINE_TIMING.md) | **markcrawl** | 476.5s end-to-end, $0.22 | scrapy+md (515.3s, $0.24) |
 
-**Bottom line:** No single tool wins everything. scrapy+md and colly+md are
-fastest, but markcrawl produces the cleanest output, the best LLM answers,
-and the lowest cost at scale (21-66% savings on RAG infrastructure). Retrieval
-quality barely differs between tools — switching retrieval mode (e.g., to
-reranked) gains 15-20 points, while switching crawlers gains ~5.
+**Bottom line:** markcrawl v0.2.0 (async httpx) is now the fastest crawler at
+14.0 pages/sec — 50% faster than the runner-up scrapy+md. It also wins on
+pipeline timing ($0.22 end-to-end) and extraction quality (100% content signal).
+Answer quality is tight across all tools (4.26-4.41/5), with scrapy+md narrowly
+leading. Retrieval quality barely differs between tools — switching retrieval
+mode (e.g., to reranked) gains more than switching crawlers.
 
 ## Tools Compared
 
