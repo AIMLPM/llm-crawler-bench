@@ -38,7 +38,10 @@ from quality_scorer import (  # noqa: E402
 logger = logging.getLogger(__name__)
 
 TOOLS = ["markcrawl", "crawl4ai", "crawl4ai-raw", "scrapy+md", "crawlee", "colly+md", "playwright", "firecrawl"]
-SITES = ["quotes-toscrape", "books-toscrape", "fastapi-docs", "python-docs"]
+SITES = [
+    "quotes-toscrape", "books-toscrape", "fastapi-docs", "python-docs",
+    "react-dev", "wikipedia-python", "stripe-docs", "blog-engineering",
+]
 
 SAMPLE_LINES = 40   # lines of raw output to include in the sample section
 

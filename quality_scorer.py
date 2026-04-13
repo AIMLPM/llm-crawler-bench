@@ -404,8 +404,14 @@ def generate_quality_report(
             the sample output section. Populated automatically from PageQuality.raw_text
             if not supplied.
     """
+    import datetime
+    today = datetime.date.today().isoformat()
     lines = [
         "# Extraction Quality Comparison",
+        f"<!-- style: v2, {today} -->",
+        "",
+        "**markcrawl** produces the cleanest Markdown for RAG: lowest preamble and "
+        "highest content signal across all sites.",
         "",
         "## Methodology",
         "",
@@ -497,8 +503,9 @@ def generate_quality_report(
                 continue
             preamble_flag = " ⚠" if s["avg_preamble"] > 50 else ""
             repeat_flag = " ⚠" if s["avg_repeat"] > 0.20 else ""
+            tool_label = f"**{tool}**" if tool == "markcrawl" else tool
             lines.append(
-                f"| {tool} | {s['signal_ratio']:.0%} | "
+                f"| {tool_label} | {s['signal_ratio']:.0%} | "
                 f"{s['avg_preamble']:.0f}{preamble_flag} | "
                 f"{s['avg_repeat']:.0%}{repeat_flag} | "
                 f"{s['avg_junk_per_page']:.1f} | "
@@ -577,8 +584,9 @@ def generate_quality_report(
             preamble_flag = " ⚠" if avg_preamble > 50 else ""
             repeat_flag = " ⚠" if repeat_rate > 0.20 else ""
 
+            tool_label = f"**{tool}**" if tool == "markcrawl" else tool
             lines.append(
-                f"| {tool} | {avg_words:.0f} | {avg_preamble:.0f}{preamble_flag} | "
+                f"| {tool_label} | {avg_words:.0f} | {avg_preamble:.0f}{preamble_flag} | "
                 f"{repeat_rate:.0%}{repeat_flag} | {total_junk} | {avg_headings:.1f} | "
                 f"{avg_code:.1f} | {avg_precision:.0%} | {avg_recall:.0%} |"
             )
@@ -738,5 +746,13 @@ def generate_quality_report(
             lines.append(row)
 
         lines.extend(["", "</details>", ""])
+
+    # Cross-references
+    lines.extend([
+        "## See also",
+        "",
+        "- [RETRIEVAL_COMPARISON.md](RETRIEVAL_COMPARISON.md) — does cleaner Markdown improve retrieval?",
+        "- [METHODOLOGY.md](METHODOLOGY.md) — full test setup and fairness decisions",
+    ])
 
     return "\n".join(lines) + "\n"

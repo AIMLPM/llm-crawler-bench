@@ -1,12 +1,7 @@
 # Extraction Quality Comparison
-<!-- style: v2, 2026-04-12 -->
+<!-- style: v2, 2026-04-13 -->
 
-markcrawl produces the cleanest output for RAG: 100% content signal with only
-12 words of preamble per page, compared to 224-348 for other tools. Its recall
-is lower (87% vs 97%) because it strips nav/footer content — a trade-off that
-favors RAG where fewer junk tokens per chunk means better retrieval precision.
-
-**Run:** `run_20260412_195003` | **Sites:** 4 | **Tools:** 7
+**markcrawl** produces the cleanest Markdown for RAG: lowest preamble and highest content signal across all sites.
 
 ## Methodology
 
@@ -35,19 +30,19 @@ chunk in the vector index, degrading retrieval for every query.
 
 | Tool | Content signal | Preamble [1] | Repeat rate | Junk/page | Precision | Recall |
 |---|---|---|---|---|---|---|
-| **markcrawl** | **100%** | **12** | **0%** | **0.8** | **98%** | **87%** |
-| crawl4ai | 90% | 348 [!] | 1% | 4.5 | 100% | 90% |
-| crawl4ai-raw | 90% | 348 [!] | 1% | 4.5 | 100% | 90% |
-| scrapy+md | 94% | 224 [!] | 1% | 4.3 | 100% | 92% |
-| crawlee | 93% | 252 [!] | 1% | 5.1 | 100% | 97% |
-| colly+md | 93% | 234 [!] | 1% | 5.1 | 100% | 97% |
-| playwright | 93% | 251 [!] | 1% | 5.1 | 100% | 97% |
+| **markcrawl** | 99% | 15 | 0% | 0.5 | 99% | 64% |
+| crawl4ai | 89% | 311 ⚠ | 1% | 3.2 | 100% | 66% |
+| crawl4ai-raw | 89% | 311 ⚠ | 1% | 3.2 | 100% | 66% |
+| scrapy+md | 95% | 133 ⚠ | 1% | 2.5 | 100% | 68% |
+| crawlee | 66% | 2207 ⚠ | 1% | 3.8 | 94% | 97% |
+| colly+md | 68% | 1953 ⚠ | 1% | 3.8 | 99% | 96% |
+| playwright | 68% | 2037 ⚠ | 1% | 3.6 | 100% | 97% |
 | firecrawl | — | — | — | — | — | — |
 
 **[1]** Avg words per page before the first heading (nav chrome).
 
 
-**Key takeaway:** markcrawl achieves 100% content signal with only 12 words of preamble per page — compared to 348 for crawl4ai-raw. Its recall is lower (87% vs 97%) because it strips nav, footer, and sponsor content that other tools include. For RAG use cases, this trade-off typically favors cleaner output: fewer junk tokens per chunk means better embedding quality and retrieval precision.
+**Key takeaway:** markcrawl achieves 99% content signal with only 15 words of preamble per page — compared to 2207 for crawlee. Its recall is lower (64% vs 97%) because it strips nav, footer, and sponsor content that other tools include. For RAG use cases, this trade-off typically favors cleaner output: fewer junk tokens per chunk means better embedding quality and retrieval precision.
 
 > **Content signal** = percentage of output that is content (not preamble nav chrome).
 > Higher is better. A tool with 100% content signal has zero nav/header pollution.
@@ -58,7 +53,7 @@ chunk in the vector index, degrading retrieval for every query.
 
 | Tool | Avg words | Preamble [1] | Repeat rate | Junk found | Headings | Code blocks | Precision | Recall |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | **214** | **15** | **0%** | **0** | **0.9** | **0.0** | **100%** | **100%** |
+| **markcrawl** | 214 | 15 | 0% | 0 | 0.9 | 0.0 | 100% | 100% |
 | crawl4ai | 242 | 0 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
 | crawl4ai-raw | 242 | 0 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
 | scrapy+md | 242 | 0 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
@@ -67,56 +62,33 @@ chunk in the vector index, degrading retrieval for every query.
 | playwright | 245 | 3 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
-**[1]** Avg words per page before the first heading (nav chrome). **[!]** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
+**[1]** Avg words per page before the first heading (nav chrome). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 <details>
-<summary>Sample output — first 40 lines of <code>quotes.toscrape.com/tag/friendship</code></summary>
+<summary>Sample output — first 40 lines of <code>quotes.toscrape.com/author/Steve-Martin</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ```
-### Viewing tag: [friendship](/tag/friendship/page/1/)
+### Steve Martin
 
-“It is not a lack of love, but a lack of friendship that makes unhappy marriages.”
-by Friedrich Nietzsche
-[(about)](/author/Friedrich-Nietzsche)
+**Born:** August 14, 1945 in Waco, Texas, The United States
 
-“Good friends, good books, and a sleepy conscience: this is the ideal life.”
-by Mark Twain
-[(about)](/author/Mark-Twain)
+**Description:**
 
-“The truth is, everyone is going to hurt you. You just got to find the ones worth suffering for.”
-by Bob Marley
-[(about)](/author/Bob-Marley)
-
-“There is nothing I would not do for those who are really my friends. I have no notion of loving people by halves, it is not my nature.”
-by Jane Austen
-[(about)](/author/Jane-Austen)
-
-“If I had a flower for every time I thought of you...I could walk through my garden forever.”
-by Alfred Tennyson
-[(about)](/author/Alfred-Tennyson)
+Stephen Glenn "Steve" Martin is an American actor, comedian, writer, playwright, producer, musician, and composer. He was raised in Southern California in a Baptist family, where his early influences were working at Disneyland and Knott's Berry Farm and working magic and comedy acts at these and other smaller venues in the area. His ascent to fame picked up when he became a writer for the Smothers Brothers Comedy Hour, and later became a frequent guest on the Tonight Show.In the 1970s, Martin performed his offbeat, absurdist comedy routines before packed houses on national tours. In the 1980s, having branched away from stand-up comedy, he became a successful actor, playwright, and juggler, and eventually earned Emmy, Grammy, and American Comedy awards.
 ```
 
 **crawl4ai**
 ```
 #  [Quotes to Scrape](https://quotes.toscrape.com/)
 [Login](https://quotes.toscrape.com/login)
-### Viewing tag: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/)
-“It is not a lack of love, but a lack of friendship that makes unhappy marriages.” by Friedrich Nietzsche [(about)](https://quotes.toscrape.com/author/Friedrich-Nietzsche)
-Tags: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/) [lack-of-friendship](https://quotes.toscrape.com/tag/lack-of-friendship/page/1/) [lack-of-love](https://quotes.toscrape.com/tag/lack-of-love/page/1/) [love](https://quotes.toscrape.com/tag/love/page/1/) [marriage](https://quotes.toscrape.com/tag/marriage/page/1/) [unhappy-marriage](https://quotes.toscrape.com/tag/unhappy-marriage/page/1/)
-“Good friends, good books, and a sleepy conscience: this is the ideal life.” by Mark Twain [(about)](https://quotes.toscrape.com/author/Mark-Twain)
-Tags: [books](https://quotes.toscrape.com/tag/books/page/1/) [contentment](https://quotes.toscrape.com/tag/contentment/page/1/) [friends](https://quotes.toscrape.com/tag/friends/page/1/) [friendship](https://quotes.toscrape.com/tag/friendship/page/1/) [life](https://quotes.toscrape.com/tag/life/page/1/)
-“The truth is, everyone is going to hurt you. You just got to find the ones worth suffering for.” by Bob Marley [(about)](https://quotes.toscrape.com/author/Bob-Marley)
-Tags: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/)
-“There is nothing I would not do for those who are really my friends. I have no notion of loving people by halves, it is not my nature.” by Jane Austen [(about)](https://quotes.toscrape.com/author/Jane-Austen)
-Tags: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/) [love](https://quotes.toscrape.com/tag/love/page/1/)
-“If I had a flower for every time I thought of you...I could walk through my garden forever.” by Alfred Tennyson [(about)](https://quotes.toscrape.com/author/Alfred-Tennyson)
-Tags: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/) [love](https://quotes.toscrape.com/tag/love/page/1/)
-## Top Ten tags
-[love](https://quotes.toscrape.com/tag/love/) [inspirational](https://quotes.toscrape.com/tag/inspirational/) [life](https://quotes.toscrape.com/tag/life/) [humor](https://quotes.toscrape.com/tag/humor/) [books](https://quotes.toscrape.com/tag/books/) [reading](https://quotes.toscrape.com/tag/reading/) [friendship](https://quotes.toscrape.com/tag/friendship/) [friends](https://quotes.toscrape.com/tag/friends/) [truth](https://quotes.toscrape.com/tag/truth/) [simile](https://quotes.toscrape.com/tag/simile/)
+### Steve Martin
+**Born:** August 14, 1945 in Waco, Texas, The United States
+**Description:**
+Stephen Glenn "Steve" Martin is an American actor, comedian, writer, playwright, producer, musician, and composer. He was raised in Southern California in a Baptist family, where his early influences were working at Disneyland and Knott's Berry Farm and working magic and comedy acts at these and other smaller venues in the area. His ascent to fame picked up when he became a writer for the Smothers Brothers Comedy Hour, and later became a frequent guest on the Tonight Show.In the 1970s, Martin performed his offbeat, absurdist comedy routines before packed houses on national tours. In the 1980s, having branched away from stand-up comedy, he became a successful actor, playwright, and juggler, and eventually earned Emmy, Grammy, and American Comedy awards. 
 Quotes by: [GoodReads.com](https://www.goodreads.com/quotes)
 Made with ❤ by [Zyte](https://www.zyte.com)
 ```
@@ -125,19 +97,10 @@ Made with ❤ by [Zyte](https://www.zyte.com)
 ```
 #  [Quotes to Scrape](https://quotes.toscrape.com/)
 [Login](https://quotes.toscrape.com/login)
-### Viewing tag: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/)
-“It is not a lack of love, but a lack of friendship that makes unhappy marriages.” by Friedrich Nietzsche [(about)](https://quotes.toscrape.com/author/Friedrich-Nietzsche)
-Tags: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/) [lack-of-friendship](https://quotes.toscrape.com/tag/lack-of-friendship/page/1/) [lack-of-love](https://quotes.toscrape.com/tag/lack-of-love/page/1/) [love](https://quotes.toscrape.com/tag/love/page/1/) [marriage](https://quotes.toscrape.com/tag/marriage/page/1/) [unhappy-marriage](https://quotes.toscrape.com/tag/unhappy-marriage/page/1/)
-“Good friends, good books, and a sleepy conscience: this is the ideal life.” by Mark Twain [(about)](https://quotes.toscrape.com/author/Mark-Twain)
-Tags: [books](https://quotes.toscrape.com/tag/books/page/1/) [contentment](https://quotes.toscrape.com/tag/contentment/page/1/) [friends](https://quotes.toscrape.com/tag/friends/page/1/) [friendship](https://quotes.toscrape.com/tag/friendship/page/1/) [life](https://quotes.toscrape.com/tag/life/page/1/)
-“The truth is, everyone is going to hurt you. You just got to find the ones worth suffering for.” by Bob Marley [(about)](https://quotes.toscrape.com/author/Bob-Marley)
-Tags: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/)
-“There is nothing I would not do for those who are really my friends. I have no notion of loving people by halves, it is not my nature.” by Jane Austen [(about)](https://quotes.toscrape.com/author/Jane-Austen)
-Tags: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/) [love](https://quotes.toscrape.com/tag/love/page/1/)
-“If I had a flower for every time I thought of you...I could walk through my garden forever.” by Alfred Tennyson [(about)](https://quotes.toscrape.com/author/Alfred-Tennyson)
-Tags: [friendship](https://quotes.toscrape.com/tag/friendship/page/1/) [love](https://quotes.toscrape.com/tag/love/page/1/)
-## Top Ten tags
-[love](https://quotes.toscrape.com/tag/love/) [inspirational](https://quotes.toscrape.com/tag/inspirational/) [life](https://quotes.toscrape.com/tag/life/) [humor](https://quotes.toscrape.com/tag/humor/) [books](https://quotes.toscrape.com/tag/books/) [reading](https://quotes.toscrape.com/tag/reading/) [friendship](https://quotes.toscrape.com/tag/friendship/) [friends](https://quotes.toscrape.com/tag/friends/) [truth](https://quotes.toscrape.com/tag/truth/) [simile](https://quotes.toscrape.com/tag/simile/)
+### Steve Martin
+**Born:** August 14, 1945 in Waco, Texas, The United States
+**Description:**
+Stephen Glenn "Steve" Martin is an American actor, comedian, writer, playwright, producer, musician, and composer. He was raised in Southern California in a Baptist family, where his early influences were working at Disneyland and Knott's Berry Farm and working magic and comedy acts at these and other smaller venues in the area. His ascent to fame picked up when he became a writer for the Smothers Brothers Comedy Hour, and later became a frequent guest on the Tonight Show.In the 1970s, Martin performed his offbeat, absurdist comedy routines before packed houses on national tours. In the 1980s, having branched away from stand-up comedy, he became a successful actor, playwright, and juggler, and eventually earned Emmy, Grammy, and American Comedy awards. 
 Quotes by: [GoodReads.com](https://www.goodreads.com/quotes)
 Made with ❤ by [Zyte](https://www.zyte.com)
 ```
@@ -148,41 +111,17 @@ Made with ❤ by [Zyte](https://www.zyte.com)
 
 [Login](/login)
 
-### Viewing tag: [friendship](/tag/friendship/page/1/)
+### Steve Martin
 
-“It is not a lack of love, but a lack of friendship that makes unhappy marriages.”
-by Friedrich Nietzsche
-[(about)](/author/Friedrich-Nietzsche)
+**Born:** August 14, 1945 in Waco, Texas, The United States
 
-Tags:
-[friendship](/tag/friendship/page/1/)
-[lack-of-friendship](/tag/lack-of-friendship/page/1/)
-[lack-of-love](/tag/lack-of-love/page/1/)
-[love](/tag/love/page/1/)
-[marriage](/tag/marriage/page/1/)
-[unhappy-marriage](/tag/unhappy-marriage/page/1/)
+**Description:**
 
-“Good friends, good books, and a sleepy conscience: this is the ideal life.”
-by Mark Twain
-[(about)](/author/Mark-Twain)
+Stephen Glenn "Steve" Martin is an American actor, comedian, writer, playwright, producer, musician, and composer. He was raised in Southern California in a Baptist family, where his early influences were working at Disneyland and Knott's Berry Farm and working magic and comedy acts at these and other smaller venues in the area. His ascent to fame picked up when he became a writer for the Smothers Brothers Comedy Hour, and later became a frequent guest on the Tonight Show.In the 1970s, Martin performed his offbeat, absurdist comedy routines before packed houses on national tours. In the 1980s, having branched away from stand-up comedy, he became a successful actor, playwright, and juggler, and eventually earned Emmy, Grammy, and American Comedy awards.
 
-Tags:
-[books](/tag/books/page/1/)
-[contentment](/tag/contentment/page/1/)
-[friends](/tag/friends/page/1/)
-[friendship](/tag/friendship/page/1/)
-[life](/tag/life/page/1/)
+Quotes by: [GoodReads.com](https://www.goodreads.com/quotes)
 
-“The truth is, everyone is going to hurt you. You just got to find the ones worth suffering for.”
-by Bob Marley
-[(about)](/author/Bob-Marley)
-
-Tags:
-[friendship](/tag/friendship/page/1/)
-
-“There is nothing I would not do for those who are really my friends. I have no notion of loving people by halves, it is not my nature.”
-by Jane Austen
-[(about)](/author/Jane-Austen)
+Made with ❤ by [Zyte](https://www.zyte.com)
 ```
 
 **crawlee**
@@ -195,37 +134,17 @@ Quotes to Scrape
 
 [Login](/login)
 
-### Viewing tag: [friendship](/tag/friendship/page/1/)
+### Steve Martin
 
-“It is not a lack of love, but a lack of friendship that makes unhappy marriages.”
-by Friedrich Nietzsche
-[(about)](/author/Friedrich-Nietzsche)
+**Born:** August 14, 1945 in Waco, Texas, The United States
 
-Tags:
-[friendship](/tag/friendship/page/1/)
-[lack-of-friendship](/tag/lack-of-friendship/page/1/)
-[lack-of-love](/tag/lack-of-love/page/1/)
-[love](/tag/love/page/1/)
-[marriage](/tag/marriage/page/1/)
-[unhappy-marriage](/tag/unhappy-marriage/page/1/)
+**Description:**
 
-“Good friends, good books, and a sleepy conscience: this is the ideal life.”
-by Mark Twain
-[(about)](/author/Mark-Twain)
+Stephen Glenn "Steve" Martin is an American actor, comedian, writer, playwright, producer, musician, and composer. He was raised in Southern California in a Baptist family, where his early influences were working at Disneyland and Knott's Berry Farm and working magic and comedy acts at these and other smaller venues in the area. His ascent to fame picked up when he became a writer for the Smothers Brothers Comedy Hour, and later became a frequent guest on the Tonight Show.In the 1970s, Martin performed his offbeat, absurdist comedy routines before packed houses on national tours. In the 1980s, having branched away from stand-up comedy, he became a successful actor, playwright, and juggler, and eventually earned Emmy, Grammy, and American Comedy awards.
 
-Tags:
-[books](/tag/books/page/1/)
-[contentment](/tag/contentment/page/1/)
-[friends](/tag/friends/page/1/)
-[friendship](/tag/friendship/page/1/)
-[life](/tag/life/page/1/)
+Quotes by: [GoodReads.com](https://www.goodreads.com/quotes)
 
-“The truth is, everyone is going to hurt you. You just got to find the ones worth suffering for.”
-by Bob Marley
-[(about)](/author/Bob-Marley)
-
-Tags:
-[friendship](/tag/friendship/page/1/)
+Made with ❤ by [Zyte](https://www.zyte.com)
 ```
 
 **colly+md**
@@ -238,37 +157,17 @@ Quotes to Scrape
 
 [Login](/login)
 
-### Viewing tag: [friendship](/tag/friendship/page/1/)
+### Steve Martin
 
-“It is not a lack of love, but a lack of friendship that makes unhappy marriages.”
-by Friedrich Nietzsche
-[(about)](/author/Friedrich-Nietzsche)
+**Born:** August 14, 1945 in Waco, Texas, The United States
 
-Tags:
-[friendship](/tag/friendship/page/1/)
-[lack-of-friendship](/tag/lack-of-friendship/page/1/)
-[lack-of-love](/tag/lack-of-love/page/1/)
-[love](/tag/love/page/1/)
-[marriage](/tag/marriage/page/1/)
-[unhappy-marriage](/tag/unhappy-marriage/page/1/)
+**Description:**
 
-“Good friends, good books, and a sleepy conscience: this is the ideal life.”
-by Mark Twain
-[(about)](/author/Mark-Twain)
+Stephen Glenn "Steve" Martin is an American actor, comedian, writer, playwright, producer, musician, and composer. He was raised in Southern California in a Baptist family, where his early influences were working at Disneyland and Knott's Berry Farm and working magic and comedy acts at these and other smaller venues in the area. His ascent to fame picked up when he became a writer for the Smothers Brothers Comedy Hour, and later became a frequent guest on the Tonight Show.In the 1970s, Martin performed his offbeat, absurdist comedy routines before packed houses on national tours. In the 1980s, having branched away from stand-up comedy, he became a successful actor, playwright, and juggler, and eventually earned Emmy, Grammy, and American Comedy awards.
 
-Tags:
-[books](/tag/books/page/1/)
-[contentment](/tag/contentment/page/1/)
-[friends](/tag/friends/page/1/)
-[friendship](/tag/friendship/page/1/)
-[life](/tag/life/page/1/)
+Quotes by: [GoodReads.com](https://www.goodreads.com/quotes)
 
-“The truth is, everyone is going to hurt you. You just got to find the ones worth suffering for.”
-by Bob Marley
-[(about)](/author/Bob-Marley)
-
-Tags:
-[friendship](/tag/friendship/page/1/)
+Made with ❤ by [Zyte](https://www.zyte.com)
 ```
 
 **playwright**
@@ -281,37 +180,17 @@ Quotes to Scrape
 
 [Login](/login)
 
-### Viewing tag: [friendship](/tag/friendship/page/1/)
+### Steve Martin
 
-“It is not a lack of love, but a lack of friendship that makes unhappy marriages.”
-by Friedrich Nietzsche
-[(about)](/author/Friedrich-Nietzsche)
+**Born:** August 14, 1945 in Waco, Texas, The United States
 
-Tags:
-[friendship](/tag/friendship/page/1/)
-[lack-of-friendship](/tag/lack-of-friendship/page/1/)
-[lack-of-love](/tag/lack-of-love/page/1/)
-[love](/tag/love/page/1/)
-[marriage](/tag/marriage/page/1/)
-[unhappy-marriage](/tag/unhappy-marriage/page/1/)
+**Description:**
 
-“Good friends, good books, and a sleepy conscience: this is the ideal life.”
-by Mark Twain
-[(about)](/author/Mark-Twain)
+Stephen Glenn "Steve" Martin is an American actor, comedian, writer, playwright, producer, musician, and composer. He was raised in Southern California in a Baptist family, where his early influences were working at Disneyland and Knott's Berry Farm and working magic and comedy acts at these and other smaller venues in the area. His ascent to fame picked up when he became a writer for the Smothers Brothers Comedy Hour, and later became a frequent guest on the Tonight Show.In the 1970s, Martin performed his offbeat, absurdist comedy routines before packed houses on national tours. In the 1980s, having branched away from stand-up comedy, he became a successful actor, playwright, and juggler, and eventually earned Emmy, Grammy, and American Comedy awards.
 
-Tags:
-[books](/tag/books/page/1/)
-[contentment](/tag/contentment/page/1/)
-[friends](/tag/friends/page/1/)
-[friendship](/tag/friendship/page/1/)
-[life](/tag/life/page/1/)
+Quotes by: [GoodReads.com](https://www.goodreads.com/quotes)
 
-“The truth is, everyone is going to hurt you. You just got to find the ones worth suffering for.”
-by Bob Marley
-[(about)](/author/Bob-Marley)
-
-Tags:
-[friendship](/tag/friendship/page/1/)
+Made with ❤ by [Zyte](https://www.zyte.com)
 ```
 
 **firecrawl** — no output for this URL
@@ -345,68 +224,42 @@ Tags:
 
 | Tool | Avg words | Preamble [1] | Repeat rate | Junk found | Headings | Code blocks | Precision | Recall |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | **339** | **66** | **0%** | **0** | **1.8** | **0.0** | **100%** | **99%** |
-| crawl4ai | 493 | 178 [!] | 2% | 0 | 10.7 | 0.0 | 100% | 99% |
-| crawl4ai-raw | 493 | 178 [!] | 2% | 0 | 10.7 | 0.0 | 100% | 99% |
-| scrapy+md | 387 | 101 [!] | 1% | 0 | 1.8 | 0.0 | 100% | 99% |
-| crawlee | 395 | 110 [!] | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
-| colly+md | 395 | 110 [!] | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
-| playwright | 395 | 110 [!] | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
+| **markcrawl** | 339 | 66 ⚠ | 0% | 0 | 1.8 | 0.0 | 100% | 99% |
+| crawl4ai | 493 | 178 ⚠ | 2% | 0 | 10.7 | 0.0 | 100% | 99% |
+| crawl4ai-raw | 493 | 178 ⚠ | 2% | 0 | 10.7 | 0.0 | 100% | 99% |
+| scrapy+md | 387 | 101 ⚠ | 1% | 0 | 1.8 | 0.0 | 100% | 99% |
+| crawlee | 395 | 110 ⚠ | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
+| colly+md | 395 | 110 ⚠ | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
+| playwright | 395 | 110 ⚠ | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
-**[1]** Avg words per page before the first heading (nav chrome). **[!]** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
+**[1]** Avg words per page before the first heading (nav chrome). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
 The word count gap (339 vs 493 avg words) is largely explained by preamble: 178 words of nav chrome account for ~36% of crawl4ai's output on this site.
 
 <details>
-<summary>Sample output — first 40 lines of <code>books.toscrape.com/catalogue/category/books/christian-fiction_34/index.html</code></summary>
+<summary>Sample output — first 40 lines of <code>books.toscrape.com/catalogue/category/books/short-stories_45/index.html</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ```
-* [Home](../../../../index.html)
-* [Books](../../books_1/index.html)
-* Christian Fiction
-
-# Christian Fiction
+# Short Stories
 
 
-**6** results.
+**1** result.
 
 **Warning!** This is a demo website for web scraping purposes. Prices and ratings here were randomly assigned and have no real meaning.
 
-1. ### [Redeeming Love](../../../redeeming-love_826/index.html "Redeeming Love")
+1. ### [The Grownup](../../../the-grownup_546/index.html "The Grownup")
 
-   £20.47
-
-   In stock
-
-   Add to basket
-2. ### [Close to You](../../../close-to-you_798/index.html "Close to You")
-
-   £49.46
+   £35.88
 
    In stock
 
    Add to basket
-3. ### [Shadows of the Past ...](../../../shadows-of-the-past-logan-point-1_541/index.html "Shadows of the Past (Logan Point #1)")
-
-   £39.67
-
-   In stock
-
-   Add to basket
-4. ### [Like Never Before (Walker ...](../../../like-never-before-walker-family-2_476/index.html "Like Never Before (Walker Family #2)")
-
-   £28.77
-
-   In stock
-
-   Add to basket
-5. ### [Counted With the Stars ...](../../../counted-with-the-stars-out-from-egypt-1_463/index.html "Counted With the Stars (Out from Egypt #1)")
 ```
 
 **crawl4ai**
@@ -414,7 +267,7 @@ Nav boilerplate appears here before the real content starts.
 [Books to Scrape](https://books.toscrape.com/index.html) We love being scraped!
   * [Home](https://books.toscrape.com/index.html)
   * [Books](https://books.toscrape.com/catalogue/category/books_1/index.html)
-  * Christian Fiction
+  * Short Stories
 
 
   * [ Books ](https://books.toscrape.com/catalogue/category/books_1/index.html)
@@ -450,7 +303,7 @@ Nav boilerplate appears here before the real content starts.
     * [ Horror ](https://books.toscrape.com/catalogue/category/books/horror_31/index.html)
     * [ History ](https://books.toscrape.com/catalogue/category/books/history_32/index.html)
     * [ Food and Drink ](https://books.toscrape.com/catalogue/category/books/food-and-drink_33/index.html)
-    * [ **Christian Fiction** ](https://books.toscrape.com/catalogue/category/books/christian-fiction_34/index.html)
+    * [ Christian Fiction ](https://books.toscrape.com/catalogue/category/books/christian-fiction_34/index.html)
 ```
 
 **crawl4ai-raw**
@@ -458,7 +311,7 @@ Nav boilerplate appears here before the real content starts.
 [Books to Scrape](https://books.toscrape.com/index.html) We love being scraped!
   * [Home](https://books.toscrape.com/index.html)
   * [Books](https://books.toscrape.com/catalogue/category/books_1/index.html)
-  * Christian Fiction
+  * Short Stories
 
 
   * [ Books ](https://books.toscrape.com/catalogue/category/books_1/index.html)
@@ -494,7 +347,7 @@ Nav boilerplate appears here before the real content starts.
     * [ Horror ](https://books.toscrape.com/catalogue/category/books/horror_31/index.html)
     * [ History ](https://books.toscrape.com/catalogue/category/books/history_32/index.html)
     * [ Food and Drink ](https://books.toscrape.com/catalogue/category/books/food-and-drink_33/index.html)
-    * [ **Christian Fiction** ](https://books.toscrape.com/catalogue/category/books/christian-fiction_34/index.html)
+    * [ Christian Fiction ](https://books.toscrape.com/catalogue/category/books/christian-fiction_34/index.html)
 ```
 
 **scrapy+md**
@@ -503,7 +356,7 @@ Nav boilerplate appears here before the real content starts.
 
 * [Home](../../../../index.html)
 * [Books](../../books_1/index.html)
-* Christian Fiction
+* Short Stories
 
 * [Books](../../books_1/index.html)
   + [Travel](../travel_2/index.html)
@@ -538,12 +391,12 @@ Nav boilerplate appears here before the real content starts.
   + [Horror](../horror_31/index.html)
   + [History](../history_32/index.html)
   + [Food and Drink](../food-and-drink_33/index.html)
-  + [**Christian Fiction**](index.html)
+  + [Christian Fiction](../christian-fiction_34/index.html)
 ```
 
 **crawlee**
 ```
-Christian Fiction |
+Short Stories |
 Books to Scrape - Sandbox
 
 
@@ -553,7 +406,7 @@ Books to Scrape - Sandbox
 
 * [Home](../../../../index.html)
 * [Books](../../books_1/index.html)
-* Christian Fiction
+* Short Stories
 
 * [Books](../../books_1/index.html)
   + [Travel](../travel_2/index.html)
@@ -590,7 +443,7 @@ Books to Scrape - Sandbox
   
 
 
-Christian Fiction |
+Short Stories |
 Books to Scrape - Sandbox
 
 
@@ -600,7 +453,7 @@ Books to Scrape - Sandbox
 
 * [Home](../../../../index.html)
 * [Books](../../books_1/index.html)
-* Christian Fiction
+* Short Stories
 
 * [Books](../../books_1/index.html)
   + [Travel](../travel_2/index.html)
@@ -631,7 +484,7 @@ Books to Scrape - Sandbox
 
 **playwright**
 ```
-Christian Fiction |
+Short Stories |
 Books to Scrape - Sandbox
 
 
@@ -641,7 +494,7 @@ Books to Scrape - Sandbox
 
 * [Home](../../../../index.html)
 * [Books](../../books_1/index.html)
-* Christian Fiction
+* Short Stories
 
 * [Books](../../books_1/index.html)
   + [Travel](../travel_2/index.html)
@@ -749,22 +602,22 @@ Books to Scrape - Sandbox
 
 | Tool | Avg words | Preamble [1] | Repeat rate | Junk found | Headings | Code blocks | Precision | Recall |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | **2084** | **13** | **0%** | **186** | **20.2** | **14.3** | **93%** | **68%** |
-| crawl4ai | 3519 | 1420 [!] | 1% | 183 | 20.1 | 14.2 | 100% | 92% |
-| crawl4ai-raw | 3521 | 1420 [!] | 1% | 183 | 20.1 | 14.2 | 100% | 92% |
-| scrapy+md | 2851 | 765 [!] | 0% | 328 | 20.2 | 14.3 | 100% | 69% |
-| crawlee | 3154 | 1004 [!] | 1% | 628 | 20.1 | 14.2 | 100% | 96% |
-| colly+md | 3175 | 986 [!] | 1% | 632 | 20.2 | 14.3 | 100% | 97% |
-| playwright | 3160 | 999 [!] | 1% | 632 | 20.1 | 14.3 | 100% | 97% |
+| **markcrawl** | 2084 | 13 | 0% | 186 | 20.2 | 14.3 | 93% | 68% |
+| crawl4ai | 3519 | 1420 ⚠ | 1% | 183 | 20.1 | 14.2 | 100% | 92% |
+| crawl4ai-raw | 3521 | 1420 ⚠ | 1% | 183 | 20.1 | 14.2 | 100% | 92% |
+| scrapy+md | 2851 | 765 ⚠ | 0% | 328 | 20.2 | 14.3 | 100% | 69% |
+| crawlee | 3154 | 1004 ⚠ | 1% | 628 | 20.1 | 14.2 | 100% | 96% |
+| colly+md | 3175 | 986 ⚠ | 1% | 632 | 20.2 | 14.3 | 100% | 97% |
+| playwright | 3160 | 999 ⚠ | 1% | 632 | 20.1 | 14.3 | 100% | 97% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
-**[1]** Avg words per page before the first heading (nav chrome). **[!]** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
+**[1]** Avg words per page before the first heading (nav chrome). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
 **markcrawl** produces the cleanest output with 13 words of preamble per page, while **crawl4ai-raw** injects 1420 words of nav chrome before content begins. The word count gap (2084 vs 3521 avg words) is largely explained by preamble: 1420 words of nav chrome account for ~40% of crawl4ai-raw's output on this site. markcrawl's lower recall (68% vs 97%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>fastapi.tiangolo.com/tutorial/body-fields</code></summary>
+<summary>Sample output — first 40 lines of <code>fastapi.tiangolo.com/reference/encoders</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
@@ -774,48 +627,48 @@ Nav boilerplate appears here before the real content starts.
 *FastAPI framework, high performance, easy to learn, fast to code, ready for production*
 
 
-# Body - Fields[¶](#body-fields "Permanent link")
+# Encoders - `jsonable_encoder`[¶](#encoders-jsonable_encoder "Permanent link")
 
-The same way you can declare additional validation and metadata in *path operation function* parameters with `Query`, `Path` and `Body`, you can declare validation and metadata inside of Pydantic models using Pydantic's `Field`.
-
-## Import `Field`[¶](#import-field "Permanent link")
-
-First, you have to import it:
-
-Python 3.10+
+## fastapi.encoders.jsonable_encoder [¶](#fastapi.encoders.jsonable_encoder "Permanent link")
 
 ```
-from typing import Annotated
-
-from fastapi import Body, FastAPI
-from pydantic import BaseModel, Field
-
-app = FastAPI()
-
-
-class Item(BaseModel):
-    name: str
-    description: str | None = Field(
-        default=None, title="The description of the item", max_length=300
-    )
-    price: float = Field(gt=0, description="The price must be greater than zero")
-    tax: float | None = None
-
-
-@app.put("/items/{item_id}")
-async def update_item(item_id: int, item: Annotated[Item, Body(embed=True)]):
-    results = {"item_id": item_id, "item": item}
-    return results
+jsonable_encoder(
+    obj,
+    include=None,
+    exclude=None,
+    by_alias=True,
+    exclude_unset=False,
+    exclude_defaults=False,
+    exclude_none=False,
+    custom_encoder=None,
+    sqlalchemy_safe=True,
+)
 ```
 
-🤓 Other versions and variants
+Convert any object to something that can be encoded in JSON.
 
-Python 3.10+ - non-Annotated
+This is used internally by FastAPI to make sure anything you return can be
+encoded as JSON before it is sent to the client.
+
+You can also use it yourself, for example to convert objects before saving them
+in a database that supports only JSON.
+
+Read more about it in the
+[FastAPI docs for JSON Compatible Encoder](https://fastapi.tiangolo.com/tutorial/encoder/).
+
+| PARAMETER | DESCRIPTION |
+| --- | --- |
+| `obj` | The input object to convert to JSON.  **TYPE:** `Any` |
+| `include` | Pydantic's `include` parameter, passed to Pydantic models to set the fields to include.  **TYPE:** `IncEx | None`  **DEFAULT:** `None` |
+| `exclude` | Pydantic's `exclude` parameter, passed to Pydantic models to set the fields to exclude.  **TYPE:** `IncEx | None`  **DEFAULT:** `None` |
+| `by_alias` | Pydantic's `by_alias` parameter, passed to Pydantic models to define if the output should use the alias names (when provided) or the Python attribute names. In an API, if you set an alias, it's probably because you want to use it in the result, so you probably want to leave this set to `True`.  **TYPE:** `bool`  **DEFAULT:** `True` |
+| `exclude_unset` | Pydantic's `exclude_unset` parameter, passed to Pydantic models to define if it should exclude from the output the fields that were not explicitly set (and that only had their default values).  **TYPE:** `bool`  **DEFAULT:** `False` |
+| `exclude_defaults` | Pydantic's `exclude_defaults` parameter, passed to Pydantic models to define if it should exclude from the output the fields that had the same default value, even when they were explicitly set.  **TYPE:** `bool`  **DEFAULT:** `False` |
 ```
 
 **crawl4ai**
 ```
-[ Skip to content ](https://fastapi.tiangolo.com/tutorial/body-fields/#body-fields)
+[ Skip to content ](https://fastapi.tiangolo.com/reference/encoders/#encoders-jsonable_encoder)
 [ **FastAPI Cloud** waiting list 🚀 ](https://fastapicloud.com)
 [ Follow **@fastapi** on **X (Twitter)** to stay updated ](https://x.com/fastapi)
 [ Follow **FastAPI** on **LinkedIn** to stay updated ](https://www.linkedin.com/company/fastapi)
@@ -833,7 +686,7 @@ Python 3.10+ - non-Annotated
 [ sponsor ![](https://fastapi.tiangolo.com/img/sponsors/greptile-banner.png) ](https://www.greptile.com/?utm_source=fastapi&utm_medium=sponsorship&utm_campaign=fastapi_sponsor_page "Greptile: The AI Code Reviewer")
 [ ![logo](https://fastapi.tiangolo.com/img/icon-white.svg) ](https://fastapi.tiangolo.com/ "FastAPI")
 FastAPI 
-Body - Fields 
+Encoders - jsonable_encoder 
   * [ en - English ](https://fastapi.tiangolo.com/)
   * [ de - Deutsch ](https://fastapi.tiangolo.com/de/)
   * [ es - español ](https://fastapi.tiangolo.com/es/)
@@ -848,8 +701,8 @@ Body - Fields
   * [ zh-hant - 繁體中文 ](https://fastapi.tiangolo.com/zh-hant/)
 
 
-[ ](https://fastapi.tiangolo.com/tutorial/body-fields/?q= "Share")
-Type to start searching
+[ ](https://fastapi.tiangolo.com/reference/encoders/?q= "Share")
+Initializing search 
 [ fastapi/fastapi 
   * 0.135.3
   * 97.1k
@@ -858,7 +711,7 @@ Type to start searching
 
 **crawl4ai-raw**
 ```
-[ Skip to content ](https://fastapi.tiangolo.com/tutorial/body-fields/#body-fields)
+[ Skip to content ](https://fastapi.tiangolo.com/reference/encoders/#encoders-jsonable_encoder)
 [ **FastAPI Cloud** waiting list 🚀 ](https://fastapicloud.com)
 [ Follow **@fastapi** on **X (Twitter)** to stay updated ](https://x.com/fastapi)
 [ Follow **FastAPI** on **LinkedIn** to stay updated ](https://www.linkedin.com/company/fastapi)
@@ -876,7 +729,7 @@ Type to start searching
 [ sponsor ![](https://fastapi.tiangolo.com/img/sponsors/greptile-banner.png) ](https://www.greptile.com/?utm_source=fastapi&utm_medium=sponsorship&utm_campaign=fastapi_sponsor_page "Greptile: The AI Code Reviewer")
 [ ![logo](https://fastapi.tiangolo.com/img/icon-white.svg) ](https://fastapi.tiangolo.com/ "FastAPI")
 FastAPI 
-Body - Fields 
+Encoders - jsonable_encoder 
   * [ en - English ](https://fastapi.tiangolo.com/)
   * [ de - Deutsch ](https://fastapi.tiangolo.com/de/)
   * [ es - español ](https://fastapi.tiangolo.com/es/)
@@ -891,7 +744,7 @@ Body - Fields
   * [ zh-hant - 繁體中文 ](https://fastapi.tiangolo.com/zh-hant/)
 
 
-[ ](https://fastapi.tiangolo.com/tutorial/body-fields/?q= "Share")
+[ ](https://fastapi.tiangolo.com/reference/encoders/?q= "Share")
 Type to start searching
 [ fastapi/fastapi 
   * 0.135.3
@@ -914,38 +767,38 @@ FastAPI
   + [Concurrency and async / await](../../async/)
   + [Environment Variables](../../environment-variables/)
   + [Virtual Environments](../../virtual-environments/)
-  + [Tutorial - User Guide](../)
+  + [Tutorial - User Guide](../../tutorial/)
 
     Tutorial - User Guide
-    - [First Steps](../first-steps/)
-    - [Path Parameters](../path-params/)
-    - [Query Parameters](../query-params/)
-    - [Request Body](../body/)
-    - [Query Parameters and String Validations](../query-params-str-validations/)
-    - [Path Parameters and Numeric Validations](../path-params-numeric-validations/)
-    - [Query Parameter Models](../query-param-models/)
-    - [Body - Multiple Parameters](../body-multiple-params/)
-    - Body - Fields
-
-      [Body - Fields](./)
-
-
-
-      Table of contents
-      * [Import `Field`](#import-field)
-      * [Declare model attributes](#declare-model-attributes)
-      * [Add extra information](#add-extra-information)
-      * [Recap](#recap)
-    - [Body - Nested Models](../body-nested-models/)
-    - [Declare Request Example Data](../schema-extra-example/)
-    - [Extra Data Types](../extra-data-types/)
-    - [Cookie Parameters](../cookie-params/)
-    - [Header Parameters](../header-params/)
+    - [First Steps](../../tutorial/first-steps/)
+    - [Path Parameters](../../tutorial/path-params/)
+    - [Query Parameters](../../tutorial/query-params/)
+    - [Request Body](../../tutorial/body/)
+    - [Query Parameters and String Validations](../../tutorial/query-params-str-validations/)
+    - [Path Parameters and Numeric Validations](../../tutorial/path-params-numeric-validations/)
+    - [Query Parameter Models](../../tutorial/query-param-models/)
+    - [Body - Multiple Parameters](../../tutorial/body-multiple-params/)
+    - [Body - Fields](../../tutorial/body-fields/)
+    - [Body - Nested Models](../../tutorial/body-nested-models/)
+    - [Declare Request Example Data](../../tutorial/schema-extra-example/)
+    - [Extra Data Types](../../tutorial/extra-data-types/)
+    - [Cookie Parameters](../../tutorial/cookie-params/)
+    - [Header Parameters](../../tutorial/header-params/)
+    - [Cookie Parameter Models](../../tutorial/cookie-param-models/)
+    - [Header Parameter Models](../../tutorial/header-param-models/)
+    - [Response Model - Return Type](../../tutorial/response-model/)
+    - [Extra Models](../../tutorial/extra-models/)
+    - [Response Status Code](../../tutorial/response-status-code/)
+    - [Form Data](../../tutorial/request-forms/)
+    - [Form Models](../../tutorial/request-form-models/)
+    - [Request Files](../../tutorial/request-files/)
+    - [Request Forms and Files](../../tutorial/request-forms-and-files/)
+    - [Handling Errors](../../tutorial/handling-errors/)
 ```
 
 **crawlee**
 ```
-Body - Fields - FastAPI
+Encoders - jsonable\_encoder - FastAPI
 
 
 
@@ -976,7 +829,7 @@ visibility: hidden;
 
 
 
-[Skip to content](https://fastapi.tiangolo.com/tutorial/body-fields/#body-fields)
+[Skip to content](https://fastapi.tiangolo.com/reference/encoders/#encoders-jsonable_encoder)
 
 [Join the **FastAPI Cloud** waiting list 🚀](https://fastapicloud.com)
 
@@ -989,7 +842,7 @@ visibility: hidden;
 
 **colly+md**
 ```
-Body - Fields - FastAPI
+Encoders - jsonable\_encoder - FastAPI
 
 
 
@@ -1005,7 +858,7 @@ Body - Fields - FastAPI
 
 
 
-[Skip to content](#body-fields)
+[Skip to content](#encoders-jsonable_encoder)
 
 [Join the **FastAPI Cloud** waiting list 🚀](https://fastapicloud.com)
 
@@ -1032,7 +885,7 @@ Body - Fields - FastAPI
 
 **playwright**
 ```
-Body - Fields - FastAPI
+Encoders - jsonable\_encoder - FastAPI
 
 
 
@@ -1048,7 +901,22 @@ Body - Fields - FastAPI
 
 
 
-[Skip to content](https://fastapi.tiangolo.com/tutorial/body-fields/#body-fields)
+
+
+
+
+
+
+
+.grecaptcha-badge {
+visibility: hidden;
+}
+
+
+
+
+
+[Skip to content](https://fastapi.tiangolo.com/reference/encoders/#encoders-jsonable_encoder)
 
 [Join the **FastAPI Cloud** waiting list 🚀](https://fastapicloud.com)
 
@@ -1057,20 +925,6 @@ Body - Fields - FastAPI
 [Follow **FastAPI** on **LinkedIn** to stay updated](https://www.linkedin.com/company/fastapi)
 
 [Subscribe to the **FastAPI and friends** newsletter 🎉](https://fastapi.tiangolo.com/newsletter/)
-
-[sponsor](https://blockbee.io?ref=fastapi "BlockBee Cryptocurrency Payment Gateway")
-
-[sponsor](https://github.com/scalar/scalar/?utm_source=fastapi&utm_medium=website&utm_campaign=top-banner "Scalar: Beautiful Open-Source API References from Swagger/OpenAPI files")
-
-[sponsor](https://www.propelauth.com/?utm_source=fastapi&utm_campaign=1223&utm_medium=topbanner "Auth, user management and more for your B2B product")
-
-[sponsor](https://zuplo.link/fastapi-web "Zuplo: Scale, Protect, Document, and Monetize your FastAPI")
-
-[sponsor](https://liblab.com?utm_source=fastapi "liblab - Generate SDKs from FastAPI")
-
-[sponsor](https://docs.render.com/deploy-fastapi?utm_source=deploydoc&utm_medium=referral&utm_campaign=fastapi "Deploy & scale any full-stack web app on Render. Focus on building apps, not infra.")
-
-[sponsor](https://www.coderabbit.ai/?utm_source=fastapi&utm_medium=banner&utm_campaign=fastapi "Cut Code Review Time & Bugs in Half with CodeRabbit")
 ```
 
 **firecrawl** — no output for this URL
@@ -1242,156 +1096,156 @@ Body - Fields - FastAPI
 
 | Tool | Avg words | Preamble [1] | Repeat rate | Junk found | Headings | Code blocks | Precision | Recall |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | **3766** | **5** | **0%** | **378** | **11.9** | **7.3** | **98%** | **82%** |
-| crawl4ai | 4180 | 50 [!] | 0% | 3111 | 19.4 | 7.4 | 100% | 70% |
-| crawl4ai-raw | 4180 | 50 [!] | 0% | 3111 | 19.4 | 7.4 | 100% | 70% |
+| **markcrawl** | 3766 | 5 | 0% | 378 | 11.9 | 7.3 | 98% | 82% |
+| crawl4ai | 4180 | 50 ⚠ | 0% | 3111 | 19.4 | 7.4 | 100% | 70% |
+| crawl4ai-raw | 4180 | 50 ⚠ | 0% | 3111 | 19.4 | 7.4 | 100% | 70% |
 | scrapy+md | 4796 | 4 | 0% | 2086 | 22.7 | 9.5 | 100% | 99% |
 | crawlee | 4140 | 47 | 0% | 3111 | 19.1 | 7.3 | 100% | 92% |
 | colly+md | 4070 | 26 | 0% | 3111 | 19.1 | 7.3 | 100% | 92% |
 | playwright | 4140 | 47 | 0% | 3111 | 19.1 | 7.3 | 100% | 92% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
-**[1]** Avg words per page before the first heading (nav chrome). **[!]** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
+**[1]** Avg words per page before the first heading (nav chrome). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
 **scrapy+md** produces the cleanest output with 4 words of preamble per page, while **crawl4ai** injects 50 words of nav chrome before content begins.
 
 <details>
-<summary>Sample output — first 40 lines of <code>docs.python.org/3.10/whatsnew/2.2.html</code></summary>
+<summary>Sample output — first 40 lines of <code>docs.python.org/3.12/contents.html</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ```
-# What’s New in Python 2.2[¶](#what-s-new-in-python-2-2 "Permalink to this headline")
+*What’s New in Python- What’s New In Python 3.12- Summary – Release highlights, New Features- PEP 695: Type Parameter Syntax, PEP 701: Syntactic formalization of f-strings, PEP 684: A Per-Interprete...*
 
-Author
-:   A.M. Kuchling
 
-## Introduction[¶](#introduction "Permalink to this headline")
+# Python Documentation contents[¶](#python-documentation-contents "Link to this heading")
 
-This article explains the new features in Python 2.2.2, released on October 14,
-2002. Python 2.2.2 is a bugfix release of Python 2.2, originally released on
-December 21, 2001.
-
-Python 2.2 can be thought of as the “cleanup release”. There are some features
-such as generators and iterators that are completely new, but most of the
-changes, significant and far-reaching though they may be, are aimed at cleaning
-up irregularities and dark corners of the language design.
-
-This article doesn’t attempt to provide a complete specification of the new
-features, but instead provides a convenient overview. For full details, you
-should refer to the documentation for Python 2.2, such as the [Python Library
-Reference](https://docs.python.org/2.2/lib/lib.html) and the [Python
-Reference Manual](https://docs.python.org/2.2/ref/ref.html). If you want to
-understand the complete implementation and design rationale for a change, refer
-to the PEP for a particular new feature.
-
-## PEPs 252 and 253: Type and Class Changes[¶](#peps-252-and-253-type-and-class-changes "Permalink to this headline")
-
-The largest and most far-reaching changes in Python 2.2 are to Python’s model of
-objects and classes. The changes should be backward compatible, so it’s likely
-that your code will continue to run unchanged, but the changes provide some
-amazing new capabilities. Before beginning this, the longest and most
-complicated section of this article, I’ll provide an overview of the changes and
-offer some comments.
-
-A long time ago I wrote a web page listing flaws in Python’s design. One of the
-most significant flaws was that it’s impossible to subclass Python types
-implemented in C. In particular, it’s not possible to subclass built-in types,
-so you can’t just subclass, say, lists in order to add a single useful method to
-them. The `UserList` module provides a class that supports all of the
-methods of lists and that can be subclassed further, but there’s lots of C code
-that expects a regular Python list and won’t accept a `UserList`
+* [What’s New in Python](whatsnew/index.html)
+  * [What’s New In Python 3.12](whatsnew/3.12.html)
+    * [Summary – Release highlights](whatsnew/3.12.html#summary-release-highlights)
+    * [New Features](whatsnew/3.12.html#new-features)
+      * [PEP 695: Type Parameter Syntax](whatsnew/3.12.html#pep-695-type-parameter-syntax)
+      * [PEP 701: Syntactic formalization of f-strings](whatsnew/3.12.html#pep-701-syntactic-formalization-of-f-strings)
+      * [PEP 684: A Per-Interpreter GIL](whatsnew/3.12.html#pep-684-a-per-interpreter-gil)
+      * [PEP 669: Low impact monitoring for CPython](whatsnew/3.12.html#pep-669-low-impact-monitoring-for-cpython)
+      * [PEP 688: Making the buffer protocol accessible in Python](whatsnew/3.12.html#pep-688-making-the-buffer-protocol-accessible-in-python)
+      * [PEP 709: Comprehension inlining](whatsnew/3.12.html#pep-709-comprehension-inlining)
+      * [Improved Error Messages](whatsnew/3.12.html#improved-error-messages)
+    * [New Features Related to Type Hints](whatsnew/3.12.html#new-features-related-to-type-hints)
+      * [PEP 692: Using `TypedDict` for more precise `**kwargs` typing](whatsnew/3.12.html#pep-692-using-typeddict-for-more-precise-kwargs-typing)
+      * [PEP 698: Override Decorator for Static Typing](whatsnew/3.12.html#pep-698-override-decorator-for-static-typing)
+    * [Other Language Changes](whatsnew/3.12.html#other-language-changes)
+    * [New Modules](whatsnew/3.12.html#new-modules)
+    * [Improved Modules](whatsnew/3.12.html#improved-modules)
+      * [array](whatsnew/3.12.html#array)
+      * [asyncio](whatsnew/3.12.html#asyncio)
+      * [calendar](whatsnew/3.12.html#calendar)
+      * [csv](whatsnew/3.12.html#csv)
+      * [dis](whatsnew/3.12.html#dis)
+      * [fractions](whatsnew/3.12.html#fractions)
+      * [importlib.resources](whatsnew/3.12.html#importlib-resources)
+      * [inspect](whatsnew/3.12.html#inspect)
+      * [itertools](whatsnew/3.12.html#itertools)
+      * [math](whatsnew/3.12.html#math)
+      * [os](whatsnew/3.12.html#os)
+      * [os.path](whatsnew/3.12.html#os-path)
+      * [pathlib](whatsnew/3.12.html#pathlib)
+      * [platform](whatsnew/3.12.html#platform)
+      * [pdb](whatsnew/3.12.html#pdb)
+      * [random](whatsnew/3.12.html#random)
+      * [shutil](whatsnew/3.12.html#shutil)
+      * [sqlite3](whatsnew/3.12.html#sqlite3)
 ```
 
 **crawl4ai**
 ```
-[ ![Python logo](https://docs.python.org/3.10/_static/py.svg) ](https://www.python.org/) dev (3.15) 3.14 3.13 3.12 3.11 3.10.20 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.7 2.6
+[ ![Python logo](https://docs.python.org/3.12/_static/py.svg) ](https://www.python.org/) dev (3.15) 3.14 3.13 3.12.13 3.11 3.10 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.7 2.6
 Greek | Ελληνικά English Spanish | español French | français Italian | italiano Japanese | 日本語 Korean | 한국어 Polish | polski Brazilian Portuguese | Português brasileiro Romanian | Românește Turkish | Türkçe Simplified Chinese | 简体中文 Traditional Chinese | 繁體中文
 Theme  Auto Light Dark
-### [Table of Contents](https://docs.python.org/3.10/contents.html)
-  * [What’s New in Python 2.2](https://docs.python.org/3.10/whatsnew/2.2.html#)
-    * [Introduction](https://docs.python.org/3.10/whatsnew/2.2.html#introduction)
-    * [PEPs 252 and 253: Type and Class Changes](https://docs.python.org/3.10/whatsnew/2.2.html#peps-252-and-253-type-and-class-changes)
-      * [Old and New Classes](https://docs.python.org/3.10/whatsnew/2.2.html#old-and-new-classes)
-      * [Descriptors](https://docs.python.org/3.10/whatsnew/2.2.html#descriptors)
-      * [Multiple Inheritance: The Diamond Rule](https://docs.python.org/3.10/whatsnew/2.2.html#multiple-inheritance-the-diamond-rule)
-      * [Attribute Access](https://docs.python.org/3.10/whatsnew/2.2.html#attribute-access)
-      * [Related Links](https://docs.python.org/3.10/whatsnew/2.2.html#related-links)
-    * [PEP 234: Iterators](https://docs.python.org/3.10/whatsnew/2.2.html#pep-234-iterators)
-    * [PEP 255: Simple Generators](https://docs.python.org/3.10/whatsnew/2.2.html#pep-255-simple-generators)
-    * [PEP 237: Unifying Long Integers and Integers](https://docs.python.org/3.10/whatsnew/2.2.html#pep-237-unifying-long-integers-and-integers)
-    * [PEP 238: Changing the Division Operator](https://docs.python.org/3.10/whatsnew/2.2.html#pep-238-changing-the-division-operator)
-    * [Unicode Changes](https://docs.python.org/3.10/whatsnew/2.2.html#unicode-changes)
-    * [PEP 227: Nested Scopes](https://docs.python.org/3.10/whatsnew/2.2.html#pep-227-nested-scopes)
-    * [New and Improved Modules](https://docs.python.org/3.10/whatsnew/2.2.html#new-and-improved-modules)
-    * [Interpreter Changes and Fixes](https://docs.python.org/3.10/whatsnew/2.2.html#interpreter-changes-and-fixes)
-    * [Other Changes and Fixes](https://docs.python.org/3.10/whatsnew/2.2.html#other-changes-and-fixes)
-    * [Acknowledgements](https://docs.python.org/3.10/whatsnew/2.2.html#acknowledgements)
-
-
-#### Previous topic
-[What’s New in Python 2.3](https://docs.python.org/3.10/whatsnew/2.3.html "previous chapter")
 #### Next topic
-[What’s New in Python 2.1](https://docs.python.org/3.10/whatsnew/2.1.html "next chapter")
+[What’s New in Python](https://docs.python.org/3.12/whatsnew/index.html "next chapter")
 ### This Page
-  * [Report a Bug](https://docs.python.org/3.10/bugs.html)
-  * [Show Source ](https://github.com/python/cpython/blob/3.10/Doc/whatsnew/2.2.rst)
+  * [Report a Bug](https://docs.python.org/3.12/bugs.html)
+  * [Show Source ](https://github.com/python/cpython/blob/main/Doc/contents.rst)
 
 
 ### Navigation
-  * [index](https://docs.python.org/3.10/genindex.html "General Index")
-  * [modules](https://docs.python.org/3.10/py-modindex.html "Python Module Index") |
-  * [next](https://docs.python.org/3.10/whatsnew/2.1.html "What’s New in Python 2.1") |
-  * [previous](https://docs.python.org/3.10/whatsnew/2.3.html "What’s New in Python 2.3") |
-  * ![Python logo](https://docs.python.org/3.10/_static/py.svg)
+  * [index](https://docs.python.org/3.12/genindex.html "General Index")
+  * [modules](https://docs.python.org/3.12/py-modindex.html "Python Module Index") |
+  * [next](https://docs.python.org/3.12/whatsnew/index.html "What’s New in Python") |
+  * ![Python logo](https://docs.python.org/3.12/_static/py.svg)
   * [Python](https://www.python.org/) »
+  * Greek | Ελληνικά English Spanish | español French | français Italian | italiano Japanese | 日本語 Korean | 한국어 Polish | polski Brazilian Portuguese | Português brasileiro Romanian | Românește Turkish | Türkçe Simplified Chinese | 简体中文 Traditional Chinese | 繁體中文
+dev (3.15) 3.14 3.13 3.12.13 3.11 3.10 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.7 2.6
+  * [3.12.13 Documentation](https://docs.python.org/3.12/index.html) » 
+  * [Python Documentation contents](https://docs.python.org/3.12/contents.html)
+  * | 
+  * Theme  Auto Light Dark |
+
+
+# Python Documentation contents[¶](https://docs.python.org/3.12/contents.html#python-documentation-contents "Link to this heading")
+  * [What’s New in Python](https://docs.python.org/3.12/whatsnew/index.html)
+    * [What’s New In Python 3.12](https://docs.python.org/3.12/whatsnew/3.12.html)
+      * [Summary – Release highlights](https://docs.python.org/3.12/whatsnew/3.12.html#summary-release-highlights)
+      * [New Features](https://docs.python.org/3.12/whatsnew/3.12.html#new-features)
+        * [PEP 695: Type Parameter Syntax](https://docs.python.org/3.12/whatsnew/3.12.html#pep-695-type-parameter-syntax)
+        * [PEP 701: Syntactic formalization of f-strings](https://docs.python.org/3.12/whatsnew/3.12.html#pep-701-syntactic-formalization-of-f-strings)
+        * [PEP 684: A Per-Interpreter GIL](https://docs.python.org/3.12/whatsnew/3.12.html#pep-684-a-per-interpreter-gil)
+        * [PEP 669: Low impact monitoring for CPython](https://docs.python.org/3.12/whatsnew/3.12.html#pep-669-low-impact-monitoring-for-cpython)
+        * [PEP 688: Making the buffer protocol accessible in Python](https://docs.python.org/3.12/whatsnew/3.12.html#pep-688-making-the-buffer-protocol-accessible-in-python)
+        * [PEP 709: Comprehension inlining](https://docs.python.org/3.12/whatsnew/3.12.html#pep-709-comprehension-inlining)
+        * [Improved Error Messages](https://docs.python.org/3.12/whatsnew/3.12.html#improved-error-messages)
+      * [New Features Related to Type Hints](https://docs.python.org/3.12/whatsnew/3.12.html#new-features-related-to-type-hints)
+        * [PEP 692: Using `TypedDict` for more precise `**kwargs` typing](https://docs.python.org/3.12/whatsnew/3.12.html#pep-692-using-typeddict-for-more-precise-kwargs-typing)
+        * [PEP 698: Override Decorator for Static Typing](https://docs.python.org/3.12/whatsnew/3.12.html#pep-698-override-decorator-for-static-typing)
+      * [Other Language Changes](https://docs.python.org/3.12/whatsnew/3.12.html#other-language-changes)
 ```
 
 **crawl4ai-raw**
 ```
-[ ![Python logo](https://docs.python.org/3.10/_static/py.svg) ](https://www.python.org/) dev (3.15) 3.14 3.13 3.12 3.11 3.10.20 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.7 2.6
+[ ![Python logo](https://docs.python.org/3.12/_static/py.svg) ](https://www.python.org/) dev (3.15) 3.14 3.13 3.12.13 3.11 3.10 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.7 2.6
 Greek | Ελληνικά English Spanish | español French | français Italian | italiano Japanese | 日本語 Korean | 한국어 Polish | polski Brazilian Portuguese | Português brasileiro Romanian | Românește Turkish | Türkçe Simplified Chinese | 简体中文 Traditional Chinese | 繁體中文
 Theme  Auto Light Dark
-### [Table of Contents](https://docs.python.org/3.10/contents.html)
-  * [What’s New in Python 2.2](https://docs.python.org/3.10/whatsnew/2.2.html#)
-    * [Introduction](https://docs.python.org/3.10/whatsnew/2.2.html#introduction)
-    * [PEPs 252 and 253: Type and Class Changes](https://docs.python.org/3.10/whatsnew/2.2.html#peps-252-and-253-type-and-class-changes)
-      * [Old and New Classes](https://docs.python.org/3.10/whatsnew/2.2.html#old-and-new-classes)
-      * [Descriptors](https://docs.python.org/3.10/whatsnew/2.2.html#descriptors)
-      * [Multiple Inheritance: The Diamond Rule](https://docs.python.org/3.10/whatsnew/2.2.html#multiple-inheritance-the-diamond-rule)
-      * [Attribute Access](https://docs.python.org/3.10/whatsnew/2.2.html#attribute-access)
-      * [Related Links](https://docs.python.org/3.10/whatsnew/2.2.html#related-links)
-    * [PEP 234: Iterators](https://docs.python.org/3.10/whatsnew/2.2.html#pep-234-iterators)
-    * [PEP 255: Simple Generators](https://docs.python.org/3.10/whatsnew/2.2.html#pep-255-simple-generators)
-    * [PEP 237: Unifying Long Integers and Integers](https://docs.python.org/3.10/whatsnew/2.2.html#pep-237-unifying-long-integers-and-integers)
-    * [PEP 238: Changing the Division Operator](https://docs.python.org/3.10/whatsnew/2.2.html#pep-238-changing-the-division-operator)
-    * [Unicode Changes](https://docs.python.org/3.10/whatsnew/2.2.html#unicode-changes)
-    * [PEP 227: Nested Scopes](https://docs.python.org/3.10/whatsnew/2.2.html#pep-227-nested-scopes)
-    * [New and Improved Modules](https://docs.python.org/3.10/whatsnew/2.2.html#new-and-improved-modules)
-    * [Interpreter Changes and Fixes](https://docs.python.org/3.10/whatsnew/2.2.html#interpreter-changes-and-fixes)
-    * [Other Changes and Fixes](https://docs.python.org/3.10/whatsnew/2.2.html#other-changes-and-fixes)
-    * [Acknowledgements](https://docs.python.org/3.10/whatsnew/2.2.html#acknowledgements)
-
-
-#### Previous topic
-[What’s New in Python 2.3](https://docs.python.org/3.10/whatsnew/2.3.html "previous chapter")
 #### Next topic
-[What’s New in Python 2.1](https://docs.python.org/3.10/whatsnew/2.1.html "next chapter")
+[What’s New in Python](https://docs.python.org/3.12/whatsnew/index.html "next chapter")
 ### This Page
-  * [Report a Bug](https://docs.python.org/3.10/bugs.html)
-  * [Show Source ](https://github.com/python/cpython/blob/3.10/Doc/whatsnew/2.2.rst)
+  * [Report a Bug](https://docs.python.org/3.12/bugs.html)
+  * [Show Source ](https://github.com/python/cpython/blob/main/Doc/contents.rst)
 
 
 ### Navigation
-  * [index](https://docs.python.org/3.10/genindex.html "General Index")
-  * [modules](https://docs.python.org/3.10/py-modindex.html "Python Module Index") |
-  * [next](https://docs.python.org/3.10/whatsnew/2.1.html "What’s New in Python 2.1") |
-  * [previous](https://docs.python.org/3.10/whatsnew/2.3.html "What’s New in Python 2.3") |
-  * ![Python logo](https://docs.python.org/3.10/_static/py.svg)
+  * [index](https://docs.python.org/3.12/genindex.html "General Index")
+  * [modules](https://docs.python.org/3.12/py-modindex.html "Python Module Index") |
+  * [next](https://docs.python.org/3.12/whatsnew/index.html "What’s New in Python") |
+  * ![Python logo](https://docs.python.org/3.12/_static/py.svg)
   * [Python](https://www.python.org/) »
+  * Greek | Ελληνικά English Spanish | español French | français Italian | italiano Japanese | 日本語 Korean | 한국어 Polish | polski Brazilian Portuguese | Português brasileiro Romanian | Românește Turkish | Türkçe Simplified Chinese | 简体中文 Traditional Chinese | 繁體中文
+dev (3.15) 3.14 3.13 3.12.13 3.11 3.10 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.7 2.6
+  * [3.12.13 Documentation](https://docs.python.org/3.12/index.html) » 
+  * [Python Documentation contents](https://docs.python.org/3.12/contents.html)
+  * | 
+  * Theme  Auto Light Dark |
+
+
+# Python Documentation contents[¶](https://docs.python.org/3.12/contents.html#python-documentation-contents "Link to this heading")
+  * [What’s New in Python](https://docs.python.org/3.12/whatsnew/index.html)
+    * [What’s New In Python 3.12](https://docs.python.org/3.12/whatsnew/3.12.html)
+      * [Summary – Release highlights](https://docs.python.org/3.12/whatsnew/3.12.html#summary-release-highlights)
+      * [New Features](https://docs.python.org/3.12/whatsnew/3.12.html#new-features)
+        * [PEP 695: Type Parameter Syntax](https://docs.python.org/3.12/whatsnew/3.12.html#pep-695-type-parameter-syntax)
+        * [PEP 701: Syntactic formalization of f-strings](https://docs.python.org/3.12/whatsnew/3.12.html#pep-701-syntactic-formalization-of-f-strings)
+        * [PEP 684: A Per-Interpreter GIL](https://docs.python.org/3.12/whatsnew/3.12.html#pep-684-a-per-interpreter-gil)
+        * [PEP 669: Low impact monitoring for CPython](https://docs.python.org/3.12/whatsnew/3.12.html#pep-669-low-impact-monitoring-for-cpython)
+        * [PEP 688: Making the buffer protocol accessible in Python](https://docs.python.org/3.12/whatsnew/3.12.html#pep-688-making-the-buffer-protocol-accessible-in-python)
+        * [PEP 709: Comprehension inlining](https://docs.python.org/3.12/whatsnew/3.12.html#pep-709-comprehension-inlining)
+        * [Improved Error Messages](https://docs.python.org/3.12/whatsnew/3.12.html#improved-error-messages)
+      * [New Features Related to Type Hints](https://docs.python.org/3.12/whatsnew/3.12.html#new-features-related-to-type-hints)
+        * [PEP 692: Using `TypedDict` for more precise `**kwargs` typing](https://docs.python.org/3.12/whatsnew/3.12.html#pep-692-using-typeddict-for-more-precise-kwargs-typing)
+        * [PEP 698: Override Decorator for Static Typing](https://docs.python.org/3.12/whatsnew/3.12.html#pep-698-override-decorator-for-static-typing)
+      * [Other Language Changes](https://docs.python.org/3.12/whatsnew/3.12.html#other-language-changes)
 ```
 
 **scrapy+md**
@@ -1401,46 +1255,46 @@ Auto
 Light
 Dark
 
-### [Table of Contents](../contents.html)
-
-* [What’s New in Python 2.2](#)
-  + [Introduction](#introduction)
-  + [PEPs 252 and 253: Type and Class Changes](#peps-252-and-253-type-and-class-changes)
-    - [Old and New Classes](#old-and-new-classes)
-    - [Descriptors](#descriptors)
-    - [Multiple Inheritance: The Diamond Rule](#multiple-inheritance-the-diamond-rule)
-    - [Attribute Access](#attribute-access)
-    - [Related Links](#related-links)
-  + [PEP 234: Iterators](#pep-234-iterators)
-  + [PEP 255: Simple Generators](#pep-255-simple-generators)
-  + [PEP 237: Unifying Long Integers and Integers](#pep-237-unifying-long-integers-and-integers)
-  + [PEP 238: Changing the Division Operator](#pep-238-changing-the-division-operator)
-  + [Unicode Changes](#unicode-changes)
-  + [PEP 227: Nested Scopes](#pep-227-nested-scopes)
-  + [New and Improved Modules](#new-and-improved-modules)
-  + [Interpreter Changes and Fixes](#interpreter-changes-and-fixes)
-  + [Other Changes and Fixes](#other-changes-and-fixes)
-  + [Acknowledgements](#acknowledgements)
-
-#### Previous topic
-
-[What’s New in Python 2.3](2.3.html "previous chapter")
-
 #### Next topic
 
-[What’s New in Python 2.1](2.1.html "next chapter")
+[What’s New in Python](whatsnew/index.html "next chapter")
 
 ### This Page
 
-* [Report a Bug](../bugs.html)
-* [Show Source](https://github.com/python/cpython/blob/3.10/Doc/whatsnew/2.2.rst)
+* [Report a Bug](bugs.html)
+* [Show Source](https://github.com/python/cpython/blob/main/Doc/contents.rst)
 
 ### Navigation
+
+* [index](genindex.html "General Index")
+* [modules](py-modindex.html "Python Module Index") |
+* [next](whatsnew/index.html "What’s New in Python") |
+* [Python](https://www.python.org/) »
+
+* [3.12.13 Documentation](index.html) »
+* Python Documentation contents
+* |
+* Theme
+  Auto
+  Light
+  Dark
+   |
+
+# Python Documentation contents[¶](#python-documentation-contents "Link to this heading")
+
+* [What’s New in Python](whatsnew/index.html)
+  + [What’s New In Python 3.12](whatsnew/3.12.html)
+    - [Summary – Release highlights](whatsnew/3.12.html#summary-release-highlights)
+    - [New Features](whatsnew/3.12.html#new-features)
+      * [PEP 695: Type Parameter Syntax](whatsnew/3.12.html#pep-695-type-parameter-syntax)
+      * [PEP 701: Syntactic formalization of f-strings](whatsnew/3.12.html#pep-701-syntactic-formalization-of-f-strings)
+      * [PEP 684: A Per-Interpreter GIL](whatsnew/3.12.html#pep-684-a-per-interpreter-gil)
+      * [PEP 669: Low impact monitoring for CPython](whatsnew/3.12.html#pep-669-low-impact-monitoring-for-cpython)
 ```
 
 **crawlee**
 ```
-What’s New in Python 2.2 — Python 3.10.20 documentation
+Python Documentation contents — Python 3.12.13 documentation
 
 
 
@@ -1466,7 +1320,7 @@ width: 100%;
 
 
 
-dev (3.15)3.143.133.123.113.10.203.93.83.73.63.53.43.33.23.13.02.72.6
+dev (3.15)3.143.133.12.133.113.103.93.83.73.63.53.43.33.23.13.02.72.6
 
 Greek | ΕλληνικάEnglishSpanish | españolFrench | françaisItalian | italianoJapanese | 日本語Korean | 한국어Polish | polskiBrazilian Portuguese | Português brasileiroRomanian | RomâneșteTurkish | TürkçeSimplified Chinese | 简体中文Traditional Chinese | 繁體中文
 
@@ -1475,16 +1329,16 @@ Auto
 Light
 Dark
 
-### [Table of Contents](../contents.html)
+#### Next topic
 
-* [What’s New in Python 2.2](#)
-  + [Introduction](#introduction)
-  + [PEPs 252 and 253: Type and Class Changes](#peps-252-and-253-type-and-class-changes)
+[What’s New in Python](whatsnew/index.html "next chapter")
+
+### This Page
 ```
 
 **colly+md**
 ```
-What’s New in Python 2.2 — Python 3.10.20 documentation
+Python Documentation contents — Python 3.12.13 documentation
 
 
 
@@ -1515,20 +1369,19 @@ Auto
 Light
 Dark
 
-### [Table of Contents](../contents.html)
+#### Next topic
 
-* [What’s New in Python 2.2](#)
-  + [Introduction](#introduction)
-  + [PEPs 252 and 253: Type and Class Changes](#peps-252-and-253-type-and-class-changes)
-    - [Old and New Classes](#old-and-new-classes)
-    - [Descriptors](#descriptors)
-    - [Multiple Inheritance: The Diamond Rule](#multiple-inheritance-the-diamond-rule)
-    - [Attribute Access](#attribute-access)
+[What’s New in Python](whatsnew/index.html "next chapter")
+
+### This Page
+
+* [Report a Bug](bugs.html)
+* [Show Source](https://github.com/python/cpython/blob/main/Doc/contents.rst)
 ```
 
 **playwright**
 ```
-What’s New in Python 2.2 — Python 3.10.20 documentation
+Python Documentation contents — Python 3.12.13 documentation
 
 
 
@@ -1554,7 +1407,7 @@ width: 100%;
 
 
 
-dev (3.15)3.143.133.123.113.10.203.93.83.73.63.53.43.33.23.13.02.72.6
+dev (3.15)3.143.133.12.133.113.103.93.83.73.63.53.43.33.23.13.02.72.6
 
 Greek | ΕλληνικάEnglishSpanish | españolFrench | françaisItalian | italianoJapanese | 日本語Korean | 한국어Polish | polskiBrazilian Portuguese | Português brasileiroRomanian | RomâneșteTurkish | TürkçeSimplified Chinese | 简体中文Traditional Chinese | 繁體中文
 
@@ -1563,11 +1416,11 @@ Auto
 Light
 Dark
 
-### [Table of Contents](../contents.html)
+#### Next topic
 
-* [What’s New in Python 2.2](#)
-  + [Introduction](#introduction)
-  + [PEPs 252 and 253: Type and Class Changes](#peps-252-and-253-type-and-class-changes)
+[What’s New in Python](whatsnew/index.html "next chapter")
+
+### This Page
 ```
 
 **firecrawl** — no output for this URL
@@ -2084,12 +1937,2114 @@ Dark
 
 </details>
 
-## Related Reports
+## react-dev
 
-- [RETRIEVAL_COMPARISON.md](RETRIEVAL_COMPARISON.md) — does cleaner extraction
-  actually improve retrieval? (Spoiler: modestly, but switching retrieval mode
-  helps more than switching crawlers.)
-- [SPEED_COMPARISON.md](SPEED_COMPARISON.md) — higher word counts don't mean
-  higher quality; see speed vs output size trade-offs.
-- [METHODOLOGY.md](METHODOLOGY.md) — full test setup and fairness decisions.
+| Tool | Avg words | Preamble [1] | Repeat rate | Junk found | Headings | Code blocks | Precision | Recall |
+|---|---|---|---|---|---|---|---|---|
+| **markcrawl** | 1559 | 13 | 0% | 136 | 15.4 | 9.9 | 100% | 44% |
+| crawl4ai | 2277 | 12 | 0% | 142 | 19.8 | 9.8 | 100% | 37% |
+| crawl4ai-raw | 2279 | 12 | 0% | 142 | 19.8 | 9.8 | 100% | 37% |
+| scrapy+md | 1601 | 6 | 0% | 137 | 15.4 | 9.9 | 100% | 44% |
+| crawlee | 4370 | 368 ⚠ | 0% | 144 | 21.6 | 9.8 | 99% | 98% |
+| colly+md | 4292 | 289 ⚠ | 0% | 144 | 21.6 | 9.9 | 98% | 100% |
+| playwright | 4292 | 289 ⚠ | 0% | 144 | 21.6 | 9.9 | 100% | 98% |
+| firecrawl | — | — | — | — | — | — | — | — |
 
+**[1]** Avg words per page before the first heading (nav chrome). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
+
+**Reading the numbers:**
+**scrapy+md** produces the cleanest output with 6 words of preamble per page, while **crawlee** injects 368 words of nav chrome before content begins. The word count gap (1559 vs 4370 avg words) is largely explained by preamble: 368 words of nav chrome account for ~8% of crawlee's output on this site. scrapy+md's lower recall (44% vs 100%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
+
+<details>
+<summary>Sample output — first 40 lines of <code>react.dev/learn/understanding-your-ui-as-a-tree</code></summary>
+
+This shows what each tool outputs at the *top* of the same page.
+Nav boilerplate appears here before the real content starts.
+
+**markcrawl**
+```
+*The library for web and native user interfaces*
+
+
+[Learn React](/learn)
+
+[Describing the UI](/learn/describing-the-ui)
+
+Copy pageCopy
+
+# Understanding Your UI as a Tree
+
+Your React app is taking shape with many components being nested within each other. How does React keep track of your app’s component structure?
+
+React, and many other UI libraries, model UI as a tree. Thinking of your app as a tree is useful for understanding the relationship between components. This understanding will help you debug future concepts like performance and state management.
+
+### You will learn
+
+* How React “sees” component structures
+* What a render tree is and what it is useful for
+* What a module dependency tree is and what it is useful for
+
+## Your UI as a tree
+
+Trees are a relationship model between items. The UI is often represented using tree structures. For example, browsers use tree structures to model HTML ([DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)) and CSS ([CSSOM](https://developer.mozilla.org/docs/Web/API/CSS_Object_Model)). Mobile platforms also use trees to represent their view hierarchy.
+
+React creates a UI tree from your components. In this example, the UI tree is then used to render to the DOM.
+
+Like browsers and mobile platforms, React also uses tree structures to manage and model the relationship between components in a React app. These trees are useful tools to understand how data flows through a React app and how to optimize rendering and app size.
+
+## The Render Tree
+
+A major feature of components is the ability to compose components of other components. As we [nest components](/learn/your-first-component#nesting-and-organizing-components), we have the concept of parent and child components, where each parent component may itself be a child of another component.
+
+When we render a React app, we can model this relationship in a tree, known as the render tree.
+
+Here is a React app that renders inspirational quotes.
+
+App.jsFancyText.jsInspirationGenerator.jsCopyright.jsquotes.js
+
+App.js
+```
+
+**crawl4ai**
+```
+[![logo by @sawaratsuki1004](https://react.dev/_next/image?url=%2Fimages%2Fuwu.png&w=128&q=75)](https://react.dev/)
+[React](https://react.dev/)
+[v19.2](https://react.dev/versions)
+`⌘``Ctrl``K`
+[Learn](https://react.dev/learn)
+[Reference](https://react.dev/reference/react)
+[Community](https://react.dev/community)
+[Blog](https://react.dev/blog)
+[](https://react.dev/community/translations)
+[](https://github.com/facebook/react/releases)
+### GET STARTED
+  * [Quick Start ](https://react.dev/learn "Quick Start")
+    * [Tutorial: Tic-Tac-Toe ](https://react.dev/learn/tutorial-tic-tac-toe "Tutorial: Tic-Tac-Toe")
+    * [Thinking in React ](https://react.dev/learn/thinking-in-react "Thinking in React")
+  * [Installation ](https://react.dev/learn/installation "Installation")
+    * [Creating a React App ](https://react.dev/learn/creating-a-react-app "Creating a React App")
+    * [Build a React App from Scratch ](https://react.dev/learn/build-a-react-app-from-scratch "Build a React App from Scratch")
+    * [Add React to an Existing Project ](https://react.dev/learn/add-react-to-an-existing-project "Add React to an Existing Project")
+  * [Setup ](https://react.dev/learn/setup "Setup")
+    * [Editor Setup ](https://react.dev/learn/editor-setup "Editor Setup")
+    * [Using TypeScript ](https://react.dev/learn/typescript "Using TypeScript")
+    * [React Developer Tools ](https://react.dev/learn/react-developer-tools "React Developer Tools")
+  * [React Compiler ](https://react.dev/learn/react-compiler "React Compiler")
+    * [Introduction ](https://react.dev/learn/react-compiler/introduction "Introduction")
+    * [Installation ](https://react.dev/learn/react-compiler/installation "Installation")
+    * [Incremental Adoption ](https://react.dev/learn/react-compiler/incremental-adoption "Incremental Adoption")
+    * [Debugging and Troubleshooting ](https://react.dev/learn/react-compiler/debugging "Debugging and Troubleshooting")
+### LEARN REACT
+  * [Describing the UI ](https://react.dev/learn/describing-the-ui "Describing the UI")
+    * [Your First Component ](https://react.dev/learn/your-first-component "Your First Component")
+    * [Importing and Exporting Components ](https://react.dev/learn/importing-and-exporting-components "Importing and Exporting Components")
+    * [Writing Markup with JSX ](https://react.dev/learn/writing-markup-with-jsx "Writing Markup with JSX")
+    * [JavaScript in JSX with Curly Braces ](https://react.dev/learn/javascript-in-jsx-with-curly-braces "JavaScript in JSX with Curly Braces")
+    * [Passing Props to a Component ](https://react.dev/learn/passing-props-to-a-component "Passing Props to a Component")
+    * [Conditional Rendering ](https://react.dev/learn/conditional-rendering "Conditional Rendering")
+    * [Rendering Lists ](https://react.dev/learn/rendering-lists "Rendering Lists")
+    * [Keeping Components Pure ](https://react.dev/learn/keeping-components-pure "Keeping Components Pure")
+    * [Your UI as a Tree ](https://react.dev/learn/understanding-your-ui-as-a-tree "Your UI as a Tree")
+  * [Adding Interactivity ](https://react.dev/learn/adding-interactivity "Adding Interactivity")
+    * [Responding to Events ](https://react.dev/learn/responding-to-events "Responding to Events")
+```
+
+**crawl4ai-raw**
+```
+[![logo by @sawaratsuki1004](https://react.dev/_next/image?url=%2Fimages%2Fuwu.png&w=128&q=75)](https://react.dev/)
+[React](https://react.dev/)
+[v19.2](https://react.dev/versions)
+`⌘``Ctrl``K`
+[Learn](https://react.dev/learn)
+[Reference](https://react.dev/reference/react)
+[Community](https://react.dev/community)
+[Blog](https://react.dev/blog)
+[](https://react.dev/community/translations)
+[](https://github.com/facebook/react/releases)
+### GET STARTED
+  * [Quick Start ](https://react.dev/learn "Quick Start")
+    * [Tutorial: Tic-Tac-Toe ](https://react.dev/learn/tutorial-tic-tac-toe "Tutorial: Tic-Tac-Toe")
+    * [Thinking in React ](https://react.dev/learn/thinking-in-react "Thinking in React")
+  * [Installation ](https://react.dev/learn/installation "Installation")
+    * [Creating a React App ](https://react.dev/learn/creating-a-react-app "Creating a React App")
+    * [Build a React App from Scratch ](https://react.dev/learn/build-a-react-app-from-scratch "Build a React App from Scratch")
+    * [Add React to an Existing Project ](https://react.dev/learn/add-react-to-an-existing-project "Add React to an Existing Project")
+  * [Setup ](https://react.dev/learn/setup "Setup")
+    * [Editor Setup ](https://react.dev/learn/editor-setup "Editor Setup")
+    * [Using TypeScript ](https://react.dev/learn/typescript "Using TypeScript")
+    * [React Developer Tools ](https://react.dev/learn/react-developer-tools "React Developer Tools")
+  * [React Compiler ](https://react.dev/learn/react-compiler "React Compiler")
+    * [Introduction ](https://react.dev/learn/react-compiler/introduction "Introduction")
+    * [Installation ](https://react.dev/learn/react-compiler/installation "Installation")
+    * [Incremental Adoption ](https://react.dev/learn/react-compiler/incremental-adoption "Incremental Adoption")
+    * [Debugging and Troubleshooting ](https://react.dev/learn/react-compiler/debugging "Debugging and Troubleshooting")
+### LEARN REACT
+  * [Describing the UI ](https://react.dev/learn/describing-the-ui "Describing the UI")
+    * [Your First Component ](https://react.dev/learn/your-first-component "Your First Component")
+    * [Importing and Exporting Components ](https://react.dev/learn/importing-and-exporting-components "Importing and Exporting Components")
+    * [Writing Markup with JSX ](https://react.dev/learn/writing-markup-with-jsx "Writing Markup with JSX")
+    * [JavaScript in JSX with Curly Braces ](https://react.dev/learn/javascript-in-jsx-with-curly-braces "JavaScript in JSX with Curly Braces")
+    * [Passing Props to a Component ](https://react.dev/learn/passing-props-to-a-component "Passing Props to a Component")
+    * [Conditional Rendering ](https://react.dev/learn/conditional-rendering "Conditional Rendering")
+    * [Rendering Lists ](https://react.dev/learn/rendering-lists "Rendering Lists")
+    * [Keeping Components Pure ](https://react.dev/learn/keeping-components-pure "Keeping Components Pure")
+    * [Your UI as a Tree ](https://react.dev/learn/understanding-your-ui-as-a-tree "Your UI as a Tree")
+  * [Adding Interactivity ](https://react.dev/learn/adding-interactivity "Adding Interactivity")
+    * [Responding to Events ](https://react.dev/learn/responding-to-events "Responding to Events")
+```
+
+**scrapy+md**
+```
+[Learn React](/learn)
+
+[Describing the UI](/learn/describing-the-ui)
+
+ Copy pageCopy
+
+# Understanding Your UI as a Tree
+
+Your React app is taking shape with many components being nested within each other. How does React keep track of your app’s component structure?
+
+React, and many other UI libraries, model UI as a tree. Thinking of your app as a tree is useful for understanding the relationship between components. This understanding will help you debug future concepts like performance and state management.
+
+### You will learn
+
+* How React “sees” component structures
+* What a render tree is and what it is useful for
+* What a module dependency tree is and what it is useful for
+
+## Your UI as a tree
+
+Trees are a relationship model between items. The UI is often represented using tree structures. For example, browsers use tree structures to model HTML ([DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)) and CSS ([CSSOM](https://developer.mozilla.org/docs/Web/API/CSS_Object_Model)). Mobile platforms also use trees to represent their view hierarchy.
+
+React creates a UI tree from your components. In this example, the UI tree is then used to render to the DOM.
+
+Like browsers and mobile platforms, React also uses tree structures to manage and model the relationship between components in a React app. These trees are useful tools to understand how data flows through a React app and how to optimize rendering and app size.
+
+## The Render Tree
+
+A major feature of components is the ability to compose components of other components. As we [nest components](/learn/your-first-component#nesting-and-organizing-components), we have the concept of parent and child components, where each parent component may itself be a child of another component.
+
+When we render a React app, we can model this relationship in a tree, known as the render tree.
+
+Here is a React app that renders inspirational quotes.
+
+App.jsFancyText.jsInspirationGenerator.jsCopyright.jsquotes.js
+
+App.js
+
+ReloadClear[Fork](https://codesandbox.io/api/v1/sandboxes/define?undefined&environment=create-react-app "Open in CodeSandbox")
+```
+
+**crawlee**
+```
+.ͼ1.cm-focused {outline: 1px dotted #212121;}
+.ͼ1 {position: relative !important; box-sizing: border-box; display: flex !important; flex-direction: column;}
+.ͼ1 .cm-scroller {display: flex !important; align-items: flex-start !important; font-family: monospace; line-height: 1.4; height: 100%; overflow-x: auto; position: relative; z-index: 0;}
+.ͼ1 .cm-content[contenteditable=true] {-webkit-user-modify: read-write-plaintext-only;}
+.ͼ1 .cm-content {margin: 0; flex-grow: 2; flex-shrink: 0; display: block; white-space: pre; word-wrap: normal; box-sizing: border-box; padding: 4px 0; outline: none;}
+.ͼ1 .cm-lineWrapping {white-space: pre-wrap; white-space: break-spaces; word-break: break-word; overflow-wrap: anywhere; flex-shrink: 1;}
+.ͼ2 .cm-content {caret-color: black;}
+.ͼ3 .cm-content {caret-color: white;}
+.ͼ1 .cm-line {display: block; padding: 0 2px 0 6px;}
+.ͼ1 .cm-layer > \* {position: absolute;}
+.ͼ1 .cm-layer {position: absolute; left: 0; top: 0; contain: size style;}
+.ͼ2 .cm-selectionBackground {background: #d9d9d9;}
+.ͼ3 .cm-selectionBackground {background: #222;}
+.ͼ2.cm-focused .cm-selectionBackground {background: #d7d4f0;}
+.ͼ3.cm-focused .cm-selectionBackground {background: #233;}
+.ͼ1 .cm-cursorLayer {pointer-events: none;}
+.ͼ1.cm-focused .cm-cursorLayer {animation: steps(1) cm-blink 1.2s infinite;}
+@keyframes cm-blink {50% {opacity: 0;}}
+@keyframes cm-blink2 {50% {opacity: 0;}}
+.ͼ1 .cm-cursor, .ͼ1 .cm-dropCursor {border-left: 1.2px solid black; margin-left: -0.6px; pointer-events: none;}
+.ͼ1 .cm-cursor {display: none;}
+.ͼ3 .cm-cursor {border-left-color: #444;}
+.ͼ1 .cm-dropCursor {position: absolute;}
+.ͼ1.cm-focused .cm-cursor {display: block;}
+.ͼ2 .cm-activeLine {background-color: #cceeff44;}
+.ͼ3 .cm-activeLine {background-color: #99eeff33;}
+.ͼ2 .cm-specialChar {color: red;}
+.ͼ3 .cm-specialChar {color: #f78;}
+.ͼ1 .cm-gutters {flex-shrink: 0; display: flex; height: 100%; box-sizing: border-box; left: 0; z-index: 200;}
+.ͼ2 .cm-gutters {background-color: #f5f5f5; color: #6c6c6c; border-right: 1px solid #ddd;}
+.ͼ3 .cm-gutters {background-color: #333338; color: #ccc;}
+.ͼ1 .cm-gutter {display: flex !important; flex-direction: column; flex-shrink: 0; box-sizing: border-box; min-height: 100%; overflow: hidden;}
+.ͼ1 .cm-gutterElement {box-sizing: border-box;}
+.ͼ1 .cm-lineNumbers .cm-gutterElement {padding: 0 3px 0 5px; min-width: 20px; text-align: right; white-space: nowrap;}
+.ͼ2 .cm-activeLineGutter {background-color: #e2f2ff;}
+.ͼ3 .cm-activeLineGutter {background-color: #222227;}
+.ͼ1 .cm-panels {box-sizing: border-box; position: sticky; left: 0; right: 0;}
+.ͼ2 .cm-panels {background-color: #f5f5f5; color: black;}
+.ͼ2 .cm-panels-top {border-bottom: 1px solid #ddd;}
+.ͼ2 .cm-panels-bottom {border-top: 1px solid #ddd;}
+```
+
+**colly+md**
+```
+Understanding Your UI as a Tree – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
+(function () {
+try {
+let logShown = false;
+function setUwu(isUwu) {
+try {
+if (isUwu) {
+localStorage.setItem('uwu', true);
+document.documentElement.classList.add('uwu');
+if (!logShown) {
+console.log('uwu mode! turn off with ?uwu=0');
+console.log('logo credit to @sawaratsuki1004 via https://github.com/SAWARATSUKI/KawaiiLogos');
+logShown = true;
+}
+} else {
+localStorage.removeItem('uwu');
+document.documentElement.classList.remove('uwu');
+console.log('uwu mode off. turn on with ?uwu');
+}
+} catch (err) { }
+}
+window.\_\_setUwu = setUwu;
+function checkQueryParam() {
+const params = new URLSearchParams(window.location.search);
+const value = params.get('uwu');
+switch(value) {
+case '':
+case 'true':
+case '1':
+return true;
+case 'false':
+case '0':
+return false;
+default:
+return null;
+}
+}
+function checkLocalStorage() {
+try {
+return localStorage.getItem('uwu') === 'true';
+```
+
+**playwright**
+```
+Understanding Your UI as a Tree – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
+(function () {
+try {
+let logShown = false;
+function setUwu(isUwu) {
+try {
+if (isUwu) {
+localStorage.setItem('uwu', true);
+document.documentElement.classList.add('uwu');
+if (!logShown) {
+console.log('uwu mode! turn off with ?uwu=0');
+console.log('logo credit to @sawaratsuki1004 via https://github.com/SAWARATSUKI/KawaiiLogos');
+logShown = true;
+}
+} else {
+localStorage.removeItem('uwu');
+document.documentElement.classList.remove('uwu');
+console.log('uwu mode off. turn on with ?uwu');
+}
+} catch (err) { }
+}
+window.\_\_setUwu = setUwu;
+function checkQueryParam() {
+const params = new URLSearchParams(window.location.search);
+const value = params.get('uwu');
+switch(value) {
+case '':
+case 'true':
+case '1':
+return true;
+case 'false':
+case '0':
+return false;
+default:
+return null;
+}
+}
+function checkLocalStorage() {
+try {
+return localStorage.getItem('uwu') === 'true';
+```
+
+**firecrawl** — no output for this URL
+
+</details>
+
+<details>
+<summary>Per-page word counts and preamble [1]</summary>
+
+| URL | markcrawl words / preamble [1] | crawl4ai words / preamble [1] | crawl4ai-raw words / preamble [1] | scrapy+md words / preamble [1] | crawlee words / preamble [1] | colly+md words / preamble [1] | playwright words / preamble [1] | firecrawl words / preamble [1] |
+|---|---|---|---|---|---|---|---|---|
+| 18.react.dev/reference/react-dom/findDOMNode | — | — | — | 1202 / 3 | — | 3363 / 278 | — | — |
+| 18.react.dev/reference/react-dom/hydrate | — | — | — | 906 / 3 | — | 2599 / 278 | — | — |
+| 18.react.dev/reference/react-dom/render | — | — | — | 852 / 3 | — | 2522 / 278 | — | — |
+| 18.react.dev/reference/react-dom/server/renderToNodeStr | — | — | — | 411 / 4 | — | 1582 / 278 | — | — |
+| 18.react.dev/reference/react-dom/server/renderToStaticN | — | — | — | 414 / 4 | — | 1587 / 278 | — | — |
+| 18.react.dev/reference/react-dom/unmountComponentAtNode | — | — | — | 342 / 3 | — | 1464 / 278 | — | — |
+| 18.react.dev/reference/react/createFactory | — | — | — | 784 / 5 | — | 2263 / 278 | — | — |
+| legacy.reactjs.org/blog/2020/09/22/introducing-the-new- | — | — | — | 2059 / 299 | — | 3992 / 2232 | — | — |
+| react.dev | 1227 / 38 | 1335 / 15 | 1335 / 15 | 1258 / 0 | 1535 / 276 | 1535 / 276 | 1535 / 276 | — |
+| react.dev/blog | 1278 / 11 | 1356 / 15 | 1356 / 15 | 1318 / 3 | 2752 / 282 | 2752 / 282 | 2752 / 282 | — |
+| react.dev/blog/2020/12/21/data-fetching-with-react-serv | 235 / 11 | 303 / 15 | 303 / 15 | 275 / 3 | 808 / 285 | 808 / 285 | 808 / 285 | — |
+| react.dev/blog/2021/06/08/the-plan-for-react-18 | 892 / 11 | 1015 / 15 | 1015 / 15 | 932 / 3 | 2188 / 285 | 2188 / 285 | 2188 / 285 | — |
+| react.dev/blog/2021/12/17/react-conf-2021-recap | 1194 / 11 | 1331 / 15 | 1331 / 15 | 1234 / 3 | 2866 / 284 | 2866 / 284 | 2866 / 284 | — |
+| react.dev/blog/2022/03/08/react-18-upgrade-guide | 2586 / 11 | 2755 / 15 | 2755 / 15 | 2626 / 3 | 5411 / 286 | 5411 / 286 | 5411 / 286 | — |
+| react.dev/blog/2022/03/29/react-v18 | 3736 / 11 | 3978 / 15 | 3978 / 15 | 3776 / 3 | 8014 / 282 | 8014 / 282 | 8014 / 282 | — |
+| react.dev/blog/2022/06/15/react-labs-what-we-have-been- | 1493 / 11 | 1605 / 15 | 1605 / 15 | 1533 / 3 | 3418 / 290 | 3418 / 290 | 3418 / 290 | — |
+| react.dev/blog/2023/03/16/introducing-react-dev | 2292 / 11 | 2672 / 15 | 2672 / 15 | 2337 / 3 | 5530 / 282 | 5530 / 282 | 5530 / 282 | — |
+| react.dev/blog/2023/03/22/react-labs-what-we-have-been- | 2311 / 11 | 2419 / 15 | 2419 / 15 | 2351 / 3 | 4989 / 290 | 4989 / 290 | 4989 / 290 | — |
+| react.dev/blog/2023/05/03/react-canaries | 1709 / 11 | 1859 / 15 | 1859 / 15 | 1749 / 3 | 3796 / 288 | 3796 / 288 | 3796 / 288 | — |
+| react.dev/blog/2024/02/15/react-labs-what-we-have-been- | 1897 / 11 | 2009 / 15 | 2009 / 15 | 1937 / 3 | 4134 / 290 | 4134 / 290 | 4134 / 290 | — |
+| react.dev/blog/2024/04/25/react-19-upgrade-guide | 3284 / 11 | 3716 / 15 | 3716 / 15 | 3324 / 3 | 6769 / 284 | 6769 / 284 | 6769 / 284 | — |
+| react.dev/blog/2024/05/22/react-conf-2024-recap | 1177 / 11 | 1274 / 15 | 1274 / 15 | 1217 / 3 | 2810 / 284 | 2810 / 284 | 2810 / 284 | — |
+| react.dev/blog/2024/10/21/react-compiler-beta-release | 1449 / 11 | 1593 / 15 | 1593 / 15 | 1491 / 3 | 3241 / 284 | 3241 / 284 | 3241 / 284 | — |
+| react.dev/blog/2024/12/05/react-19 | 4261 / 11 | 4550 / 15 | 4550 / 15 | 4301 / 3 | 8673 / 282 | 8673 / 282 | 8673 / 282 | — |
+| react.dev/blog/2025/02/14/sunsetting-create-react-app | 2576 / 11 | 2737 / 15 | 2737 / 15 | 2616 / 3 | 5497 / 284 | 5497 / 284 | 5497 / 284 | — |
+| react.dev/blog/2025/04/23/react-labs-view-transitions-a | 5425 / 11 | 5662 / 15 | 5662 / 15 | 5465 / 3 | 39955 / 287 | 39955 / 287 | 39955 / 287 | — |
+| react.dev/blog/2025/10/01/react-19-2 | 1924 / 11 | 2334 / 15 | 2334 / 15 | 1964 / 3 | 4098 / 282 | 4098 / 282 | 4098 / 282 | — |
+| react.dev/blog/2025/10/07/introducing-the-react-foundat | 513 / 11 | 603 / 15 | 603 / 15 | 553 / 3 | 1348 / 284 | 1348 / 284 | 1348 / 284 | — |
+| react.dev/blog/2025/10/07/react-compiler-1 | 1788 / 11 | 1932 / 15 | 1932 / 15 | 1828 / 3 | 3862 / 283 | 3862 / 283 | 3862 / 283 | — |
+| react.dev/blog/2025/10/16/react-conf-2025-recap | 1127 / 11 | 1237 / 15 | 1237 / 15 | 1167 / 3 | 2689 / 284 | 2689 / 284 | 2689 / 284 | — |
+| react.dev/blog/2025/12/03/critical-security-vulnerabili | 990 / 11 | 1162 / 15 | 1162 / 15 | 1030 / 3 | 2254 / 287 | 2254 / 287 | 2254 / 287 | — |
+| react.dev/blog/2025/12/11/denial-of-service-and-source- | 1190 / 11 | 1384 / 15 | 1384 / 15 | 1230 / 3 | 2698 / 291 | 2698 / 291 | 2698 / 291 | — |
+| react.dev/blog/2026/02/24/the-react-foundation | 366 / 11 | 469 / 15 | 469 / 15 | 406 / 3 | 1046 / 293 | 1046 / 293 | 1046 / 293 | — |
+| react.dev/community | 211 / 11 | 374 / 12 | 374 / 12 | 251 / 3 | 800 / 279 | 800 / 279 | 800 / 279 | — |
+| react.dev/community/acknowledgements | 316 / 11 | 459 / 12 | 459 / 12 | 356 / 3 | 1002 / 278 | 1002 / 278 | 1002 / 278 | — |
+| react.dev/community/conferences | 3287 / 11 | 5796 / 12 | 5796 / 12 | 3327 / 3 | 8873 / 279 | 8873 / 279 | 8873 / 279 | — |
+| react.dev/community/docs-contributors | 191 / 11 | 338 / 12 | 338 / 12 | 231 / 3 | 753 / 279 | 753 / 279 | 753 / 279 | — |
+| react.dev/community/meetups | 509 / 11 | 952 / 12 | 952 / 12 | 549 / 3 | 1456 / 279 | 1456 / 279 | 1456 / 279 | — |
+| react.dev/community/team | 1399 / 11 | 1774 / 12 | 1774 / 12 | 1439 / 3 | 3102 / 280 | 3102 / 280 | 3102 / 280 | — |
+| react.dev/community/translations | 339 / 11 | 504 / 12 | 504 / 12 | 379 / 3 | 859 / 278 | 859 / 278 | 859 / 278 | — |
+| react.dev/community/versioning-policy | 2226 / 11 | 2519 / 12 | 2519 / 12 | 2266 / 3 | 4817 / 279 | 4817 / 279 | 4817 / 279 | — |
+| react.dev/community/videos | 926 / 11 | 1390 / 12 | 1390 / 12 | 966 / 3 | 2497 / 279 | 2497 / 279 | 2497 / 279 | — |
+| react.dev/learn | 2033 / 12 | 2975 / 12 | 2985 / 12 | 2073 / 4 | 5354 / 802 | 4815 / 279 | 4815 / 279 | — |
+| react.dev/learn/add-react-to-an-existing-project | 1029 / 13 | 1679 / 12 | 1679 / 12 | 1069 / 5 | 2867 / 283 | 2867 / 283 | 2867 / 283 | — |
+| react.dev/learn/adding-interactivity | 1813 / 12 | 2520 / 12 | 2531 / 12 | 1858 / 4 | 6066 / 1111 | 5232 / 279 | 5232 / 279 | — |
+| react.dev/learn/build-a-react-app-from-scratch | 1679 / 13 | 2331 / 12 | 2331 / 12 | 1719 / 5 | 4100 / 283 | 4100 / 283 | 4100 / 283 | — |
+| react.dev/learn/choosing-the-state-structure | 3914 / 14 | 4529 / 12 | 4529 / 12 | 3954 / 6 | 11907 / 281 | 11907 / 281 | 11907 / 281 | — |
+| react.dev/learn/conditional-rendering | 1839 / 15 | 2466 / 12 | 2482 / 12 | 1879 / 7 | 5375 / 802 | 4827 / 279 | 4827 / 279 | — |
+| react.dev/learn/creating-a-react-app | 929 / 13 | 1553 / 12 | 1553 / 12 | 969 / 5 | 2599 / 281 | 2599 / 281 | 2599 / 281 | — |
+| react.dev/learn/describing-the-ui | 1584 / 12 | 2527 / 12 | 2527 / 12 | 1624 / 4 | 4574 / 803 | 4062 / 280 | 4062 / 280 | — |
+| react.dev/learn/editor-setup | 543 / 13 | 1128 / 12 | 1128 / 12 | 584 / 5 | 1813 / 279 | 1813 / 279 | 1813 / 279 | — |
+| react.dev/learn/escape-hatches | 2534 / 12 | 3198 / 12 | 3198 / 12 | 2574 / 4 | 6659 / 802 | 6150 / 279 | 6150 / 279 | — |
+| react.dev/learn/extracting-state-logic-into-a-reducer | 2818 / 14 | 3476 / 12 | 3476 / 12 | 2858 / 6 | 10808 / 1115 | 10006 / 283 | 10006 / 283 | — |
+| react.dev/learn/importing-and-exporting-components | 1316 / 15 | 1939 / 12 | 1941 / 12 | 1356 / 7 | 4290 / 1113 | 3444 / 281 | 3444 / 281 | — |
+| react.dev/learn/installation | 331 / 12 | 954 / 12 | 954 / 12 | 371 / 4 | 1936 / 801 | 1406 / 278 | 1406 / 278 | — |
+| react.dev/learn/javascript-in-jsx-with-curly-braces | 1064 / 15 | 1709 / 12 | 1721 / 12 | 1104 / 7 | 4409 / 1204 | 3472 / 283 | 3472 / 283 | — |
+| react.dev/learn/keeping-components-pure | 1876 / 15 | 2529 / 12 | 2529 / 12 | 1921 / 7 | 6375 / 803 | 5846 / 280 | 5846 / 280 | — |
+| react.dev/learn/lifecycle-of-reactive-effects | 4739 / 14 | 5524 / 12 | 5534 / 12 | 4779 / 6 | 14227 / 281 | 14227 / 281 | 14227 / 281 | — |
+| react.dev/learn/managing-state | 2050 / 12 | 2688 / 12 | 2706 / 12 | 2090 / 4 | 6248 / 1111 | 5485 / 279 | 5485 / 279 | — |
+| react.dev/learn/manipulating-the-dom-with-refs | 2811 / 14 | 3453 / 12 | 3471 / 12 | 2851 / 6 | 7724 / 805 | 7183 / 282 | 7183 / 282 | — |
+| react.dev/learn/passing-data-deeply-with-context | 2655 / 14 | 3773 / 12 | 3789 / 12 | 2695 / 6 | 7893 / 805 | 7379 / 282 | 7379 / 282 | — |
+| react.dev/learn/passing-props-to-a-component | 1681 / 15 | 2390 / 12 | 2400 / 12 | 1726 / 7 | 6000 / 805 | 5460 / 282 | 5460 / 282 | — |
+| react.dev/learn/preserving-and-resetting-state | 3454 / 14 | 6010 / 12 | 6010 / 12 | 3494 / 6 | 11574 / 1113 | 10750 / 281 | 10750 / 281 | — |
+| react.dev/learn/queueing-a-series-of-state-updates | 1733 / 14 | 2435 / 12 | 2435 / 12 | 1778 / 6 | 5279 / 806 | 4752 / 283 | 4752 / 283 | — |
+| react.dev/learn/react-compiler | 183 / 12 | 781 / 12 | 781 / 12 | 223 / 4 | 1105 / 279 | 1105 / 279 | 1105 / 279 | — |
+| react.dev/learn/react-compiler/debugging | 660 / 14 | 1321 / 12 | 1321 / 12 | 700 / 6 | 2047 / 280 | 2047 / 280 | 2047 / 280 | — |
+| react.dev/learn/react-compiler/incremental-adoption | 898 / 14 | 1620 / 12 | 1620 / 12 | 938 / 6 | 2515 / 279 | 2515 / 279 | 2515 / 279 | — |
+| react.dev/learn/react-compiler/installation | 916 / 14 | 1628 / 12 | 1628 / 12 | 956 / 6 | 2496 / 278 | 2496 / 278 | 2496 / 278 | — |
+| react.dev/learn/react-compiler/introduction | 1299 / 14 | 1993 / 12 | 1993 / 12 | 1339 / 6 | 3318 / 278 | 3318 / 278 | 3318 / 278 | — |
+| react.dev/learn/react-developer-tools | 255 / 13 | 837 / 12 | 837 / 12 | 295 / 5 | 1238 / 280 | 1238 / 280 | 1238 / 280 | — |
+| react.dev/learn/reacting-to-input-with-state | 2413 / 14 | 3306 / 12 | 3318 / 12 | 2468 / 6 | 7702 / 805 | 7229 / 282 | 7229 / 282 | — |
+| react.dev/learn/referencing-values-with-refs | 1959 / 14 | 2619 / 12 | 2619 / 12 | 2004 / 6 | 5456 / 281 | 5456 / 281 | 5456 / 281 | — |
+| react.dev/learn/removing-effect-dependencies | 5495 / 14 | 6279 / 12 | 6293 / 12 | 5535 / 6 | 15774 / 803 | 15217 / 280 | 15217 / 280 | — |
+| react.dev/learn/render-and-commit | 1011 / 14 | 1758 / 12 | 1764 / 12 | 1066 / 6 | 2896 / 280 | 2896 / 280 | 2896 / 280 | — |
+| react.dev/learn/rendering-lists | 1774 / 15 | 2398 / 12 | 2406 / 12 | 1814 / 7 | 6245 / 279 | 6257 / 279 | 6257 / 279 | — |
+| react.dev/learn/responding-to-events | 2459 / 14 | 3125 / 12 | 3120 / 12 | 2499 / 6 | 6825 / 1201 | 5916 / 280 | 5916 / 280 | — |
+| react.dev/learn/reusing-logic-with-custom-hooks | 5388 / 14 | 6114 / 12 | 6114 / 12 | 5428 / 6 | 15181 / 1114 | 14376 / 282 | 14376 / 282 | — |
+| react.dev/learn/scaling-up-with-reducer-and-context | 1965 / 14 | 2512 / 12 | 2512 / 12 | 2005 / 6 | 6702 / 1115 | 5964 / 283 | 5964 / 283 | — |
+| react.dev/learn/separating-events-from-effects | 3891 / 14 | 4615 / 12 | 4615 / 12 | 3931 / 6 | 11074 / 281 | 11074 / 281 | 11074 / 281 | — |
+| react.dev/learn/setup | 154 / 12 | 744 / 12 | 744 / 12 | 194 / 4 | 1044 / 278 | 1044 / 278 | 1044 / 278 | — |
+| react.dev/learn/sharing-state-between-components | 1810 / 14 | 2825 / 12 | 2825 / 12 | 1850 / 6 | 5689 / 804 | 5135 / 281 | 5135 / 281 | — |
+| react.dev/learn/state-a-components-memory | 3004 / 14 | 3675 / 12 | 3675 / 12 | 3044 / 6 | 12653 / 804 | 12110 / 281 | 12110 / 281 | — |
+| react.dev/learn/state-as-a-snapshot | 1686 / 14 | 2320 / 12 | 2320 / 12 | 1736 / 6 | 5042 / 1113 | 4201 / 281 | 4201 / 281 | — |
+| react.dev/learn/synchronizing-with-effects | 6392 / 14 | 7223 / 12 | 7223 / 12 | 6432 / 6 | 15138 / 280 | 15138 / 280 | 15138 / 280 | — |
+| react.dev/learn/thinking-in-react | 2922 / 14 | 3604 / 12 | 3604 / 12 | 2962 / 6 | 6502 / 280 | 6502 / 280 | 6502 / 280 | — |
+| react.dev/learn/tutorial-tic-tac-toe | 10694 / 14 | 11326 / 12 | 11326 / 12 | 10734 / 6 | 22668 / 802 | 22356 / 279 | 22356 / 279 | — |
+| react.dev/learn/typescript | 2426 / 13 | 3087 / 12 | 3087 / 12 | 2466 / 5 | 5460 / 279 | 5460 / 279 | 5460 / 279 | — |
+| react.dev/learn/understanding-your-ui-as-a-tree | 1242 / 15 | 2422 / 12 | 2422 / 12 | 1282 / 7 | 4269 / 806 | 3731 / 283 | 3731 / 283 | — |
+| react.dev/learn/updating-arrays-in-state | 3069 / 14 | 3711 / 12 | 3733 / 12 | 3109 / 6 | 8923 / 281 | 8923 / 281 | 8923 / 281 | — |
+| react.dev/learn/updating-objects-in-state | 2812 / 14 | 3445 / 12 | 3454 / 12 | 2852 / 6 | 7665 / 281 | 7665 / 281 | 7665 / 281 | — |
+| react.dev/learn/writing-markup-with-jsx | 1142 / 15 | 2044 / 12 | 2044 / 12 | 1182 / 7 | 3168 / 281 | 3168 / 281 | 3168 / 281 | — |
+| react.dev/learn/you-might-not-need-an-effect | 5807 / 14 | 6565 / 12 | 6565 / 12 | 5847 / 6 | 14324 / 283 | 14324 / 283 | 14324 / 283 | — |
+| react.dev/learn/your-first-component | 1344 / 15 | 2002 / 12 | 2008 / 12 | 1384 / 7 | 3690 / 280 | 3690 / 280 | 3690 / 280 | — |
+| react.dev/link/new-jsx-transform | 1740 / 88 | 1754 / 20 | 1754 / 20 | — | 4141 / 2381 | — | 3992 / 2232 | — |
+| react.dev/reference/dev-tools/react-performance-tracks | 1065 / 12 | 1901 / 12 | 1901 / 12 | 1105 / 4 | 2942 / 280 | 2942 / 280 | 2942 / 280 | — |
+| react.dev/reference/eslint-plugin-react-hooks | 391 / 12 | 1110 / 12 | 1110 / 12 | 441 / 4 | 1571 / 278 | 1571 / 278 | 1571 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/com | 268 / 13 | 1021 / 12 | 1021 / 12 | 308 / 5 | 1334 / 278 | 1334 / 278 | 1334 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/con | 235 / 13 | 988 / 12 | 988 / 12 | 275 / 5 | 1276 / 278 | 1276 / 278 | 1276 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/err | 268 / 13 | 1024 / 12 | 1024 / 12 | 308 / 5 | 1366 / 278 | 1366 / 278 | 1366 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/exh | 581 / 13 | 1372 / 12 | 1372 / 12 | 621 / 5 | 1933 / 278 | 1933 / 278 | 1933 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/gat | 184 / 13 | 913 / 12 | 913 / 12 | 224 / 5 | 1168 / 278 | 1168 / 278 | 1168 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/glo | 270 / 13 | 999 / 12 | 999 / 12 | 310 / 5 | 1331 / 278 | 1331 / 278 | 1331 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/imm | 434 / 13 | 1221 / 12 | 1221 / 12 | 474 / 5 | 1680 / 278 | 1680 / 278 | 1680 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/inc | 706 / 13 | 1443 / 12 | 1443 / 12 | 746 / 5 | 2184 / 278 | 2184 / 278 | 2184 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/pre | 322 / 13 | 1077 / 12 | 1077 / 12 | 362 / 5 | 1449 / 278 | 1449 / 278 | 1449 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/pur | 276 / 13 | 1043 / 12 | 1043 / 12 | 316 / 5 | 1360 / 278 | 1360 / 278 | 1360 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/ref | 463 / 13 | 1239 / 12 | 1239 / 12 | 503 / 5 | 1732 / 278 | 1732 / 278 | 1732 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/rul | 614 / 13 | 1414 / 12 | 1414 / 12 | 654 / 5 | 1996 / 278 | 1996 / 278 | 1996 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/set | 458 / 13 | 1197 / 12 | 1197 / 12 | 498 / 5 | 1707 / 278 | 1707 / 278 | 1707 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/set | 404 / 13 | 1173 / 12 | 1173 / 12 | 444 / 5 | 1621 / 278 | 1621 / 278 | 1621 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/sta | 338 / 13 | 1093 / 12 | 1093 / 12 | 378 / 5 | 1481 / 278 | 1481 / 278 | 1481 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/uns | 335 / 13 | 1088 / 12 | 1088 / 12 | 375 / 5 | 1470 / 278 | 1470 / 278 | 1470 / 278 | — |
+| react.dev/reference/eslint-plugin-react-hooks/lints/use | 307 / 13 | 1066 / 12 | 1066 / 12 | 347 / 5 | 1429 / 278 | 1429 / 278 | 1429 / 278 | — |
+| react.dev/reference/react | 415 / 12 | 1180 / 12 | 1180 / 12 | 455 / 4 | 1633 / 280 | 1633 / 280 | 1633 / 280 | — |
+| react.dev/reference/react-compiler/compilationMode | 620 / 13 | 1464 / 12 | 1464 / 12 | 660 / 5 | 1969 / 278 | 1969 / 278 | 1969 / 278 | — |
+| react.dev/reference/react-compiler/compiling-libraries | 505 / 12 | 1363 / 12 | 1363 / 12 | 545 / 4 | 1791 / 279 | 1791 / 279 | 1791 / 279 | — |
+| react.dev/reference/react-compiler/configuration | 374 / 12 | 1177 / 12 | 1177 / 12 | 414 / 4 | 1535 / 278 | 1535 / 278 | 1535 / 278 | — |
+| react.dev/reference/react-compiler/directives | 697 / 12 | 1591 / 12 | 1591 / 12 | 737 / 4 | 2095 / 278 | 2095 / 278 | 2095 / 278 | — |
+| react.dev/reference/react-compiler/directives/use-memo | 721 / 13 | 1567 / 12 | 1567 / 12 | 761 / 5 | 2186 / 280 | 2186 / 280 | 2186 / 280 | — |
+| react.dev/reference/react-compiler/directives/use-no-me | 637 / 13 | 1469 / 12 | 1469 / 12 | 677 / 5 | 2032 / 281 | 2032 / 281 | 2032 / 281 | — |
+| react.dev/reference/react-compiler/gating | 366 / 13 | 1173 / 12 | 1173 / 12 | 406 / 5 | 1481 / 278 | 1481 / 278 | 1481 / 278 | — |
+| react.dev/reference/react-compiler/logger | 264 / 13 | 1049 / 12 | 1049 / 12 | 304 / 5 | 1300 / 278 | 1300 / 278 | 1300 / 278 | — |
+| react.dev/reference/react-compiler/panicThreshold | 246 / 13 | 1024 / 12 | 1024 / 12 | 286 / 5 | 1260 / 278 | 1260 / 278 | 1260 / 278 | — |
+| react.dev/reference/react-compiler/target | 453 / 13 | 1297 / 12 | 1297 / 12 | 493 / 5 | 1641 / 278 | 1641 / 278 | 1641 / 278 | — |
+| react.dev/reference/react-dom | 336 / 12 | 1085 / 12 | 1085 / 12 | 376 / 4 | 1477 / 280 | 1477 / 280 | 1477 / 280 | — |
+| react.dev/reference/react-dom/client | 137 / 12 | 864 / 12 | 864 / 12 | 177 / 4 | 1093 / 281 | 1093 / 281 | 1093 / 281 | — |
+| react.dev/reference/react-dom/client/createRoot | 2325 / 14 | 3345 / 12 | 3345 / 12 | 2365 / 6 | 5614 / 278 | 5614 / 278 | 5614 / 278 | — |
+| react.dev/reference/react-dom/client/hydrateRoot | 1958 / 14 | 2892 / 12 | 2896 / 12 | 1998 / 6 | 4912 / 278 | 4912 / 278 | 4912 / 278 | — |
+| react.dev/reference/react-dom/components | 959 / 12 | 1753 / 12 | 1757 / 12 | 999 / 4 | 2753 / 280 | 2753 / 280 | 2753 / 280 | — |
+| react.dev/reference/react-dom/components/common | 6375 / 13 | 7530 / 12 | 7544 / 12 | 6415 / 5 | 13359 / 281 | 13359 / 281 | 13359 / 281 | — |
+| react.dev/reference/react-dom/components/form | 1537 / 13 | 2386 / 12 | 2398 / 12 | 1577 / 5 | 3869 / 278 | 3869 / 278 | 3869 / 278 | — |
+| react.dev/reference/react-dom/components/input | 2956 / 13 | 3940 / 12 | 3940 / 12 | 2996 / 5 | 6637 / 278 | 6637 / 278 | 6637 / 278 | — |
+| react.dev/reference/react-dom/components/link | 1465 / 13 | 2286 / 12 | 2294 / 12 | 1505 / 5 | 3643 / 278 | 3643 / 278 | 3643 / 278 | — |
+| react.dev/reference/react-dom/components/meta | 539 / 13 | 1325 / 12 | 1325 / 12 | 579 / 5 | 1863 / 278 | 1863 / 278 | 1863 / 278 | — |
+| react.dev/reference/react-dom/components/option | 272 / 13 | 1035 / 12 | 1035 / 12 | 312 / 5 | 1341 / 278 | 1341 / 278 | 1341 / 278 | — |
+| react.dev/reference/react-dom/components/progress | 212 / 13 | 964 / 12 | 966 / 12 | 252 / 5 | 1759 / 801 | 1224 / 278 | 1224 / 278 | — |
+| react.dev/reference/react-dom/components/script | 784 / 13 | 1550 / 12 | 1554 / 12 | 824 / 5 | 2315 / 278 | 2315 / 278 | 2315 / 278 | — |
+| react.dev/reference/react-dom/components/select | 1674 / 13 | 2529 / 12 | 2529 / 12 | 1714 / 5 | 4112 / 278 | 4112 / 278 | 4112 / 278 | — |
+| react.dev/reference/react-dom/components/style | 605 / 13 | 1364 / 12 | 1366 / 12 | 645 / 5 | 1981 / 278 | 1981 / 278 | 1981 / 278 | — |
+| react.dev/reference/react-dom/components/textarea | 1966 / 13 | 2918 / 12 | 2918 / 12 | 2006 / 5 | 4775 / 278 | 4775 / 278 | 4775 / 278 | — |
+| react.dev/reference/react-dom/components/title | 483 / 13 | 1259 / 12 | 1259 / 12 | 523 / 5 | 1752 / 278 | 1752 / 278 | 1752 / 278 | — |
+| react.dev/reference/react-dom/createPortal | 1324 / 13 | 2161 / 12 | 2161 / 12 | 1364 / 5 | 3695 / 278 | 3695 / 278 | 3695 / 278 | — |
+| react.dev/reference/react-dom/findDOMNode | 1162 / 11 | 2018 / 12 | 2018 / 12 | — | 3363 / 278 | — | 3363 / 278 | — |
+| react.dev/reference/react-dom/flushSync | 905 / 13 | 1704 / 12 | 1704 / 12 | 945 / 5 | 2550 / 278 | 2550 / 278 | 2550 / 278 | — |
+| react.dev/reference/react-dom/hooks | 175 / 12 | 888 / 12 | 888 / 12 | 215 / 4 | 1162 / 281 | 1162 / 281 | 1162 / 281 | — |
+| react.dev/reference/react-dom/hooks/useFormStatus | 812 / 13 | 1623 / 12 | 1623 / 12 | 852 / 5 | 2439 / 278 | 2445 / 278 | 2445 / 278 | — |
+| react.dev/reference/react-dom/hydrate | 866 / 11 | 1677 / 12 | 1677 / 12 | — | 2599 / 278 | — | 2599 / 278 | — |
+| react.dev/reference/react-dom/preconnect | 393 / 13 | 1172 / 12 | 1172 / 12 | 433 / 5 | 1565 / 278 | 1565 / 278 | 1565 / 278 | — |
+| react.dev/reference/react-dom/prefetchDNS | 431 / 13 | 1214 / 12 | 1214 / 12 | 471 / 5 | 1641 / 278 | 1641 / 278 | 1641 / 278 | — |
+| react.dev/reference/react-dom/preinit | 586 / 13 | 1374 / 12 | 1374 / 12 | 626 / 5 | 1987 / 278 | 1987 / 278 | 1987 / 278 | — |
+| react.dev/reference/react-dom/preinitModule | 482 / 13 | 1260 / 12 | 1260 / 12 | 522 / 5 | 1740 / 278 | 1740 / 278 | 1740 / 278 | — |
+| react.dev/reference/react-dom/preload | 642 / 13 | 1430 / 12 | 1430 / 12 | 682 / 5 | 2172 / 278 | 2172 / 278 | 2172 / 278 | — |
+| react.dev/reference/react-dom/preloadModule | 456 / 13 | 1234 / 12 | 1234 / 12 | 496 / 5 | 1687 / 278 | 1687 / 278 | 1687 / 278 | — |
+| react.dev/reference/react-dom/render | 812 / 11 | 1620 / 12 | 1620 / 12 | — | 2522 / 278 | — | 2522 / 278 | — |
+| react.dev/reference/react-dom/server | 225 / 12 | 982 / 12 | 982 / 12 | 265 / 4 | 1290 / 281 | 1290 / 281 | 1290 / 281 | — |
+| react.dev/reference/react-dom/server/renderToNodeStream | 371 / 12 | 1158 / 12 | 1158 / 12 | — | 1582 / 278 | — | 1582 / 278 | — |
+| react.dev/reference/react-dom/server/renderToPipeableSt | 3134 / 14 | 4098 / 12 | 4098 / 12 | 3174 / 6 | 6938 / 278 | 6938 / 278 | 6938 / 278 | — |
+| react.dev/reference/react-dom/server/renderToReadableSt | 3189 / 14 | 4155 / 12 | 4155 / 12 | 3229 / 6 | 7064 / 278 | 7064 / 278 | 7064 / 278 | — |
+| react.dev/reference/react-dom/server/renderToStaticMark | 341 / 14 | 1116 / 12 | 1116 / 12 | 381 / 6 | 1465 / 278 | 1465 / 278 | 1465 / 278 | — |
+| react.dev/reference/react-dom/server/renderToStaticNode | 374 / 12 | 1163 / 12 | 1163 / 12 | — | 1587 / 278 | — | 1587 / 278 | — |
+| react.dev/reference/react-dom/server/renderToString | 769 / 14 | 1643 / 12 | 1643 / 12 | 809 / 6 | 2319 / 278 | 2319 / 278 | 2319 / 278 | — |
+| react.dev/reference/react-dom/server/resume | 842 / 14 | 1611 / 12 | 1611 / 12 | 882 / 6 | 2544 / 278 | 2544 / 278 | 2544 / 278 | — |
+| react.dev/reference/react-dom/server/resumeToPipeableSt | 561 / 14 | 1319 / 12 | 1319 / 12 | 601 / 6 | 1902 / 278 | 1902 / 278 | 1902 / 278 | — |
+| react.dev/reference/react-dom/static | 184 / 12 | 919 / 12 | 919 / 12 | 224 / 4 | 1203 / 281 | 1203 / 281 | 1203 / 281 | — |
+| react.dev/reference/react-dom/static/prerender | 1767 / 14 | 2650 / 12 | 2650 / 12 | 1807 / 6 | 4266 / 278 | 4266 / 278 | 4266 / 278 | — |
+| react.dev/reference/react-dom/static/prerenderToNodeStr | 1772 / 14 | 2655 / 12 | 2655 / 12 | 1812 / 6 | 4275 / 278 | 4275 / 278 | 4275 / 278 | — |
+| react.dev/reference/react-dom/static/resumeAndPrerender | 524 / 14 | 1287 / 12 | 1287 / 12 | 564 / 6 | 1827 / 278 | 1827 / 278 | 1827 / 278 | — |
+| react.dev/reference/react-dom/static/resumeAndPrerender | 520 / 14 | 1281 / 12 | 1281 / 12 | 560 / 6 | 1819 / 278 | 1819 / 278 | 1819 / 278 | — |
+| react.dev/reference/react-dom/unmountComponentAtNode | 302 / 11 | 1077 / 12 | 1077 / 12 | — | 1464 / 278 | — | 1464 / 278 | — |
+| react.dev/reference/react/Activity | 3001 / 13 | 3876 / 12 | 3876 / 12 | 3041 / 5 | 7622 / 278 | 7622 / 278 | 7622 / 278 | — |
+| react.dev/reference/react/Children | 2697 / 15 | 3704 / 12 | 3704 / 12 | 2737 / 7 | 6467 / 278 | 6467 / 278 | 6467 / 278 | — |
+| react.dev/reference/react/Component | 8044 / 15 | 9404 / 12 | 9404 / 12 | 8084 / 7 | 16797 / 278 | 16797 / 278 | 16797 / 278 | — |
+| react.dev/reference/react/Fragment | 1452 / 13 | 2247 / 12 | 2247 / 12 | 1492 / 5 | 3592 / 279 | 3592 / 279 | 3592 / 279 | — |
+| react.dev/reference/react/Profiler | 676 / 13 | 1471 / 12 | 1471 / 12 | 716 / 5 | 2109 / 278 | 2109 / 278 | 2109 / 278 | — |
+| react.dev/reference/react/PureComponent | 707 / 15 | 1474 / 12 | 1474 / 12 | 747 / 7 | 2176 / 278 | 2176 / 278 | 2176 / 278 | — |
+| react.dev/reference/react/StrictMode | 3167 / 13 | 4040 / 12 | 4040 / 12 | 3207 / 5 | 7997 / 278 | 7997 / 278 | 7997 / 278 | — |
+| react.dev/reference/react/Suspense | 2848 / 13 | 3792 / 12 | 3792 / 12 | 2888 / 5 | 9480 / 278 | 9480 / 278 | 9480 / 278 | — |
+| react.dev/reference/react/ViewTransition | 4885 / 13 | 5948 / 12 | 5948 / 12 | 4937 / 5 | 12800 / 278 | 12800 / 278 | 12800 / 278 | — |
+| react.dev/reference/react/act | 796 / 13 | 1606 / 12 | 1606 / 12 | 836 / 5 | 2373 / 278 | 2373 / 278 | 2373 / 278 | — |
+| react.dev/reference/react/addTransitionType | 553 / 13 | 1384 / 12 | 1384 / 12 | 605 / 5 | 1889 / 278 | 1889 / 278 | 1889 / 278 | — |
+| react.dev/reference/react/apis | 205 / 12 | 922 / 12 | 922 / 12 | 245 / 4 | 1213 / 280 | 1213 / 280 | 1213 / 280 | — |
+| react.dev/reference/react/cache | 2378 / 13 | 3258 / 12 | 3258 / 12 | 2418 / 5 | 5451 / 278 | 5451 / 278 | 5451 / 278 | — |
+| react.dev/reference/react/cacheSignal | 444 / 13 | 1225 / 12 | 1225 / 12 | 484 / 5 | 1662 / 278 | 1662 / 278 | 1662 / 278 | — |
+| react.dev/reference/react/captureOwnerStack | 878 / 13 | 1668 / 12 | 1674 / 12 | 918 / 5 | 2713 / 278 | 2713 / 278 | 2713 / 278 | — |
+| react.dev/reference/react/cloneElement | 1516 / 15 | 2338 / 12 | 2338 / 12 | 1556 / 7 | 4130 / 278 | 4130 / 278 | 4130 / 278 | — |
+| react.dev/reference/react/components | 116 / 12 | 845 / 12 | 845 / 12 | 156 / 4 | 1045 / 280 | 1045 / 280 | 1045 / 280 | — |
+| react.dev/reference/react/createContext | 892 / 13 | 1738 / 12 | 1738 / 12 | 932 / 5 | 2534 / 278 | 2534 / 278 | 2534 / 278 | — |
+| react.dev/reference/react/createElement | 937 / 15 | 1705 / 12 | 1705 / 12 | 977 / 7 | 2649 / 278 | 2649 / 278 | 2649 / 278 | — |
+| react.dev/reference/react/createFactory | 744 / 13 | 1565 / 12 | 1565 / 12 | — | 2266 / 278 | — | 2263 / 278 | — |
+| react.dev/reference/react/createRef | 544 / 15 | 1334 / 12 | 1334 / 12 | 584 / 7 | 1836 / 278 | 1836 / 278 | 1836 / 278 | — |
+| react.dev/reference/react/experimental_taintObjectRefer | 800 / 13 | 1585 / 12 | 1585 / 12 | 852 / 5 | 2356 / 278 | 2356 / 278 | 2356 / 278 | — |
+| react.dev/reference/react/experimental_taintUniqueValue | 1132 / 13 | 1915 / 12 | 1915 / 12 | 1184 / 5 | 3003 / 278 | 3003 / 278 | 3003 / 278 | — |
+| react.dev/reference/react/forwardRef | 1529 / 15 | 2406 / 12 | 2406 / 12 | 1569 / 7 | 4038 / 278 | 4038 / 278 | 4038 / 278 | — |
+| react.dev/reference/react/hooks | 741 / 12 | 1530 / 12 | 1530 / 12 | 781 / 4 | 2258 / 280 | 2258 / 280 | 2258 / 280 | — |
+| react.dev/reference/react/isValidElement | 541 / 15 | 1313 / 12 | 1313 / 12 | 581 / 7 | 1816 / 278 | 1816 / 278 | 1816 / 278 | — |
+| react.dev/reference/react/lazy | 698 / 13 | 1501 / 12 | 1503 / 12 | 738 / 5 | 2225 / 278 | 2225 / 278 | 2225 / 278 | — |
+| react.dev/reference/react/legacy | 229 / 12 | 954 / 12 | 954 / 12 | 269 / 4 | 1266 / 280 | 1266 / 280 | 1266 / 280 | — |
+| react.dev/reference/react/memo | 2529 / 13 | 3432 / 12 | 3432 / 12 | 2569 / 5 | 5766 / 278 | 5766 / 278 | 5766 / 278 | — |
+| react.dev/reference/react/startTransition | 588 / 13 | 1358 / 12 | 1358 / 12 | 628 / 5 | 1953 / 278 | 1953 / 278 | 1953 / 278 | — |
+| react.dev/reference/react/use | 1624 / 13 | 2467 / 12 | 2473 / 12 | 1664 / 5 | 4226 / 278 | 4226 / 278 | 4226 / 278 | — |
+| react.dev/reference/react/useActionState | 3623 / 13 | 4623 / 12 | 4637 / 12 | 3663 / 5 | 8971 / 278 | 8971 / 278 | 8971 / 278 | — |
+| react.dev/reference/react/useCallback | 3356 / 13 | 4247 / 12 | 4249 / 12 | 3396 / 5 | 8134 / 278 | 8134 / 278 | 8134 / 278 | — |
+| react.dev/reference/react/useContext | 2052 / 13 | 2968 / 12 | 2976 / 12 | 2092 / 5 | 6457 / 278 | 6457 / 278 | 6457 / 278 | — |
+| react.dev/reference/react/useDebugValue | 444 / 13 | 1234 / 12 | 1234 / 12 | 484 / 5 | 1707 / 278 | 1710 / 278 | 1710 / 278 | — |
+| react.dev/reference/react/useDeferredValue | 2155 / 13 | 2994 / 12 | 2994 / 12 | 2195 / 5 | 6131 / 278 | 6131 / 278 | 6131 / 278 | — |
+| react.dev/reference/react/useEffect | 5842 / 13 | 6940 / 12 | 6958 / 12 | 5882 / 5 | 14263 / 278 | 14263 / 278 | 14263 / 278 | — |
+| react.dev/reference/react/useEffectEvent | 2070 / 13 | 3057 / 12 | 3065 / 12 | 2110 / 5 | 5008 / 278 | 5008 / 278 | 5008 / 278 | — |
+| react.dev/reference/react/useId | 1106 / 13 | 1944 / 12 | 1950 / 12 | 1146 / 5 | 3025 / 278 | 3025 / 278 | 3025 / 278 | — |
+| react.dev/reference/react/useImperativeHandle | 832 / 13 | 1610 / 12 | 1614 / 12 | 872 / 5 | 2609 / 278 | 2609 / 278 | 2609 / 278 | — |
+| react.dev/reference/react/useInsertionEffect | 838 / 13 | 1614 / 12 | 1614 / 12 | 878 / 5 | 2422 / 278 | 2422 / 278 | 2422 / 278 | — |
+| react.dev/reference/react/useLayoutEffect | 1627 / 13 | 2431 / 12 | 2431 / 12 | 1667 / 5 | 5044 / 278 | 5044 / 278 | 5044 / 278 | — |
+| react.dev/reference/react/useMemo | 4699 / 13 | 5666 / 12 | 5666 / 12 | 4739 / 5 | 11685 / 278 | 11685 / 278 | 11685 / 278 | — |
+| react.dev/reference/react/useOptimistic | 3556 / 13 | 4589 / 12 | 4589 / 12 | 3596 / 5 | 8265 / 278 | 8265 / 278 | 8265 / 278 | — |
+| react.dev/reference/react/useReducer | 2779 / 13 | 3806 / 12 | 3806 / 12 | 2819 / 5 | 7153 / 278 | 7153 / 278 | 7153 / 278 | — |
+| react.dev/reference/react/useRef | 1648 / 13 | 2522 / 12 | 2522 / 12 | 1688 / 5 | 4456 / 278 | 4456 / 278 | 4456 / 278 | — |
+| react.dev/reference/react/useState | 3803 / 13 | 4903 / 12 | 4903 / 12 | 3843 / 5 | 9355 / 278 | 9355 / 278 | 9355 / 278 | — |
+| react.dev/reference/react/useSyncExternalStore | 2049 / 13 | 2916 / 12 | 2916 / 12 | 2089 / 5 | 4896 / 278 | 4896 / 278 | 4896 / 278 | — |
+| react.dev/reference/react/useTransition | 3428 / 13 | 4447 / 12 | 4447 / 12 | 3468 / 5 | 10017 / 278 | 10017 / 278 | 10017 / 278 | — |
+| react.dev/reference/rsc/directives | 70 / 12 | 787 / 12 | 787 / 12 | 110 / 4 | 949 / 278 | 949 / 278 | 949 / 278 | — |
+| react.dev/reference/rsc/server-components | 1387 / 12 | 2173 / 12 | 2173 / 12 | 1427 / 4 | 3489 / 279 | 3489 / 279 | 3489 / 279 | — |
+| react.dev/reference/rsc/server-functions | 923 / 12 | 1736 / 12 | 1736 / 12 | 963 / 4 | 2704 / 279 | 2704 / 279 | 2704 / 279 | — |
+| react.dev/reference/rsc/use-client | 2216 / 13 | 3466 / 12 | 3466 / 12 | 2256 / 5 | 5420 / 280 | 5420 / 280 | 5420 / 280 | — |
+| react.dev/reference/rsc/use-server | 1101 / 13 | 1901 / 12 | 1901 / 12 | 1141 / 5 | 2954 / 280 | 2954 / 280 | 2954 / 280 | — |
+| react.dev/reference/rules | 585 / 12 | 1341 / 12 | 1341 / 12 | 625 / 4 | 1964 / 280 | 1964 / 280 | 1964 / 280 | — |
+| react.dev/reference/rules/components-and-hooks-must-be- | 2568 / 13 | 3479 / 12 | 3479 / 12 | 2608 / 5 | 5854 / 283 | 5854 / 283 | 5854 / 283 | — |
+| react.dev/reference/rules/react-calls-components-and-ho | 767 / 13 | 1545 / 12 | 1545 / 12 | 807 / 5 | 2318 / 282 | 2318 / 282 | 2318 / 282 | — |
+| react.dev/reference/rules/rules-of-hooks | 609 / 13 | 1352 / 12 | 1352 / 12 | 649 / 5 | 1985 / 280 | 1985 / 280 | 1985 / 280 | — |
+| react.dev/versions | 1111 / 12 | 1458 / 12 | 1458 / 12 | 1151 / 4 | 2681 / 279 | 2681 / 279 | 2681 / 279 | — |
+| react.dev/warnings/react-dom-test-utils | 192 / 12 | 447 / 12 | 447 / 12 | 232 / 4 | 770 / 280 | 770 / 280 | 770 / 280 | — |
+
+</details>
+
+## wikipedia-python
+
+| Tool | Avg words | Preamble [1] | Repeat rate | Junk found | Headings | Code blocks | Precision | Recall |
+|---|---|---|---|---|---|---|---|---|
+| **markcrawl** | 3417 | 0 | 0% | 16 | 15.2 | 3.0 | 100% | 64% |
+| crawl4ai | 5106 | 252 ⚠ | 0% | 211 | 14.9 | 3.0 | 100% | 41% |
+| crawl4ai-raw | 5106 | 252 ⚠ | 0% | 211 | 14.9 | 3.0 | 100% | 41% |
+| scrapy+md | 4925 | 4 | 0% | 67 | 15.2 | 3.0 | 99% | 77% |
+| crawlee | 10493 | 5245 ⚠ | 3% | 162 | 16.1 | 3.0 | 52% | 89% |
+| colly+md | 5446 | 270 ⚠ | 0% | 162 | 16.1 | 3.0 | 100% | 91% |
+| playwright | 5249 | 387 ⚠ | 1% | 140 | 15.4 | 3.6 | 100% | 98% |
+| firecrawl | — | — | — | — | — | — | — | — |
+
+**[1]** Avg words per page before the first heading (nav chrome). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
+
+**Reading the numbers:**
+**markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawlee** injects 5245 words of nav chrome before content begins. The word count gap (3417 vs 10493 avg words) is largely explained by preamble: 5245 words of nav chrome account for ~50% of crawlee's output on this site. markcrawl's lower recall (64% vs 98%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
+
+<details>
+<summary>Sample output — first 40 lines of <code>en.wikipedia.org/wiki/Gmsh</code></summary>
+
+This shows what each tool outputs at the *top* of the same page.
+Nav boilerplate appears here before the real content starts.
+
+**markcrawl**
+```
+# Gmsh
+
+* [Català](https://ca.wikipedia.org/wiki/Gmsh "Gmsh – Catalan")
+* [Deutsch](https://de.wikipedia.org/wiki/Gmsh "Gmsh – German")
+* [Français](https://fr.wikipedia.org/wiki/Gmsh "Gmsh – French")
+* [हिन्दी](https://hi.wikipedia.org/wiki/%E0%A4%9C%E0%A5%80_%E0%A4%AE%E0%A5%87%E0%A4%B6 "जी मेश – Hindi")
+* [Italiano](https://it.wikipedia.org/wiki/Gmsh "Gmsh – Italian")
+* [日本語](https://ja.wikipedia.org/wiki/Gmsh "Gmsh – Japanese")
+* [Português](https://pt.wikipedia.org/wiki/Gmsh "Gmsh – Portuguese")
+* [中文](https://zh.wikipedia.org/wiki/Gmsh "Gmsh – Chinese")
+
+[Edit links](https://www.wikidata.org/wiki/Special:EntityPage/Q3109412#sitelinks-wikipedia "Edit interlanguage links")
+
+From Wikipedia, the free encyclopedia
+
+Finite-element mesh generator
+
+| Gmsh | |
+| --- | --- |
+| Clipped view of Tetrahedral mesh; generated and viewed in Gmsh 2.3.1 | |
+| [Developers](/wiki/Programmer "Programmer") | Christophe Geuzaine and Jean-François Remacle |
+|  | |
+| [Stable release](/wiki/Software_release_life_cycle "Software release life cycle") | 4.15.0 / October 26, 2025; 5 months ago (2025-10-26) |
+|  | |
+| Written in | [C++](/wiki/C%2B%2B "C++") |
+| [Operating system](/wiki/Operating_system "Operating system") | [Unix](/wiki/Unix "Unix")/[Linux](/wiki/Linux "Linux"), [macOS](/wiki/MacOS "MacOS"), [Windows](/wiki/Microsoft_Windows "Microsoft Windows") |
+| [License](/wiki/Software_license "Software license") | [GNU General Public License](/wiki/GNU_General_Public_License "GNU General Public License") |
+| Website | [gmsh.info](http://gmsh.info) |
+| [Repository](/wiki/Repository_(version_control) "Repository (version control)") | * [gitlab.onelab.info/gmsh/gmsh](https://gitlab.onelab.info/gmsh/gmsh) |
+
+**Gmsh** is a [finite-element](/wiki/Finite_element_method "Finite element method") [mesh generator](/wiki/Mesh_generation "Mesh generation") developed by Christophe Geuzaine and Jean-François Remacle. Released under the [GNU General Public License](/wiki/GNU_General_Public_License "GNU General Public License"), Gmsh is [free software](/wiki/Free_software "Free software").
+
+Gmsh contains 5 modules: for geometry description, meshing, solving and post-processing. Gmsh supports [parametric input](/wiki/Parametric_equation "Parametric equation") and has advanced visualization mechanisms. Since version 3.0, Gmsh supports full [constructive solid geometry](/wiki/Constructive_solid_geometry "Constructive solid geometry") features, based on [Open Cascade Technology](/wiki/Open_Cascade_Technology "Open Cascade Technology").[[1]](#cite_note-1)[[2]](#cite_note-2)
+
+A modified version of Gmsh is integrated with SwiftComp, a general-purpose multiscale modeling software. The modified version, called [Gmsh4SC](https://cdmhub.org/resources/scstandard), is compiled and deployed on the Composites Design and Manufacturing HUB ([cdmHUB](https://cdmhub.org/)).
+
+## Interfaces
+
+[[edit](/w/index.php?title=Gmsh&action=edit&section=1 "Edit section: Interfaces")]
+```
+
+**crawl4ai**
+```
+[Jump to content](https://en.wikipedia.org/wiki/Gmsh#bodyContent)
+Main menu
+Main menu
+move to sidebar hide
+Navigation 
+  * [Main page](https://en.wikipedia.org/wiki/Main_Page "Visit the main page \[ctrl-option-z\]")
+  * [Contents](https://en.wikipedia.org/wiki/Wikipedia:Contents "Guides to browsing Wikipedia")
+  * [Current events](https://en.wikipedia.org/wiki/Portal:Current_events "Articles related to current events")
+  * [Random article](https://en.wikipedia.org/wiki/Special:Random "Visit a randomly selected article \[ctrl-option-x\]")
+  * [About Wikipedia](https://en.wikipedia.org/wiki/Wikipedia:About "Learn about Wikipedia and how it works")
+  * [Contact us](https://en.wikipedia.org/wiki/Wikipedia:Contact_us "How to contact Wikipedia")
+
+
+Contribute 
+  * [Help](https://en.wikipedia.org/wiki/Help:Contents "Guidance on how to use and edit Wikipedia")
+  * [Learn to edit](https://en.wikipedia.org/wiki/Help:Introduction "Learn how to edit Wikipedia")
+  * [Community portal](https://en.wikipedia.org/wiki/Wikipedia:Community_portal "The hub for editors")
+  * [Recent changes](https://en.wikipedia.org/wiki/Special:RecentChanges "A list of recent changes to Wikipedia \[ctrl-option-r\]")
+  * [Upload file](https://en.wikipedia.org/wiki/Wikipedia:File_upload_wizard "Add images or other media for use on Wikipedia")
+  * [Special pages](https://en.wikipedia.org/wiki/Special:SpecialPages "A list of all special pages \[ctrl-option-q\]")
+
+
+[ ![](https://en.wikipedia.org/static/images/icons/enwiki-25.svg) ![Wikipedia](https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en-25.svg) ![The Free Encyclopedia](https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en-25.svg) ](https://en.wikipedia.org/wiki/Main_Page)
+[Search ](https://en.wikipedia.org/wiki/Special:Search "Search Wikipedia \[ctrl-option-f\]")
+Search
+Appearance
+Appearance
+move to sidebar hide
+Text
+  * Small
+Standard
+Large
+
+This page always uses small font size
+Width
+  * Standard
+Wide
+
+The content is as wide as possible for your browser window.
+Color (beta)
+```
+
+**crawl4ai-raw**
+```
+[Jump to content](https://en.wikipedia.org/wiki/Gmsh#bodyContent)
+Main menu
+Main menu
+move to sidebar hide
+Navigation 
+  * [Main page](https://en.wikipedia.org/wiki/Main_Page "Visit the main page \[ctrl-option-z\]")
+  * [Contents](https://en.wikipedia.org/wiki/Wikipedia:Contents "Guides to browsing Wikipedia")
+  * [Current events](https://en.wikipedia.org/wiki/Portal:Current_events "Articles related to current events")
+  * [Random article](https://en.wikipedia.org/wiki/Special:Random "Visit a randomly selected article \[ctrl-option-x\]")
+  * [About Wikipedia](https://en.wikipedia.org/wiki/Wikipedia:About "Learn about Wikipedia and how it works")
+  * [Contact us](https://en.wikipedia.org/wiki/Wikipedia:Contact_us "How to contact Wikipedia")
+
+
+Contribute 
+  * [Help](https://en.wikipedia.org/wiki/Help:Contents "Guidance on how to use and edit Wikipedia")
+  * [Learn to edit](https://en.wikipedia.org/wiki/Help:Introduction "Learn how to edit Wikipedia")
+  * [Community portal](https://en.wikipedia.org/wiki/Wikipedia:Community_portal "The hub for editors")
+  * [Recent changes](https://en.wikipedia.org/wiki/Special:RecentChanges "A list of recent changes to Wikipedia \[ctrl-option-r\]")
+  * [Upload file](https://en.wikipedia.org/wiki/Wikipedia:File_upload_wizard "Add images or other media for use on Wikipedia")
+  * [Special pages](https://en.wikipedia.org/wiki/Special:SpecialPages "A list of all special pages \[ctrl-option-q\]")
+
+
+[ ![](https://en.wikipedia.org/static/images/icons/enwiki-25.svg) ![Wikipedia](https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en-25.svg) ![The Free Encyclopedia](https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en-25.svg) ](https://en.wikipedia.org/wiki/Main_Page)
+[Search ](https://en.wikipedia.org/wiki/Special:Search "Search Wikipedia \[ctrl-option-f\]")
+Search
+Appearance
+Appearance
+move to sidebar hide
+Text
+  * Small
+Standard
+Large
+
+This page always uses small font size
+Width
+  * Standard
+Wide
+
+The content is as wide as possible for your browser window.
+Color (beta)
+```
+
+**scrapy+md**
+```
+Toggle the table of contents
+
+# Gmsh
+
+8 languages
+
+* [Català](https://ca.wikipedia.org/wiki/Gmsh "Gmsh – Catalan")
+* [Deutsch](https://de.wikipedia.org/wiki/Gmsh "Gmsh – German")
+* [Français](https://fr.wikipedia.org/wiki/Gmsh "Gmsh – French")
+* [हिन्दी](https://hi.wikipedia.org/wiki/%E0%A4%9C%E0%A5%80_%E0%A4%AE%E0%A5%87%E0%A4%B6 "जी मेश – Hindi")
+* [Italiano](https://it.wikipedia.org/wiki/Gmsh "Gmsh – Italian")
+* [日本語](https://ja.wikipedia.org/wiki/Gmsh "Gmsh – Japanese")
+* [Português](https://pt.wikipedia.org/wiki/Gmsh "Gmsh – Portuguese")
+* [中文](https://zh.wikipedia.org/wiki/Gmsh "Gmsh – Chinese")
+
+[Edit links](https://www.wikidata.org/wiki/Special:EntityPage/Q3109412#sitelinks-wikipedia "Edit interlanguage links")
+
+* [Article](/wiki/Gmsh "View the content page [c]")
+* [Talk](/wiki/Talk:Gmsh "Discuss improvements to the content page [t]")
+
+English
+
+* [Read](/wiki/Gmsh)
+* [Edit](/w/index.php?title=Gmsh&action=edit "Edit this page [e]")
+* [View history](/w/index.php?title=Gmsh&action=history "Past revisions of this page [h]")
+
+
+
+Tools
+
+Tools
+
+move to sidebar
+hide
+
+Actions
+
+* [Read](/wiki/Gmsh)
+* [Edit](/w/index.php?title=Gmsh&action=edit "Edit this page [e]")
+* [View history](/w/index.php?title=Gmsh&action=history)
+```
+
+**crawlee**
+```
+Gmsh - Wikipedia
+(function(){var className="client-js vector-feature-language-in-header-enabled vector-feature-language-in-main-menu-disabled vector-feature-language-in-main-page-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 skin-theme-clientpref-day vector-sticky-header-enabled vector-toc-available skin-theme-clientpref-thumb-standard";var cookie=document.cookie.match(/(?:^|; )enwikimwclientpreferences=([^;]+)/);if(cookie){cookie[1].split('%2C').forEach(function(pref){className=className.replace(new RegExp('(^| )'+pref.replace(/-clientpref-\w+$|[^\w-]+/g,'')+'-clientpref-\\w+( |$)'),'$1'+pref+'$2');});}document.documentElement.className=className;}());RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"09a3a1e6-a417-4766-a65f-162c92941e68","wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Gmsh","wgTitle":"Gmsh","wgCurRevisionId":1339869955,"wgRevisionId":1339869955,"wgArticleId":24126101,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["\*"],"wgCategories":["Articles with short description","Short description is different from Wikidata","Webarchive template wayback links","All stub articles","Free mathematics software","Free software programmed in C++","Cross-platform free software","Mesh generators","Numerical analysis software for Linux","Numerical analysis software for macOS","Numerical analysis software for Windows","Software that uses FLTK","Computer-aided engineering software for Linux","Science software stubs"],"wgPageViewLanguage":"en","wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Gmsh","wgRelevantArticleId":24126101,"wgTempUserName":null,"wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgNoticeProject":"wikipedia","wgFlaggedRevsParams":{"tags":{"status":{"levels":1}}},"wgConfirmEditCaptchaNeededForGenericEdit":"hcaptcha","wgConfirmEditHCaptchaVisualEditorOnLoadIntegrationEnabled":false,"wgConfirmEditHCaptchaSiteKey":"5d0c670e-a5f4-4258-ad16-1f42792c9c62","wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgPopupsFlags":0,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en"},"wgMFDisplayWikibaseDescriptions":{"search":true,"watchlist":true,"tagline":false,"nearby":true},"wgWMESchemaEditAttemptStepOversample":false,"wgWMEPageLength":4000,"wgEditSubmitButtonLabelPublish":true,"wgVisualEditorPageIsDisambiguation":false,"wgULSPosition":"interlanguage","wgULSisCompactLinksEnabled":false,"wgVector2022LanguageInHeader":true,"wgULSisLanguageSelectorEmpty":false,"wgWikibaseItemId":"Q3109412","wgCheckUserClientHintsHeadersJsApi":["brands","architecture","bitness","fullVersionList","mobile","model","platform","platformVersion"],"GEHomepageSuggestedEditsEnableTopics":true,"wgGESuggestedEditsTaskTypes":{"taskTypes":["copyedit","link-recommendation"],"unavailableTaskTypes":[]},"wgGETopicsMatchModeEnabled":false,"wgGELevelingUpEnabledForUser":false,"wgTestKitchenUserExperiments":{"overrides":[],"enrolled":[],"assigned":[],"subject\_ids":[]}};
+RLSTATE={"ext.globalCssJs.user.styles":"ready","site.styles":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","user":"ready","user.options":"loading","ext.wikimediamessages.styles":"ready","ext.cite.styles":"ready","skins.vector.search.codex.styles":"ready","skins.vector.styles":"ready","skins.vector.icons":"ready","jquery.makeCollapsible.styles":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","wikibase.client.init":"ready"};RLPAGEMODULES=["ext.parsermigration.survey","ext.cite.ux-enhancements","site","mediawiki.page.ready","jquery.makeCollapsible","mediawiki.toc","skins.vector.js","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.gadget.ReferenceTooltips","ext.gadget.switcher","ext.urlShortener.toolbar","ext.centralauth.centralautologin","mmv.bootstrap","ext.popups","ext.visualEditor.desktopArticleTarget.init","ext.echo.centralauth","ext.eventLogging","ext.wikimediaEvents","ext.navigationTiming","ext.uls.interface","ext.cx.eventlogging.campaigns","ext.cx.uls.quick.actions","wikibase.client.vector-2022","wikibase.databox.fromWikidata","ext.checkUser.clientHints","ext.quicksurveys.init","ext.growthExperiments.SuggestedEditSession","ext.testKitchen"];
+(RLQ=window.RLQ||[]).push(function(){mw.loader.impl(function(){return["user.options@12s5i",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+}];});});
+
+
+
+.mw-spinner{position:relative; }.mw-spinner > .mw-spinner-container{transform-origin:0 0}.mw-spinner-small{width:20px;height:20px}.mw-spinner-small > .mw-spinner-container{transform:scale(0.3125)}.mw-spinner-large{width:32px;height:32px}.mw-spinner-large > .mw-spinner-container{transform:scale(0.5)}.mw-spinner-block{display:block;width:100%;text-align:center}.mw-spinner-block > .mw-spinner-container{display:inline-block;vertical-align:top}.mw-spinner-block.mw-spinner-small > .mw-spinner-container{min-width:20px}.mw-spinner-block.mw-spinner-large > .mw-spinner-container{min-width:32px}.mw-spinner-inline{display:inline-block;vertical-align:middle}.mw-spinner-container > div{transform-origin:32px 32px;animation:mw-spinner 1.2s linear infinite}.mw-spinner-container > div::after{content:' ';display:block;position:absolute;top:3px; left:29px;width:5px;height:14px;border-radius:20%;background:var(--color-base,#202122)}.mw-spinner-container > div:nth-child(1){transform:rotate(0deg);animation-delay:-1.1s}.mw-spinner-container > div:nth-child(2){transform:rotate(30deg);animation-delay:-1s}.mw-spinner-container > div:nth-child(3){transform:rotate(60deg);animation-delay:-0.9s}.mw-spinner-container > div:nth-child(4){transform:rotate(90deg);animation-delay:-0.8s}.mw-spinner-container > div:nth-child(5){transform:rotate(120deg);animation-delay:-0.7s}.mw-spinner-container > div:nth-child(6){transform:rotate(150deg);animation-delay:-0.6s}.mw-spinner-container > div:nth-child(7){transform:rotate(180deg);animation-delay:-0.5s}.mw-spinner-container > div:nth-child(8){transform:rotate(210deg);animation-delay:-0.4s}.mw-spinner-container > div:nth-child(9){transform:rotate(240deg);animation-delay:-0.3s}.mw-spinner-container > div:nth-child(10){transform:rotate(270deg);animation-delay:-0.2s}.mw-spinner-container > div:nth-child(11){transform:rotate(300deg);animation-delay:-0.1s}.mw-spinner-container > div:nth-child(12){transform:rotate(330deg);animation-delay:0s}@keyframes mw-spinner{0%{opacity:1}100%{opacity:0}}
+.mw-editfont-monospace{font-family:monospace,monospace}.mw-editfont-sans-serif{font-family:sans-serif}.mw-editfont-serif{font-family:serif} .mw-editfont-monospace,.mw-editfont-sans-serif,.mw-editfont-serif{font-size:0.8125rem; -moz-tab-size:4;tab-size:4; }.mw-editfont-monospace.oo-ui-textInputWidget,.mw-editfont-sans-serif.oo-ui-textInputWidget,.mw-editfont-serif.oo-ui-textInputWidget{font-size:inherit}.mw-editfont-monospace.oo-ui-textInputWidget > .oo-ui-inputWidget-input,.mw-editfont-sans-serif.oo-ui-textInputWidget > .oo-ui-inputWidget-input,.mw-editfont-serif.oo-ui-textInputWidget > .oo-ui-inputWidget-input{font-size:0.8125rem}.mw-editfont-monospace.oo-ui-textInputWidget > input.oo-ui-inputWidget-input,.mw-editfont-sans-serif.oo-ui-textInputWidget > input.oo-ui-inputWidget-input,.mw-editfont-serif.oo-ui-textInputWidget > input.oo-ui-inputWidget-input{min-height:32px}
+.vector-icon.mw-ui-icon-wikimedia-appearance{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=appearance&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=appearance&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-appearance-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=appearance&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=appearance&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-appearance-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=appearance&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=appearance&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-speechBubbleAdd{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbleAdd&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbleAdd&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-speechBubbleAdd-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbleAdd&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbleAdd&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-speechBubbleAdd-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbleAdd&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbleAdd&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-speechBubbles{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbles&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbles&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-speechBubbles-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbles&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbles&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-speechBubbles-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbles&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=speechBubbles&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-article{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=article&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=article&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-article-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=article&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=article&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-article-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=article&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=article&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-history{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=history&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=history&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-history-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=history&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=history&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-history-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=history&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=history&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-wikiText{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=wikiText&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=wikiText&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-wikiText-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=wikiText&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=wikiText&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-wikiText-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=wikiText&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=wikiText&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-edit{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=edit&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=edit&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-edit-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=edit&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=edit&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-edit-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=edit&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=edit&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-editLock{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=editLock&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=editLock&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-editLock-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=editLock&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=editLock&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-editLock-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=editLock&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=editLock&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-exitFullscreen{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=exitFullscreen&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=exitFullscreen&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-exitFullscreen-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=exitFullscreen&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=exitFullscreen&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-exitFullscreen-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=exitFullscreen&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=exitFullscreen&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-fullScreen{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=fullScreen&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=fullScreen&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-fullScreen-invert{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=fullScreen&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=fullScreen&variant=invert&format=original&lang=en&skin=vector-2022&version=8l5k3)}.vector-icon.mw-ui-icon-wikimedia-fullScreen-progressive{-webkit-mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=fullScreen&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3);mask-image:url(https://en.wikipedia.org/w/load.php?modules=skins.vector.icons.js&image=fullScreen&variant=progressive&format=original&lang=en&skin=vector-2022&version=8l5k3)}
+.cite-accessibility-label{ top:-99999px;clip:rect(1px,1px,1px,1px); position:absolute !important;padding:0 !important;border:0 !important;height:1px !important;width:1px !important; overflow:hidden}:target .mw-cite-targeted-backlink{font-weight:bold}.mw-cite-up-arrow-backlink{display:none}:target .mw-cite-up-arrow-backlink{display:inline}:target .mw-cite-up-arrow{display:none}
+.ext-urlshortener-result-dialog{font-size:0.90909em}.ext-urlshortener-result-dialog a{word-wrap:break-word}.ext-urlshortener-qrcode{text-align:center}.ext-urlshortener-qrcode img{width:320px}
+.cdx-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;box-sizing:border-box;min-height:32px;max-width:28rem;margin:0;border-width:1px;border-style:solid;border-radius:2px;padding-right:11px;padding-left:11px;font-family:inherit;font-size:var(--font-size-medium,1rem);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:none;transition-property:background-color,color,border-color,box-shadow;transition-duration:.1s}.cdx-button--size-small{gap:4px;min-height:1.5rem;padding-right:5px;padding-left:5px}.cdx-button--size-large{min-height:44px;padding-right:15px;padding-left:15px}.cdx-button--icon-only{min-width:32px;padding-right:0;padding-left:0}.cdx-button--icon-only.cdx-button--size-small{min-width:1.5rem}.cdx-button--icon-only.cdx-button--size-large{min-width:44px}.cdx-button::-moz-focus-inner{border:0;padding:0}.cdx-button .cdx-button\_\_icon,.cdx-button .cdx-icon{vertical-align:middle}.cdx-button .cdx-icon{color:inherit}.cdx-button--fake-button,.cdx-button--fake-button:hover,.cdx-button--fake-button:focus{text-decoration:none}.cdx-button:enabled,.cdx-button.cdx-button--fake-button--enabled{background-color:var(--background-color-interactive-subtle,#f8f9fa);color:var(--color-neutral,#404244);border-color:var(--border-color-interactive,#72777d)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled .cdx-button\_\_icon{background-color:var(--color-neutral,#404244)}}.cdx-button:enabled:hover,.cdx-button.cdx-button--fake-button--enabled:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);border-color:var(--border-color-interactive--hover,#27292d);cursor:pointer}.cdx-button:enabled:active,.cdx-button.cdx-button--fake-button--enabled:active,.cdx-button:enabled.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--is-active{background-color:var(--background-color-interactive-subtle--active,#dadde3);border-color:var(--border-color-interactive--active,#202122)}.cdx-button:enabled:focus,.cdx-button.cdx-button--fake-button--enabled:focus{outline:1px solid transparent}.cdx-button:enabled:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c)}.cdx-button:enabled.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive{background-color:var(--background-color-progressive-subtle,#e8eeff);color:var(--color-progressive,#36c);border-color:var(--border-color-progressive,#6485d1)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-progressive,#36c)}}.cdx-button:enabled.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive-subtle--hover,#d9e2ff);color:var(--color-progressive--hover,#3056a9);border-color:var(--border-color-progressive--hover,#3056a9)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:hover .cdx-button\_\_icon{background-color:var(--color-progressive--hover,#3056a9)}}.cdx-button:enabled.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive-subtle--active,#b6d4fb);color:var(--color-progressive--active,#233566);border-color:var(--border-color-progressive--active,#233566)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-progressive--active,#233566)}}.cdx-button:enabled.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive{background-color:var(--background-color-destructive-subtle,#ffe9e5);color:var(--color-destructive,#bf3c2c);border-color:var(--border-color-destructive,#f54739)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-destructive,#bf3c2c)}}.cdx-button:enabled.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive-subtle--hover,#ffdad3);color:var(--color-destructive--hover,#9f3526);border-color:var(--border-color-destructive--hover,#9f3526)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:hover .cdx-button\_\_icon{background-color:var(--color-destructive--hover,#9f3526)}}.cdx-button:enabled.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive-subtle--active,#ffc8bd);color:var(--color-destructive--active,#612419);border-color:var(--border-color-destructive--active,#612419)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-destructive--active,#612419)}}.cdx-button:enabled.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive{background-color:var(--background-color-progressive,#36c);color:var(--color-inverted-fixed,#fff);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive--hover,#3056a9)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive--active,#233566)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c),inset 0 0 0 2px var(--box-shadow-color-inverted,#fff)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-inverted-fixed,#fff)}}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive{background-color:var(--background-color-destructive,#bf3c2c);color:var(--color-inverted-fixed,#fff);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive--hover,#9f3526)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive--active,#612419)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c),inset 0 0 0 2px var(--box-shadow-color-inverted,#fff)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-inverted-fixed,#fff)}}.cdx-button:enabled.cdx-button--weight-quiet,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet{background-color:var(--background-color-transparent,transparent);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-quiet:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);mix-blend-mode:var(--mix-blend-mode-blend,multiply)}.cdx-button:enabled.cdx-button--weight-quiet:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--is-active{background-color:var(--background-color-interactive-subtle--active,#dadde3)}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive{color:var(--color-progressive,#36c)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-progressive,#36c)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive-subtle--hover,#d9e2ff);color:var(--color-progressive--hover,#3056a9);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover .cdx-button\_\_icon{background-color:var(--color-progressive--hover,#3056a9)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive-subtle--active,#b6d4fb);color:var(--color-progressive--active,#233566);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-progressive--active,#233566)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c)}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive{color:var(--color-destructive,#bf3c2c)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-destructive,#bf3c2c)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive-subtle--hover,#ffdad3);color:var(--color-destructive--hover,#9f3526);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover .cdx-button\_\_icon{background-color:var(--color-destructive--hover,#9f3526)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive-subtle--active,#ffc8bd);color:var(--color-destructive--active,#612419);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-destructive--active,#612419)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c)}.cdx-button:disabled,.cdx-button.cdx-button--fake-button--disabled{background-color:var(--background-color-disabled,#dadde3);color:var(--color-disabled-emphasized,#a2a9b1);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:disabled .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--disabled .cdx-button\_\_icon{background-color:var(--color-inverted,#fff)}}.cdx-button:disabled.cdx-button--weight-quiet,.cdx-button.cdx-button--fake-button--disabled.cdx-button--weight-quiet{background-color:var(--background-color-transparent,transparent);color:var(--color-disabled,#a2a9b1)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:disabled.cdx-button--weight-quiet .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--disabled.cdx-button--weight-quiet .cdx-button\_\_icon{background-color:var(--color-disabled,#a2a9b1)}}.cdx-icon{color:var(--color-base,#202122);display:inline-flex;align-items:center;justify-content:center;vertical-align:text-bottom}.cdx-icon svg{fill:currentcolor;width:100%;height:100%}.cdx-icon--x-small{min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) - 4px);height:calc(var(--font-size-medium,1rem) - 4px)}.cdx-icon--small{min-width:14px;min-height:14px;width:var(--font-size-medium,1rem);height:var(--font-size-medium,1rem)}.cdx-icon--medium{min-width:18px;min-height:18px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px)}.cdx-icon--flipped svg{transform:scaleX(-1)}.cdx-dialog-backdrop{background-color:var(--background-color-backdrop-light,rgba(255,255,255,.65));display:flex;align-items:center;justify-content:center;position:fixed;top:0;left:0;z-index:400;min-height:100%;width:100vw;height:100vh;height:-webkit-fill-available}.cdx-dialog{background-color:var(--background-color-base,#fff);display:flex;flex-direction:column;box-sizing:border-box;width:100%;height:100%}@media (min-width:640px){.cdx-dialog{width:calc(100% - 2rem);height:unset;max-width:32rem;max-height:calc(100vh - 2.5rem);border:1px solid var(--border-color-base,#a2a9b1);border-radius:2px;box-shadow:0 4px 8px 0 var(--box-shadow-color-alpha-base,rgba(0,0,0,.06)),0 0 16px 0 var(--box-shadow-color-alpha-base,rgba(0,0,0,.06))}}.cdx-dialog\_\_header{padding:16px 24px 8px}.cdx-dialog\_\_header--default{display:flex;align-items:baseline;justify-content:flex-end;box-sizing:border-box;width:100%}.cdx-dialog\_\_header\_\_title-group{display:flex;flex-grow:1;flex-direction:column}.cdx-dialog\_\_header .cdx-dialog\_\_header\_\_title{margin:0;border:0;padding:0;font-family:inherit;font-size:var(--font-size-x-large,1.25rem);font-weight:700;line-height:var(--line-height-x-large,1.875rem)}.cdx-dialog\_\_header .cdx-dialog\_\_header\_\_subtitle{color:var(--color-subtle,#54595d);margin:0;padding:0;font-size:var(--font-size-medium,1rem);line-height:var(--line-height-small,1.375rem)}.cdx-dialog\_\_header\_\_close-button.cdx-button{margin-right:-8px}@media (min-width:640px){.cdx-dialog\_\_header--no-close-button .cdx-dialog\_\_header\_\_close-button{display:none}}.cdx-dialog--dividers .cdx-dialog\_\_header{border-bottom:1px solid var(--border-color-subtle,#c8ccd1)}.cdx-dialog\_\_body{padding:8px 24px;overflow-y:auto;font-family:sans-serif;font-size:var(--font-size-medium,1rem);font-weight:400;line-height:var(--line-height-medium,1.625rem)}.cdx-dialog\_\_body--no-footer{padding-bottom:24px}.cdx-dialog\_\_body>\*:first-child{margin-top:0;padding-top:0}.cdx-dialog\_\_body>\*:last-child{margin-bottom:0;padding-bottom:0}.cdx-dialog\_\_footer{margin-top:auto;padding:16px 24px 24px}.cdx-dialog--dividers .cdx-dialog\_\_footer{border-top:1px solid var(--border-color-subtle,#c8ccd1)}.cdx-dialog\_\_footer--default{display:flex;align-items:baseline;flex-wrap:wrap;justify-content:space-between;gap:12px}.cdx-dialog\_\_footer .cdx-dialog\_\_footer\_\_text{color:var(--color-subtle,#54595d);flex:1 0 auto;width:100%;margin:0;font-size:var(--font-size-small,.875rem);line-height:var(--line-height-small,1.375rem)}.cdx-dialog\_\_footer\_\_actions{display:flex;flex-grow:1;flex-direction:row-reverse;gap:12px}@media (max-width:639px){.cdx-dialog\_\_footer\_\_actions{flex-direction:column;width:100%}.cdx-dialog\_\_footer\_\_actions .cdx-button{max-width:none}}.cdx-dialog--vertical-actions .cdx-dialog\_\_footer\_\_actions{flex-direction:column;width:100%}.cdx-dialog--vertical-actions .cdx-dialog\_\_footer\_\_actions .cdx-button{max-width:none}.cdx-dialog-focus-trap{position:absolute}.cdx-dialog-focus-trap:focus{outline:0}.cdx-dialog-fade-enter-active,.cdx-dialog-fade-leave-active{transition-property:opacity;transition-duration:.25s;transition-timing-function:ease}.cdx-dialog-fade-enter-from,.cdx-dialog-fade-leave-to{opacity:0}body.cdx-dialog-open{overflow:hidden}.cdx-progress-bar{box-sizing:border-box;overflow-x:hidden}.cdx-progress-bar\_\_bar{width:33.33%;height:100%}.cdx-progress-bar:not(.cdx-progress-bar--inline){position:relative;z-index:1;height:1rem;max-width:none;border-radius:9999px;box-shadow:0 0 0 1px var(--box-shadow-color-base,#a2a9b1)}.cdx-progress-bar--inline{width:100%;height:.25rem}.cdx-progress-bar:not(.cdx-progress-bar--disabled) .cdx-progress-bar\_\_bar{background-color:var(--background-color-progressive,#36c);animation-name:cdx-animation-progress-bar\_\_bar;animation-duration:1.6s;animation-timing-function:linear;animation-iteration-count:infinite}.cdx-progress-bar:not(.cdx-progress-bar--disabled).cdx-progress-bar--block{background-color:var(--background-color-base,#fff)}.cdx-progress-bar--disabled .cdx-progress-bar\_\_bar{background-color:var(--background-color-disabled,#dadde3)}.cdx-progress-bar--disabled:not(.cdx-progress-bar--inline){background-color:var(--background-color-disabled-subtle,#eaecf0)}@keyframes cdx-animation-progress-bar\_\_bar{0%{transform:translate(-100%)}to{transform:translate(300%)}}.cdx-thumbnail{display:inline-flex}.cdx-thumbnail\_\_placeholder,.cdx-thumbnail\_\_image{background-position:center;background-repeat:no-repeat;background-size:cover;flex-shrink:0;box-sizing:border-box;min-width:40px;min-height:40px;width:2.5rem;height:2.5rem;border:1px solid var(--border-color-subtle,#c8ccd1);border-radius:2px}.cdx-thumbnail\_\_image{background-color:var(--background-color-base-fixed,#fff);display:inline-block}.cdx-thumbnail\_\_image-enter-active{transition-property:opacity;transition-duration:.1s}.cdx-thumbnail\_\_image-enter-from{opacity:0}.cdx-thumbnail\_\_placeholder{background-color:var(--background-color-interactive-subtle,#f8f9fa);display:inline-flex;align-items:center;justify-content:center}.cdx-thumbnail\_\_placeholder\_\_icon{min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not (((-webkit-mask-image:none) or (mask-image:none))){.cdx-thumbnail\_\_placeholder\_\_icon{background-position:center;background-repeat:no-repeat;background-size:max(calc(var(--font-size-medium,1rem) + 4px),10px)}}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-thumbnail\_\_placeholder\_\_icon{-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:max(calc(var(--font-size-medium,1rem) + 4px),10px);mask-size:max(calc(var(--font-size-medium,1rem) + 4px),10px)}}@supports not (((-webkit-mask-image:none) or (mask-image:none))){.cdx-thumbnail\_\_placeholder\_\_icon{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23000"><path d="M19 3H1v14h18zM3 14l3.5-4.5 2.5 3L12.5 8l4.5 6z"/><path d="M19 5H1V3h18zm0 12H1v-2h18z"/></svg>');filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,.87)}}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-thumbnail\_\_placeholder\_\_icon{-webkit-mask-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23000"><path d="M19 3H1v14h18zM3 14l3.5-4.5 2.5 3L12.5 8l4.5 6z"/><path d="M19 5H1V3h18zm0 12H1v-2h18z"/></svg>');mask-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23000"><path d="M19 3H1v14h18zM3 14l3.5-4.5 2.5 3L12.5 8l4.5 6z"/><path d="M19 5H1V3h18zm0 12H1v-2h18z"/></svg>');background-color:var(--color-placeholder,#72777d)}}.cdx-thumbnail\_\_placeholder\_\_icon--vue.cdx-icon{color:var(--color-placeholder,#72777d)}.cdx-search-result-title{display:inline-block;max-width:100%;font-weight:700}.cdx-search-result-title\_\_match{font-weight:400}.cdx-menu-item{list-style:none;position:relative;padding:8px 12px;font-size:var(--font-size-medium,1rem);line-height:var(--line-height-small,1.375rem);transition-property:background-color,color,border-color,box-shadow;transition-duration:.1s}.cdx-menu-item\_\_content{display:flex;align-items:center;word-wrap:break-word}@supports (word-break:break-word){.cdx-menu-item\_\_content{word-wrap:unset;word-break:break-word}}@supports (overflow-wrap:anywhere){.cdx-menu-item\_\_content{word-break:normal;overflow-wrap:anywhere}}.cdx-menu-item\_\_content:lang(de),.cdx-menu-item\_\_content:lang(de-AT),.cdx-menu-item\_\_content:lang(de-CH),.cdx-menu-item\_\_content:lang(de-DE),.cdx-menu-item\_\_content:lang(de-LI),.cdx-menu-item\_\_content:lang(de-LU),.cdx-menu-item\_\_content:lang(de-x-formal){-webkit-hyphens:auto;hyphens:auto}.cdx-menu-item\_\_content,.cdx-menu-item\_\_content:hover{text-decoration:none}.cdx-menu-item--has-description .cdx-menu-item\_\_content{align-items:flex-start}.cdx-menu-item\_\_text{max-width:100%}.cdx-menu-item\_\_text\_\_description{display:block}.cdx-menu-item\_\_thumbnail.cdx-thumbnail{margin-right:8px}.cdx-menu-item\_\_icon{height:var(--line-height-small,1.375rem);margin-right:8px}.cdx-menu-item\_\_icon.cdx-icon{color:var(--color-subtle,#54595d)}.cdx-menu-item\_\_selected-icon{height:var(--line-height-small,1.375rem);margin-left:auto}.cdx-menu-item\_\_selected-icon.cdx-icon{color:inherit}.cdx-menu-item--bold-label .cdx-menu-item\_\_text\_\_label{font-weight:700}.cdx-menu-item--hide-description-overflow .cdx-menu-item\_\_text{overflow:hidden}.cdx-menu-item--hide-description-overflow .cdx-menu-item\_\_text\_\_description{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cdx-menu-item--enabled,.cdx-menu-item--enabled .cdx-menu-item\_\_content{color:var(--color-base,#202122)}.cdx-menu-item--enabled .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--enabled .cdx-menu-item\_\_text\_\_description{color:var(--color-subtle,#54595d)}.cdx-menu-item--enabled.cdx-menu-item--highlighted{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);cursor:pointer}.cdx-menu-item--enabled.cdx-menu-item--active{background-color:var(--background-color-interactive-subtle--active,#dadde3)}.cdx-menu-item--enabled.cdx-menu-item--selected{background-color:var(--background-color-progressive-subtle,#e8eeff);color:var(--color-progressive,#36c)}.cdx-menu-item--enabled.cdx-menu-item--selected .cdx-menu-item\_\_content,.cdx-menu-item--enabled.cdx-menu-item--selected .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--enabled.cdx-menu-item--selected .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--enabled.cdx-menu-item--selected .cdx-menu-item\_\_icon{color:var(--color-progressive,#36c)}.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--highlighted{background-color:var(--background-color-progressive-subtle--hover,#d9e2ff)}.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--highlighted .cdx-menu-item\_\_content,.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--highlighted .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--highlighted .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--highlighted .cdx-menu-item\_\_icon{color:var(--color-progressive--hover,#3056a9)}.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--active{background-color:var(--background-color-progressive-subtle--active,#b6d4fb)}.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--active .cdx-menu-item\_\_content,.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--active .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--active .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--enabled.cdx-menu-item--selected.cdx-menu-item--active .cdx-menu-item\_\_icon{color:var(--color-progressive--active,#233566)}.cdx-menu-item--disabled{color:var(--color-disabled,#a2a9b1);cursor:default}.cdx-menu-item--disabled .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--disabled .cdx-menu-item\_\_icon{color:inherit}.cdx-menu-item--destructive .cdx-menu-item\_\_content,.cdx-menu-item--destructive .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--destructive .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--destructive .cdx-menu-item\_\_icon{color:var(--color-destructive,#bf3c2c)}.cdx-menu-item--destructive.cdx-menu-item--highlighted{background-color:var(--background-color-destructive-subtle--hover,#ffdad3)}.cdx-menu-item--destructive.cdx-menu-item--highlighted .cdx-menu-item\_\_content,.cdx-menu-item--destructive.cdx-menu-item--highlighted .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--destructive.cdx-menu-item--highlighted .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--destructive.cdx-menu-item--highlighted .cdx-menu-item\_\_icon{color:var(--color-destructive--hover,#9f3526)}.cdx-menu-item--destructive.cdx-menu-item--active{background-color:var(--background-color-destructive-subtle--active,#ffc8bd)}.cdx-menu-item--destructive.cdx-menu-item--active .cdx-menu-item\_\_content,.cdx-menu-item--destructive.cdx-menu-item--active .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--destructive.cdx-menu-item--active .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--destructive.cdx-menu-item--active .cdx-menu-item\_\_icon{color:var(--color-destructive--active,#612419)}.cdx-menu-item--destructive.cdx-menu-item--selected{background-color:var(--background-color-destructive-subtle,#ffe9e5);color:var(--color-destructive,#bf3c2c)}.cdx-menu-item--destructive.cdx-menu-item--selected .cdx-menu-item\_\_content,.cdx-menu-item--destructive.cdx-menu-item--selected .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--destructive.cdx-menu-item--selected .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--destructive.cdx-menu-item--selected .cdx-menu-item\_\_icon{color:var(--color-destructive,#bf3c2c)}.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--highlighted{background-color:var(--background-color-destructive-subtle--hover,#ffdad3)}.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--highlighted .cdx-menu-item\_\_content,.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--highlighted .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--highlighted .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--highlighted .cdx-menu-item\_\_icon{color:var(--color-destructive--hover,#9f3526)}.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--active{background-color:var(--background-color-destructive-subtle--active,#ffc8bd)}.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--active .cdx-menu-item\_\_content,.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--active .cdx-menu-item\_\_text\_\_supporting-text,.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--active .cdx-menu-item\_\_text\_\_description,.cdx-menu-item--destructive.cdx-menu-item--selected.cdx-menu-item--active .cdx-menu-item\_\_icon{color:var(--color-destructive--active,#612419)}.cdx-menu{background-color:var(--background-color-base,#fff);display:flex;flex-direction:column;position:absolute;left:0;z-index:50;box-sizing:border-box;width:100%;border:1px solid var(--border-color-base,#a2a9b1);border-radius:2px;box-shadow:0 4px 4px 0 var(--box-shadow-color-alpha-base,rgba(0,0,0,.06)),0 0 8px 0 var(--box-shadow-color-alpha-base,rgba(0,0,0,.06));font-size:var(--font-size-medium,1rem);line-height:var(--line-height-small,1.375rem)}.cdx-menu\_\_progress-bar.cdx-progress-bar{position:absolute;top:0}.cdx-menu\_\_listbox,.cdx-menu\_\_group{margin:0;padding:0}.cdx-menu\_\_listbox{overflow-y:auto}.cdx-menu\_\_group{display:flex;flex-direction:column}.cdx-menu\_\_group\_\_meta{display:flex;gap:8px;padding:8px 12px 6px}.cdx-menu\_\_group\_\_meta\_\_text{display:flex;flex-direction:column;font-size:var(--font-size-medium,1rem);line-height:var(--line-height-small,1.375rem)}.cdx-menu\_\_group\_\_icon{height:var(--line-height-small,1.375rem)}.cdx-menu\_\_group\_\_label{font-weight:700}.cdx-menu\_\_group\_\_description{color:var(--color-subtle,#54595d);font-size:var(--font-size-small,.875rem);line-height:var(--line-height-small,1.375rem)}.cdx-menu\_\_group-wrapper--hide-label .cdx-menu\_\_group\_\_meta{display:block;clip:rect(1px,1px,1px,1px);position:absolute!important;width:1px;height:1px;margin:-1px;border:0;padding:0;overflow:hidden}.cdx-menu\_\_group-wrapper+.cdx-menu-item,.cdx-menu-item+.cdx-menu\_\_group-wrapper,.cdx-menu\_\_group-wrapper--hide-label,.cdx-menu\_\_group-wrapper--hide-label+.cdx-menu\_\_group-wrapper{border-top:1px solid var(--border-color-muted,#dadde3)}.cdx-menu--has-footer .cdx-menu\_\_listbox>.cdx-menu-item:last-of-type{position:absolute;bottom:0;box-sizing:border-box;width:100%}.cdx-menu--has-footer .cdx-menu\_\_listbox>.cdx-menu-item:last-of-type:not(:first-of-type){border-top:1px solid var(--border-color-subtle,#c8ccd1)}.cdx-select{align-content:center;box-sizing:border-box;min-width:256px;min-height:32px;border-width:1px;border-style:solid;border-radius:2px;padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:calc(8px + 8px + calc(var(--font-size-medium,1rem) + 4px));font-size:var(--font-size-medium,1rem);line-height:1;-webkit-appearance:none;appearance:none;background-position:center right 12px;background-repeat:no-repeat;background-size:max(calc(var(--font-size-medium,1rem) - 4px),10px)}.cdx-select:disabled{background-color:var(--background-color-disabled-subtle,#eaecf0);color:var(--color-disabled,#a2a9b1);border-color:var(--border-color-disabled,#c8ccd1);background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23a2a9b1"><path d="m17.5 4.75-7.5 7.5-7.5-7.5L1 6.25l9 9 9-9z"/></svg>');opacity:1}.cdx-select:enabled{background-color:var(--background-color-interactive-subtle,#f8f9fa);color:var(--color-subtle,#54595d);border-color:var(--border-color-interactive,#72777d);transition-property:background-color,color,border-color,box-shadow;transition-duration:.1s;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23202122"><path d="m17.5 4.75-7.5 7.5-7.5-7.5L1 6.25l9 9 9-9z"/></svg>')}.cdx-select:enabled:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);border-color:var(--border-color-interactive--hover,#27292d);cursor:pointer}.cdx-select:enabled:active{background-color:var(--background-color-interactive-subtle--active,#dadde3);border-color:var(--border-color-interactive--active,#202122)}.cdx-select:enabled:focus:not(:active){background-color:var(--background-color-base,#fff);border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c);outline:1px solid transparent}.cdx-select-vue{display:inline-block;position:relative}.cdx-select-vue\_\_handle{align-content:center;box-sizing:border-box;min-width:256px;min-height:32px;border-width:1px;border-style:solid;border-radius:2px;padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:calc(8px + 8px + calc(var(--font-size-medium,1rem) + 4px));font-size:var(--font-size-medium,1rem);line-height:1;position:relative;width:100%}.cdx-select-vue--has-start-icon .cdx-select-vue\_\_handle{padding-left:calc(8px + 12px + calc(var(--font-size-medium,1rem) + 4px))}.cdx-select-vue\_\_start-icon.cdx-icon{color:var(--color-subtle,#54595d);position:absolute;top:50%;min-width:18px;min-height:18px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);transition-property:color;transition-duration:.1s;left:12px;transform:translateY(-50%)}.cdx-select-vue\_\_indicator.cdx-icon{color:var(--color-base,#202122);position:absolute;top:50%;min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) - 4px);height:calc(var(--font-size-medium,1rem) - 4px);transition-property:color;transition-duration:.1s;right:12px;transform:translateY(-50%)}.cdx-select-vue--enabled .cdx-select-vue\_\_handle{background-color:var(--background-color-interactive-subtle,#f8f9fa);color:var(--color-subtle,#54595d);border-color:var(--border-color-interactive,#72777d);transition-property:background-color,color,border-color,box-shadow;transition-duration:.1s}.cdx-select-vue--enabled .cdx-select-vue\_\_handle:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);border-color:var(--border-color-interactive--hover,#27292d);cursor:pointer}.cdx-select-vue--enabled .cdx-select-vue\_\_handle:active{background-color:var(--background-color-interactive-subtle--active,#dadde3);border-color:var(--border-color-interactive--active,#202122)}.cdx-select-vue--enabled .cdx-select-vue\_\_handle:focus:not(:active){background-color:var(--background-color-base,#fff);border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c);outline:1px solid transparent}.cdx-select-vue--enabled.cdx-select-vue--value-selected .cdx-select-vue\_\_handle{color:var(--color-base,#202122)}.cdx-select-vue--enabled.cdx-select-vue--expanded .cdx-select-vue\_\_handle{background-color:var(--background-color-base,#fff)}.cdx-select-vue--disabled .cdx-select-vue\_\_handle{background-color:var(--background-color-disabled-subtle,#eaecf0);color:var(--color-disabled,#a2a9b1);border-color:var(--border-color-disabled,#c8ccd1);cursor:default}.cdx-select-vue--disabled .cdx-select-vue\_\_indicator,.cdx-select-vue--disabled .cdx-select-vue\_\_start-icon{color:var(--color-disabled,#a2a9b1)}.cdx-select-vue--status-error.cdx-select-vue--enabled .cdx-select-vue\_\_handle{background-color:var(--background-color-error-subtle,#ffe9e5);color:var(--color-error,#bf3c2c);border-color:var(--border-color-error,#f54739)}.cdx-select-vue--status-error.cdx-select-vue--enabled .cdx-select-vue\_\_handle .cdx-select-vue\_\_start-icon{color:var(--color-error,#bf3c2c)}.cdx-select-vue--status-error.cdx-select-vue--enabled .cdx-select-vue\_\_handle:hover:not(:focus){background-color:var(--background-color-error-subtle--hover,#ffdad3);color:var(--color-error--hover,#9f3526);border-color:var(--border-color-error--hover,#9f3526)}.cdx-select-vue--status-error.cdx-select-vue--enabled .cdx-select-vue\_\_handle:hover:not(:focus) .cdx-select-vue\_\_start-icon{color:var(--color-error--hover,#9f3526)}.cdx-select-vue--status-error.cdx-select-vue--enabled .cdx-select-vue\_\_handle:active{background-color:var(--background-color-error-subtle--active,#ffc8bd);color:var(--color-error--active,#612419);border-color:var(--border-color-error--active,#612419)}.cdx-select-vue--status-error.cdx-select-vue--enabled .cdx-select-vue\_\_handle:active .cdx-select-vue\_\_start-icon{color:var(--color-error--active,#612419)}.cdx-select-vue--status-error.cdx-select-vue--enabled .cdx-select-vue\_\_handle:focus:not(:active){color:var(--color-subtle,#54595d)}.cdx-select-vue--status-error.cdx-select-vue--enabled.cdx-select-vue--value-selected .cdx-select-vue\_\_handle:focus:not(:active){color:var(--color-base,#202122)}.cdx-select-vue--status-error.cdx-select-vue--enabled.cdx-select-vue--value-selected .cdx-select-vue\_\_handle:focus:not(:active) .cdx-select-vue\_\_start-icon{color:var(--color-base,#202122)}.cdx-scrollable-container .cdx-select-vue{position:static}.cdx-tab[aria-hidden=true]{display:none}.cdx-tab:focus{outline:1px solid transparent}.cdx-tabs\_\_header{display:flex;align-items:flex-end;position:relative}.cdx-tabs\_\_prev-scroller,.cdx-tabs\_\_next-scroller{background-color:inherit;position:absolute;top:0;bottom:0}.cdx-tabs\_\_prev-scroller{left:0}.cdx-tabs\_\_next-scroller{right:0}.cdx-tabs\_\_prev-scroller:after,.cdx-tabs\_\_next-scroller:before{content:"";position:absolute;top:0;z-index:1;width:1.5rem;height:100%;pointer-events:none}.cdx-tabs\_\_prev-scroller:after{left:100%}.cdx-tabs\_\_next-scroller:before{right:100%}.cdx-tabs\_\_scroll-button.cdx-button{height:100%}.cdx-tabs\_\_list{display:flex;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.cdx-tabs\_\_list::-webkit-scrollbar{-webkit-appearance:none;display:none}.cdx-tabs\_\_list\_\_item{background-color:var(--background-color-transparent,transparent);display:block;flex:0 0 auto;max-width:16rem;border-width:0;border-top-left-radius:2px;border-top-right-radius:2px;padding:4px 12px;font-size:var(--font-size-medium,1rem);font-weight:700;line-height:var(--line-height-small,1.375rem);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition-property:background-color,color,border-color,box-shadow;transition-duration:.1s}.cdx-tabs\_\_list\_\_item:hover{cursor:pointer}.cdx-tabs\_\_list\_\_item[aria-selected=true]{cursor:default}.cdx-tabs>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item+.cdx-tabs\_\_list\_\_item{margin-left:0}.cdx-tabs--framed>.cdx-tabs\_\_header{background-color:var(--background-color-interactive,#eaecf0)}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_prev-scroller:after{background-image:linear-gradient(to right,var(--background-color-interactive,#eaecf0) 0,var(--background-color-transparent,transparent) 100%)}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_next-scroller:before{background-image:linear-gradient(to left,var(--background-color-interactive,#eaecf0) 0,var(--background-color-transparent,transparent) 100%)}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item{color:var(--color-base,#202122);margin:8px 4px 0 8px}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:enabled{overflow:hidden}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:enabled:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);color:var(--color-base,#202122);mix-blend-mode:var(--mix-blend-mode-blend,multiply)}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:enabled:active{background-color:var(--background-color-interactive-subtle--active,#dadde3);color:var(--color-base,#202122)}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item[aria-selected=true],.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item[aria-selected=true]:hover{background-color:var(--background-color-base,#fff);color:var(--color-base,#202122);mix-blend-mode:var(--mix-blend-mode-base,normal)}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:disabled{background-color:var(--background-color-interactive,#eaecf0);color:var(--color-disabled,#a2a9b1);cursor:default}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:last-child{margin-right:8px}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header{background-color:var(--background-color-base,#fff);margin:0 4px;border-bottom:1px solid var(--border-color-base,#a2a9b1)}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_prev-scroller:after{background-image:linear-gradient(to right,var(--background-color-base,#fff) 0,var(--background-color-transparent,transparent) 100%)}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_next-scroller:before{background-image:linear-gradient(to left,var(--background-color-base,#fff) 0,var(--background-color-transparent,transparent) 100%)}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item{margin:0 2px}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:enabled{color:var(--color-base,#202122)}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:enabled:hover:not([aria-selected="true"]){color:var(--color-progressive--hover,#3056a9);box-shadow:inset 0 -2px 0 0 var(--box-shadow-color-progressive-selected--hover,#3056a9)}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:enabled:active:not([aria-selected="true"]){color:var(--color-progressive--active,#233566);box-shadow:inset 0 -2px 0 0 var(--box-shadow-color-progressive-selected--active,#233566)}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item[aria-selected=true]{color:var(--color-progressive,#36c);box-shadow:inset 0 -2px 0 0 var(--box-shadow-color-progressive-selected,#36c)}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item[aria-selected=true]:hover{color:var(--color-progressive,#36c)}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:disabled{color:var(--color-disabled,#a2a9b1);cursor:default}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:first-child{margin-left:0}.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:last-child{margin-right:0}.cdx-tabs--framed>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:focus-visible,.cdx-tabs:not(.cdx-tabs--framed)>.cdx-tabs\_\_header .cdx-tabs\_\_list\_\_item:focus-visible{box-shadow:inset 0 0 0 2px var(--border-color-progressive,#6485d1);outline:1px solid transparent;overflow:hidden}.cdx-text-input{position:relative;box-sizing:border-box;min-width:256px;border-radius:2px;overflow:hidden}.cdx-text-input .cdx-text-input\_\_start-icon{position:absolute;top:50%;min-width:18px;min-height:18px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);transition-property:color;transition-duration:.1s;left:9px;transform:translateY(-50%)}.cdx-text-input\_\_icon.cdx-text-input\_\_end-icon{min-width:10px;min-height:10px;width:var(--font-size-medium,1rem);height:var(--font-size-medium,1rem)}@supports not (((-webkit-mask-image:none) or (mask-image:none))){.cdx-text-input\_\_icon.cdx-text-input\_\_end-icon{background-position:center;background-repeat:no-repeat;background-size:max(var(--font-size-medium,1rem),10px)}}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-text-input\_\_icon.cdx-text-input\_\_end-icon{-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:max(var(--font-size-medium,1rem),10px);mask-size:max(var(--font-size-medium,1rem),10px)}}.cdx-text-input\_\_clear-icon.cdx-icon,.cdx-text-input .cdx-text-input\_\_end-icon{position:absolute;top:50%;min-width:14px;min-height:14px;width:var(--font-size-medium,1rem);height:var(--font-size-medium,1rem);transition-property:color;transition-duration:.1s;right:9px;transform:translateY(-50%)}.cdx-text-input\_\_clear-icon.cdx-icon:hover{cursor:pointer}.cdx-text-input\_\_end-icon.cdx-icon+.cdx-text-input\_\_clear-icon.cdx-icon{right:calc(calc(8px \* 2 + var(--font-size-medium,1rem)) + 1px)}.cdx-text-input\_\_input{display:block;box-sizing:border-box;min-height:32px;width:100%;max-height:2rem;margin:0;border-width:1px;border-style:solid;border-radius:0;padding:4px 8px;font-family:inherit;font-size:var(--font-size-medium,1rem);line-height:var(--line-height-small,1.375rem)}.cdx-text-input\_\_input:enabled{background-color:var(--background-color-base,#fff);color:var(--color-base,#202122);border-color:var(--border-color-interactive,#72777d);box-shadow:inset 0 0 0 1px var(--box-shadow-color-transparent,transparent);transition-property:background-color,color,border-color,box-shadow;transition-duration:.25s}.cdx-text-input\_\_input:enabled~.cdx-text-input\_\_icon-vue{color:var(--color-placeholder,#72777d)}.cdx-text-input\_\_input:enabled~.cdx-text-input\_\_icon{opacity:var(--opacity-icon-placeholder,.51)}.cdx-text-input\_\_input:enabled:hover{border-color:var(--border-color-interactive--hover,#27292d)}.cdx-text-input\_\_input:enabled:focus~.cdx-text-input\_\_icon-vue,.cdx-text-input\_\_input:enabled.cdx-text-input\_\_input--has-value~.cdx-text-input\_\_icon-vue{color:var(--color-subtle,#54595d)}.cdx-text-input\_\_input:enabled:focus~.cdx-text-input\_\_clear-icon,.cdx-text-input\_\_input:enabled.cdx-text-input\_\_input--has-value~.cdx-text-input\_\_clear-icon{color:var(--color-base,#202122)}.cdx-text-input\_\_input:enabled:focus~.cdx-text-input\_\_icon,.cdx-text-input\_\_input:enabled.cdx-text-input\_\_input--has-value~.cdx-text-input\_\_icon{opacity:1}.cdx-text-input\_\_input:enabled:focus{border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c);outline:1px solid transparent}.cdx-text-input\_\_input:enabled:read-only{background-color:var(--background-color-neutral-subtle,#f8f9fa);border-color:var(--border-color-base,#a2a9b1)}.cdx-text-input\_\_input:disabled{background-color:var(--background-color-disabled-subtle,#eaecf0);color:var(--color-disabled,#a2a9b1);-webkit-text-fill-color:var(--color-disabled,#a2a9b1);border-color:var(--border-color-disabled,#c8ccd1)}.cdx-text-input\_\_input:disabled~.cdx-text-input\_\_icon-vue{color:var(--color-disabled,#a2a9b1);pointer-events:none}.cdx-text-input\_\_input:disabled~.cdx-text-input\_\_icon{opacity:var(--opacity-icon-base--disabled,.51)}.cdx-text-input\_\_input::placeholder{color:var(--color-placeholder,#72777d);opacity:1}.cdx-text-input\_\_input[type=search]{-webkit-appearance:none;-moz-appearance:textfield}.cdx-text-input\_\_input[type=search]::-webkit-search-decoration,.cdx-text-input\_\_input[type=search]::-webkit-search-cancel-button{display:none}.cdx-text-input--has-start-icon .cdx-text-input\_\_input{padding-left:calc(8px + 8px + calc(var(--font-size-medium,1rem) + 4px))}.cdx-text-input--has-end-icon .cdx-text-input\_\_input,.cdx-text-input--clearable .cdx-text-input\_\_input{padding-right:calc(8px + 8px + var(--font-size-medium,1rem))}.cdx-text-input--has-end-icon.cdx-text-input--clearable .cdx-text-input\_\_input{padding-right:calc(8px + calc(8px \* 2 + var(--font-size-medium,1rem)) + var(--font-size-medium,1rem))}.cdx-text-input--status-error .cdx-text-input\_\_input:enabled:not(:read-only):not(:focus){background-color:var(--background-color-error-subtle,#ffe9e5);color:var(--color-error,#bf3c2c);border-color:var(--border-color-error,#f54739)}.cdx-text-input--status-error .cdx-text-input\_\_input:enabled:not(:read-only):not(:focus)::placeholder,.cdx-text-input--status-error .cdx-text-input\_\_input:enabled:not(:read-only):not(:focus)~.cdx-text-input\_\_start-icon,.cdx-text-input--status-error .cdx-text-input\_\_input:enabled:not(:read-only):not(:focus)~.cdx-text-input\_\_end-icon{color:var(--color-error,#bf3c2c)}.cdx-text-input--status-error .cdx-text-input\_\_input:enabled:not(:read-only):not(:focus):hover{background-color:var(--background-color-error-subtle--hover,#ffdad3);color:var(--color-error--hover,#9f3526);border-color:var(--border-color-error--hover,#9f3526)}.cdx-text-input--status-error .cdx-text-input\_\_input:enabled:not(:read-only):not(:focus):hover::placeholder,.cdx-text-input--status-error .cdx-text-input\_\_input:enabled:not(:read-only):not(:focus):hover~.cdx-text-input\_\_start-icon,.cdx-text-input--status-error .cdx-text-input\_\_input:enabled:not(:read-only):not(:focus):hover~.cdx-text-input\_\_end-icon{color:var(--color-error--hover,#9f3526)}
+.ve-init-mw-progressBarWidget{height:1em;overflow:hidden;margin:0 25%}.ve-init-mw-progressBarWidget-bar{height:1em;width:0} .ve-init-mw-progressBarWidget{background-color:#fff;box-sizing:border-box;height:0.875em;border:1px solid #36c;border-radius:0.875em;box-shadow:0 1px 1px rgba(0,0,0,0.15)}.ve-init-mw-progressBarWidget-bar{background-color:#36c;height:0.875em}
+.rt-overlay{position:absolute;width:100%;font-size:calc(var(--font-size-medium,1rem) \* (13 / 14));line-height:1.5em; z-index:800; top:0} .skin-vector-legacy .rt-overlay{font-size:13px}.skin-monobook .rt-overlay{font-size:12.7px}.rt-tooltip{position:absolute;max-width:27em;background:var(--background-color-base,#fff);color:var(--color-base,#202122);border:1px solid var(--border-color-subtle,#c8ccd1);border-radius:2px;box-shadow:0 20px 48px 0 rgba(0,0,0,0.2)}html.skin-theme-clientpref-night .rt-tooltip{box-shadow:0 20px 48px 0 rgba(0,0,0,1)} .rt-tooltip-above .rt-hoverArea{margin-bottom:-0.6em;padding-bottom:0.6em}.rt-tooltip-below .rt-hoverArea{margin-top:-0.7em;padding-top:0.7em}.rt-scroll{overflow-x:auto}.rt-content{padding:0.7em 0.9em;overflow-wrap:break-word}.rt-tail{ background:linear-gradient(to top right,var(--border-color-subtle,#c8ccd1) 48%,rgba(0,0,0,0) 48%);--tail-left:19px;--tail-side-width:13px}.rt-tail,.rt-tail:after{position:absolute; z-index:-1;width:var(--tail-side-width);height:var(--tail-side-width)}.rt-tail:after{content:'';background:var(--background-color-base,#fff);bottom:1px;left:1px}.rt-tooltip-above .rt-tail{transform:rotate(-45deg);transform-origin:100% 100%;bottom:0;left:var(--tail-left)}.rt-tooltip-below .rt-tail{transform:rotate(135deg);transform-origin:0 0;top:0;left:calc(var(--tail-left) + var(--tail-side-width))}.rt-settingsLink{background-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%0D%0A%20%20%20%20%3Cpath%20fill%3D%22%2354595d%22%20d%3D%22M20%2014.5v-2.9l-1.8-.3c-.1-.4-.3-.8-.6-1.4l1.1-1.5-2.1-2.1-1.5%201.1c-.5-.3-1-.5-1.4-.6L13.5%205h-2.9l-.3%201.8c-.5.1-.9.3-1.4.6L7.4%206.3%205.3%208.4l1%201.5c-.3.5-.4.9-.6%201.4l-1.7.2v2.9l1.8.3c.1.5.3.9.6%201.4l-1%201.5%202.1%202.1%201.5-1c.4.2.9.4%201.4.6l.3%201.8h3l.3-1.8c.5-.1.9-.3%201.4-.6l1.5%201.1%202.1-2.1-1.1-1.5c.3-.5.5-1%20.6-1.4l1.5-.3zM12%2016c-1.7%200-3-1.3-3-3s1.3-3%203-3%203%201.3%203%203-1.3%203-3%203z%22%2F%3E%0D%0A%3C%2Fsvg%3E);float:right;margin:-0.5em -0.5em 0 0.5em;box-sizing:border-box;height:32px;width:32px;border:1px solid transparent;border-radius:2px;background-position:center center;background-repeat:no-repeat;background-size:24px 24px}html.skin-theme-clientpref-night .rt-settingsLink{background-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%0D%0A%20%20%20%20%3Cpath%20fill%3D%22%23c8ccd1%22%20d%3D%22M20%2014.5v-2.9l-1.8-.3c-.1-.4-.3-.8-.6-1.4l1.1-1.5-2.1-2.1-1.5%201.1c-.5-.3-1-.5-1.4-.6L13.5%205h-2.9l-.3%201.8c-.5.1-.9.3-1.4.6L7.4%206.3%205.3%208.4l1%201.5c-.3.5-.4.9-.6%201.4l-1.7.2v2.9l1.8.3c.1.5.3.9.6%201.4l-1%201.5%202.1%202.1%201.5-1c.4.2.9.4%201.4.6l.3%201.8h3l.3-1.8c.5-.1.9-.3%201.4-.6l1.5%201.1%202.1-2.1-1.1-1.5c.3-.5.5-1%20.6-1.4l1.5-.3zM12%2016c-1.7%200-3-1.3-3-3s1.3-3%203-3%203%201.3%203%203-1.3%203-3%203z%22%2F%3E%0D%0A%3C%2Fsvg%3E)}.rt-settingsLink:hover,.rt-settingsLink:active{background-color:var(--background-color-interactive,#eaecf0)}.rt-settingsLink:active{border-color:var(--border-color-interactive,#72777d)}.rt-settingsLink:focus{outline:1px solid transparent}.rt-settingsLink:focus:not(:active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c)}.rt-target{background-color:var(--background-color-progressive-subtle,#eaf3ff)}.rt-enableField{font-weight:bold;margin-bottom:1.25em}.rt-numberInput.rt-numberInput{width:10em}.rt-tooltipsForCommentsField.rt-tooltipsForCommentsField.rt-tooltipsForCommentsField{margin-top:1.25em}.rt-disabledHelp{border-collapse:collapse}.rt-disabledHelp td{padding:0}.rt-disabledNote.rt-disabledNote{vertical-align:bottom;padding-left:0.36em;font-weight:bold}@keyframes rt-fade-in-up{0%{opacity:0;transform:translate(0,20px)}100%{opacity:1;transform:translate(0,0)}}@keyframes rt-fade-in-down{0%{opacity:0;transform:translate(0,-20px)}100%{opacity:1;transform:translate(0,0)}}@keyframes rt-fade-out-down{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(0,20px)}}@keyframes rt-fade-out-up{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(0,-20px)}}.rt-fade-in-up{animation:rt-fade-in-up 0.2s ease forwards}.rt-fade-in-down{animation:rt-fade-in-down 0.2s ease forwards}.rt-fade-out-down{animation:rt-fade-out-down 0.2s ease forwards}.rt-fade-out-up{animation:rt-fade-out-up 0.2s ease forwards}
+.mw-collapsible-toggle{float:right;-webkit-user-select:none;-moz-user-select:none;user-select:none}.mw-collapsible-toggle-default{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:none;margin:0;padding:0;border:0;font:inherit}.mw-collapsible-toggle-default .mw-collapsible-text{color:var(--color-progressive,#36c);border-radius:2px;text-decoration:none; }.mw-collapsible-toggle-default .mw-collapsible-text:visited{color:var(--color-visited,#6a60b0)}.mw-collapsible-toggle-default .mw-collapsible-text:visited:hover{color:var(--color-visited--hover,#534fa3)}.mw-collapsible-toggle-default .mw-collapsible-text:visited:active{color:var(--color-visited--active,#353262)}.mw-collapsible-toggle-default .mw-collapsible-text:hover{color:var(--color-progressive--hover,#3056a9);text-decoration:underline}.mw-collapsible-toggle-default .mw-collapsible-text:active{color:var(--color-progressive--active,#233566);text-decoration:underline}.mw-collapsible-toggle-default .mw-collapsible-text:focus-visible{outline:solid 2px var(--outline-color-progressive--focus,#36c)}@supports not selector(:focus-visible){.mw-collapsible-toggle-default .mw-collapsible-text:focus{outline:solid 2px var(--outline-color-progressive--focus,#36c)}}.mw-collapsible-toggle-default .mw-collapsible-text .cdx-icon:not(.cdx-thumbnail\_\_placeholder\_\_icon--vue):last-child{min-width:10px;min-height:10px;width:var(--font-size-medium,1rem);height:var(--font-size-medium,1rem);padding-left:4px;vertical-align:middle}.mw-underline-always .mw-collapsible-toggle-default .mw-collapsible-text{text-decoration:underline}.mw-underline-never .mw-collapsible-toggle-default .mw-collapsible-text{text-decoration:none}.mw-collapsible-toggle-default::before{content:'['}.mw-collapsible-toggle-default::after{content:']'}.mw-customtoggle,.mw-collapsible-toggle{cursor:pointer} caption .mw-collapsible-toggle,.mw-content-ltr caption .mw-collapsible-toggle,.mw-content-rtl caption .mw-collapsible-toggle,.mw-content-rtl .mw-content-ltr caption .mw-collapsible-toggle,.mw-content-ltr .mw-content-rtl caption .mw-collapsible-toggle{float:none}.mw-collapsible[hidden='until-found'],.mw-collapsible [hidden='until-found']{display:block;position:absolute; width:0 !important;height:0 !important;overflow:hidden !important;padding:0 !important;margin:0 !important;border:0 !important; }.wikitable.mw-collapsed{border:0}
+@media screen {
+.toctoggle{-webkit-user-select:none;-moz-user-select:none;user-select:none;font-size:94%}}
+@keyframes centralAuthPPersonalAnimation{0%{opacity:0;transform:translateY(-20px)}100%{opacity:1;transform:translateY(0)}}.centralAuthPPersonalAnimation{animation-duration:1s;animation-fill-mode:both;animation-name:centralAuthPPersonalAnimation}
+.mw-file-element:not([srcset]),.mw-file-element--updated{object-fit:scale-down} #mw-teleport-target{position:absolute;z-index:450} #mw-teleport-target{font-size:var(--font-size-small,0.875rem)}
+#vector-appearance form{font-size:0.875rem;padding:6px 0}#vector-appearance a.skin-theme-beta-notice-success{color:var(--color-success,#177860);pointer-events:none}#vector-appearance .vector-icon.vector-icon--heart{ min-width:10px;min-height:10px;width:var(--font-size-medium,1rem);height:var(--font-size-medium,1rem);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){#vector-appearance .vector-icon.vector-icon--heart{background-position:center;background-repeat:no-repeat; background-size:calc(max(var(--font-size-medium,1rem),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){#vector-appearance .vector-icon.vector-icon--heart{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(var(--font-size-medium,1rem),10px));mask-size:calc(max(var(--font-size-medium,1rem),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){#vector-appearance .vector-icon.vector-icon--heart{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M14.75 1A5.24 5.24 0 0010 4 5.24 5.24 0 000 6.25C0 11.75 10 19 10 19s10-7.25 10-12.75A5.25 5.25 0 0014.75 1\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){#vector-appearance .vector-icon.vector-icon--heart{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M14.75 1A5.24 5.24 0 0010 4 5.24 5.24 0 000 6.25C0 11.75 10 19 10 19s10-7.25 10-12.75A5.25 5.25 0 0014.75 1\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M14.75 1A5.24 5.24 0 0010 4 5.24 5.24 0 000 6.25C0 11.75 10 19 10 19s10-7.25 10-12.75A5.25 5.25 0 0014.75 1\"/></svg>");background-color:var(--color-success,#177860)}}#skin-theme-beta-notice{display:none}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os #skin-theme-beta-notice{display:block}}html.skin-theme-clientpref-night #skin-theme-beta-notice{display:block}
+.uls-menu{border-radius:2px; font-size:medium}.uls-search,.uls-language-settings-close-block{border-top-right-radius:2px;border-top-left-radius:2px}.uls-language-list{border-bottom-right-radius:2px;border-bottom-left-radius:2px}.uls-menu.callout::before,.uls-menu.callout::after{border-top:10px solid var(--border-color-transparent,transparent);border-bottom:10px solid var(--border-color-transparent,transparent);display:inline-block; top:17px;position:absolute;content:''}.uls-menu.callout.selector-right::before{ border-left:10px solid var(--border-color-subtle,#c8ccd1); right:-11px}.uls-menu.callout.selector-right::after{ border-left:10px solid var(--border-color-inverted,#fff); right:-10px}.uls-menu.callout.selector-left::before{ border-right:10px solid var(--border-color-subtle,#c8ccd1); left:-11px}.uls-menu.callout.selector-left::after{ border-right:10px solid var(--border-color-inverted,#fff); left:-10px}.uls-ui-languages button{margin:5px 15px 5px 0;white-space:nowrap;overflow:hidden}.uls-search-wrapper-wrapper{position:relative;padding-left:40px;margin-top:5px;margin-bottom:5px}.uls-icon-back{background:transparent url(/w/extensions/UniversalLanguageSelector/resources/images/back-grey-ltr.svg?c9c25) no-repeat scroll center center;background-size:28px;height:32px;width:40px;display:block;position:absolute;left:0;border-right:1px solid var(--border-color-subtle,#c8ccd1);opacity:var(--opacity-icon-base,0.87)}.uls-icon-back:hover{opacity:1;cursor:pointer}.uls-menu .uls-no-results-view .uls-no-found-more{background-color:var(--background-color-base,#fff)}.uls-menu .uls-no-results-view h3{padding:0 28px;margin:0;color:var(--color-subtle,#54595d);font-size:1em;font-weight:normal} .skin-vector .uls-menu{border-color:var(--border-color-subtle,#c8ccd1);box-shadow:0 4px 4px 0 var(--box-shadow-color-alpha-base,rgba(0,0,0,0.06)),0 0 8px 0 var(--box-shadow-color-alpha-base,rgba(0,0,0,0.06));font-size:0.875em;z-index:50}.skin-vector .uls-search{border-bottom-color:var(--border-color-subtle,#c8ccd1)}.skin-vector .uls-search-label{opacity:var(--opacity-icon-placeholder,0.51);transition:opacity 250ms}.skin-vector .uls-search-wrapper:hover .uls-search-label{opacity:var(--opacity-icon-base,0.87)}.skin-vector .uls-languagefilter,.skin-vector .uls-lcd-region-title{color:var(--color-subtle,#54595d)}.skin-vector .uls-filtersuggestion{color:var(--color-placeholder,#72777d)}
+#parsermigration-survey-placeholder .ext-quick-survey-panel{width:100%;clear:both;float:none;margin:50px auto 0}
+@media print{#centralNotice{display:none}}.cn-closeButton{display:inline-block;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAElBMVEUAAAAQEBDPz88AAABAQEDv7+9oe1vvAAAABnRSTlMA3rLe3rJS22KzAAAARElEQVQI12PAAUIUQCSTK5BwFgIxFU1AhKECUFAYKAAioXwwBeZChMGCEGGQIFQYJohgIhQgtCEMQ7ECYTHCOciOxA4AADgJTXIb9s8AAAAASUVORK5CYII=) no-repeat;width:20px;height:20px;text-indent:20px;white-space:nowrap;overflow:hidden}
+#uls-settings-block{background-color:#fcfcfc}#uls-settings-block.uls-settings-block--vector-2022{display:flex;justify-content:space-between;padding:8px 12px}#uls-settings-block.uls-settings-block--vector-2022.row::before,#uls-settings-block.uls-settings-block--vector-2022.row::after{content:none}#uls-settings-block.uls-settings-block--vector-2022.uls-settings-block--with-add-languages{background-color:#f8f9fa;border-top:1px solid var(--border-color-subtle,#c8ccd1)}#uls-settings-block.uls-settings-block--vector-2022 > button.uls-add-languages-button{background:transparent url(/w/extensions/UniversalLanguageSelector/resources/images/add.svg?3165e) no-repeat left center;margin-right:32px;padding-left:32px}#uls-settings-block.uls-settings-block--vector-2022 > button.uls-language-settings-button{background:transparent url(/w/extensions/UniversalLanguageSelector/resources/images/cog.svg?ce0b4) no-repeat center;margin-left:auto;border:0;min-height:20px;min-width:20px}#uls-settings-block:not(.uls-settings-block--vector-2022){background-color:#f8f9fa;border-top:1px solid var(--border-color-subtle,#c8ccd1);padding-left:10px;line-height:1.2em;border-radius:0 0 2px 2px}#uls-settings-block:not(.uls-settings-block--vector-2022) > button{background:left top transparent no-repeat;background-size:20px auto;color:var(--color-subtle,#54595d);display:inline-block;margin:8px 15px;border:0;padding:0 0 0 26px;font-size:medium;cursor:pointer}#uls-settings-block:not(.uls-settings-block--vector-2022) > button:hover{color:#202122}#uls-settings-block:not(.uls-settings-block--vector-2022) > button.display-settings-block{background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/display.svg?9fd85)}#uls-settings-block:not(.uls-settings-block--vector-2022) > button.input-settings-block{background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/input.svg?60384)}.uls-tipsy.uls-tipsy{z-index:1000}.uls-empty-state{padding:28px}.uls-empty-state .uls-empty-state\_\_header,.uls-empty-state .uls-empty-state\_\_desc{color:var(--color-subtle,#54595d)}.uls-empty-state .uls-language-action-items{list-style:none;margin:1em 0}.empty-language-selector\_\_language-settings-button{margin:12px} .uls-menu.uls-language-actions-dialog{min-width:248px}.uls-menu.uls-language-actions-dialog .uls-language-actions-title{border-bottom:1px solid var(--border-color-subtle,#c8ccd1);display:flex;align-items:center;height:32px;padding:5px 0}.uls-menu.uls-language-actions-dialog .uls-language-actions-title .uls-language-actions-close{min-width:unset;width:44px;background:transparent url(/w/extensions/UniversalLanguageSelector/resources/images/arrow-previous-ltr.svg?279af) no-repeat center}.uls-menu.uls-language-actions-dialog .uls-language-action-items .uls-language-action.oo-ui-widget{margin:0;padding:12px 8px;display:block}.uls-menu.uls-language-actions-dialog .uls-language-action-items .uls-language-action.oo-ui-widget .oo-ui-buttonElement-button{padding-left:36px}.cdx-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;box-sizing:border-box;min-height:32px;max-width:28rem;margin:0;border-width:1px;border-style:solid;border-radius:2px;padding-right:11px;padding-left:11px;font-family:inherit;font-size:var(--font-size-medium,1rem);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:none;transition-property:background-color,color,border-color,box-shadow;transition-duration:.1s}.cdx-button--size-small{gap:4px;min-height:1.5rem;padding-right:5px;padding-left:5px}.cdx-button--size-large{min-height:44px;padding-right:15px;padding-left:15px}.cdx-button--icon-only{min-width:32px;padding-right:0;padding-left:0}.cdx-button--icon-only.cdx-button--size-small{min-width:1.5rem}.cdx-button--icon-only.cdx-button--size-large{min-width:44px}.cdx-button::-moz-focus-inner{border:0;padding:0}.cdx-button .cdx-button\_\_icon,.cdx-button .cdx-icon{vertical-align:middle}.cdx-button .cdx-icon{color:inherit}.cdx-button--fake-button,.cdx-button--fake-button:hover,.cdx-button--fake-button:focus{text-decoration:none}.cdx-button:enabled,.cdx-button.cdx-button--fake-button--enabled{background-color:var(--background-color-interactive-subtle,#f8f9fa);color:var(--color-neutral,#404244);border-color:var(--border-color-interactive,#72777d)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled .cdx-button\_\_icon{background-color:var(--color-neutral,#404244)}}.cdx-button:enabled:hover,.cdx-button.cdx-button--fake-button--enabled:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);border-color:var(--border-color-interactive--hover,#27292d);cursor:pointer}.cdx-button:enabled:active,.cdx-button.cdx-button--fake-button--enabled:active,.cdx-button:enabled.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--is-active{background-color:var(--background-color-interactive-subtle--active,#dadde3);border-color:var(--border-color-interactive--active,#202122)}.cdx-button:enabled:focus,.cdx-button.cdx-button--fake-button--enabled:focus{outline:1px solid transparent}.cdx-button:enabled:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c)}.cdx-button:enabled.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive{background-color:var(--background-color-progressive-subtle,#e8eeff);color:var(--color-progressive,#36c);border-color:var(--border-color-progressive,#6485d1)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-progressive,#36c)}}.cdx-button:enabled.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive-subtle--hover,#d9e2ff);color:var(--color-progressive--hover,#3056a9);border-color:var(--border-color-progressive--hover,#3056a9)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:hover .cdx-button\_\_icon{background-color:var(--color-progressive--hover,#3056a9)}}.cdx-button:enabled.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive-subtle--active,#b6d4fb);color:var(--color-progressive--active,#233566);border-color:var(--border-color-progressive--active,#233566)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-progressive--active,#233566)}}.cdx-button:enabled.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive{background-color:var(--background-color-destructive-subtle,#ffe9e5);color:var(--color-destructive,#bf3c2c);border-color:var(--border-color-destructive,#f54739)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-destructive,#bf3c2c)}}.cdx-button:enabled.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive-subtle--hover,#ffdad3);color:var(--color-destructive--hover,#9f3526);border-color:var(--border-color-destructive--hover,#9f3526)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:hover .cdx-button\_\_icon{background-color:var(--color-destructive--hover,#9f3526)}}.cdx-button:enabled.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive-subtle--active,#ffc8bd);color:var(--color-destructive--active,#612419);border-color:var(--border-color-destructive--active,#612419)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-destructive--active,#612419)}}.cdx-button:enabled.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive{background-color:var(--background-color-progressive,#36c);color:var(--color-inverted-fixed,#fff);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive--hover,#3056a9)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive--active,#233566)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c),inset 0 0 0 2px var(--box-shadow-color-inverted,#fff)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-inverted-fixed,#fff)}}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive{background-color:var(--background-color-destructive,#bf3c2c);color:var(--color-inverted-fixed,#fff);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive--hover,#9f3526)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive--active,#612419)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c),inset 0 0 0 2px var(--box-shadow-color-inverted,#fff)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-inverted-fixed,#fff)}}.cdx-button:enabled.cdx-button--weight-quiet,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet{background-color:var(--background-color-transparent,transparent);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-quiet:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);mix-blend-mode:var(--mix-blend-mode-blend,multiply)}.cdx-button:enabled.cdx-button--weight-quiet:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--is-active{background-color:var(--background-color-interactive-subtle--active,#dadde3)}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive{color:var(--color-progressive,#36c)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-progressive,#36c)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive-subtle--hover,#d9e2ff);color:var(--color-progressive--hover,#3056a9);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover .cdx-button\_\_icon{background-color:var(--color-progressive--hover,#3056a9)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive-subtle--active,#b6d4fb);color:var(--color-progressive--active,#233566);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-progressive--active,#233566)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c)}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive{color:var(--color-destructive,#bf3c2c)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-destructive,#bf3c2c)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive-subtle--hover,#ffdad3);color:var(--color-destructive--hover,#9f3526);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover .cdx-button\_\_icon{background-color:var(--color-destructive--hover,#9f3526)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive-subtle--active,#ffc8bd);color:var(--color-destructive--active,#612419);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-destructive--active,#612419)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c)}.cdx-button:disabled,.cdx-button.cdx-button--fake-button--disabled{background-color:var(--background-color-disabled,#dadde3);color:var(--color-disabled-emphasized,#a2a9b1);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:disabled .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--disabled .cdx-button\_\_icon{background-color:var(--color-inverted,#fff)}}.cdx-button:disabled.cdx-button--weight-quiet,.cdx-button.cdx-button--fake-button--disabled.cdx-button--weight-quiet{background-color:var(--background-color-transparent,transparent);color:var(--color-disabled,#a2a9b1)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:disabled.cdx-button--weight-quiet .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--disabled.cdx-button--weight-quiet .cdx-button\_\_icon{background-color:var(--color-disabled,#a2a9b1)}}.mw-interlanguage-selector-disabled #p-lang-btn-sticky-header{display:none}
+.mw-ui-icon-wikimedia-expand{ width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) - 4px);height:calc(var(--font-size-medium,1rem) - 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.mw-ui-icon-wikimedia-expand{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.mw-ui-icon-wikimedia-expand{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.mw-ui-icon-wikimedia-expand{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m17.5 4.75-7.5 7.5-7.5-7.5L1 6.25l9 9 9-9z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.mw-ui-icon-wikimedia-expand{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m17.5 4.75-7.5 7.5-7.5-7.5L1 6.25l9 9 9-9z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m17.5 4.75-7.5 7.5-7.5-7.5L1 6.25l9 9 9-9z\"/></svg>");background-color:var(--color-base,#202122)}}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.mw-ui-icon-wikimedia-expand{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) - 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.mw-ui-icon-wikimedia-expand{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) - 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) - 4px),10px)); }}.vector-popup-notification{font-size:var(--font-size-small,0.875rem)}.vector-popup-notification p{margin:0}.vector-popup-notification p:last-child{padding-bottom:0} .vector-sticky-header-container{position:fixed;top:0;left:0;right:0;z-index:3;transition:transform 250ms linear;display:none;transform:translateY(-100%);opacity:0}.vector-sticky-header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--background-color-interactive,#eaecf0)}.vector-sticky-header-start,.vector-sticky-header-end,.vector-sticky-header-icons,.vector-sticky-header-buttons,.vector-sticky-header-context-bar{display:flex;align-items:center}.vector-sticky-header-start{flex-grow:1;min-width:0}.vector-sticky-header-context-bar-primary,.vector-sticky-header-end{white-space:nowrap}.vector-sticky-header-icon-start{border-right:1px solid var(--border-color-subtle,#c8ccd1);margin-right:calc(20px - 8px);padding-right:20px}.vector-sticky-header-context-bar{min-width:0}.vector-sticky-header-context-bar > \*{padding-left:8px}.vector-sticky-header-context-bar > .vector-sticky-header-context-bar-primary{padding:0 8px}.vector-sticky-header .vector-sticky-header-toc{ margin:0 !important}.vector-sticky-header-context-bar-primary{overflow:hidden;font-family:'Linux Libertine','Georgia','Times','Source Serif 4',serif;font-size:1.5em;text-overflow:ellipsis}.vector-sticky-header-context-bar-primary wbr{display:none}.vector-sticky-header-buttons{font-size:0.875em}.vector-sticky-header-icons,.vector-sticky-header-buttons{column-gap:8px}.vector-sticky-header .vector-search-box{display:none}.vector-sticky-header.vector-header-search-toggled .vector-sticky-header-icon-start,.vector-sticky-header.vector-header-search-toggled .vector-sticky-header-context-bar{display:none}.vector-sticky-header.vector-header-search-toggled .vector-search-box{display:block;margin-left:4px}.vector-sticky-header.vector-header-search-toggled .vector-search-box-show-thumbnail{margin-left:-9px}@media (min-width:1120px){.client-js.vector-sticky-header-enabled .vector-sticky-header-container{display:flex}.client-js.vector-sticky-header-enabled .vector-sticky-header-visible .vector-sticky-header-container{opacity:1;transform:translateY(0)}.client-js.vector-sticky-header-enabled .vector-sticky-pinned-container{top:calc(3.125rem + 24px);max-height:calc(100vh - 3.125rem - (24px \* 2))}.client-js.vector-sticky-header-enabled .mw-sticky-header-element,.client-js.vector-sticky-header-enabled .charts-stickyhead th{ top:3.125rem !important}} .client-js .mw-portlet-dock-bottom,.client-js .vector-settings{display:block;position:fixed;bottom:8px;right:8px;z-index:1}.client-js .mw-portlet-dock-bottom ul,.client-js .vector-settings ul{padding:0;list-style:none;display:flex;flex-direction:column-reverse;align-items:center;gap:8px 8px}
+.mw-mmv-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background-color:#000;display:flex;justify-items:center;align-items:center;align-content:center;justify-content:center}.mw-mmv-overlay .cdx-progress-bar{max-width:80vw;min-width:20vw;width:20rem}.mw-mmv-overlay.mw-mmv-overlay--beta{--color-base:#eaecf0;--color-base--hover:#f8f9fa;--color-emphasized:#f8f9fa;--color-neutral:#c8ccd1;--color-subtle:#a2a9b1;--color-disabled:#54595d;--color-disabled-emphasized:#72777d;--color-inverted:#101418;--color-progressive:#88a3e8; --color-progressive--hover:#a6bbf5;--color-progressive--active:#b6d4fb;--color-destructive:#fd7865; --color-destructive--hover:#fea898;--color-destructive--active:#ffc8bd;--color-visited:#a799cd; --color-visited--hover:#c5b9dd;--color-visited--active:#d9d0e9;--color-destructive--visited:#c99391; --color-destructive--visited--hover:#dcb5b3;--color-destructive--visited--active:#e8cecd;--color-error:#fd7865;--color-error--hover:#fea898;--color-error--active:#ffc8bd;--color-warning:#ca982e;--color-success:#2cb491;--color-notice:#a2a9b1;--color-content-added:#80cdb3;--color-content-removed:#fd7865;--color-base--subtle:#a2a9b1;--box-shadow-color-base:#72777d;--box-shadow-color-progressive--focus:#6485d1;--box-shadow-color-progressive-selected:#88a3e8;--box-shadow-color-progressive-selected--hover:#a6bbf5;--box-shadow-color-progressive-selected--active:#b6d4fb;--box-shadow-color-destructive--focus:#6485d1;--box-shadow-color-inverted:#000;--box-shadow-color-alpha-base:rgba(0,0,0,0.87);--mix-blend-mode-blend:screen;--background-color-base:#101418; --background-color-neutral:#27292d;--background-color-neutral-subtle:#202122;--background-color-interactive:#27292d;--background-color-interactive--hover:#404244;--background-color-interactive--active:#54595d;--background-color-interactive-subtle:#202122;--background-color-interactive-subtle--hover:#27292d;--background-color-interactive-subtle--active:#404244;--background-color-disabled:#404244; --background-color-disabled-subtle:#27292d; --background-color-inverted:#f8f9fa;--background-color-progressive--focus:#6485d1;--background-color-progressive-subtle:#1b223d;--background-color-progressive-subtle--hover:#233566;--background-color-progressive-subtle--active:#3056a9;--background-color-destructive--focus:#6485d1;--background-color-destructive-subtle:#3c1a13;--background-color-destructive-subtle--hover:#612419;--background-color-destructive-subtle--active:#9f3526;--background-color-error-subtle:#3c1a13;--background-color-error-subtle--hover:#612419;--background-color-error-subtle--active:#9f3526;--background-color-warning-subtle:#2d2212;--background-color-success-subtle:#132821;--background-color-notice-subtle:#27292d;--background-color-content-added:#233566;--background-color-content-removed:#453217;--background-color-target-text:#572c19;--background-color-backdrop-light:rgba(0,0,0,0.65); --background-color-backdrop-dark:rgba(255,255,255,0.65);--border-color-base:#72777d;--border-color-emphasized:#eaecf0;--border-color-subtle:#54595d;--border-color-muted:#404244;--border-color-interactive--hover:#a2a9b1;--border-color-interactive--active:#c8ccd1;--border-color-disabled:#54595d;--border-color-inverted:#101418;--border-color-progressive--hover:#88a3e8;--border-color-progressive--active:#a6bbf5;--border-color-progressive--focus:#6485d1;--border-color-destructive--hover:#fd7865;--border-color-destructive--active:#fea898;--border-color-destructive--focus:#6485d1;--border-color-error--hover:#fd7865;--border-color-error--active:#fea898;--border-color-warning--hover:#ca982e;--border-color-warning--active:#edb537;--border-color-content-added:#233566;--border-color-content-removed:#987027;background-color:var(--background-color-interactive-subtle,#f8f9fa)}body.mw-mmv-lightbox-open{overflow-y:auto;background-color:#000}body.mw-mmv-lightbox-open > \*:not(.mw-notification-area-overlay){display:none}body.mw-mmv-lightbox-open > .mw-mmv-overlay{display:flex}body.mw-mmv-lightbox-open > .mw-mmv-wrapper{display:block}.mw-mmv-view-expanded .cdx-button\_\_icon{ min-width:10px;min-height:10px;width:var(--font-size-medium,1rem);height:var(--font-size-medium,1rem);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.mw-mmv-view-expanded .cdx-button\_\_icon{background-position:center;background-repeat:no-repeat; background-size:calc(max(var(--font-size-medium,1rem),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.mw-mmv-view-expanded .cdx-button\_\_icon{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(var(--font-size-medium,1rem),10px));mask-size:calc(max(var(--font-size-medium,1rem),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.mw-mmv-view-expanded .cdx-button\_\_icon{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M3 5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2zm0 11 3.5-4.5 2.5 3 3.5-4.5 4.5 6zM16 2a2 2 0 012 2H2a2 2 0 012-2z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}.cdx-button:not(.cdx-button--weight-quiet):disabled .mw-mmv-view-expanded .cdx-button\_\_icon,.cdx-button--weight-primary.cdx-button--action-progressive .mw-mmv-view-expanded .cdx-button\_\_icon,.cdx-button--weight-primary.cdx-button--action-destructive .mw-mmv-view-expanded .cdx-button\_\_icon{filter:invert(var(--filter-invert-primary-button-icon,1))}}@supports (-webkit-mask-image:none) or (mask-image:none){.mw-mmv-view-expanded .cdx-button\_\_icon{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M3 5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2zm0 11 3.5-4.5 2.5 3 3.5-4.5 4.5 6zM16 2a2 2 0 012 2H2a2 2 0 012-2z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M3 5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2zm0 11 3.5-4.5 2.5 3 3.5-4.5 4.5 6zM16 2a2 2 0 012 2H2a2 2 0 012-2z\"/></svg>");transition-property:background-color;transition-duration:100ms}}
+.ve-init-mw-tempWikitextEditorWidget{border:0;padding:0;color:inherit;line-height:1.5em;width:100%;-moz-tab-size:4;tab-size:4; }.ve-init-mw-tempWikitextEditorWidget:focus{outline:0;padding:0}.ve-init-mw-tempWikitextEditorWidget::selection{background:rgba(109,169,247,0.5)}
+.ext-quick-survey-panel,.ext-qs-loader-bar{width:auto;background-color:var(--background-color-neutral,#eaecf0)} .ext-qs-loader-bar{height:100px;margin-left:1.4em;clear:right;float:right;background-color:var(--background-color-neutral,#eaecf0);display:flex;justify-content:center;align-items:center}.ext-qs-loader-bar .mw-spinner-container{transform:scale(0.5);transform-origin:center;width:25%;height:75%}.ext-quick-survey-panel{overflow-wrap:anywhere}@media all and (min-width:640px){.ext-qs-loader-bar,.ext-quick-survey-panel{margin-left:1.4em;width:300px;clear:right;float:right}}.mw-body > .content .panel.ext-quick-survey-panel{text-align:initial}.mw-body > .content .panel.ext-quick-survey-panel .image{background-position:center 80%;background-repeat:no-repeat;background-size:auto 5em}@media print{.ext-quick-survey-panel{display:none}}
+.oo-ui-icon-edit,.mw-ui-icon-edit:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E edit %3C/title%3E%3Cpath d=%22m16.77 8 1.94-2a1 1 0 0 0 0-1.41l-3.34-3.3a1 1 0 0 0-1.41 0L12 3.23zM1 14.25V19h4.75l9.96-9.96-4.75-4.75z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-edit,.mw-ui-icon-edit-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E edit %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22m16.77 8 1.94-2a1 1 0 0 0 0-1.41l-3.34-3.3a1 1 0 0 0-1.41 0L12 3.23zM1 14.25V19h4.75l9.96-9.96-4.75-4.75z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-edit,.mw-ui-icon-edit-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E edit %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22m16.77 8 1.94-2a1 1 0 0 0 0-1.41l-3.34-3.3a1 1 0 0 0-1.41 0L12 3.23zM1 14.25V19h4.75l9.96-9.96-4.75-4.75z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-editLock,.mw-ui-icon-editLock:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E edit lock %3C/title%3E%3Cpath d=%22M12 12a2 2 0 0 1-2-2V5.25l-9 9V19h4.75l7-7zm7-8h-.5V2.5a2.5 2.5 0 0 0-5 0V4H13a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1m-3 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1m1.5-4h-3V2.75C14.5 2 14.5 1 16 1s1.5 1 1.5 1.75z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-editLock,.mw-ui-icon-editLock-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E edit lock %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M12 12a2 2 0 0 1-2-2V5.25l-9 9V19h4.75l7-7zm7-8h-.5V2.5a2.5 2.5 0 0 0-5 0V4H13a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1m-3 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1m1.5-4h-3V2.75C14.5 2 14.5 1 16 1s1.5 1 1.5 1.75z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-editLock,.mw-ui-icon-editLock-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E edit lock %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M12 12a2 2 0 0 1-2-2V5.25l-9 9V19h4.75l7-7zm7-8h-.5V2.5a2.5 2.5 0 0 0-5 0V4H13a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1m-3 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1m1.5-4h-3V2.75C14.5 2 14.5 1 16 1s1.5 1 1.5 1.75z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-editUndo,.mw-ui-icon-editUndo:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E undo edit %3C/title%3E%3Cpath d=%22M1 14.25V19h4.75l8.33-8.33-5.27-4.23zM13 2.86V0L8 4l5 4V5h.86c2.29 0 4 1.43 4 4.29H20a6.51 6.51 0 0 0-6.14-6.43z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-editUndo,.mw-ui-icon-editUndo-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E undo edit %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M1 14.25V19h4.75l8.33-8.33-5.27-4.23zM13 2.86V0L8 4l5 4V5h.86c2.29 0 4 1.43 4 4.29H20a6.51 6.51 0 0 0-6.14-6.43z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-editUndo,.mw-ui-icon-editUndo-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E undo edit %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M1 14.25V19h4.75l8.33-8.33-5.27-4.23zM13 2.86V0L8 4l5 4V5h.86c2.29 0 4 1.43 4 4.29H20a6.51 6.51 0 0 0-6.14-6.43z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-link,.mw-ui-icon-link:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E link %3C/title%3E%3Cpath d=%22M4.83 15h2.91a4.9 4.9 0 0 1-1.55-2H5a3 3 0 1 1 0-6h3a3 3 0 0 1 2.82 4h2.1a5 5 0 0 0 .08-.83v-.34A4.83 4.83 0 0 0 8.17 5H4.83A4.83 4.83 0 0 0 0 9.83v.34A4.83 4.83 0 0 0 4.83 15%22/%3E%3Cpath d=%22M15.17 5h-2.91a4.9 4.9 0 0 1 1.55 2H15a3 3 0 1 1 0 6h-3a3 3 0 0 1-2.82-4h-2.1a5 5 0 0 0-.08.83v.34A4.83 4.83 0 0 0 11.83 15h3.34A4.83 4.83 0 0 0 20 10.17v-.34A4.83 4.83 0 0 0 15.17 5%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-link,.mw-ui-icon-link-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E link %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M4.83 15h2.91a4.9 4.9 0 0 1-1.55-2H5a3 3 0 1 1 0-6h3a3 3 0 0 1 2.82 4h2.1a5 5 0 0 0 .08-.83v-.34A4.83 4.83 0 0 0 8.17 5H4.83A4.83 4.83 0 0 0 0 9.83v.34A4.83 4.83 0 0 0 4.83 15%22/%3E%3Cpath d=%22M15.17 5h-2.91a4.9 4.9 0 0 1 1.55 2H15a3 3 0 1 1 0 6h-3a3 3 0 0 1-2.82-4h-2.1a5 5 0 0 0-.08.83v.34A4.83 4.83 0 0 0 11.83 15h3.34A4.83 4.83 0 0 0 20 10.17v-.34A4.83 4.83 0 0 0 15.17 5%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-link,.mw-ui-icon-link-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E link %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M4.83 15h2.91a4.9 4.9 0 0 1-1.55-2H5a3 3 0 1 1 0-6h3a3 3 0 0 1 2.82 4h2.1a5 5 0 0 0 .08-.83v-.34A4.83 4.83 0 0 0 8.17 5H4.83A4.83 4.83 0 0 0 0 9.83v.34A4.83 4.83 0 0 0 4.83 15%22/%3E%3Cpath d=%22M15.17 5h-2.91a4.9 4.9 0 0 1 1.55 2H15a3 3 0 1 1 0 6h-3a3 3 0 0 1-2.82-4h-2.1a5 5 0 0 0-.08.83v.34A4.83 4.83 0 0 0 11.83 15h3.34A4.83 4.83 0 0 0 20 10.17v-.34A4.83 4.83 0 0 0 15.17 5%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-unLink,.mw-ui-icon-unLink:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E unlink %3C/title%3E%3Cpath d=%22M4.83 5A4.83 4.83 0 0 0 0 9.83v.34A4.83 4.83 0 0 0 4.83 15h2.91a4.9 4.9 0 0 1-1.55-2H5c-4 0-4-6 0-6h3q.113.002.225.012L6.215 5zm7.43 0a4.9 4.9 0 0 1 1.55 2H15c3.179.003 4.17 4.3 1.314 5.695l1.508 1.508A4.83 4.83 0 0 0 20 10.17v-.34A4.83 4.83 0 0 0 15.17 5zm-3.612.03 4.329 4.327A4.83 4.83 0 0 0 8.648 5.03M7.227 8.411C7.17 8.595 7.08 9 7.08 9c-.045.273-.08.584-.08.83v.34A4.83 4.83 0 0 0 11.83 15h3.34q.475 0 .941-.094L14.205 13H12c-2.067-.006-3.51-2.051-2.82-4zm3.755 1.36A3 3 0 0 1 10.82 11h1.389z%22/%3E%3Cpath d=%22M1.22 0 0 1.22 18.8 20l1.2-1.22z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-unLink,.mw-ui-icon-unLink-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E unlink %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M4.83 5A4.83 4.83 0 0 0 0 9.83v.34A4.83 4.83 0 0 0 4.83 15h2.91a4.9 4.9 0 0 1-1.55-2H5c-4 0-4-6 0-6h3q.113.002.225.012L6.215 5zm7.43 0a4.9 4.9 0 0 1 1.55 2H15c3.179.003 4.17 4.3 1.314 5.695l1.508 1.508A4.83 4.83 0 0 0 20 10.17v-.34A4.83 4.83 0 0 0 15.17 5zm-3.612.03 4.329 4.327A4.83 4.83 0 0 0 8.648 5.03M7.227 8.411C7.17 8.595 7.08 9 7.08 9c-.045.273-.08.584-.08.83v.34A4.83 4.83 0 0 0 11.83 15h3.34q.475 0 .941-.094L14.205 13H12c-2.067-.006-3.51-2.051-2.82-4zm3.755 1.36A3 3 0 0 1 10.82 11h1.389z%22/%3E%3Cpath d=%22M1.22 0 0 1.22 18.8 20l1.2-1.22z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-unLink,.mw-ui-icon-unLink-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E unlink %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M4.83 5A4.83 4.83 0 0 0 0 9.83v.34A4.83 4.83 0 0 0 4.83 15h2.91a4.9 4.9 0 0 1-1.55-2H5c-4 0-4-6 0-6h3q.113.002.225.012L6.215 5zm7.43 0a4.9 4.9 0 0 1 1.55 2H15c3.179.003 4.17 4.3 1.314 5.695l1.508 1.508A4.83 4.83 0 0 0 20 10.17v-.34A4.83 4.83 0 0 0 15.17 5zm-3.612.03 4.329 4.327A4.83 4.83 0 0 0 8.648 5.03M7.227 8.411C7.17 8.595 7.08 9 7.08 9c-.045.273-.08.584-.08.83v.34A4.83 4.83 0 0 0 11.83 15h3.34q.475 0 .941-.094L14.205 13H12c-2.067-.006-3.51-2.051-2.82-4zm3.755 1.36A3 3 0 0 1 10.82 11h1.389z%22/%3E%3Cpath d=%22M1.22 0 0 1.22 18.8 20l1.2-1.22z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-destructive.oo-ui-icon-unLink,.mw-ui-icon-unLink-destructive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E unlink %3C/title%3E%3Cg fill=%22%23d73333%22%3E%3Cpath d=%22M4.83 5A4.83 4.83 0 0 0 0 9.83v.34A4.83 4.83 0 0 0 4.83 15h2.91a4.9 4.9 0 0 1-1.55-2H5c-4 0-4-6 0-6h3q.113.002.225.012L6.215 5zm7.43 0a4.9 4.9 0 0 1 1.55 2H15c3.179.003 4.17 4.3 1.314 5.695l1.508 1.508A4.83 4.83 0 0 0 20 10.17v-.34A4.83 4.83 0 0 0 15.17 5zm-3.612.03 4.329 4.327A4.83 4.83 0 0 0 8.648 5.03M7.227 8.411C7.17 8.595 7.08 9 7.08 9c-.045.273-.08.584-.08.83v.34A4.83 4.83 0 0 0 11.83 15h3.34q.475 0 .941-.094L14.205 13H12c-2.067-.006-3.51-2.051-2.82-4zm3.755 1.36A3 3 0 0 1 10.82 11h1.389z%22/%3E%3Cpath d=%22M1.22 0 0 1.22 18.8 20l1.2-1.22z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-linkExternal,.mw-ui-icon-linkExternal:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E external link %3C/title%3E%3Cpath d=%22M19 1h-8l3.286 3.286L6 12l1.371 1.472 8.332-7.77.007.008L19 9zM2 5h4v2H3v10h10v-4.004h2V18a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-linkExternal,.mw-ui-icon-linkExternal-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E external link %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M19 1h-8l3.286 3.286L6 12l1.371 1.472 8.332-7.77.007.008L19 9zM2 5h4v2H3v10h10v-4.004h2V18a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-linkExternal,.mw-ui-icon-linkExternal-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E external link %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M19 1h-8l3.286 3.286L6 12l1.371 1.472 8.332-7.77.007.008L19 9zM2 5h4v2H3v10h10v-4.004h2V18a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-linkSecure,.mw-ui-icon-linkSecure:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E secure link %3C/title%3E%3Cpath d=%22M16.07 8H15V5s0-5-5-5-5 5-5 5v3H3.93A1.93 1.93 0 0 0 2 9.93v8.15A1.93 1.93 0 0 0 3.93 20h12.14A1.93 1.93 0 0 0 18 18.07V9.93A1.93 1.93 0 0 0 16.07 8M7 5.5C7 4 7 2 10 2s3 2 3 3.5V8H7zM10 16a2 2 0 1 1 2-2 2 2 0 0 1-2 2%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-linkSecure,.mw-ui-icon-linkSecure-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E secure link %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M16.07 8H15V5s0-5-5-5-5 5-5 5v3H3.93A1.93 1.93 0 0 0 2 9.93v8.15A1.93 1.93 0 0 0 3.93 20h12.14A1.93 1.93 0 0 0 18 18.07V9.93A1.93 1.93 0 0 0 16.07 8M7 5.5C7 4 7 2 10 2s3 2 3 3.5V8H7zM10 16a2 2 0 1 1 2-2 2 2 0 0 1-2 2%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-linkSecure,.mw-ui-icon-linkSecure-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E secure link %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M16.07 8H15V5s0-5-5-5-5 5-5 5v3H3.93A1.93 1.93 0 0 0 2 9.93v8.15A1.93 1.93 0 0 0 3.93 20h12.14A1.93 1.93 0 0 0 18 18.07V9.93A1.93 1.93 0 0 0 16.07 8M7 5.5C7 4 7 2 10 2s3 2 3 3.5V8H7zM10 16a2 2 0 1 1 2-2 2 2 0 0 1-2 2%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-redo,.mw-ui-icon-redo:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E redo %3C/title%3E%3Cpath d=%22M19 8.5 12 3v11zM12 7v3h-1c-4 0-7 2-7 6v1H1v-1c0-6 5-9 10-9z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-redo,.mw-ui-icon-redo-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E redo %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M19 8.5 12 3v11zM12 7v3h-1c-4 0-7 2-7 6v1H1v-1c0-6 5-9 10-9z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-redo,.mw-ui-icon-redo-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E redo %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M19 8.5 12 3v11zM12 7v3h-1c-4 0-7 2-7 6v1H1v-1c0-6 5-9 10-9z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-undo,.mw-ui-icon-undo:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E undo %3C/title%3E%3Cpath d=%22M1 8.5 8 14v-4h1c4 0 7 2 7 6v1h3v-1c0-6-5-9-10-9H8V3z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-undo,.mw-ui-icon-undo-invert:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E undo %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M1 8.5 8 14v-4h1c4 0 7 2 7 6v1h3v-1c0-6-5-9-10-9H8V3z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-undo,.mw-ui-icon-undo-progressive:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E undo %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M1 8.5 8 14v-4h1c4 0 7 2 7 6v1h3v-1c0-6-5-9-10-9H8V3z%22/%3E%3C/g%3E%3C/svg%3E")}
+@keyframes mwe-popups-fade-in-up{0%{opacity:0;transform:translate(0,20px)}100%{opacity:1;transform:translate(0,0)}}@keyframes mwe-popups-fade-in-down{0%{opacity:0;transform:translate(0,-20px)}100%{opacity:1;transform:translate(0,0)}}@keyframes mwe-popups-fade-out-down{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(0,20px)}}@keyframes mwe-popups-fade-out-up{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(0,-20px)}}.mwe-popups-fade-in-up{animation:mwe-popups-fade-in-up 0.2s ease forwards}.mwe-popups-fade-in-down{animation:mwe-popups-fade-in-down 0.2s ease forwards}.mwe-popups-fade-out-down{animation:mwe-popups-fade-out-down 0.2s ease forwards}.mwe-popups-fade-out-up{animation:mwe-popups-fade-out-up 0.2s ease forwards}.popups-icon--settings{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--settings{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--settings{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--settings{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><g xmlns:xlink=\"http://www.w3.org/1999/xlink\" transform=\"translate(10 10)\"><path id=\"cdx-icon-settings-a\" d=\"M1.5-10h-3l-1 6.5h5m0 7h-5l1 6.5h3\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(45)\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(90)\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(135)\"/></g><path d=\"M10 2.5a7.5 7.5 0 000 15 7.5 7.5 0 000-15v4a3.5 3.5 0 010 7 3.5 3.5 0 010-7\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--settings{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><g xmlns:xlink=\"http://www.w3.org/1999/xlink\" transform=\"translate(10 10)\"><path id=\"cdx-icon-settings-a\" d=\"M1.5-10h-3l-1 6.5h5m0 7h-5l1 6.5h3\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(45)\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(90)\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(135)\"/></g><path d=\"M10 2.5a7.5 7.5 0 000 15 7.5 7.5 0 000-15v4a3.5 3.5 0 010 7 3.5 3.5 0 010-7\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><g xmlns:xlink=\"http://www.w3.org/1999/xlink\" transform=\"translate(10 10)\"><path id=\"cdx-icon-settings-a\" d=\"M1.5-10h-3l-1 6.5h5m0 7h-5l1 6.5h3\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(45)\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(90)\"/><use xlink:href=\"%23cdx-icon-settings-a\" transform=\"rotate(135)\"/></g><path d=\"M10 2.5a7.5 7.5 0 000 15 7.5 7.5 0 000-15v4a3.5 3.5 0 010 7 3.5 3.5 0 010-7\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--infoFilled{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--infoFilled{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--infoFilled{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--infoFilled{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0M9 5h2v2H9zm0 4h2v6H9z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--infoFilled{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0M9 5h2v2H9zm0 4h2v6H9z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0M9 5h2v2H9zm0 4h2v6H9z\"/></svg>");background-color:var(--color-base,#202122)}}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--infoFilled:lang(ar){background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M8 19a1 1 0 001 1h2a1 1 0 001-1v-1H8zm9-12a7 7 0 10-12 4.9S7 14 7 15v1a1 1 0 001 1h4a1 1 0 001-1v-1c0-1 2-3.1 2-3.1A7 7 0 0017 7\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--infoFilled:lang(ar){ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M8 19a1 1 0 001 1h2a1 1 0 001-1v-1H8zm9-12a7 7 0 10-12 4.9S7 14 7 15v1a1 1 0 001 1h4a1 1 0 001-1v-1c0-1 2-3.1 2-3.1A7 7 0 0017 7\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M8 19a1 1 0 001 1h2a1 1 0 001-1v-1H8zm9-12a7 7 0 10-12 4.9S7 14 7 15v1a1 1 0 001 1h4a1 1 0 001-1v-1c0-1 2-3.1 2-3.1A7 7 0 0017 7\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--close{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--close{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--close{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--close{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m4.34 2.93 12.73 12.73-1.41 1.41L2.93 4.35z\"/><path d=\"M17.07 4.34 4.34 17.07l-1.41-1.41L15.66 2.93z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--close{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m4.34 2.93 12.73 12.73-1.41 1.41L2.93 4.35z\"/><path d=\"M17.07 4.34 4.34 17.07l-1.41-1.41L15.66 2.93z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m4.34 2.93 12.73 12.73-1.41 1.41L2.93 4.35z\"/><path d=\"M17.07 4.34 4.34 17.07l-1.41-1.41L15.66 2.93z\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--footer{background-image:url(/w/extensions/Popups/src/ui/icons/footer-ltr.svg?9d590)}.popups-icon--preview-generic{mask-image:url(/w/extensions/Popups/src/ui/icons/sad-face-ltr.svg?d9aab);background-color:var(--color-base,#202122)}#mwe-popups-settings{z-index:1000;background-color:var(--background-color-base,#fff);width:420px;border:1px solid var(--border-color-base,#a2a9b1);box-shadow:0 4px 4px 0 var(--box-shadow-color-alpha-base,rgba(0,0,0,0.06)),0 0 8px 0 var(--box-shadow-color-alpha-base,rgba(0,0,0,0.06));border-radius:2px;font-size:var(--font-size-small,0.875rem)}#mwe-popups-settings header{box-sizing:border-box;border-bottom:1px solid var(--border-color-subtle,#c8ccd1);position:relative;display:table;width:100%;padding:5px 7px}#mwe-popups-settings header > div{display:table-cell;width:calc(calc(var(--font-size-medium,1rem) + 4px) + (2 \* 1em));vertical-align:middle;cursor:pointer}#mwe-popups-settings header h1{margin-bottom:0.6em;padding-top:0.5em;border:0;width:100%;font-family:sans-serif;font-size:var(--font-size-large,1.125rem);font-weight:bold;text-align:center}#mwe-popups-settings main#mwe-popups-settings-form{display:block;width:350px;padding:32px 0 24px;margin:0 auto}#mwe-popups-settings main#mwe-popups-settings-form p{color:var(--color-subtle,#54595d);font-size:var(--font-size-small,0.875rem);margin:16px 0 0}#mwe-popups-settings main#mwe-popups-settings-form p:first-child{margin-top:0}#mwe-popups-settings main#mwe-popups-settings-form form img{margin-right:60px}#mwe-popups-settings main#mwe-popups-settings-form form label{font-size:var(--font-size-small,0.875rem);line-height:16px;width:300px;margin-left:10px;flex-direction:column}#mwe-popups-settings main#mwe-popups-settings-form form label > span{color:var(--color-emphasized,#101418);font-size:var(--font-size-small,0.875rem);font-weight:700;display:block;margin-bottom:5px}#mwe-popups-settings main#mwe-popups-settings-form form label::before{top:0.78125em !important}.mwe-popups-settings-help{font-size:var(--font-size-small,0.875rem);font-weight:700;margin:40px;position:relative}.mwe-popups-settings-help .popups-icon{background-size:contain;width:180px;max-width:none;height:140px;margin:0;padding:0}.mwe-popups-settings-help p{left:180px;bottom:20px;position:absolute}.mwe-popups{background:var(--background-color-base,#fff);position:absolute;z-index:110;box-shadow:0 30px 90px -20px rgba(0,0,0,0.3),0 0 0 1px var(--background-color-neutral,#eaecf0);padding:0;display:none;font-size:var(--font-size-small,0.875rem);line-height:20px;min-width:300px;border-radius:2px; }.mwe-popups .mwe-popups-container{color:var(--color-base,#202122);text-decoration:none}.mwe-popups .mwe-popups-container footer{padding:0 16px 16px;margin:0;position:absolute;bottom:0;pointer-events:none}.mwe-popups .mwe-popups-container footer a{pointer-events:auto}.mwe-popups .mwe-popups-settings-button{float:right;pointer-events:auto; min-width:32px !important;min-height:32px !important}.mwe-popups .mwe-popups-extract{margin:16px;display:block;color:var(--color-base,#202122);text-decoration:none;position:relative;padding-bottom:4px}.mwe-popups .mwe-popups-extract:hover{text-decoration:none;color:inherit}.mwe-popups .mwe-popups-extract::after{content:' ';position:absolute;bottom:0;width:25%;height:20px;background-color:transparent;pointer-events:none}.mwe-popups .mwe-popups-extract[dir='ltr']::after{ right:0; background-image:linear-gradient(to right,rgba(255,255,255,0),#ffffff 50%)}.mwe-popups .mwe-popups-extract[dir='rtl']::after{ left:0; background-image:linear-gradient(to left,rgba(255,255,255,0),#ffffff 50%)}.mwe-popups .mwe-popups-extract p{margin:0}.mwe-popups .mwe-popups-extract ul,.mwe-popups .mwe-popups-extract ol,.mwe-popups .mwe-popups-extract li,.mwe-popups .mwe-popups-extract dl,.mwe-popups .mwe-popups-extract dd,.mwe-popups .mwe-popups-extract dt{margin-top:0;margin-bottom:0}.mwe-popups .mwe-popups-extract blockquote{margin:0;padding:0 20px}.mwe-popups svg{overflow:hidden}.mwe-popups.mwe-popups-is-tall{width:450px}.mwe-popups.mwe-popups-is-tall > div > a > svg{vertical-align:middle}.mwe-popups.mwe-popups-is-tall .mwe-popups-extract{width:215px;height:176px;overflow:hidden;float:left}.mwe-popups.mwe-popups-is-tall footer{left:0;right:203px}.mwe-popups.mwe-popups-is-not-tall{width:320px}.mwe-popups.mwe-popups-is-not-tall .mwe-popups-extract{min-height:50px;max-height:136px;overflow:hidden;margin-bottom:50px}.mwe-popups.mwe-popups-is-not-tall footer{left:0;right:0}.mwe-popups.mwe-popups-no-image-pointer::before{content:'';position:absolute;border:8px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:8px solid rgba(0,0,0,0.07000000000000001);top:-8px;left:10px}.mwe-popups.mwe-popups-no-image-pointer::after{content:'';position:absolute;border:11px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:11px solid var(--background-color-base,#fff);top:-7px;left:7px}.mwe-popups.flipped-x.mwe-popups-no-image-pointer::before{left:auto;right:10px}.mwe-popups.flipped-x.mwe-popups-no-image-pointer::after{left:auto;right:7px}.mwe-popups.mwe-popups-image-pointer::before{content:'';position:absolute;border:9px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:9px solid var(--border-color-base,#a2a9b1);top:-9px;left:9px;z-index:111}.mwe-popups.mwe-popups-image-pointer::after{content:'';position:absolute;border:12px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:12px solid var(--background-color-base,#fff);top:-8px;left:6px;z-index:112}.mwe-popups.mwe-popups-image-pointer.flipped-x::before{content:'';position:absolute;border:9px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:9px solid var(--border-color-base,#a2a9b1);top:-9px;left:293px}.mwe-popups.mwe-popups-image-pointer.flipped-x::after{content:'';position:absolute;border:12px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:12px solid var(--background-color-base,#fff);top:-8px;left:290px}.mwe-popups.mwe-popups-image-pointer > div > a > svg{margin-top:-8px;position:absolute;z-index:113;left:0}.mwe-popups.flipped-x.mwe-popups-is-tall{min-height:242px}.mwe-popups.flipped-x.mwe-popups-is-tall::before{content:'';position:absolute;border:9px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:9px solid var(--border-color-base,#a2a9b1);top:-9px;left:420px;z-index:111}.mwe-popups.flipped-x.mwe-popups-is-tall > div > a > svg{margin:0;margin-top:-8px;margin-bottom:-7px;position:absolute;z-index:113;right:0}.mwe-popups.flipped-x-y::before{content:'';position:absolute;border:9px solid var(--border-color-transparent,transparent);border-bottom:0;border-top:9px solid var(--border-color-base,#a2a9b1);bottom:-9px;left:293px;z-index:111}.mwe-popups.flipped-x-y::after{content:'';position:absolute;border:12px solid var(--border-color-transparent,transparent);border-bottom:0;border-top:12px solid var(--background-color-base,#fff);bottom:-8px;left:290px;z-index:112}.mwe-popups.flipped-x-y.mwe-popups-is-tall{min-height:242px}.mwe-popups.flipped-x-y.mwe-popups-is-tall::before{content:'';position:absolute;border:9px solid var(--border-color-transparent,transparent);border-bottom:0;border-top:9px solid var(--border-color-base,#a2a9b1);bottom:-9px;left:420px}.mwe-popups.flipped-x-y.mwe-popups-is-tall::after{content:'';position:absolute;border:12px solid var(--border-color-transparent,transparent);border-bottom:0;border-top:12px solid var(--background-color-base,#fff);bottom:-8px;left:417px}.mwe-popups.flipped-x-y.mwe-popups-is-tall > div > a > svg{margin:0;margin-bottom:-9px;position:absolute;z-index:113;right:0}.mwe-popups.flipped-y::before{content:'';position:absolute;border:8px solid var(--border-color-transparent,transparent);border-bottom:0;border-top:8px solid var(--border-color-base,#a2a9b1);bottom:-8px;left:10px}.mwe-popups.flipped-y::after{content:'';position:absolute;border:11px solid var(--border-color-transparent,transparent);border-bottom:0;border-top:11px solid var(--background-color-base,#fff);bottom:-7px;left:7px}.mwe-popups-is-tall polyline{transform:translate(0,0)}.mwe-popups-is-tall.flipped-x-y polyline{transform:translate(0,-8px)}.mwe-popups-is-tall.flipped-x polyline{transform:translate(0,8px)}.rtl .mwe-popups-is-tall polyline{transform:translate(-100%,0)}.rtl .mwe-popups-is-tall.flipped-x-y polyline{transform:translate(-100%,-8px)}.rtl .mwe-popups-is-tall.flipped-x polyline{transform:translate(-100%,8px)}@supports (clip-path:polygon(1px 1px)){.mwe-popups .mwe-popups-thumbnail{display:block;object-fit:cover;outline:1px solid rgba(0,0,0,0.1)}.mwe-popups.flipped-y .mwe-popups-container,.mwe-popups.flipped-x-y .mwe-popups-container{--y1:100%;--y2:calc(100% - var(--pointer-height));--y3:calc(100% - var(--pointer-height) - var(--pseudo-radius));--y4:var(--pseudo-radius);--y5:0;margin-bottom:calc(var(--pointer-height) \* -1);padding-bottom:var(--pointer-height)}.mwe-popups:not(.flipped-y):not(.flipped-x-y) .mwe-popups-container{margin-top:calc(var(--pointer-height) \* -1);padding-top:var(--pointer-height)}.mwe-popups .mwe-popups-discreet{margin-top:calc(var(--pointer-height) \* -1)}.mwe-popups.mwe-popups-is-tall.flipped-y .mwe-popups-discreet,.mwe-popups.mwe-popups-is-tall.flipped-x-y .mwe-popups-discreet{margin-top:0;margin-bottom:calc(var(--pointer-height) \* -1)}.mwe-popups .mwe-popups-container{--x1:0;--x2:var(--pseudo-radius);--x3:calc(var(--pointer-offset) - (var(--pointer-width) / 2));--x4:var(--pointer-offset);--x5:calc(var(--pointer-offset) + (var(--pointer-width) / 2));--x6:calc(100% - var(--pseudo-radius));--x7:100%;--y1:0;--y2:var(--pointer-height);--y3:calc(var(--pointer-height) + var(--pseudo-radius));--y4:calc(100% - var(--pseudo-radius));--y5:100%;padding-top:0;display:flex;background:var(--background-color-base,#fff);--pseudo-radius:2px;--pointer-height:8px;--pointer-width:16px;--pointer-offset:26px;clip-path:polygon(var(--x2) var(--y2),var(--x3) var(--y2),var(--x4) var(--y1),var(--x5) var(--y2),var(--x6) var(--y2),var(--x7) var(--y3),var(--x7) var(--y4),var(--x6) var(--y5),var(--x2) var(--y5),var(--x1) var(--y4),var(--x1) var(--y3))}.mwe-popups.mwe-popups-is-tall{flex-direction:row}.mwe-popups.mwe-popups-is-tall .mwe-popups-discreet{order:1}.mwe-popups.mwe-popups-is-tall .mwe-popups-discreet .mwe-popups-thumbnail{width:203px;box-sizing:border-box;height:250px}.mwe-popups.mwe-popups-is-not-tall .mwe-popups-thumbnail{width:320px;height:192px}.mwe-popups.mwe-popups-is-not-tall .mwe-popups-container{flex-direction:column}.mwe-popups::before{display:none}.mwe-popups::after{display:none}body.ltr .mwe-popups.flipped-x .mwe-popups-container,body.ltr .mwe-popups.flipped-x-y .mwe-popups-container,body.rtl .mwe-popups:not(.flipped-x):not(.flipped-x-y) .mwe-popups-container{--x3:calc(100% - var(--pointer-offset) - (var(--pointer-width) / 2));--x4:calc(100% - var(--pointer-offset));--x5:calc(100% - var(--pointer-offset) + (var(--pointer-width) / 2))}}@media screen{html.skin-theme-clientpref-night .mwe-popups.mwe-popups-no-image-pointer::before{content:'';position:absolute;border:8px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:8px solid rgba(255,255,255,0.07000000000000001);top:-8px;left:10px}html.skin-theme-clientpref-night .mwe-popups-extract[dir='ltr']::after{ background-image:linear-gradient(to right,transparent,var(--background-color-base,#fff) 50%)}html.skin-theme-clientpref-night .mwe-popups-extract[dir='rtl']::after{ background-image:linear-gradient(to left,transparent,var(--background-color-base,#fff) 50%)}@supports (clip-path:polygon(1px 1px)){html.skin-theme-clientpref-night .mwe-popups .mwe-popups-thumbnail{background-color:#c8ccd1}}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mwe-popups.mwe-popups-no-image-pointer::before{content:'';position:absolute;border:8px solid var(--border-color-transparent,transparent);border-top:0;border-bottom:8px solid rgba(255,255,255,0.07000000000000001);top:-8px;left:10px}html.skin-theme-clientpref-os .mwe-popups-extract[dir='ltr']::after{ background-image:linear-gradient(to right,transparent,var(--background-color-base,#fff) 50%)}html.skin-theme-clientpref-os .mwe-popups-extract[dir='rtl']::after{ background-image:linear-gradient(to left,transparent,var(--background-color-base,#fff) 50%)}@supports (clip-path:polygon(1px 1px)){html.skin-theme-clientpref-os .mwe-popups .mwe-popups-thumbnail{background-color:#c8ccd1}}}.mwe-popups .mwe-popups-title{display:block;margin-bottom:12px}.mwe-popups-type-generic.mwe-popups .mwe-popups-title{font-weight:normal;margin:0}.mwe-popups .mwe-popups-title .popups-icon,.mwe-popups .mw-parser-output .popups-icon{margin:0 8px 0 0}.mwe-popups.mwe-popups-type-generic .mwe-popups-extract,.mwe-popups.mwe-popups-type-disambiguation .mwe-popups-extract{min-height:auto}.mwe-popups.mwe-popups-type-generic .mwe-popups-read-link,.mwe-popups.mwe-popups-type-disambiguation .mwe-popups-read-link{font-weight:bold;font-size:var(--font-size-x-small,0.75rem);text-decoration:none}.mwe-popups.mwe-popups-type-generic .mwe-popups-extract:hover + footer .mwe-popups-read-link,.mwe-popups.mwe-popups-type-disambiguation .mwe-popups-extract:hover + footer .mwe-popups-read-link,.mwe-popups.mwe-popups-type-generic .mwe-popups-read-link:hover,.mwe-popups.mwe-popups-type-disambiguation .mwe-popups-read-link:hover{text-decoration:underline}.mwe-popups-overlay{background-color:var(--background-color-backdrop-light,rgba(255,255,255,0.65));z-index:999;position:fixed;height:100%;width:100%;top:0;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center}#mwe-popups-svg{position:absolute;top:-1000px}.popups-icon{min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}.popups-icon--size-small{min-width:10px;min-height:10px;width:var(--font-size-medium,1rem);height:var(--font-size-medium,1rem)}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--size-small{background-position:center;background-repeat:no-repeat; background-size:calc(max(var(--font-size-medium,1rem),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--size-small{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(var(--font-size-medium,1rem),10px));mask-size:calc(max(var(--font-size-medium,1rem),10px)); }}.mwe-popups-overlay .cdx-button.cdx-button--icon-only span + span,.mwe-popups .cdx-button.cdx-button--icon-only span + span{display:block;position:absolute !important; clip:rect(1px,1px,1px,1px);width:1px;height:1px;margin:-1px;border:0;padding:0;overflow:hidden}.cdx-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;box-sizing:border-box;min-height:32px;max-width:28rem;margin:0;border-width:1px;border-style:solid;border-radius:2px;padding-right:11px;padding-left:11px;font-family:inherit;font-size:var(--font-size-medium,1rem);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:none;transition-property:background-color,color,border-color,box-shadow;transition-duration:.1s}.cdx-button--size-small{gap:4px;min-height:1.5rem;padding-right:5px;padding-left:5px}.cdx-button--size-large{min-height:44px;padding-right:15px;padding-left:15px}.cdx-button--icon-only{min-width:32px;padding-right:0;padding-left:0}.cdx-button--icon-only.cdx-button--size-small{min-width:1.5rem}.cdx-button--icon-only.cdx-button--size-large{min-width:44px}.cdx-button::-moz-focus-inner{border:0;padding:0}.cdx-button .cdx-button\_\_icon,.cdx-button .cdx-icon{vertical-align:middle}.cdx-button .cdx-icon{color:inherit}.cdx-button--fake-button,.cdx-button--fake-button:hover,.cdx-button--fake-button:focus{text-decoration:none}.cdx-button:enabled,.cdx-button.cdx-button--fake-button--enabled{background-color:var(--background-color-interactive-subtle,#f8f9fa);color:var(--color-neutral,#404244);border-color:var(--border-color-interactive,#72777d)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled .cdx-button\_\_icon{background-color:var(--color-neutral,#404244)}}.cdx-button:enabled:hover,.cdx-button.cdx-button--fake-button--enabled:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);border-color:var(--border-color-interactive--hover,#27292d);cursor:pointer}.cdx-button:enabled:active,.cdx-button.cdx-button--fake-button--enabled:active,.cdx-button:enabled.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--is-active{background-color:var(--background-color-interactive-subtle--active,#dadde3);border-color:var(--border-color-interactive--active,#202122)}.cdx-button:enabled:focus,.cdx-button.cdx-button--fake-button--enabled:focus{outline:1px solid transparent}.cdx-button:enabled:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c)}.cdx-button:enabled.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive{background-color:var(--background-color-progressive-subtle,#e8eeff);color:var(--color-progressive,#36c);border-color:var(--border-color-progressive,#6485d1)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-progressive,#36c)}}.cdx-button:enabled.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive-subtle--hover,#d9e2ff);color:var(--color-progressive--hover,#3056a9);border-color:var(--border-color-progressive--hover,#3056a9)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:hover .cdx-button\_\_icon{background-color:var(--color-progressive--hover,#3056a9)}}.cdx-button:enabled.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive-subtle--active,#b6d4fb);color:var(--color-progressive--active,#233566);border-color:var(--border-color-progressive--active,#233566)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-progressive--active,#233566)}}.cdx-button:enabled.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive{background-color:var(--background-color-destructive-subtle,#ffe9e5);color:var(--color-destructive,#bf3c2c);border-color:var(--border-color-destructive,#f54739)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-destructive,#bf3c2c)}}.cdx-button:enabled.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive-subtle--hover,#ffdad3);color:var(--color-destructive--hover,#9f3526);border-color:var(--border-color-destructive--hover,#9f3526)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:hover .cdx-button\_\_icon{background-color:var(--color-destructive--hover,#9f3526)}}.cdx-button:enabled.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive-subtle--active,#ffc8bd);color:var(--color-destructive--active,#612419);border-color:var(--border-color-destructive--active,#612419)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-destructive--active,#612419)}}.cdx-button:enabled.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive{background-color:var(--background-color-progressive,#36c);color:var(--color-inverted-fixed,#fff);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive--hover,#3056a9)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive--active,#233566)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c),inset 0 0 0 2px var(--box-shadow-color-inverted,#fff)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-inverted-fixed,#fff)}}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive{background-color:var(--background-color-destructive,#bf3c2c);color:var(--color-inverted-fixed,#fff);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive--hover,#9f3526)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive--active,#612419)}.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c),inset 0 0 0 2px var(--box-shadow-color-inverted,#fff)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-primary.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-primary.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-inverted-fixed,#fff)}}.cdx-button:enabled.cdx-button--weight-quiet,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet{background-color:var(--background-color-transparent,transparent);border-color:var(--border-color-transparent,transparent)}.cdx-button:enabled.cdx-button--weight-quiet:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet:hover{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);mix-blend-mode:var(--mix-blend-mode-blend,multiply)}.cdx-button:enabled.cdx-button--weight-quiet:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--is-active{background-color:var(--background-color-interactive-subtle--active,#dadde3)}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive{color:var(--color-progressive,#36c)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive .cdx-button\_\_icon{background-color:var(--color-progressive,#36c)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover{background-color:var(--background-color-progressive-subtle--hover,#d9e2ff);color:var(--color-progressive--hover,#3056a9);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:hover .cdx-button\_\_icon{background-color:var(--color-progressive--hover,#3056a9)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active{background-color:var(--background-color-progressive-subtle--active,#b6d4fb);color:var(--color-progressive--active,#233566);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-progressive--active,#233566)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-progressive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c)}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive{color:var(--color-destructive,#bf3c2c)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive .cdx-button\_\_icon{background-color:var(--color-destructive,#bf3c2c)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover{background-color:var(--background-color-destructive-subtle--hover,#ffdad3);color:var(--color-destructive--hover,#9f3526);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:hover .cdx-button\_\_icon{background-color:var(--color-destructive--hover,#9f3526)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active{background-color:var(--background-color-destructive-subtle--active,#ffc8bd);color:var(--color-destructive--active,#612419);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:active .cdx-button\_\_icon,.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive.cdx-button--is-active .cdx-button\_\_icon{background-color:var(--color-destructive--active,#612419)}}.cdx-button:enabled.cdx-button--weight-quiet.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active),.cdx-button.cdx-button--fake-button--enabled.cdx-button--weight-quiet.cdx-button--action-destructive:focus:not(:active):not(.cdx-button--is-active){border-color:var(--border-color-destructive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-destructive--focus,#36c)}.cdx-button:disabled,.cdx-button.cdx-button--fake-button--disabled{background-color:var(--background-color-disabled,#dadde3);color:var(--color-disabled-emphasized,#a2a9b1);border-color:var(--border-color-transparent,transparent)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:disabled .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--disabled .cdx-button\_\_icon{background-color:var(--color-inverted,#fff)}}.cdx-button:disabled.cdx-button--weight-quiet,.cdx-button.cdx-button--fake-button--disabled.cdx-button--weight-quiet{background-color:var(--background-color-transparent,transparent);color:var(--color-disabled,#a2a9b1)}@supports ((-webkit-mask-image:none) or (mask-image:none)){.cdx-button:disabled.cdx-button--weight-quiet .cdx-button\_\_icon,.cdx-button.cdx-button--fake-button--disabled.cdx-button--weight-quiet .cdx-button\_\_icon{background-color:var(--color-disabled,#a2a9b1)}}.cdx-icon{color:var(--color-base,#202122);display:inline-flex;align-items:center;justify-content:center;vertical-align:text-bottom}.cdx-icon svg{fill:currentcolor;width:100%;height:100%}.cdx-icon--x-small{min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) - 4px);height:calc(var(--font-size-medium,1rem) - 4px)}.cdx-icon--small{min-width:14px;min-height:14px;width:var(--font-size-medium,1rem);height:var(--font-size-medium,1rem)}.cdx-icon--medium{min-width:18px;min-height:18px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px)}.cdx-icon--flipped svg{transform:scaleX(-1)}.cdx-label{display:flex;flex-direction:column;font-size:var(--font-size-medium,1rem);line-height:var(--line-height-small,1.375rem)}.cdx-label\_\_label\_\_icon.cdx-icon{color:var(--color-subtle,#54595d);margin-right:4px}.cdx-label\_\_label\_\_text{font-weight:700}legend.cdx-label{padding:0}fieldset label.cdx-label\_\_label .cdx-label\_\_label\_\_text{font-weight:400}.cdx-label:not(.cdx-label--disabled) .cdx-label\_\_label\_\_optional-flag,.cdx-label:not(.cdx-label--disabled) .cdx-label\_\_description{color:var(--color-subtle,#54595d)}.cdx-label--disabled,.cdx-label--disabled .cdx-label\_\_label\_\_icon{color:var(--color-disabled,#a2a9b1)}.cdx-label--visually-hidden{display:block;clip:rect(1px,1px,1px,1px);position:absolute!important;width:1px;height:1px;margin:-1px;border:0;padding:0;overflow:hidden}.cdx-label:not(.cdx-label--visually-hidden){padding-bottom:4px}.cdx-checkbox{position:relative;min-width:20px;min-height:20px}.cdx-checkbox\_\_wrapper{display:flex}.cdx-checkbox:not(.cdx-checkbox--inline){display:flex;flex-direction:column;margin-bottom:6px}.cdx-checkbox:not(.cdx-checkbox--inline):last-child{margin-bottom:0}.cdx-checkbox--inline{display:inline-flex;margin-right:16px;white-space:nowrap}.cdx-checkbox--inline:last-child{margin-right:0}.cdx-checkbox\_\_label,.cdx-checkbox\_\_label.cdx-label{display:inline-flex;position:relative;z-index:0;padding-left:calc(var(--font-size-medium,1rem) + 10px)}.cdx-checkbox\_\_label.cdx-label{padding-bottom:0}.cdx-checkbox\_\_label.cdx-label .cdx-label\_\_label\_\_text{font-weight:400}.cdx-checkbox--inline .cdx-checkbox\_\_label{display:inline}.cdx-checkbox\_\_icon{background-color:var(--background-color-base-fixed,#fff);position:absolute;left:0;box-sizing:border-box;min-width:18px;min-height:18px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);margin-top:1px;border-width:1px;border-style:solid;transition-property:background-color,color,border-color,box-shadow;transition-duration:.1s}.cdx-checkbox\_\_input{opacity:0;position:absolute;left:0;z-index:1;min-width:20px;min-height:20px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);margin:1px 0 0;font-size:var(--font-size-medium,1rem);cursor:inherit}.cdx-checkbox\_\_wrapper:hover>.cdx-checkbox\_\_input:enabled,.cdx-checkbox\_\_wrapper:hover>.cdx-checkbox\_\_input:enabled~.cdx-label .cdx-label\_\_label,.cdx-checkbox\_\_wrapper:hover>.cdx-checkbox\_\_input:enabled~.cdx-checkbox\_\_label:not(.cdx-label){cursor:pointer}.cdx-checkbox\_\_custom-input:not(.cdx-checkbox\_\_custom-input--inline){padding-top:6px;padding-left:calc(var(--font-size-medium,1rem) + 10px)}.cdx-checkbox\_\_icon{border-radius:2px}.cdx-checkbox\_\_input:indeterminate+.cdx-checkbox\_\_icon:before{content:" ";background-color:var(--background-color-base-fixed,#fff);position:absolute;top:calc(50% - .5px);right:3px;left:3px;height:2px}.cdx-checkbox\_\_input:checked:not(:indeterminate)+.cdx-checkbox\_\_icon:before{content:" ";display:block;width:.25rem;height:calc(100% - 6px);margin:0 auto 4px;border-right-width:2px;border-right-style:solid;border-bottom-width:2px;border-bottom-style:solid;transform:rotate(45deg)}.cdx-checkbox\_\_input:enabled+.cdx-checkbox\_\_icon{background-color:var(--background-color-base,#fff);border-color:var(--border-color-interactive,#72777d)}.cdx-checkbox\_\_input:enabled:hover+.cdx-checkbox\_\_icon{background-color:var(--background-color-interactive-subtle--hover,#eaecf0);border-color:var(--border-color-interactive--hover,#27292d)}.cdx-checkbox\_\_input:enabled:focus:not(:active)+.cdx-checkbox\_\_icon{border-color:var(--border-color-progressive--focus,#36c);box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c);outline:1px solid transparent}.cdx-checkbox\_\_input:enabled:active+.cdx-checkbox\_\_icon{background-color:var(--background-color-interactive-subtle--active,#dadde3);border-color:var(--border-color-interactive--active,#202122)}.cdx-checkbox\_\_input:enabled:checked+.cdx-checkbox\_\_icon,.cdx-checkbox\_\_input:enabled:indeterminate+.cdx-checkbox\_\_icon{background-color:var(--background-color-progressive,#36c);border-color:var(--border-color-transparent,transparent)}.cdx-checkbox\_\_input:enabled:checked:hover+.cdx-checkbox\_\_icon,.cdx-checkbox\_\_input:enabled:indeterminate:hover+.cdx-checkbox\_\_icon{background-color:var(--background-color-progressive--hover,#3056a9)}.cdx-checkbox\_\_input:enabled:checked:focus:not(:active):not(:hover)+.cdx-checkbox\_\_icon,.cdx-checkbox\_\_input:enabled:indeterminate:focus:not(:active):not(:hover)+.cdx-checkbox\_\_icon{background-color:var(--background-color-progressive,#36c)}.cdx-checkbox\_\_input:enabled:checked:focus:not(:active)+.cdx-checkbox\_\_icon,.cdx-checkbox\_\_input:enabled:indeterminate:focus:not(:active)+.cdx-checkbox\_\_icon{box-shadow:inset 0 0 0 1px var(--box-shadow-color-progressive--focus,#36c),inset 0 0 0 2px var(--box-shadow-color-inverted,#fff)}.cdx-checkbox\_\_input:enabled:checked:active+.cdx-checkbox\_\_icon,.cdx-checkbox\_\_input:enabled:indeterminate:active+.cdx-checkbox\_\_icon{background-color:var(--background-color-progressive--active,#233566)}.cdx-checkbox\_\_input:enabled:checked:not(:indeterminate)+.cdx-checkbox\_\_icon:before{border-color:var(--border-color-inverted-fixed,#fff)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled~.cdx-checkbox\_\_label{color:var(--color-error,#bf3c2c)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled+.cdx-checkbox\_\_icon{background-color:var(--background-color-error-subtle,#ffe9e5);border-color:var(--border-color-error,#f54739)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:hover+.cdx-checkbox\_\_icon{background-color:var(--background-color-error-subtle--hover,#ffdad3);border-color:var(--border-color-error--hover,#9f3526)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:focus+.cdx-checkbox\_\_icon{border-color:var(--border-color-progressive--focus,#36c)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:active+.cdx-checkbox\_\_icon{background-color:var(--background-color-error-subtle--active,#ffc8bd);border-color:var(--border-color-error--active,#612419)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:checked+.cdx-checkbox\_\_icon,.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:indeterminate+.cdx-checkbox\_\_icon{background-color:var(--background-color-error,#f54739);border-color:var(--border-color-transparent,transparent)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:checked:hover+.cdx-checkbox\_\_icon,.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:indeterminate:hover+.cdx-checkbox\_\_icon{background-color:var(--background-color-error--hover,#d74032)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:checked:active+.cdx-checkbox\_\_icon,.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:indeterminate:active+.cdx-checkbox\_\_icon{background-color:var(--background-color-error--active,#bf3c2c)}.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:checked:focus:not(:active)+.cdx-checkbox\_\_icon,.cdx-checkbox--status-error .cdx-checkbox\_\_input:enabled:indeterminate:focus:not(:active)+.cdx-checkbox\_\_icon{background-color:var(--background-color-error,#f54739);border-color:var(--border-color-progressive--focus,#36c)}.cdx-checkbox\_\_input:disabled+.cdx-checkbox\_\_icon{background-color:var(--background-color-disabled-subtle,#eaecf0);border-color:var(--border-color-disabled,#c8ccd1)}.cdx-checkbox\_\_input:disabled:checked+.cdx-checkbox\_\_icon,.cdx-checkbox\_\_input:disabled:indeterminate+.cdx-checkbox\_\_icon{background-color:var(--background-color-disabled,#dadde3);border-color:var(--border-color-transparent,transparent)}.cdx-checkbox\_\_input:disabled:checked:not(:indeterminate)+.cdx-checkbox\_\_icon:before{border-right-color:var(--color-disabled,#a2a9b1);border-bottom-color:var(--color-disabled,#a2a9b1)}.cdx-checkbox\_\_input:disabled:indeterminate+.cdx-checkbox\_\_icon:before{background-color:var(--color-disabled-emphasized,#a2a9b1)}.cdx-checkbox\_\_input:disabled~.cdx-checkbox\_\_label,.cdx-checkbox\_\_input:disabled~.cdx-checkbox\_\_label.cdx-label{color:var(--color-disabled,#a2a9b1)}
+.ve-active .ve-init-mw-desktopArticleTarget-targetContainer #siteNotice,.ve-active .mw-indicators,.ve-active #t-print,.ve-active #t-permalink,.ve-active #p-coll-print\_export,.ve-active #t-cite,.ve-active .ve-init-mw-desktopArticleTarget-editableContent,.ve-active .ve-init-mw-tempWikitextEditorWidget{display:none}.ve-deactivating .ve-ui-surface{display:none}.ve-activating{ }.ve-activating .ve-ui-surface{height:0;padding:0 !important; overflow:hidden} .ve-loading .ve-init-mw-desktopArticleTarget-targetContainer > :not(.ve-init-mw-desktopArticleTarget-toolbarPlaceholder):not(.ve-init-mw-desktopArticleTarget),.ve-loading .ve-init-mw-desktopArticleTarget-originalContent,.ve-activated:not(.ve-loading) .ve-init-mw-desktopArticleTarget-uneditableContent{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none;opacity:0.5}.ve-activated .ve-init-mw-desktopArticleTarget-targetContainer #firstHeading{ -webkit-user-select:text;-moz-user-select:text;user-select:text;pointer-events:auto;cursor:text}.ve-activated .ve-init-mw-desktopArticleTarget-targetContainer #firstHeading a{ pointer-events:none}.ve-activated .ve-init-mw-desktopArticleTarget-originalContent #catlinks{cursor:pointer}.ve-activated .ve-init-mw-desktopArticleTarget-originalContent #catlinks:hover{ background:rgba(109,169,247,0.15)}.ve-activated .ve-init-mw-desktopArticleTarget-originalContent #catlinks a{opacity:1} .ve-init-mw-desktopArticleTarget-loading-overlay{z-index:2;position:absolute;width:100%;top:1em}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{-webkit-position:sticky;position:sticky;top:0;z-index:2;overflow:hidden;transition:height 250ms ease;height:0;padding-bottom:2px; }.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar{background:var(--background-color-base,#fff);transform:translateY(-100%);transition:transform 250ms ease}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-open .ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar{transform:translateY(0)} .oo-ui-element-hidden{display:none !important; } .ve-init-mw-desktopArticleTarget-categoryEdit{float:right;margin-top:1ex} .ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar{height:42px;border-bottom:1px solid #c8ccd1;box-shadow:0 1px 1px 0 rgba(0,0,0,0.1)}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-open{height:42px} .ve-activated .vector-toc,.ve-activated .vector-page-titlebar-toc{display:none}.ve-init-mw-desktopArticleTarget-toolbar,.ve-init-mw-desktopArticleTarget-toolbarPlaceholder,.ve-ui-overlay-local,.ve-ui-overlay-global,.ve-ui-sidebarDialogWindowManager,.ve-ce-surface-interface{font-size:0.875rem}.ve-ce-surface-interface{font-family:sans-serif}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar,.ve-init-mw-desktopArticleTarget-toolbar.ve-ui-toolbar > .oo-ui-toolbar-bar{box-shadow:0 2px 1px -1px rgba(0,0,0,0.1)}.ve-ui-mwSaveDialog-preview .mw-body{ }.ve-ui-mwSaveDialog-preview .mw-body .firstHeading{grid-area:titlebar}.ve-ui-mwSaveDialog-preview .mw-body .mw-body-content{grid-area:content;font-size:var(--font-size-medium);line-height:var(--line-height-content)}.ve-ui-mwSaveDialog-preview .mw-content-container{max-width:960px;margin:0 auto}.ve-init-mw-desktopArticleTarget .ve-init-mw-target-surface > .ve-ce-surface .ve-ce-attachedRootNode{min-height:15em}.ve-init-mw-desktopArticleTarget-toolbar .ve-ui-toolbarDialog-position-above.ve-ui-toolbarDialog-padded .oo-ui-window-body,.ve-init-mw-desktopArticleTarget-toolbar .ve-ui-toolbarDialog-position-below.ve-ui-toolbarDialog-padded .oo-ui-window-body{padding-left:0;padding-right:0}.ve-init-mw-desktopArticleTarget-toolbar .ve-ui-toolbarDialog-position-side.ve-ui-toolbarDialog-padded .oo-ui-window-body{padding-right:0}
+.popups-icon--reference-generic{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-generic{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-generic{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-generic{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m15 10-2.78-2.78L9.44 10V1H5a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V3a2 2 0 00-2-2z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-generic{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m15 10-2.78-2.78L9.44 10V1H5a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V3a2 2 0 00-2-2z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"m15 10-2.78-2.78L9.44 10V1H5a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V3a2 2 0 00-2-2z\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--reference-book{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-book{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-book{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-book{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M15 2a7.65 7.65 0 00-5 2 7.65 7.65 0 00-5-2H1v15h4a7.65 7.65 0 015 2 7.65 7.65 0 015-2h4V2zm2.5 13.5H14a4.38 4.38 0 00-3 1V5s1-1.5 4-1.5h2.5z\"/><path d=\"M9 3.5h2v1H9z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-book{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M15 2a7.65 7.65 0 00-5 2 7.65 7.65 0 00-5-2H1v15h4a7.65 7.65 0 015 2 7.65 7.65 0 015-2h4V2zm2.5 13.5H14a4.38 4.38 0 00-3 1V5s1-1.5 4-1.5h2.5z\"/><path d=\"M9 3.5h2v1H9z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M15 2a7.65 7.65 0 00-5 2 7.65 7.65 0 00-5-2H1v15h4a7.65 7.65 0 015 2 7.65 7.65 0 015-2h4V2zm2.5 13.5H14a4.38 4.38 0 00-3 1V5s1-1.5 4-1.5h2.5z\"/><path d=\"M9 3.5h2v1H9z\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--reference-book[dir='rtl'],html[dir='rtl'] .popups-icon--reference-book:not([dir='ltr']){transform:scaleX(-1)}.popups-icon--reference-journal{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-journal{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-journal{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-journal{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M2 18.5A1.5 1.5 0 003.5 20H5V0H3.5A1.5 1.5 0 002 1.5zM6 0v20h10a2 2 0 002-2V2a2 2 0 00-2-2zm7 8H8V7h5zm3-2H8V5h8z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-journal{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M2 18.5A1.5 1.5 0 003.5 20H5V0H3.5A1.5 1.5 0 002 1.5zM6 0v20h10a2 2 0 002-2V2a2 2 0 00-2-2zm7 8H8V7h5zm3-2H8V5h8z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M2 18.5A1.5 1.5 0 003.5 20H5V0H3.5A1.5 1.5 0 002 1.5zM6 0v20h10a2 2 0 002-2V2a2 2 0 00-2-2zm7 8H8V7h5zm3-2H8V5h8z\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--reference-journal[dir='rtl'],html[dir='rtl'] .popups-icon--reference-journal:not([dir='ltr']){transform:scaleX(-1)}.popups-icon--reference-news{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-news{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-news{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-news{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M5 2a2 2 0 00-2 2v12a1 1 0 01-1-1V5h-.5A1.5 1.5 0 000 6.5v10A1.5 1.5 0 001.5 18H18a2 2 0 002-2V4a2 2 0 00-2-2zm1 2h11v4H6zm0 6h6v1H6zm0 2h6v1H6zm0 2h6v1H6zm7-4h4v5h-4z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-news{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M5 2a2 2 0 00-2 2v12a1 1 0 01-1-1V5h-.5A1.5 1.5 0 000 6.5v10A1.5 1.5 0 001.5 18H18a2 2 0 002-2V4a2 2 0 00-2-2zm1 2h11v4H6zm0 6h6v1H6zm0 2h6v1H6zm0 2h6v1H6zm7-4h4v5h-4z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M5 2a2 2 0 00-2 2v12a1 1 0 01-1-1V5h-.5A1.5 1.5 0 000 6.5v10A1.5 1.5 0 001.5 18H18a2 2 0 002-2V4a2 2 0 00-2-2zm1 2h11v4H6zm0 6h6v1H6zm0 2h6v1H6zm0 2h6v1H6zm7-4h4v5h-4z\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--reference-news[dir='rtl'],html[dir='rtl'] .popups-icon--reference-news:not([dir='ltr']){transform:scaleX(-1)}.popups-icon--reference-map{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-map{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-map{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-map{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M13 3 7 1 1 3v16l6-2 6 2 6-2V1zM7 14.89l-4 1.36V4.35L7 3zm10 .75L13 17V5.1l4-1.36z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-map{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M13 3 7 1 1 3v16l6-2 6 2 6-2V1zM7 14.89l-4 1.36V4.35L7 3zm10 .75L13 17V5.1l4-1.36z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M13 3 7 1 1 3v16l6-2 6 2 6-2V1zM7 14.89l-4 1.36V4.35L7 3zm10 .75L13 17V5.1l4-1.36z\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--reference-map[dir='rtl'],html[dir='rtl'] .popups-icon--reference-map:not([dir='ltr']){transform:scaleX(-1)}.popups-icon--reference-web{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-web{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-web{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--reference-web{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M2 2a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V4a2 2 0 00-2-2zm2 1.5A1.5 1.5 0 112.5 5 1.5 1.5 0 014 3.5M18 16H2V8h16z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--reference-web{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M2 2a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V4a2 2 0 00-2-2zm2 1.5A1.5 1.5 0 112.5 5 1.5 1.5 0 014 3.5M18 16H2V8h16z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M2 2a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V4a2 2 0 00-2-2zm2 1.5A1.5 1.5 0 112.5 5 1.5 1.5 0 014 3.5M18 16H2V8h16z\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--reference-web[dir='rtl'],html[dir='rtl'] .popups-icon--reference-web:not([dir='ltr']){transform:scaleX(-1)}.popups-icon--preview-disambiguation{ min-width:10px;min-height:10px;width:calc(var(--font-size-medium,1rem) + 4px);height:calc(var(--font-size-medium,1rem) + 4px);display:inline-block;vertical-align:text-bottom}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--preview-disambiguation{background-position:center;background-repeat:no-repeat; background-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px))}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--preview-disambiguation{ -webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px));mask-size:calc(max(calc(var(--font-size-medium,1rem) + 4px),10px)); }}@supports not ((-webkit-mask-image:none) or (mask-image:none)){.popups-icon--preview-disambiguation{background-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M7 0a2 2 0 00-2 2h9a2 2 0 012 2v12a2 2 0 002-2V2a2 2 0 00-2-2z\"/><path d=\"M13 20a2 2 0 002-2V5a2 2 0 00-2-2H4a2 2 0 00-2 2v13a2 2 0 002 2zM9 5h4v5H9zM4 5h4v1H4zm0 2h4v1H4zm0 2h4v1H4zm0 2h9v1H4zm0 2h9v1H4zm0 2h9v1H4z\"/></svg>");filter:invert(var(--filter-invert-icon,0));opacity:var(--opacity-icon-base,0.87)}}@supports (-webkit-mask-image:none) or (mask-image:none){.popups-icon--preview-disambiguation{ -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M7 0a2 2 0 00-2 2h9a2 2 0 012 2v12a2 2 0 002-2V2a2 2 0 00-2-2z\"/><path d=\"M13 20a2 2 0 002-2V5a2 2 0 00-2-2H4a2 2 0 00-2 2v13a2 2 0 002 2zM9 5h4v5H9zM4 5h4v1H4zm0 2h4v1H4zm0 2h4v1H4zm0 2h9v1H4zm0 2h9v1H4zm0 2h9v1H4z\"/></svg>"); mask-image:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"%23000\"><path d=\"M7 0a2 2 0 00-2 2h9a2 2 0 012 2v12a2 2 0 002-2V2a2 2 0 00-2-2z\"/><path d=\"M13 20a2 2 0 002-2V5a2 2 0 00-2-2H4a2 2 0 00-2 2v13a2 2 0 002 2zM9 5h4v5H9zM4 5h4v1H4zm0 2h4v1H4zm0 2h4v1H4zm0 2h9v1H4zm0 2h9v1H4zm0 2h9v1H4z\"/></svg>");background-color:var(--color-base,#202122)}}.popups-icon--preview-disambiguation[dir='rtl'],html[dir='rtl'] .popups-icon--preview-disambiguation:not([dir='ltr']){transform:scaleX(-1)} #mw-content-text .reference a[href\*='#'] \*{pointer-events:none}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mwe-popups-title .popups-icon--reference-note{display:none}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mwe-popups-extract{margin-right:0;max-height:inherit}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mwe-popups-extract .mwe-popups-scroll{max-height:343px;overflow:auto;padding-right:16px}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mwe-popups-extract .mw-parser-output{overflow-wrap:break-word}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mwe-popups-extract::after{display:none}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mwe-popups-extract .mwe-popups-fade{position:absolute;width:100%;height:20px;background-color:transparent;background-image:linear-gradient(rgba(255,255,255,0),#ffffff);opacity:0;pointer-events:none;transition:opacity 250ms ease}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mwe-popups-extract.mwe-popups-fade-out .mwe-popups-fade{opacity:1}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mwe-collapsible-placeholder{font-weight:bold;margin:1em 0;position:relative}.mwe-popups.mwe-popups-type-reference .mwe-popups-container .mw-reference-previews-parent{margin-bottom:1em}
+
+[Jump to content](#bodyContent)
+
+Main menu
+
+Main menu
+```
+
+**colly+md**
+```
+Gmsh - Wikipedia
+(function(){var className="client-js vector-feature-language-in-header-enabled vector-feature-language-in-main-menu-disabled vector-feature-language-in-main-page-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 skin-theme-clientpref-day vector-sticky-header-enabled vector-toc-available skin-theme-clientpref-thumb-standard";var cookie=document.cookie.match(/(?:^|; )enwikimwclientpreferences=([^;]+)/);if(cookie){cookie[1].split('%2C').forEach(function(pref){className=className.replace(new RegExp('(^| )'+pref.replace(/-clientpref-\w+$|[^\w-]+/g,'')+'-clientpref-\\w+( |$)'),'$1'+pref+'$2');});}document.documentElement.className=className;}());RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"09a3a1e6-a417-4766-a65f-162c92941e68","wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Gmsh","wgTitle":"Gmsh","wgCurRevisionId":1339869955,"wgRevisionId":1339869955,"wgArticleId":24126101,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["\*"],"wgCategories":["Articles with short description","Short description is different from Wikidata","Webarchive template wayback links","All stub articles","Free mathematics software","Free software programmed in C++","Cross-platform free software","Mesh generators","Numerical analysis software for Linux","Numerical analysis software for macOS","Numerical analysis software for Windows","Software that uses FLTK","Computer-aided engineering software for Linux","Science software stubs"],"wgPageViewLanguage":"en","wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Gmsh","wgRelevantArticleId":24126101,"wgTempUserName":null,"wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgNoticeProject":"wikipedia","wgFlaggedRevsParams":{"tags":{"status":{"levels":1}}},"wgConfirmEditCaptchaNeededForGenericEdit":"hcaptcha","wgConfirmEditHCaptchaVisualEditorOnLoadIntegrationEnabled":false,"wgConfirmEditHCaptchaSiteKey":"5d0c670e-a5f4-4258-ad16-1f42792c9c62","wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgPopupsFlags":0,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en"},"wgMFDisplayWikibaseDescriptions":{"search":true,"watchlist":true,"tagline":false,"nearby":true},"wgWMESchemaEditAttemptStepOversample":false,"wgWMEPageLength":4000,"wgEditSubmitButtonLabelPublish":true,"wgVisualEditorPageIsDisambiguation":false,"wgULSPosition":"interlanguage","wgULSisCompactLinksEnabled":false,"wgVector2022LanguageInHeader":true,"wgULSisLanguageSelectorEmpty":false,"wgWikibaseItemId":"Q3109412","wgCheckUserClientHintsHeadersJsApi":["brands","architecture","bitness","fullVersionList","mobile","model","platform","platformVersion"],"GEHomepageSuggestedEditsEnableTopics":true,"wgGESuggestedEditsTaskTypes":{"taskTypes":["copyedit","link-recommendation"],"unavailableTaskTypes":[]},"wgGETopicsMatchModeEnabled":false,"wgGELevelingUpEnabledForUser":false,"wgTestKitchenUserExperiments":{"overrides":[],"enrolled":[],"assigned":[],"subject\_ids":[]}};
+RLSTATE={"ext.globalCssJs.user.styles":"ready","site.styles":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","user":"ready","user.options":"loading","ext.wikimediamessages.styles":"ready","ext.cite.styles":"ready","skins.vector.search.codex.styles":"ready","skins.vector.styles":"ready","skins.vector.icons":"ready","jquery.makeCollapsible.styles":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","wikibase.client.init":"ready"};RLPAGEMODULES=["ext.parsermigration.survey","ext.cite.ux-enhancements","site","mediawiki.page.ready","jquery.makeCollapsible","mediawiki.toc","skins.vector.js","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.gadget.ReferenceTooltips","ext.gadget.switcher","ext.urlShortener.toolbar","ext.centralauth.centralautologin","mmv.bootstrap","ext.popups","ext.visualEditor.desktopArticleTarget.init","ext.echo.centralauth","ext.eventLogging","ext.wikimediaEvents","ext.navigationTiming","ext.uls.interface","ext.cx.eventlogging.campaigns","ext.cx.uls.quick.actions","wikibase.client.vector-2022","wikibase.databox.fromWikidata","ext.checkUser.clientHints","ext.quicksurveys.init","ext.growthExperiments.SuggestedEditSession","ext.testKitchen"];
+(RLQ=window.RLQ||[]).push(function(){mw.loader.impl(function(){return["user.options@12s5i",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+}];});});
+
+[Jump to content](#bodyContent)
+
+Main menu
+
+Main menu
+
+move to sidebar
+hide
+
+Navigation
+
+* [Main page](/wiki/Main_Page "Visit the main page [z]")
+* [Contents](/wiki/Wikipedia:Contents "Guides to browsing Wikipedia")
+* [Current events](/wiki/Portal:Current_events "Articles related to current events")
+* [Random article](/wiki/Special:Random "Visit a randomly selected article [x]")
+* [About Wikipedia](/wiki/Wikipedia:About "Learn about Wikipedia and how it works")
+* [Contact us](//en.wikipedia.org/wiki/Wikipedia:Contact_us "How to contact Wikipedia")
+
+Contribute
+
+* [Help](/wiki/Help:Contents "Guidance on how to use and edit Wikipedia")
+* [Learn to edit](/wiki/Help:Introduction "Learn how to edit Wikipedia")
+* [Community portal](/wiki/Wikipedia:Community_portal "The hub for editors")
+* [Recent changes](/wiki/Special:RecentChanges "A list of recent changes to Wikipedia [r]")
+* [Upload file](/wiki/Wikipedia:File_upload_wizard "Add images or other media for use on Wikipedia")
+* [Special pages](/wiki/Special:SpecialPages "A list of all special pages [q]")
+
+[Search](/wiki/Special:Search "Search Wikipedia [f]")
+
+Search
+
+Appearance
+
+* [Donate](https://donate.wikimedia.org/?wmf_source=donate&wmf_medium=sidebar&wmf_campaign=en.wikipedia.org&uselang=en)
+```
+
+**playwright**
+```
+Gmsh - Wikipedia
+(function(){var className="client-js vector-feature-language-in-header-enabled vector-feature-language-in-main-menu-disabled vector-feature-language-in-main-page-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 skin-theme-clientpref-day vector-sticky-header-enabled vector-toc-available skin-theme-clientpref-thumb-standard";var cookie=document.cookie.match(/(?:^|; )enwikimwclientpreferences=([^;]+)/);if(cookie){cookie[1].split('%2C').forEach(function(pref){className=className.replace(new RegExp('(^| )'+pref.replace(/-clientpref-\w+$|[^\w-]+/g,'')+'-clientpref-\\w+( |$)'),'$1'+pref+'$2');});}document.documentElement.className=className;}());RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"09a3a1e6-a417-4766-a65f-162c92941e68","wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Gmsh","wgTitle":"Gmsh","wgCurRevisionId":1339869955,"wgRevisionId":1339869955,"wgArticleId":24126101,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["\*"],"wgCategories":["Articles with short description","Short description is different from Wikidata","Webarchive template wayback links","All stub articles","Free mathematics software","Free software programmed in C++","Cross-platform free software","Mesh generators","Numerical analysis software for Linux","Numerical analysis software for macOS","Numerical analysis software for Windows","Software that uses FLTK","Computer-aided engineering software for Linux","Science software stubs"],"wgPageViewLanguage":"en","wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Gmsh","wgRelevantArticleId":24126101,"wgTempUserName":null,"wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgNoticeProject":"wikipedia","wgFlaggedRevsParams":{"tags":{"status":{"levels":1}}},"wgConfirmEditCaptchaNeededForGenericEdit":"hcaptcha","wgConfirmEditHCaptchaVisualEditorOnLoadIntegrationEnabled":false,"wgConfirmEditHCaptchaSiteKey":"5d0c670e-a5f4-4258-ad16-1f42792c9c62","wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgPopupsFlags":0,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en"},"wgMFDisplayWikibaseDescriptions":{"search":true,"watchlist":true,"tagline":false,"nearby":true},"wgWMESchemaEditAttemptStepOversample":false,"wgWMEPageLength":4000,"wgEditSubmitButtonLabelPublish":true,"wgVisualEditorPageIsDisambiguation":false,"wgULSPosition":"interlanguage","wgULSisCompactLinksEnabled":false,"wgVector2022LanguageInHeader":true,"wgULSisLanguageSelectorEmpty":false,"wgWikibaseItemId":"Q3109412","wgCheckUserClientHintsHeadersJsApi":["brands","architecture","bitness","fullVersionList","mobile","model","platform","platformVersion"],"GEHomepageSuggestedEditsEnableTopics":true,"wgGESuggestedEditsTaskTypes":{"taskTypes":["copyedit","link-recommendation"],"unavailableTaskTypes":[]},"wgGETopicsMatchModeEnabled":false,"wgGELevelingUpEnabledForUser":false,"wgTestKitchenUserExperiments":{"overrides":[],"enrolled":[],"assigned":[],"subject\_ids":[]}};
+RLSTATE={"ext.globalCssJs.user.styles":"ready","site.styles":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","user":"ready","user.options":"loading","ext.wikimediamessages.styles":"ready","ext.cite.styles":"ready","skins.vector.search.codex.styles":"ready","skins.vector.styles":"ready","skins.vector.icons":"ready","jquery.makeCollapsible.styles":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","wikibase.client.init":"ready"};RLPAGEMODULES=["ext.parsermigration.survey","ext.cite.ux-enhancements","site","mediawiki.page.ready","jquery.makeCollapsible","mediawiki.toc","skins.vector.js","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.gadget.ReferenceTooltips","ext.gadget.switcher","ext.urlShortener.toolbar","ext.centralauth.centralautologin","mmv.bootstrap","ext.popups","ext.visualEditor.desktopArticleTarget.init","ext.echo.centralauth","ext.eventLogging","ext.wikimediaEvents","ext.navigationTiming","ext.uls.interface","ext.cx.eventlogging.campaigns","ext.cx.uls.quick.actions","wikibase.client.vector-2022","wikibase.databox.fromWikidata","ext.checkUser.clientHints","ext.quicksurveys.init","ext.growthExperiments.SuggestedEditSession","ext.testKitchen"];
+(RLQ=window.RLQ||[]).push(function(){mw.loader.impl(function(){return["user.options@12s5i",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+}];});});
+
+[Jump to content](#bodyContent)
+
+Main menu
+
+Main menu
+
+move to sidebar
+hide
+
+Navigation
+
+* [Main page](/wiki/Main_Page "Visit the main page [z]")
+* [Contents](/wiki/Wikipedia:Contents "Guides to browsing Wikipedia")
+* [Current events](/wiki/Portal:Current_events "Articles related to current events")
+* [Random article](/wiki/Special:Random "Visit a randomly selected article [x]")
+* [About Wikipedia](/wiki/Wikipedia:About "Learn about Wikipedia and how it works")
+* [Contact us](//en.wikipedia.org/wiki/Wikipedia:Contact_us "How to contact Wikipedia")
+
+Contribute
+
+* [Help](/wiki/Help:Contents "Guidance on how to use and edit Wikipedia")
+* [Learn to edit](/wiki/Help:Introduction "Learn how to edit Wikipedia")
+* [Community portal](/wiki/Wikipedia:Community_portal "The hub for editors")
+* [Recent changes](/wiki/Special:RecentChanges "A list of recent changes to Wikipedia [r]")
+* [Upload file](/wiki/Wikipedia:File_upload_wizard "Add images or other media for use on Wikipedia")
+* [Special pages](/wiki/Special:SpecialPages "A list of all special pages [q]")
+
+[Search](/wiki/Special:Search "Search Wikipedia [f]")
+
+Search
+
+Appearance
+
+* [Donate](https://donate.wikimedia.org/?wmf_source=donate&wmf_medium=sidebar&wmf_campaign=en.wikipedia.org&uselang=en)
+```
+
+**firecrawl** — no output for this URL
+
+</details>
+
+<details>
+<summary>Per-page word counts and preamble [1]</summary>
+
+| URL | markcrawl words / preamble [1] | crawl4ai words / preamble [1] | crawl4ai-raw words / preamble [1] | scrapy+md words / preamble [1] | crawlee words / preamble [1] | colly+md words / preamble [1] | playwright words / preamble [1] | firecrawl words / preamble [1] |
+|---|---|---|---|---|---|---|---|---|
+| en.wikipedia.org/wiki/Apple_M1 | 4487 / 0 | 8663 / 252 | 8663 / 252 | 8636 / 5 | 14242 / 5200 | 9175 / 242 | 9175 / 242 | — |
+| en.wikipedia.org/wiki/Assertion_(programming) | 3295 / 0 | 3972 / 252 | 3972 / 252 | 3557 / 5 | 8996 / 5168 | 4052 / 247 | 4052 / 247 | — |
+| en.wikipedia.org/wiki/Beta_release | 3616 / 0 | 4673 / 252 | 4673 / 252 | 4525 / 5 | 10093 / 5231 | 5076 / 273 | 5076 / 273 | — |
+| en.wikipedia.org/wiki/Bibcode_(identifier) | 1225 / 0 | 1847 / 252 | 1847 / 252 | 1540 / 5 | 6909 / 5162 | 1981 / 247 | 1981 / 247 | — |
+| en.wikipedia.org/wiki/Byte | 9524 / 0 | 10535 / 252 | 10535 / 252 | 10626 / 5 | 16342 / 5250 | 11165 / 286 | 11165 / 286 | — |
+| en.wikipedia.org/wiki/Category:All_articles_with_specif | 2540 / 0 | 3296 / 254 | 3296 / 254 | 3141 / 0 | 8403 / 5089 | 3576 / 268 | — | — |
+| en.wikipedia.org/wiki/Category:Dynamically_typed_progra | 784 / 0 | 1317 / 254 | 1317 / 254 | 940 / 0 | 6068 / 5009 | 1284 / 231 | 1284 / 231 | — |
+| en.wikipedia.org/wiki/Cobra_(programming_language) | 819 / 0 | 1765 / 252 | 1765 / 252 | 1686 / 5 | 7120 / 5209 | 2127 / 245 | 2127 / 245 | — |
+| en.wikipedia.org/wiki/Common_Language_Runtime | 998 / 0 | 2604 / 252 | 2604 / 252 | 2705 / 5 | 8131 / 5213 | 3151 / 259 | 3151 / 259 | — |
+| en.wikipedia.org/wiki/Conditional_(computer_programming | 5722 / 0 | 6499 / 252 | 6499 / 252 | 6080 / 5 | 11623 / 5212 | 6665 / 291 | 6665 / 291 | — |
+| en.wikipedia.org/wiki/Cycle_detection | 5400 / 0 | 6297 / 252 | 6297 / 252 | 5719 / 5 | 11296 / 5179 | 6312 / 257 | 6312 / 257 | — |
+| en.wikipedia.org/wiki/ECMAScript | 2183 / 0 | 6192 / 252 | 6192 / 252 | 6116 / 5 | 11631 / 5230 | 6602 / 266 | 11631 / 5180 | — |
+| en.wikipedia.org/wiki/Eclipse_(software) | 7509 / 0 | 11744 / 252 | 11744 / 252 | 11511 / 5 | 17322 / 5305 | 12110 / 347 | 12110 / 347 | — |
+| en.wikipedia.org/wiki/File:Wikibooks-logo.svg | 1536 / 0 | 2088 / 254 | 2088 / 254 | 1688 / 0 | 5395 / 3659 | 1948 / 221 | — | — |
+| en.wikipedia.org/wiki/File:Wikiversity_logo_2017.svg | 1319 / 0 | 1846 / 254 | 1846 / 254 | 1460 / 0 | 5173 / 3663 | 1726 / 225 | — | — |
+| en.wikipedia.org/wiki/Free-software_license | 7978 / 0 | 10329 / 252 | 10329 / 252 | 10497 / 5 | 16245 / 5263 | 11106 / 305 | 11106 / 305 | — |
+| en.wikipedia.org/wiki/Free_and_open-source_software | 10558 / 0 | 13068 / 252 | 13068 / 252 | 12806 / 5 | 19842 / 5993 | 13877 / 326 | — | — |
+| en.wikipedia.org/wiki/Gmsh | 645 / 0 | 1462 / 252 | 1462 / 252 | 1395 / 5 | 6827 / 5222 | 1849 / 264 | 1849 / 264 | — |
+| en.wikipedia.org/wiki/Google_App_Engine | 2273 / 0 | 9301 / 252 | 9301 / 252 | 9330 / 5 | 14864 / 5241 | 9826 / 277 | 9826 / 277 | — |
+| en.wikipedia.org/wiki/Help:Category | 4638 / 0 | 7564 / 252 | 7564 / 252 | 7446 / 5 | 17859 / 10102 | 7973 / 233 | 7973 / 233 | — |
+| en.wikipedia.org/wiki/If-then-else | 5726 / 0 | 6503 / 252 | 6503 / 252 | 6084 / 5 | 11627 / 5212 | 6669 / 291 | 6669 / 291 | — |
+| en.wikipedia.org/wiki/Infix_notation | 649 / 0 | 1313 / 252 | 1313 / 252 | 1223 / 5 | 6568 / 5146 | 1650 / 231 | 1650 / 231 | — |
+| en.wikipedia.org/wiki/List_comprehensions | 3329 / 0 | 4867 / 252 | 4867 / 252 | 4601 / 5 | 10128 / 5234 | 5136 / 270 | 5136 / 270 | — |
+| en.wikipedia.org/wiki/List_of_formerly_open-source_or_f | 2004 / 0 | 3398 / 252 | 3398 / 252 | 3278 / 5 | 8794 / 5240 | 3751 / 286 | 3751 / 286 | — |
+| en.wikipedia.org/wiki/List_of_free_and_open-source_web_ | 1754 / 0 | 3085 / 252 | 3085 / 252 | 3055 / 5 | 8475 / 5213 | 3501 / 259 | 3501 / 259 | — |
+| en.wikipedia.org/wiki/List_of_open-source_bioinformatic | 2188 / 0 | 2783 / 252 | 2783 / 252 | 2441 / 5 | 7797 / 5158 | 2871 / 247 | 2871 / 247 | — |
+| en.wikipedia.org/wiki/MedCalc | 1201 / 0 | 2119 / 247 | 2119 / 247 | 2190 / 0 | 7604 / 5225 | 2620 / 276 | 2620 / 276 | — |
+| en.wikipedia.org/wiki/Memory_management | 3862 / 0 | 5094 / 252 | 5094 / 252 | 5045 / 5 | 10751 / 5219 | 5726 / 254 | — | — |
+| en.wikipedia.org/wiki/Metaprogramming | 2555 / 0 | 4103 / 252 | 4103 / 252 | 4033 / 5 | 9563 / 5250 | 4555 / 286 | 4555 / 286 | — |
+| en.wikipedia.org/wiki/MindSpore | 1196 / 0 | 5299 / 252 | 5299 / 252 | 5515 / 5 | 10994 / 5241 | 5987 / 283 | 5987 / 283 | — |
+| en.wikipedia.org/wiki/NumPy | 3426 / 0 | 5053 / 252 | 5053 / 252 | 4955 / 5 | 10643 / 5262 | 5596 / 297 | 5596 / 297 | — |
+| en.wikipedia.org/wiki/Numba | 785 / 0 | 1388 / 252 | 1388 / 252 | 1131 / 5 | 5584 / 4253 | 1575 / 251 | 1575 / 251 | — |
+| en.wikipedia.org/wiki/Plotly | 2844 / 0 | 4275 / 252 | 4275 / 252 | 3191 / 5 | 8697 / 5189 | 3678 / 274 | — | — |
+| en.wikipedia.org/wiki/PyS60 | 1029 / 0 | 3058 / 252 | 3058 / 252 | 3189 / 5 | 8657 / 5252 | 3680 / 294 | 3680 / 294 | — |
+| en.wikipedia.org/wiki/Python_(programming_language) | 14538 / 0 | 18625 / 252 | 18625 / 252 | 18193 / 5 | 24732 / 5341 | 19322 / 376 | 19322 / 376 | — |
+| en.wikipedia.org/wiki/Python_Software_Foundation | 1430 / 0 | 2274 / 252 | 2274 / 252 | 2229 / 5 | 7696 / 5227 | 2699 / 269 | 2699 / 269 | — |
+| en.wikipedia.org/wiki/Python_Tools_for_Visual_Studio | 415 / 0 | 3062 / 252 | 3062 / 252 | 3035 / 5 | 8447 / 5209 | 3478 / 255 | 3478 / 255 | — |
+| en.wikipedia.org/wiki/RPyC | 1052 / 0 | 1678 / 252 | 1678 / 252 | 1443 / 5 | 6822 / 5175 | 1896 / 254 | 1896 / 254 | — |
+| en.wikipedia.org/wiki/SETL | 1256 / 0 | 1936 / 252 | 1936 / 252 | 1778 / 5 | 7218 / 5200 | 2211 / 242 | 2211 / 242 | — |
+| en.wikipedia.org/wiki/SQLAlchemy | 951 / 0 | 1600 / 252 | 1600 / 252 | 1271 / 5 | 6646 / 5159 | 1711 / 238 | 1711 / 238 | — |
+| en.wikipedia.org/wiki/Software_license | 5237 / 0 | 6533 / 252 | 6533 / 252 | 6328 / 5 | 12194 / 5233 | 7051 / 274 | 7051 / 274 | — |
+| en.wikipedia.org/wiki/Software_release_life_cycle | 3610 / 0 | 4667 / 252 | 4667 / 252 | 4519 / 5 | 10088 / 5232 | 5071 / 274 | 5071 / 274 | — |
+| en.wikipedia.org/wiki/Source-available_software | 2844 / 0 | 4689 / 252 | 4689 / 252 | 4500 / 5 | 10082 / 5207 | 5018 / 248 | 5018 / 248 | — |
+| en.wikipedia.org/wiki/Standard_library | 1262 / 0 | 1841 / 252 | 1841 / 252 | 1495 / 5 | 6876 / 5189 | 1956 / 274 | 1956 / 274 | — |
+| en.wikipedia.org/wiki/Strongly_typed | 4285 / 0 | 5176 / 252 | 5176 / 252 | 5000 / 5 | 10491 / 5166 | 5522 / 245 | 5522 / 245 | — |
+| en.wikipedia.org/wiki/Unicode | 16362 / 0 | 20752 / 252 | 20752 / 252 | 20547 / 5 | 26515 / 5283 | 21234 / 325 | — | — |
+| en.wikipedia.org/wiki/Unix-like | 2636 / 0 | 4735 / 252 | 4735 / 252 | 4620 / 5 | 10116 / 5221 | 5101 / 263 | — | — |
+| en.wikipedia.org/wiki/Wolfram_Mathematica | 3014 / 0 | 5990 / 252 | 5990 / 252 | 5945 / 5 | 11576 / 5294 | 6490 / 336 | 6490 / 336 | — |
+| en.wikipedia.org/wiki/World_Programming_System | 1606 / 0 | 2250 / 252 | 2250 / 252 | 1941 / 5 | 7363 / 5181 | 2402 / 266 | 2402 / 266 | — |
+| en.wikipedia.org/wiki/Zlib_License | 768 / 0 | 2117 / 252 | 2117 / 252 | 2093 / 5 | 7513 / 5215 | 2538 / 257 | 2538 / 257 | — |
+
+</details>
+
+## stripe-docs
+
+| Tool | Avg words | Preamble [1] | Repeat rate | Junk found | Headings | Code blocks | Precision | Recall |
+|---|---|---|---|---|---|---|---|---|
+| **markcrawl** | 1165 | 13 | 0% | 35 | 10.3 | 2.2 | 98% | 22% |
+| crawl4ai | 1372 | 174 ⚠ | 0% | 819 | 12.0 | 2.2 | 100% | 18% |
+| crawl4ai-raw | 1369 | 174 ⚠ | 0% | 785 | 12.0 | 2.2 | 100% | 18% |
+| scrapy+md | 1360 | 171 ⚠ | 0% | 552 | 10.3 | 2.2 | 100% | 22% |
+| crawlee | 18095 | 8955 ⚠ | 1% | 1254 | 10.6 | 2.2 | 98% | 100% |
+| colly+md | 16950 | 8867 ⚠ | 1% | 977 | 10.1 | 2.0 | 98% | 94% |
+| playwright | 18073 | 8955 ⚠ | 1% | 999 | 10.6 | 2.2 | 98% | 95% |
+| firecrawl | — | — | — | — | — | — | — | — |
+
+**[1]** Avg words per page before the first heading (nav chrome). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
+
+**Reading the numbers:**
+**markcrawl** produces the cleanest output with 13 words of preamble per page, while **playwright** injects 8955 words of nav chrome before content begins. The word count gap (1165 vs 18095 avg words) is largely explained by preamble: 8955 words of nav chrome account for ~49% of crawlee's output on this site. markcrawl's lower recall (22% vs 100%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
+
+<details>
+<summary>Sample output — first 40 lines of <code>docs.stripe.com/agentic-commerce/concepts</code></summary>
+
+This shows what each tool outputs at the *top* of the same page.
+Nav boilerplate appears here before the real content starts.
+
+**markcrawl**
+```
+*Learn about the concepts that enable agentic commerce.*
+
+
+# Key conceptsPrivate preview
+
+## Learn about the concepts that enable agentic commerce.
+
+Ask about this page
+
+Copy for LLMView as Markdown
+
+Use an agent to manage transactions between a seller and buyers in your AI interface. The agent maintains customer relationships, including preferences, [payment methods](/api/payment_methods) used for subscriptions, and customer details. This information lets the agent make purchase recommendations directly in the AI interface to improve conversion rates and drive more high-intent purchases.
+
+## Overview
+
+In the AI interface, agents help customers and sellers discover products and complete transactions. Agents issue a [shared payment token](/agentic-commerce/concepts/shared-payment-tokens) (SPT) to manage payment methods.
+
+### Seller
+
+Sellers are individual businesses or platforms made up of multiple sellers, and typically provide e-commerce goods, subscriptions, digital content, or API functions. Use the agent as your sales channel to offer your products.
+
+### AI agent
+
+Your AI agent uses large language models (LLMs) to discover and recommend products for purchase, and can display products in a user interface in response to a prompt. Your customers typically have an account or subscription with your agent. Your agent creates a `Customer` object for each customer and stores their payment information so you can reuse it for future purchases.
+
+### Shared payment tokens
+
+Your agent issues an SPT through the API—a scoped grant of a payment method. As a seller, you can use SPTs with a `PaymentIntent` or outside of Stripe. Stripe grants each SPT to your seller account only, so other sellers can’t use it. For added security and control, SPTs include usage limits and expiration windows. They never contain primary account numbers (PANs) or other raw credentials.
+
+Learn how to create and use [SPTs](/agentic-commerce/concepts/shared-payment-tokens).
+
+## Transaction process
+
+This diagram shows how your AI agents and customers transact, and how you register and process payment methods.
+
+1. Your customer provides a payment method to your agent through an existing subscription or as a new payment method.
+2. Your agent issues an SPT through Stripe. The request specifies the seller that receives the SPT, the transaction amount, and the payment method.
+3. Your agent sends the SPT and transaction amount to the seller through your API.
+4. You create a `PaymentIntent` using the SPT in your Stripe account, and Stripe processes the transaction.
+```
+
+**crawl4ai**
+```
+[Skip to content](https://docs.stripe.com/agentic-commerce/concepts#main-content)
+Key concepts
+[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fagentic-commerce%2Fconcepts)
+[The Stripe Docs logo](https://docs.stripe.com/)
+Search `/`Ask AI
+[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fagentic-commerce%2Fconcepts)
+[Get started ](https://docs.stripe.com/get-started)
+[Payments ](https://docs.stripe.com/payments)
+[Revenue ](https://docs.stripe.com/revenue)
+[Platforms and marketplaces ](https://docs.stripe.com/connect)
+[Money management ](https://docs.stripe.com/money-management)
+APIs & SDKsHelp
+[Overview](https://docs.stripe.com/payments)[Accept a payment](https://docs.stripe.com/payments/accept-a-payment)[Upgrade your integration](https://docs.stripe.com/payments/upgrades)
+Online payments
+[Overview](https://docs.stripe.com/payments/online-payments)[Find your use case](https://docs.stripe.com/payments/use-cases/get-started)
+Use Payment Links
+Build a payments page
+Build a custom integration with Elements
+Build an in-app integration
+Use Managed Payments
+[Recurring payments](https://docs.stripe.com/recurring-payments)
+In-person payments
+Terminal
+Payment methods
+Add payment methods
+Manage payment methods
+Faster checkout with Link
+Payment operations
+Analytics
+[Balances and settlement time](https://docs.stripe.com/payments/balances)
+Compliance and security
+Currencies
+Declines
+Disputes
+Radar fraud protection
+Payouts
+[Receipts](https://docs.stripe.com/receipts)[Refunds and cancellations](https://docs.stripe.com/refunds)
+Advanced integrations
+Custom payment flows
+Flexible acquiring
+```
+
+**crawl4ai-raw**
+```
+[Skip to content](https://docs.stripe.com/agentic-commerce/concepts#main-content)
+Key concepts
+[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fagentic-commerce%2Fconcepts)
+[The Stripe Docs logo](https://docs.stripe.com/)
+Search `/`Ask AI
+[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fagentic-commerce%2Fconcepts)
+[Get started ](https://docs.stripe.com/get-started)
+[Payments ](https://docs.stripe.com/payments)
+[Revenue ](https://docs.stripe.com/revenue)
+[Platforms and marketplaces ](https://docs.stripe.com/connect)
+[Money management ](https://docs.stripe.com/money-management)
+APIs & SDKsHelp
+[Overview](https://docs.stripe.com/payments)[Accept a payment](https://docs.stripe.com/payments/accept-a-payment)[Upgrade your integration](https://docs.stripe.com/payments/upgrades)
+Online payments
+[Overview](https://docs.stripe.com/payments/online-payments)[Find your use case](https://docs.stripe.com/payments/use-cases/get-started)
+Use Payment Links
+Build a payments page
+Build a custom integration with Elements
+Build an in-app integration
+Use Managed Payments
+[Recurring payments](https://docs.stripe.com/recurring-payments)
+In-person payments
+Terminal
+Payment methods
+Add payment methods
+Manage payment methods
+Faster checkout with Link
+Payment operations
+Analytics
+[Balances and settlement time](https://docs.stripe.com/payments/balances)
+Compliance and security
+Currencies
+Declines
+Disputes
+Radar fraud protection
+Payouts
+[Receipts](https://docs.stripe.com/receipts)[Refunds and cancellations](https://docs.stripe.com/refunds)
+Advanced integrations
+Custom payment flows
+Flexible acquiring
+```
+
+**scrapy+md**
+```
+[Skip to content](#main-content)
+
+Key concepts
+
+[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fagentic-commerce%2Fconcepts)
+
+[The Stripe Docs logo](/)
+
+Search
+
+`/`Ask AI
+
+[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fagentic-commerce%2Fconcepts)
+
+[Get started](/get-started)
+
+[Payments](/payments)
+
+[Revenue](/revenue)
+
+[Platforms and marketplaces](/connect)
+
+[Money management](/money-management)
+
+[Developer resources](/development)
+
+APIs & SDKsHelp
+
+[Overview](/payments)[Accept a payment](/payments/accept-a-payment)[Upgrade your integration](/payments/upgrades)
+
+Online payments
+
+[Overview](/payments/online-payments)[Find your use case](/payments/use-cases/get-started)
+
+Use Payment Links
+
+Build a payments page
+
+Build a custom integration with Elements
+```
+
+**crawlee**
+```
+Key concepts | Stripe Documentation
+
+
+
+
+#​ .sn-1q4qxi9 { --jybopzu-hue-gray0: #ffffff; --jybopzu-hue-gray50: #f6f8fa; --jybopzu-hue-gray100: #ebeef1; --jybopzu-hue-gray150: #d5dbe1; --jybopzu-hue-gray200: #c0c8d2; --jybopzu-hue-gray300: #a3acba; --jybopzu-hue-gray400: #87909f; --jybopzu-hue-gray500: #687385; --jybopzu-hue-gray600: #545969; --jybopzu-hue-gray700: #414552; --jybopzu-hue-gray800: #30313d; --jybopzu-hue-gray900: #1a1b25; --jybopzu-hue-gray950: #10111a; --jybopzu-hue-blue50: #ddfffe; --jybopzu-hue-blue100: #cff5f6; --jybopzu-hue-blue150: #a2e5ef; --jybopzu-hue-blue200: #75d5e8; --jybopzu-hue-blue300: #06b9ef; --jybopzu-hue-blue400: #0096eb; --jybopzu-hue-blue500: #0570de; --jybopzu-hue-blue600: #0055bc; --jybopzu-hue-blue700: #04438c; --jybopzu-hue-blue800: #003262; --jybopzu-hue-blue900: #011c3a; --jybopzu-hue-green50: #ecfed7; --jybopzu-hue-green100: #d7f7c2; --jybopzu-hue-green150: #a6eb84; --jybopzu-hue-green200: #76df47; --jybopzu-hue-green300: #48c404; --jybopzu-hue-green400: #3fa40d; --jybopzu-hue-green500: #228403; --jybopzu-hue-green600: #006908; --jybopzu-hue-green700: #0b5019; --jybopzu-hue-green800: #043b15; --jybopzu-hue-green900: #02220d; --jybopzu-hue-orange50: #fef9da; --jybopzu-hue-orange100: #fcedb9; --jybopzu-hue-orange150: #fcd579; --jybopzu-hue-orange200: #fcbd3a; --jybopzu-hue-orange300: #ff8f0e; --jybopzu-hue-orange400: #ed6704; --jybopzu-hue-orange500: #c84801; --jybopzu-hue-orange600: #a82c00; --jybopzu-hue-orange700: #842106; --jybopzu-hue-orange800: #5f1a05; --jybopzu-hue-orange900: #331302; --jybopzu-hue-red50: #fff5fa; --jybopzu-hue-red100: #ffe7f2; --jybopzu-hue-red150: #ffccdf; --jybopzu-hue-red200: #ffb1cd; --jybopzu-hue-red300: #fe87a1; --jybopzu-hue-red400: #fc526a; --jybopzu-hue-red500: #df1b41; --jybopzu-hue-red600: #b3093c; --jybopzu-hue-red700: #890d37; --jybopzu-hue-red800: #68052b; --jybopzu-hue-red900: #3e021a; --jybopzu-hue-purple50: #f9f7ff; --jybopzu-hue-purple100: #f2ebff; --jybopzu-hue-purple150: #dfd3fc; --jybopzu-hue-purple200: #d1befe; --jybopzu-hue-purple300: #b49cfc; --jybopzu-hue-purple400: #8d7ffa; --jybopzu-hue-purple500: #625afa; --jybopzu-hue-purple600: #513dd9; --jybopzu-hue-purple700: #3f32a1; --jybopzu-hue-purple800: #302476; --jybopzu-hue-purple900: #14134e; --jybopzu-color-neutral0: var(--jybopzu-hue-gray0); --jybopzu-color-neutral50: var(--jybopzu-hue-gray50); --jybopzu-color-neutral100: var(--jybopzu-hue-gray100); --jybopzu-color-neutral150: var(--jybopzu-hue-gray150); --jybopzu-color-neutral200: var(--jybopzu-hue-gray200); --jybopzu-color-neutral300: var(--jybopzu-hue-gray300); --jybopzu-color-neutral400: var(--jybopzu-hue-gray400); --jybopzu-color-neutral500: var(--jybopzu-hue-gray500); --jybopzu-color-neutral600: var(--jybopzu-hue-gray600); --jybopzu-color-neutral700: var(--jybopzu-hue-gray700); --jybopzu-color-neutral800: var(--jybopzu-hue-gray800); --jybopzu-color-neutral900: var(--jybopzu-hue-gray900); --jybopzu-color-neutral950: var(--jybopzu-hue-gray950); --jybopzu-color-brand50: var(--jybopzu-hue-purple50); --jybopzu-color-brand100: var(--jybopzu-hue-purple100); --jybopzu-color-brand200: var(--jybopzu-hue-purple200); --jybopzu-color-brand300: var(--jybopzu-hue-purple300); --jybopzu-color-brand400: var(--jybopzu-hue-purple400); --jybopzu-color-brand500: var(--jybopzu-hue-purple500); --jybopzu-color-brand600: var(--jybopzu-hue-purple600); --jybopzu-color-brand700: var(--jybopzu-hue-purple700); --jybopzu-color-brand800: var(--jybopzu-hue-purple800); --jybopzu-color-brand900: var(--jybopzu-hue-purple900); --jybopzu-color-info50: var(--jybopzu-hue-blue50); --jybopzu-color-info100: var(--jybopzu-hue-blue100); --jybopzu-color-info150: var(--jybopzu-hue-blue150); --jybopzu-color-info200: var(--jybopzu-hue-blue200); --jybopzu-color-info300: var(--jybopzu-hue-blue300); --jybopzu-color-info400: var(--jybopzu-hue-blue400); --jybopzu-color-info500: var(--jybopzu-hue-blue500); --jybopzu-color-info600: var(--jybopzu-hue-blue600); --jybopzu-color-info700: var(--jybopzu-hue-blue700); --jybopzu-color-info800: var(--jybopzu-hue-blue800); --jybopzu-color-info900: var(--jybopzu-hue-blue900); --jybopzu-color-success50: var(--jybopzu-hue-green50); --jybopzu-color-success100: var(--jybopzu-hue-green100); --jybopzu-color-success150: var(--jybopzu-hue-green150); --jybopzu-color-success200: var(--jybopzu-hue-green200); --jybopzu-color-success300: var(--jybopzu-hue-green300); --jybopzu-color-success400: var(--jybopzu-hue-green400); --jybopzu-color-success500: var(--jybopzu-hue-green500); --jybopzu-color-success600: var(--jybopzu-hue-green600); --jybopzu-color-success700: var(--jybopzu-hue-green700); --jybopzu-color-success800: var(--jybopzu-hue-green800); --jybopzu-color-success900: var(--jybopzu-hue-green900); --jybopzu-color-attention50: var(--jybopzu-hue-orange50); --jybopzu-color-attention100: var(--jybopzu-hue-orange100); --jybopzu-color-attention150: var(--jybopzu-hue-orange150); --jybopzu-color-attention200: var(--jybopzu-hue-orange200); --jybopzu-color-attention300: var(--jybopzu-hue-orange300); --jybopzu-color-attention400: var(--jybopzu-hue-orange400); --jybopzu-color-attention500: var(--jybopzu-hue-orange500); --jybopzu-color-attention600: var(--jybopzu-hue-orange600); --jybopzu-color-attention700: var(--jybopzu-hue-orange700); --jybopzu-color-attention800: var(--jybopzu-hue-orange800); --jybopzu-color-attention900: var(--jybopzu-hue-orange900); --jybopzu-color-critical50: var(--jybopzu-hue-red50); --jybopzu-color-critical100: var(--jybopzu-hue-red100); --jybopzu-color-critical150: var(--jybopzu-hue-red150); --jybopzu-color-critical200: var(--jybopzu-hue-red200); --jybopzu-color-critical300: var(--jybopzu-hue-red300); --jybopzu-color-critical400: var(--jybopzu-hue-red400); --jybopzu-color-critical500: var(--jybopzu-hue-red500); --jybopzu-color-critical600: var(--jybopzu-hue-red600); --jybopzu-color-critical700: var(--jybopzu-hue-red700); --jybopzu-color-critical800: var(--jybopzu-hue-red800); --jybopzu-color-critical900: var(--jybopzu-hue-red900); --jybopzu-backgroundColor-surface: var(--jybopzu-color-neutral0); --jybopzu-backgroundColor-container: var(--jybopzu-color-neutral50); --jybopzu-borderColor-neutral: var(--jybopzu-color-neutral150); --jybopzu-borderColor-critical: var(--jybopzu-color-critical500); --jybopzu-iconColor-primary: var(--jybopzu-color-neutral600); --jybopzu-iconColor-secondary: var(--jybopzu-color-neutral400); --jybopzu-iconColor-disabled: var(--jybopzu-color-neutral200); --jybopzu-iconColor-brand: var(--jybopzu-color-brand400); --jybopzu-iconColor-info: var(--jybopzu-color-info400); --jybopzu-iconColor-success: var(--jybopzu-color-success400); --jybopzu-iconColor-attention: var(--jybopzu-color-attention400); --jybopzu-iconColor-critical: var(--jybopzu-color-critical400); --jybopzu-textColor-primary: var(--jybopzu-color-neutral700); --jybopzu-textColor-secondary: var(--jybopzu-color-neutral500); --jybopzu-textColor-disabled: var(--jybopzu-color-neutral300); --jybopzu-textColor-brand: var(--jybopzu-color-brand500); --jybopzu-textColor-info: var(--jybopzu-color-info500); --jybopzu-textColor-success: var(--jybopzu-color-success500); --jybopzu-textColor-attention: var(--jybopzu-color-attention500); --jybopzu-textColor-critical: var(--jybopzu-color-critical500); --jybopzu-overflow-hidden: hidden; --jybopzu-radius-none: none; --jybopzu-radius-xsmall: 4px; --jybopzu-radius-small: 4px; --jybopzu-radius-medium: 8px; --jybopzu-radius-large: 10px; --jybopzu-radius-rounded: 999em; --jybopzu-shadow-none: none; --jybopzu-shadow-top: rgb(0 0 0 / 12%) 0px 1px 1px 0px; --jybopzu-shadow-base: rgb(64 68 82 / 8%) 0px 2px 5px 0px, 0 0 0 0 transparent; --jybopzu-shadow-hover: rgb(64 68 82 / 8%) 0px 2px 5px 0px, rgb(64 68 82 / 8%) 0px 3px 9px 0px; --jybopzu-shadow-focus: 0 0 0 4px rgb(1 150 237 / 36%); --jybopzu-size-0: 0px; --jybopzu-size-1: var(--jybopzu-space-1); --jybopzu-size-25: var(--jybopzu-space-25); --jybopzu-size-50: var(--jybopzu-space-50); --jybopzu-size-75: var(--jybopzu-space-75); --jybopzu-size-100: var(--jybopzu-space-100); --jybopzu-size-150: var(--jybopzu-space-150); --jybopzu-size-200: var(--jybopzu-space-200); --jybopzu-size-250: var(--jybopzu-space-250); --jybopzu-size-300: var(--jybopzu-space-300); --jybopzu-size-350: var(--jybopzu-space-350); --jybopzu-size-400: var(--jybopzu-space-400); --jybopzu-size-500: var(--jybopzu-space-500); --jybopzu-size-600: var(--jybopzu-space-600); --jybopzu-size-fill: 100%; --jybopzu-size-min: min-content; --jybopzu-size-max: max-content; --jybopzu-size-fit: fit-content; --jybopzu-size-1\/2: 50%; --jybopzu-size-1\/3: 33.3333%; --jybopzu-size-2\/3: 66.6667%; --jybopzu-size-1\/4: 25%; --jybopzu-size-2\/4: 50%; --jybopzu-size-3\/4: 75%; --jybopzu-size-1\/5: 20%; --jybopzu-size-2\/5: 40%; --jybopzu-size-3\/5: 60%; --jybopzu-size-4\/5: 80%; --jybopzu-size-1\/6: 16.6667%; --jybopzu-size-2\/6: 33.3333%; --jybopzu-size-3\/6: 50%; --jybopzu-size-4\/6: 66.6667%; --jybopzu-size-5\/6: 83.3333%; --jybopzu-size-1\/12: 8.3333%; --jybopzu-size-2\/12: 16.6667%; --jybopzu-size-3\/12: 25%; --jybopzu-size-4\/12: 33.3333%; --jybopzu-size-5\/12: 41.6667%; --jybopzu-size-6\/12: 50%; --jybopzu-size-7\/12: 58.3333%; --jybopzu-size-8\/12: 66.6667%; --jybopzu-size-9\/12: 75%; --jybopzu-size-10\/12: 83.3333%; --jybopzu-size-11\/12: 91.6667%; --jybopzu-space-0: 0px; --jybopzu-space-1: 1px; --jybopzu-space-25: 2px; --jybopzu-space-50: 4px; --jybopzu-space-75: 6px; --jybopzu-space-100: 8px; --jybopzu-space-150: 12px; --jybopzu-space-200: 16px; --jybopzu-space-250: 20px; --jybopzu-space-300: 24px; --jybopzu-space-350: 28px; --jybopzu-space-400: 32px; --jybopzu-space-500: 40px; --jybopzu-space-600: 48px; --jybopzu-space-xxsmall: var(--jybopzu-space-25); --jybopzu-space-xsmall: var(--jybopzu-space-50); --jybopzu-space-small: var(--jybopzu-space-100); --jybopzu-space-medium: var(--jybopzu-space-200); --jybopzu-space-large: var(--jybopzu-space-300); --jybopzu-space-xlarge: var(--jybopzu-space-400); --jybopzu-space-xxlarge: var(--jybopzu-space-600); --jybopzu-typeface-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; --jybopzu-typeface-monospace: 'Source Code Pro', Menlo, Monaco, monospace; --jybopzu-weight-regular: 400; --jybopzu-weight-semibold: 600; --jybopzu-weight-bold: 700; --jybopzu-zIndex-overlay: 299; --jybopzu-zIndex-partial: 400; }#​#​ .rs-3::before {
+content: var(--s--baseline-alignment-content);user-select: none;align-self: baseline;margin-right: calc(-1 \* var(--s--column-gap));
+}
+#​#​ .rs-8[aria-invalid="true"] {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sail-table-row:not(:hover) .row-actions-trigger {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-4 {
+display: var(--s--display-block);
+}
+#​#​ .rs-2 {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-6:active:not([aria-disabled="true"]) {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sail-table-row:hover .row-actions-trigger {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-5:hover:not(:active):not([aria-disabled="true"]) {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-7:focus {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sn-d7kp2a { --distribute-x: initial; --distribute-y: initial; --align-x: initial; --align-y: initial; }
+#​#​ .sn-d7kp2a > \* { --align-self-x: initial; --align-self-y: initial; --flex-x: 1 1 auto; --flex-y: 1 1 auto; }
+#​#​ .sn-1fnc4mz { --row-gap: normal; --column-gap: normal; gap: var(--row-gap) var(--column-gap); }
+#​#​ .sn-1c37ise { --padding-top: 0; --padding-right: 0; --padding-bottom: 0; --padding-left: 0; padding: var(--padding-top) var(--padding-right) var(--padding-bottom) var(--padding-left); }
+.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​:root, :host #​#​#​#​#​#​#​, #​#​#​#​#​#​#​ .sn-token-provider {
+--s-806179: var(--s-1ipujfj);--qyckuc: 200ms;--s-1xyzpq3: 0ms;--ch7862: 50ms;--s-5jzhfa: 100ms;--s-12b75vv: 150ms;--rsnfo1: 300ms;--s-12ljnrj: 400ms;--s-10dnt5v: cubic-bezier(0, .09, .4, 1);--s-12oyqav: ease-in-out;--im41o8: ease-out;--s-1fdsmh8: ease-in;--s-1pzb1xw: 120;--s-6429u6: 14;--dutg7l: 300;--rjlba6: 20;--s-117eyx7: 400;--slm412: 10;--s-1pt58bw: 30ms;--pu6lsa: 50ms;--s-1ca225m: 80ms;--h9q5hc: 0.95;--s-1308p7c: 0.99;--s-1paplcg: 0.98;--s-19omtc6: 1.02;--eef79q: #ffffff;--s-8qwlk1: #F4F7FA;--o3gs5n: #ECF1F6;--hyhghw: #D4DEE9;--s-1b58r1w: #BAC8DA;--ovqch4: #95A4BA;--ggantb: #7D8BA4;--s-1a8u6zz: #667691;--k08wfi: #50617A;--s-169hr3v: #3C4F69;--ymu9b7: #273951;--ny99wq: #1A2C44;--s-1nmzh8w: #ffffff;--s-421sqo: #e2fbfe;--s-4qj11w: #cbf5fd;--s-1u1nr1c: #a7e7fc;--dj5edy: #6dc9fc;--s-3blua0: #3babfd;--s-172n6d2: #088ef9;--s-1l3w4rb: #0072e9;--s-1yzoj9a: #045ad0;--kvmyi1: #0b46ad;--s-1ah8y8v: #0d3485;--s-1v7mjmv: #0a2156;--s-1cbef47: #ffffff;--ncitdb: #eafcdd;--khndpt: #d1fab3;--fcix74: #a8f170;--s-1jt7b3q: #7cd548;--rz6g85: #58ba27;--s-10in11e: #3da00b;--jet5ih: #2b8700;--s-11ws3zn: #217005;--mkuc60: #1c5a0d;--s-5vneq4: #184310;--s-1ybzlmc: #112a0d;--s-1idvp5s: #ffffff;--s-1ronw4t: #fdf8c9;--een7nd: #fceeb5;--s-1j3zdk7: #fbd992;--bpq42r: #fcaf4f;--d5srfd: #f7870f;--s-7gt7xl: #e46602;--s-1bt4nax: #cc4b00;--s-1m90cr3: #b13600;--s-105rx08: #922700;--s-3csqoi: #701b01;--s-1x99otv: #4a0f02;--s-18rmc6q: #ffffff;--m4edry: #fef4f6;--pfpugw: #fde9ee;--s-1at7tzv: #fbd3dc;--s-8ik67: #faa9b8;--s-1brqpgc: #fa7e91;--s-1k4y65: #fa4a67;--s-1t7w85x: #e61947;--j769ku: #c0123c;--s-105k9ow: #9b0c36;--s-1bradsh: #76072f;--s-17cbcf1: #4e0322;--s-1m3ejd7: #ffffff;--wclsxb: #f7f5fd;--s-1nuetr3: #efecfc;--s-1rgwov0: #e0d9fb;--d427sf: #c3b6fb;--s-1gm5hwl: #a497fc;--d7ng6f: #857afe;--s-1wqs2n2: #675dff;--s-1rqwfiu: #533afd;--cb9l9o: #4e11e2;--b00e2n: #44139f;--yvasq2: #2f0e63;--s-35hf94: hsla(0, 0%, 100%, 0.2);--s-13ypoy8: var(--eef79q);--s-114rdv4: var(--s-8qwlk1);--s-1bcqfda: var(--o3gs5n);--s-1kkti1r: var(--hyhghw);--s-16pqfer: var(--s-1b58r1w);--s-1kmer3i: var(--ovqch4);--s-13py8ob: var(--ggantb);--s-1wdog5l: var(--s-1a8u6zz);--jkp57b: var(--k08wfi);--s-1xkgkxo: var(--s-169hr3v);--s-1egalvn: var(--ymu9b7);--v2y5bm: var(--ny99wq);--s-1ona342: var(--s-1m3ejd7);--s-1xikbvo: var(--wclsxb);--ek860z: var(--s-1nuetr3);--s-3qadn4: var(--s-1rgwov0);--nl7ypg: var(--d427sf);--hm37ax: var(--s-1gm5hwl);--s-142x5wh: var(--d7ng6f);--s-1nbkq3e: var(--s-1wqs2n2);--s-1b0l18k: var(--s-1rqwfiu);--s-1y0ta6r: var(--cb9l9o);--pxx34h: var(--b00e2n);--xp2k2: var(--yvasq2);--s-13od8gw: var(--s-1idvp5s);--fox699: var(--s-1ronw4t);--p5cdic: var(--een7nd);--s-1jh7fp5: var(--s-1j3zdk7);--lsye2d: var(--bpq42r);--t3987n: var(--d5srfd);--s-1vcezov: var(--s-7gt7xl);--s-1qk1a9q: var(--s-1bt4nax);--s-1ipujfj: var(--s-1m90cr3);--s-1vhr1m: var(--s-105rx08);--s-1oqa1l5: var(--s-3csqoi);--kubwak: var(--s-1x99otv);--whf9po: var(--s-18rmc6q);--gqp7g1: var(--m4edry);--s-1j0j6fb: var(--pfpugw);--o1xbta: var(--s-1at7tzv);--vyde9h: var(--s-8ik67);--s-875rxv: var(--s-1brqpgc);--s-1xn82ef: var(--s-1k4y65);--xi7x09: var(--s-1t7w85x);--uk4ts2: var(--j769ku);--s-9ukgu0: var(--s-105k9ow);--s-15yycft: var(--s-1bradsh);--s-1v6ybst: var(--s-17cbcf1);--s-1f39zfp: var(--s-1nmzh8w);--s-1bf76tl: var(--s-421sqo);--s-1sypgcr: var(--s-4qj11w);--u7pgeo: var(--s-1u1nr1c);--qev2nh: var(--dj5edy);--rqlrpr: var(--s-3blua0);--s-8vaodq: var(--s-172n6d2);--s-1m519r1: var(--s-1l3w4rb);--r3g89x: var(--s-1yzoj9a);--n0umvo: var(--kvmyi1);--c0109p: var(--s-1ah8y8v);--s-26e45o: var(--s-1v7mjmv);--s-1a4o86t: var(--s-1cbef47);--nxbwn6: var(--ncitdb);--s-18tv9xz: var(--khndpt);--s-660zz9: var(--fcix74);--s-5y9ijm: var(--s-1jt7b3q);--s-1gwptpc: var(--rz6g85);--t5jail: var(--s-10in11e);--qcdf10: var(--jet5ih);--s-1o92vf6: var(--s-11ws3zn);--s-1spzwnv: var(--mkuc60);--s-35q6a2: var(--s-5vneq4);--axxngb: var(--s-1ybzlmc);--s-1hj7tfd: var(--s-18rmc6q);--s-1xf1h3f: var(--m4edry);--aqxmtx: var(--pfpugw);--s-1um7fco: var(--s-1at7tzv);--d2i300: var(--s-8ik67);--cae9kd: var(--s-1brqpgc);--s-1a4c91b: var(--s-1k4y65);--s-1jvllvw: var(--s-1t7w85x);--x379qy: var(--j769ku);--s-1owp6iv: var(--s-105k9ow);--m26qys: var(--s-1bradsh);--s-3rumb4: var(--s-17cbcf1);--s-5tm7hx: var(--s-1cbef47);--h22sh6: var(--ncitdb);--s-11rdejd: var(--khndpt);--s-1g2t37u: var(--fcix74);--wesn6: var(--s-1jt7b3q);--s-1hhq31p: var(--rz6g85);--yji28s: var(--s-10in11e);--s-169ogke: var(--jet5ih);--hr7syg: var(--s-11ws3zn);--s-14wylcr: var(--mkuc60);--s-289q66: var(--s-5vneq4);--v27jy: var(--s-1ybzlmc);--s-1hldvhn: #9966FF;--s-1xwen3a: #0055BC;--hxpspa: #00A1C2;--s-5ghlc9: #ED6804;--nap71a: #B3063D;--s-1sz15nh: var(--mkuc60);--mygevb: var(--s-1k4y65);--nrw914: var(--s-105rx08);--bu79cc: var(--s-10in11e);--s-1rfvf0n: var(--s-114rdv4);--s-9fypy8: var(--s-13ypoy8);--s-8muhy8: var(--s-35hf94);--s-153sf3j: rgba(186, 200, 218, 0.7);--s-1mkjmgu: var(--s-1b0l18k);--s-9u3gcm: var(--s-1b0l18k);--s-1pk4mhu: var(--s-1y0ta6r);--s-1wze59r: var(--s-1b0l18k);--s-1gzyq0k: var(--s-1b0l18k);--s-1eg71kz: var(--s-9fypy8);--uftl0g: var(--s-9fypy8);--s-1wj6iyq: var(--s-114rdv4);--s-1jrjwpv: var(--s-9fypy8);--b5b0q1: var(--s-9fypy8);--jix8n1: var(--xi7x09);--s-1isx4n7: var(--xi7x09);--s-1owgngi: var(--uk4ts2);--s-1tqa4ka: var(--xi7x09);--s-1dl2eq8: var(--xi7x09);--s-14a2tiz: var(--s-13ypoy8);--s-1b3o71a: var(--s-1nbkq3e);--qkwke3: var(--s-1nbkq3e);--s-1afrigr: var(--s-1b0l18k);--s-1orf6yv: var(--s-1nbkq3e);--s-18eec8a: var(--s-1kkti1r);--rfaik3: var(--s-13ypoy8);--s-1xn7irg: var(--s-1bcqfda);--s-1x4qw9u: var(--s-13ypoy8);--s-4m5wr6: var(--s-1bcqfda);--s-1mbtsu2: var(--s-13ypoy8);--s-1im6yhz: var(--s-13ypoy8);--syi4h: var(--s-13ypoy8);--a37hit: var(--s-13ypoy8);--s-2av06t: var(--s-114rdv4);--s-1pjx0uz: var(--s-1bcqfda);--s-175jw0u: var(--s-114rdv4);--pz1vgx: var(--s-1wdog5l);--s-6j56kn: var(--s-1egalvn);--jg0c26: var(--s-1sypgcr);--s-1g3vynh: var(--s-1bf76tl);--lg8mcu: var(--s-1m519r1);--s-12izfvv: var(--s-18tv9xz);--s-1t53zya: var(--nxbwn6);--zuu90a: var(--qcdf10);--s-414lsb: var(--p5cdic);--ulpd63: var(--fox699);--s-15wlbw2: var(--s-1qk1a9q);--s-1dn6rk: var(--s-1j0j6fb);--s-1k641wx: var(--gqp7g1);--aw0phz: var(--xi7x09);--s-15xulsv: var(--s-1kkti1r);--w22o9l: var(--s-1b0l18k);--s-8c655s: var(--pxx34h);--s-1ok36r9: var(--pxx34h);--s-158s5xz: var(--s-1b0l18k);--xw6qjn: var(--s-1b0l18k);--s-4lkz9i: var(--s-15xulsv);--s-1amkzr1: var(--s-1kmer3i);--s-17kovyh: var(--s-15xulsv);--s-125pidq: var(--s-15xulsv);--s-8to5ry: var(--s-15xulsv);--s-17n5yam: var(--xi7x09);--eyrjow: var(--s-9ukgu0);--s-1u2do9: var(--s-9ukgu0);--qzxx9l: var(--xi7x09);--s-1draesn: var(--xi7x09);--s-17tmi4r: var(--s-1kkti1r);--b7ifjk: var(--xi7x09);--s-6o7nrw: var(--uk4ts2);--s-73zwar: var(--xi7x09);--d3be3c: var(--xi7x09);--npx6zl: var(--xi7x09);--wt6h1z: var(--s-1nbkq3e);--s-19hm5u2: var(--s-1b0l18k);--s-1ki2h5s: var(--s-1b0l18k);--s-1upode3: var(--s-1nbkq3e);--e619vt: var(--s-1kkti1r);--h29g9m: var(--s-1kmer3i);--o26ijo: var(--s-1kkti1r);--s-1fqa73g: var(--s-1kkti1r);--s-1t2fj50: var(--s-1kkti1r);--s-1p5fyku: var(--s-1kkti1r);--s-7st1q: var(--s-1kkti1r);--s-177yrws: var(--s-1wdog5l);--s-1x5q6fw: var(--s-1egalvn);--s-1cn97xm: var(--u7pgeo);--s-9nkfwt: var(--u7pgeo);--s-7pqyn6: var(--s-1m519r1);--s-9bkbz: var(--s-660zz9);--s-1qd49a9: var(--s-660zz9);--s-17mlsdr: var(--qcdf10);--s-1ow1a4n: var(--s-1jh7fp5);--s-1mnr65s: var(--s-1jh7fp5);--s-1yfj4t4: var(--s-1qk1a9q);--fg7f6q: var(--o1xbta);--d8waz0: var(--o1xbta);--s-8cc9re: var(--xi7x09);--s-13hmetb: var(--v2y5bm);--oiv4a4: var(--s-1b0l18k);--s-6obdb0: var(--s-1y0ta6r);--s-17yrw5r: var(--pxx34h);--s-1o9jit1: var(--s-1b0l18k);--s-17snam4: var(--s-13py8ob);--s-1xyyyk2: var(--s-1egalvn);--s-1ui80l2: var(--v2y5bm);--jus5c7: var(--v2y5bm);--s-184ljp4: var(--s-1egalvn);--eb4u9z: var(--jkp57b);--o8bs57: var(--uk4ts2);--s-10w80od: var(--s-9ukgu0);--s-1c9sq9t: var(--s-15yycft);--ruipx: var(--uk4ts2);--s-1wer54: var(--s-13py8ob);--uvjldp: var(--s-13ypoy8);--rygqjm: var(--s-13ypoy8);--s-3zsim4: var(--s-3qadn4);--nqzz7a: var(--s-13ypoy8);--fmcfok: var(--s-13ypoy8);--s-13dhk1f: var(--s-1egalvn);--s-97x5jr: var(--s-1egalvn);--s-148oer1: var(--s-1xkgkxo);--qzwqpe: var(--s-1egalvn);--s-9i3k0u: var(--s-1egalvn);--s-87wktm: var(--s-13ypoy8);--s-13hlbvk: var(--s-13ypoy8);--s-114300b: var(--o1xbta);--l5jmjk: var(--s-13ypoy8);--oalgln: var(--s-13ypoy8);--wukrzp: var(--s-1egalvn);--fa9lug: var(--s-1wdog5l);--s-1oi81m8: var(--s-1egalvn);--x0orno: var(--s-1egalvn);--s-1pxcz58: var(--s-1egalvn);--p0bjsc: var(--s-13py8ob);--u320f7: var(--r3g89x);--s-1iv5nq8: var(--r3g89x);--uj52u9: var(--n0umvo);--s-6v1wws: var(--s-1o92vf6);--s-1tqfmwd: var(--s-1o92vf6);--g8y80y: var(--s-1spzwnv);--uflrw: var(--s-1ipujfj);--jg0bei: var(--s-1ipujfj);--s-1kdpopy: var(--s-1vhr1m);--ibollp: var(--uk4ts2);--evfcf2: var(--uk4ts2);--qj0juw: var(--s-9ukgu0);--s-1u9outy: var(--jkp57b);--s-18brxby: var(--jkp57b);--s-5wyt2d: var(--s-13ypoy8);--s-15m6t6b: var(--s-13ypoy8);--nph474: var(--r3g89x);--s-9j04rl: var(--r3g89x);--s-18eqkid: var(--s-13ypoy8);--k9sgh3: var(--s-1o92vf6);--s-679qlr: var(--s-1o92vf6);--s-1gxwr4: var(--s-13ypoy8);--i7djdz: var(--s-1ipujfj);--s-1yqvg4v: var(--s-13ypoy8);--s-1uywv9f: var(--uk4ts2);--xfgvhn: var(--uk4ts2);--s-1l3ikln: var(--s-13ypoy8);--s-1hknj82: var(--v2y5bm);--xd9t29: var(--v2y5bm);--s-1qz4hey: var(--s-1xkgkxo);--s-13mj3ey: var(--s-1nbkq3e);--yfq5jb: var(--s-1b0l18k);--s-1d5tn5g: var(--s-1y0ta6r);--s-1ts3wnp: var(--s-1nbkq3e);--mtnc2e: var(--s-1kmer3i);--s-1ggs8se: var(--s-1xkgkxo);--s-1983a3r: var(--s-1egalvn);--s-1rbj8zq: var(--v2y5bm);--s-12x7xov: var(--s-1xkgkxo);--q5xz4t: var(--s-1wdog5l);--s-2ojt3v: var(--xi7x09);--s-1c4musi: var(--uk4ts2);--rwzmwu: var(--s-9ukgu0);--s-1k156kb: var(--xi7x09);--s-1njcrbd: var(--s-1kmer3i);--s-1auir75: var(--s-13ypoy8);--tipuka: var(--s-13ypoy8);--s-1myp5o1: var(--s-3qadn4);--s-5didwj: var(--s-13ypoy8);--s-1wf2wvi: var(--s-13ypoy8);--s-15w0yfc: var(--s-1qz4hey);--fc8g0t: var(--s-1qz4hey);--s-17uj1m3: var(--jkp57b);--g8dxu4: var(--s-1qz4hey);--s-2e4gj5: var(--s-1qz4hey);--s-1xsl5v6: var(--s-13ypoy8);--s-1vjzvov: var(--s-13ypoy8);--s-1n46b59: var(--o1xbta);--u90thq: var(--s-13ypoy8);--s-19o7zaa: var(--s-13ypoy8);--s-10q3p1o: var(--s-1xkgkxo);--s-8jpmhq: var(--s-1xkgkxo);--s-1nuytc0: var(--s-1xkgkxo);--s-1vua7kb: var(--s-1xkgkxo);--brnaxe: var(--s-1kmer3i);--s-1ufxgw0: var(--s-13ypoy8);--qth5g3: var(--s-13ypoy8);--s-1hd7tld: var(--s-13ypoy8);--s-40ljxg: var(--s-13ypoy8);--s-1aln5xz: var(--s-114rdv4);--s-49rsbu: var(--s-1m519r1);--xsdaas: var(--s-1m519r1);--mglbt2: var(--r3g89x);--rtvqux: var(--qcdf10);--ko7qd: var(--qcdf10);--s-50f0qm: var(--s-1o92vf6);--eu61bi: var(--s-1qk1a9q);--y7jsf0: var(--s-1qk1a9q);--s-1ac7lwk: var(--s-1ipujfj);--s-9k5091: var(--xi7x09);--ruhzmh: var(--xi7x09);--s-2xp72p: var(--uk4ts2);--s-17iqe5q: var(--s-1wdog5l);--s-1253b2y: var(--s-1wdog5l);--s-1piwg9i: var(--s-13ypoy8);--s-7oniqh: var(--s-13ypoy8);--s-6ucdv7: var(--s-1m519r1);--s-1jcoye7: var(--s-1m519r1);--hnqjk9: var(--s-13ypoy8);--pgimab: var(--qcdf10);--xntlbj: var(--qcdf10);--s-14mlsvd: var(--s-13ypoy8);--s-1exie7f: var(--s-1qk1a9q);--yqmt02: var(--s-1qk1a9q);--s-17qjsgp: var(--s-13ypoy8);--e6rr02: var(--xi7x09);--qwe25a: var(--xi7x09);--s-1cx6227: var(--s-13ypoy8);--s-1o2c3h9: var(--s-1wdog5l);--s-6gs83q: var(--s-1egalvn);--ahgtyg: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';--dilwm: 2048;--s-6omq4: 1980;--nsaztv: 1443;--s-1ixv1ks: 1078;--s-1biv3ye: -432;--s-1te2tup: 0;--cdmbir: 300;--s-1mnxhel: 400;--s-1nt3wam: 600;--s-1ocxf4e: 700;--s-1vpgvqc: 'Source Code Pro', Menlo, Monaco, monospace;--s-1y398ge: 2048;--j5b9ko: 1556;--s-17c3qcu: 1493;--s-6zqpne: 1120;--s-1jib5q0: -492;--s-75pjiv: 410;--s-780oqg: var(--ahgtyg);--s-1c2w534: var(--dilwm);--s-4imvpn: var(--s-6omq4);--s-1ph4673: var(--nsaztv);--s-14qchrt: var(--s-1ixv1ks);--s-174cqiz: var(--s-1biv3ye);--s-1rnjjay: var(--s-1te2tup);--bwm4no: var(--s-1mnxhel);--s-1bfvuc2: var(--s-1i82044);--s-1vo01ya: var(--s-1db3chc);--s-1nrhtfr: var(--tk0isw);--s-1xlut57: var(--s-1lhqll2);--s-10rtirn: var(--s-11v0pqn);--s-1gj0nto: var(--s-6cbmuf);--z8c3ww: var(--yplwvi);--s-1itdcoa: var(--s-1m30mdf);--s-1e47fbj: var(--cd4zwn);--s-1i82044: var(--s-780oqg);--s-1db3chc: var(--s-1c2w534);--tk0isw: var(--s-4imvpn);--s-1lhqll2: var(--s-1ph4673);--s-11v0pqn: var(--s-14qchrt);--s-6cbmuf: var(--s-174cqiz);--yplwvi: var(--s-1rnjjay);--s-1m30mdf: 56px;--cd4zwn: 64px;--s-1fgn2x1: var(--s-1ocxf4e);--g8k6lo: var(--s-1mnxhel);--simh7g: var(--wsbs66);--s-11tag5s: var(--s-1cfwdq);--egn7v3: var(--s-18ll6fg);--s-1rfbcod: var(--s-13spi5k);--s-1luqrck: var(--s-15fn66i);--s-27iqeg: var(--d5drjy);--s-18wcjw: var(--s-1rsg6td);--s-1u9zl82: var(--n6jam8);--miv9l: var(--lq97ov);--wsbs66: var(--s-780oqg);--s-1cfwdq: var(--s-1c2w534);--s-18ll6fg: var(--s-4imvpn);--s-13spi5k: var(--s-1ph4673);--s-15fn66i: var(--s-14qchrt);--d5drjy: var(--s-174cqiz);--s-1rsg6td: var(--s-1rnjjay);--n6jam8: 48px;--lq97ov: 56px;--s-1ucmgz7: var(--s-1ocxf4e);--s-17ghi8h: var(--s-1mnxhel);--hbk0oo: var(--s-1wwy80b);--s-2dbb2a: var(--s-160c6gg);--yxaojm: var(--s-1npqh71);--nm1xrx: var(--s-68sjx3);--s-1ivbjtl: var(--wejrbv);--s-8vhotc: var(--si2vzf);--pakukh: var(--s-7035h);--icmlh7: var(--ad7wce);--s-8mv65e: var(--s-12zbgfl);--s-1wwy80b: var(--s-780oqg);--s-160c6gg: var(--s-1c2w534);--s-1npqh71: var(--s-4imvpn);--s-68sjx3: var(--s-1ph4673);--wejrbv: var(--s-14qchrt);--si2vzf: var(--s-174cqiz);--s-7035h: var(--s-1rnjjay);--ad7wce: 40px;--s-12zbgfl: 48px;--s-1xgajx6: var(--s-1ocxf4e);--s-1mb7r8p: var(--s-1mnxhel);--s-1jtr8l0: var(--dx0zsf);--bzblmh: var(--s-1s7fwor);--s-13z63vp: var(--s-1z08gqp);--s-1noeuap: var(--fdri1y);--s-1iotv3v: var(--s-1ktva78);--s-18s8xzd: var(--jrvk1a);--s-1xijmep: var(--s-62671d);--s-1nph8pw: var(--s-1eryk2b);--s-5jpu2o: var(--s-1rvvcgm);--dx0zsf: var(--s-780oqg);--s-1s7fwor: var(--s-1c2w534);--s-1z08gqp: var(--s-4imvpn);--fdri1y: var(--s-1ph4673);--s-1ktva78: var(--s-14qchrt);--jrvk1a: var(--s-174cqiz);--s-62671d: var(--s-1rnjjay);--s-1eryk2b: 32px;--s-1rvvcgm: 40px;--nusmm3: var(--s-1ocxf4e);--xcedj6: var(--ahgtyg);--s-14xlm6o: var(--dilwm);--msg65c: var(--s-6omq4);--s-1ywnfza: var(--nsaztv);--zjva6a: var(--s-1ixv1ks);--s-15n3uo5: var(--s-1biv3ye);--i6u0ap: var(--s-1te2tup);--xb6tkh: var(--s-1mnxhel);--s-1xmxn4q: var(--s-71ssjp);--s-1xgixpx: var(--db0w5x);--s-1k35674: var(--jed2z7);--s-12k91a7: var(--tv79ff);--s-1s0wyj4: var(--s-1x8so7v);--ig6ly8: var(--s-1j7acn3);--s-8l4ca5: var(--s-38ks7n);--s-1svi9x0: var(--x65r8g);--d7hr4e: var(--s-14j81vx);--s-1ylzxkj: var(--oq2dkr);--s-71ssjp: var(--xcedj6);--db0w5x: var(--s-14xlm6o);--jed2z7: var(--msg65c);--tv79ff: var(--s-1ywnfza);--s-1x8so7v: var(--zjva6a);--s-1j7acn3: var(--s-15n3uo5);--s-38ks7n: var(--i6u0ap);--x65r8g: 28px;--s-14j81vx: 36px;--s-1n4fl4h: var(--s-1ocxf4e);--oq2dkr: none;--f4w18u: var(--s-1mnxhel);--s-1rpa4qr: var(--jdmia2);--v1v838: var(--ts1hpc);--vn27bl: var(--s-187zl0b);--s-1vnqflb: var(--s-12s5kmm);--s-1n4dokk: var(--s-4fox1q);--wb62lm: var(--j3z1dw);--s-1f8ywlh: var(--s-1jvq51g);--s-1uud5hl: var(--s-1joebgy);--s-1qj9g61: var(--s-19hh4gw);--s-1bvu74j: var(--hdrt9t);--jdmia2: var(--xcedj6);--ts1hpc: var(--s-14xlm6o);--s-187zl0b: var(--msg65c);--s-12s5kmm: var(--s-1ywnfza);--s-4fox1q: var(--zjva6a);--j3z1dw: var(--s-15n3uo5);--s-1jvq51g: var(--i6u0ap);--s-1joebgy: 24px;--s-19hh4gw: 32px;--g65i9c: var(--s-1ocxf4e);--hdrt9t: none;--wpt2ge: var(--s-1mnxhel);--w4jvxk: var(--s-1bq9l67);--s-1mflgki: var(--s-1xsxprz);--s-1517qlh: var(--qfwzw4);--sdtaur: var(--o2sqss);--s-6qvd4o: var(--xxsoub);--y4gv3: var(--s-1hw9qk9);--s-193lww5: var(--s-9rewa3);--yem2xc: var(--s-1k0d4db);--s-1uz67ki: var(--syp0fc);--b4hhf7: var(--s-18pg62i);--s-1bq9l67: var(--xcedj6);--s-1xsxprz: var(--s-14xlm6o);--qfwzw4: var(--msg65c);--o2sqss: var(--s-1ywnfza);--xxsoub: var(--zjva6a);--s-1hw9qk9: var(--s-15n3uo5);--s-9rewa3: var(--i6u0ap);--s-1k0d4db: 20px;--syp0fc: 28px;--s-1vfd5li: var(--s-1ocxf4e);--s-18pg62i: none;--s-1p87an6: var(--s-1mnxhel);--gbhvil: var(--s-1tckhn5);--s-2wlxzm: var(--s-1bnzo0w);--s-1lhh5an: var(--ub00w8);--b57bg4: var(--vayv2j);--s-10pihpx: var(--s-1bg5wjj);--s-1de7swi: var(--ofc8t8);--p0d0ra: var(--s-1myygfh);--rdvhzd: var(--s-1vrlxop);--wxjtoa: var(--s-1fjdblk);--s-14i6ex0: var(--s-176iwse);--s-1tckhn5: var(--xcedj6);--s-1bnzo0w: var(--s-14xlm6o);--ub00w8: var(--msg65c);--vayv2j: var(--s-1ywnfza);--s-1bg5wjj: var(--zjva6a);--ofc8t8: var(--s-15n3uo5);--s-1myygfh: var(--i6u0ap);--s-1vrlxop: 16px;--s-1fjdblk: 24px;--s-15lxxlk: var(--s-1ocxf4e);--s-176iwse: none;--ihun98: var(--s-1mnxhel);--lzkj6b: var(--s-1fz1zwb);--s-19gq58y: var(--s-1e9sg5q);--s-1fndoqe: var(--s-1xty0l1);--s-1ozmd2v: var(--s-1c9087t);--s-1itf6ev: var(--njr6lf);--lqlo87: var(--wvavyz);--s-15g638a: var(--s-1bdp00y);--s-101nale: var(--s-1rv6t4);--rpuu4f: var(--onmy4p);--s-1x2ggh5: var(--s-135hi2l);--s-1fz1zwb: var(--xcedj6);--s-1e9sg5q: var(--s-14xlm6o);--s-1xty0l1: var(--msg65c);--s-1c9087t: var(--s-1ywnfza);--njr6lf: var(--zjva6a);--wvavyz: var(--s-15n3uo5);--s-1bdp00y: var(--i6u0ap);--s-1rv6t4: 12px;--onmy4p: 20px;--s-4yu78: var(--s-1ocxf4e);--s-135hi2l: none;--qsps49: var(--ahgtyg);--s-1m5o6xs: var(--dilwm);--s-1sl6m46: var(--s-6omq4);--s-1tlryov: var(--nsaztv);--kidu0o: var(--s-1ixv1ks);--l2fksn: var(--s-1biv3ye);--s-16fd3c8: var(--s-1te2tup);--s-1n41s7u: var(--s-1nt3wam);--njb836: var(--s-108w7yg);--s-18nbbqu: var(--s-6mvx34);--b9ogvo: var(--s-1pbhbhw);--h3wc70: var(--z5eq11);--u4c2q6: var(--e1e86);--s-1oj6z6t: var(--uik06i);--s-1qtuyvq: var(--s-1eah8e8);--l28r8y: var(--h7f28h);--fcsdep: var(--s-1vvlcgn);--s-1ikrpfx: var(--s-36ddn3);--s-108w7yg: var(--qsps49);--s-6mvx34: var(--s-1m5o6xs);--s-1pbhbhw: var(--s-1sl6m46);--z5eq11: var(--s-1tlryov);--e1e86: var(--kidu0o);--uik06i: var(--l2fksn);--s-1eah8e8: var(--s-16fd3c8);--h7f28h: 18px;--s-1vvlcgn: 28px;--s-5hgyej: var(--s-1mnxhel);--s-36ddn3: none;--p1b3a1: var(--s-1nt3wam);--s-10jfra1: var(--wtyf0o);--s-1m1wff1: var(--s-167pe37);--s-1savn4h: var(--s-10fnwqi);--s-1gygsl6: var(--s-1sdpwmi);--li3rbu: var(--s-1prlirw);--s-9cy93t: var(--s-1oay49k);--s-11a5wqu: var(--b7x093);--s-17qz9cg: var(--s-1nk8z4c);--s-1pqj9m0: var(--s-1adv7ix);--s-1ctdufq: var(--s-2vga1d);--wtyf0o: var(--qsps49);--s-167pe37: var(--s-1m5o6xs);--s-10fnwqi: var(--s-1sl6m46);--s-1sdpwmi: var(--s-1tlryov);--s-1prlirw: var(--kidu0o);--s-1oay49k: var(--l2fksn);--b7x093: var(--s-16fd3c8);--s-1nk8z4c: 16px;--s-1adv7ix: 24px;--e9j7zt: var(--s-1mnxhel);--s-2vga1d: none;--s-1e6wgok: var(--s-1nt3wam);--s-5twc1q: var(--iv638n);--s-13v453w: var(--zzbkbv);--q47ujb: var(--cw4443);--s-4fq1f8: var(--sf9nah);--s-8kvr39: var(--s-1lduq5c);--t9sogg: var(--s-49369g);--s-6dkjzu: var(--s-195juhb);--s-1wizgxe: var(--eoafo5);--s-7ih227: var(--s-7paqqe);--be5p7j: var(--pz3gk9);--iv638n: var(--qsps49);--zzbkbv: var(--s-1m5o6xs);--cw4443: var(--s-1sl6m46);--sf9nah: var(--s-1tlryov);--s-1lduq5c: var(--kidu0o);--s-49369g: var(--l2fksn);--s-195juhb: var(--s-16fd3c8);--eoafo5: 14px;--s-7paqqe: 20px;--x5dpqz: var(--s-1mnxhel);--pz3gk9: none;--pyk6k1: var(--ahgtyg);--s-1verpm8: var(--dilwm);--rd4b92: var(--s-6omq4);--s-1i90hyx: var(--nsaztv);--y96hdk: var(--s-1ixv1ks);--qkji3r: var(--s-1biv3ye);--s-1kwoc9c: var(--s-1te2tup);--s-1qv548f: var(--s-1nt3wam);--s-1tq5jkt: var(--v43x2t);--s-3uli8c: var(--tcmtp2);--s-10wdlk9: var(--g77870);--s-1iqa1pt: var(--s-1xy9kgq);--vxd1ew: var(--wqx1if);--w2b5wa: var(--s-1fysgfv);--s-16ck0e3: var(--s-18527no);--okauee: var(--s-1rxtcbb);--s-1fhkvft: var(--s-1a3m0xe);--hj8sur: var(--ayuh76);--v43x2t: var(--pyk6k1);--tcmtp2: var(--s-1verpm8);--g77870: var(--rd4b92);--s-1xy9kgq: var(--s-1i90hyx);--wqx1if: var(--y96hdk);--s-1fysgfv: var(--qkji3r);--s-18527no: var(--s-1kwoc9c);--s-1rxtcbb: 16px;--s-1a3m0xe: 24px;--s-5y4pqp: var(--s-1mnxhel);--ayuh76: none;--ep1e0f: var(--s-1nt3wam);--s-6vkd26: var(--huplq6);--s-1h9quwx: var(--l1gcj7);--t2iyzt: var(--s-3mrwm8);--s-1xn3ax7: var(--l6yv66);--s-15oh72s: var(--s-1k1xktp);--s-1ohirt0: var(--s-3dxl6s);--juchqv: var(--s7es0h);--s-1g9cdsy: var(--tlxlq6);--yfph9h: var(--s-432ttp);--r31u81: var(--s-59wabm);--huplq6: var(--pyk6k1);--l1gcj7: var(--s-1verpm8);--s-3mrwm8: var(--rd4b92);--l6yv66: var(--s-1i90hyx);--s-1k1xktp: var(--y96hdk);--s-3dxl6s: var(--qkji3r);--s7es0h: var(--s-1kwoc9c);--tlxlq6: 14px;--s-432ttp: 20px;--s-1htz8iq: var(--s-1mnxhel);--s-59wabm: none;--ereqaf: var(--s-1nt3wam);--yiyhsh: var(--ft4em7);--sodrin: var(--ngt1c6);--bfuocu: var(--s-1vj0i13);--s-2nir93: var(--c3yjur);--s-1jh3kwa: var(--r99a4f);--hfec15: var(--s-19xhaty);--s-16ewvzx: var(--ctnn8n);--zzbsa1: var(--mae4h0);--ki0zdj: var(--s-1kc6i1b);--s-12qaksx: var(--s-1k0dbzs);--ft4em7: var(--pyk6k1);--ngt1c6: var(--s-1verpm8);--s-1vj0i13: var(--rd4b92);--c3yjur: var(--s-1i90hyx);--r99a4f: var(--y96hdk);--s-19xhaty: var(--qkji3r);--ctnn8n: var(--s-1kwoc9c);--mae4h0: 12px;--s-1kc6i1b: 16px;--s-10ubhie: var(--s-1mnxhel);--s-1k0dbzs: none;--l5cirb: var(--s-1camloi);--s-3ab8ub: var(--s-1fverle);--s-15f02i8: var(--s-2c6wsx);--s-1f29tr2: var(--s-19hyq79);--s-18tqzme: var(--s-1wum1rt);--s-1s3tcwv: var(--s-1p07rxq);--s-1sr9szs: var(--s-18ns0of);--s-72fzvy: 0px;--s-1n66wtu: 1px;--s-1camloi: 2px;--s-1fverle: 4px;--s-1eo1l6l: 6px;--s-2c6wsx: 8px;--s-14t02z3: 10px;--s-1cn5k4b: 12px;--s-10yt1e6: 14px;--s-19hyq79: 16px;--zmqxvl: 18px;--s-16s2r5d: 20px;--s-1wum1rt: 24px;--s-11p7nl: 28px;--s-1p07rxq: 32px;--s-18g2og9: 36px;--x3ux79: 40px;--s-18ns0of: 48px;--s-7dpk8n: 56px;--s-1ubl41v: 64px;--s-12tsswl: 72px;--s-1e1s3yj: 80px;--s-1c4fwdw: var(--s-282tnx);--jpxxql: var(--s-282tnx);--u4yslg: none;--s-1l4o7cj: 4px;--s-282tnx: 6px;--s-9fb64w: 8px;--s-721m59: 12px;--eazveb: 16px;--s-1pfp217: 9999em;--s-11c5ftm: solid;--s-5oekti: dashed;--s-12pesem: 1px;--s-1p3l5ml: 2px;--f0gr6w: 4px;--li639m: 100%;--s-18ciw8m: min-content;--s-15qxt3g: max-content;--s-22nfqw: fit-content;--cvc234: 50%;--bcipp6: 33.3333%;--s-1990hu4: 66.6667%;--hrim1e: 25%;--ys322a: 50%;--s-2hrodg: 75%;--ywypcv: 20%;--s-1j1r695: 40%;--s-3qcouv: 60%;--s-1c433cn: 80%;--s-1o6hvkt: 16.6667%;--v94vw1: 33.3333%;--ncjl8c: 50%;--s-14apa3: 66.6667%;--kcudzm: 83.3333%;--s-1sq848d: 8.3333%;--k9vhhg: 16.6667%;--s-1m2eq9s: 25%;--s-1hfpugt: 33.3333%;--s-12j0rnv: 41.6667%;--s-1ce5jho: 50%;--yca82r: 58.3333%;--s-1bb34n7: 66.6667%;--x6iu4: 75%;--s-1qjxzud: 83.3333%;--d52z5c: 91.6667%;--s-1qqjf1s: 0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 2px 5px 0px rgba(48, 49, 61, 0.08);--s29i93: 0px 3px 6px 0px rgba(0, 0, 0, 0.12), 0px 7px 14px 0px rgba(48, 49, 61, 0.08);--s-144bgvr: 0px 5px 15px 0px rgba(0, 0, 0, 0.12), 0px 15px 35px 0px rgba(48, 49, 61, 0.08);--qbcnik: 0px 5px 15px 0px rgba(0, 0, 0, 0.12), 0px 15px 35px 0px rgba(48, 49, 61, 0.08), 0px 50px 100px 0px rgba(48, 49, 61, 0.08);--s-46hi4m: var(--s-144bgvr);--s-4fcpev: 0px 0px 15px 0px rgba(0, 0, 0, 0.12), 0px 0px 35px 0px rgba(48, 49, 61, 0.08);--s-8kdpya: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1q5y78: 0px -1px 1px 0px rgba(20, 19, 78, 0.32);--s-1kgpzka: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-186fre1: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1fb3eog: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1ibn4id: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-1l32yqd: 0px -1px 1px 0px rgba(16, 17, 26, 0.16);--wq0k6h: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--fur145: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-1fecqxp: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--ytuq2g: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--k2t3ri: 0px -1px 1px 0px rgba(62, 2, 26, 0.32);--s-1fc7ea9: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--s-8p4pnm: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--s-1s9evt6: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--pga66p: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-7nyne0: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1p8nnzk: 0px -1px 1px 0px rgba(1, 28, 58, 0.16);--s-4fmi5d: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1mw80b4: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1mp6cz9: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--o68lqt: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1srjzen: 0px -1px 1px 0px rgba(62, 2, 26, .16);--s-5cda5b: 0px 1px 1px 0px rgba(62, 2, 26, .16);--uojav1: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1xpb9p2: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1atvbio: 0px -1px 1px 0px rgba(16, 17, 26, 0.16);--s-9l041r: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--fcko44: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--zh5azq: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--tnw4uh: 490px;--p6z4q9: 768px;--s-1tolf8z: 1040px;--s-13qggw6: 1440px;--s-1oz5pfq: 0;--s-52qljy: 490px;--m9yfsr: 768px;--s-1gz3jh8: 1040px;--s-1ad545m: 1440px;--s-1xy6qjm: 0 0 0 4px rgba(1, 150, 237, .36);
+}
+#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
+```
+
+**colly+md**
+```
+Key concepts | Stripe Documentation
+
+
+
+
+#​ .sn-1q4qxi9 { --jybopzu-hue-gray0: #ffffff; --jybopzu-hue-gray50: #f6f8fa; --jybopzu-hue-gray100: #ebeef1; --jybopzu-hue-gray150: #d5dbe1; --jybopzu-hue-gray200: #c0c8d2; --jybopzu-hue-gray300: #a3acba; --jybopzu-hue-gray400: #87909f; --jybopzu-hue-gray500: #687385; --jybopzu-hue-gray600: #545969; --jybopzu-hue-gray700: #414552; --jybopzu-hue-gray800: #30313d; --jybopzu-hue-gray900: #1a1b25; --jybopzu-hue-gray950: #10111a; --jybopzu-hue-blue50: #ddfffe; --jybopzu-hue-blue100: #cff5f6; --jybopzu-hue-blue150: #a2e5ef; --jybopzu-hue-blue200: #75d5e8; --jybopzu-hue-blue300: #06b9ef; --jybopzu-hue-blue400: #0096eb; --jybopzu-hue-blue500: #0570de; --jybopzu-hue-blue600: #0055bc; --jybopzu-hue-blue700: #04438c; --jybopzu-hue-blue800: #003262; --jybopzu-hue-blue900: #011c3a; --jybopzu-hue-green50: #ecfed7; --jybopzu-hue-green100: #d7f7c2; --jybopzu-hue-green150: #a6eb84; --jybopzu-hue-green200: #76df47; --jybopzu-hue-green300: #48c404; --jybopzu-hue-green400: #3fa40d; --jybopzu-hue-green500: #228403; --jybopzu-hue-green600: #006908; --jybopzu-hue-green700: #0b5019; --jybopzu-hue-green800: #043b15; --jybopzu-hue-green900: #02220d; --jybopzu-hue-orange50: #fef9da; --jybopzu-hue-orange100: #fcedb9; --jybopzu-hue-orange150: #fcd579; --jybopzu-hue-orange200: #fcbd3a; --jybopzu-hue-orange300: #ff8f0e; --jybopzu-hue-orange400: #ed6704; --jybopzu-hue-orange500: #c84801; --jybopzu-hue-orange600: #a82c00; --jybopzu-hue-orange700: #842106; --jybopzu-hue-orange800: #5f1a05; --jybopzu-hue-orange900: #331302; --jybopzu-hue-red50: #fff5fa; --jybopzu-hue-red100: #ffe7f2; --jybopzu-hue-red150: #ffccdf; --jybopzu-hue-red200: #ffb1cd; --jybopzu-hue-red300: #fe87a1; --jybopzu-hue-red400: #fc526a; --jybopzu-hue-red500: #df1b41; --jybopzu-hue-red600: #b3093c; --jybopzu-hue-red700: #890d37; --jybopzu-hue-red800: #68052b; --jybopzu-hue-red900: #3e021a; --jybopzu-hue-purple50: #f9f7ff; --jybopzu-hue-purple100: #f2ebff; --jybopzu-hue-purple150: #dfd3fc; --jybopzu-hue-purple200: #d1befe; --jybopzu-hue-purple300: #b49cfc; --jybopzu-hue-purple400: #8d7ffa; --jybopzu-hue-purple500: #625afa; --jybopzu-hue-purple600: #513dd9; --jybopzu-hue-purple700: #3f32a1; --jybopzu-hue-purple800: #302476; --jybopzu-hue-purple900: #14134e; --jybopzu-color-neutral0: var(--jybopzu-hue-gray0); --jybopzu-color-neutral50: var(--jybopzu-hue-gray50); --jybopzu-color-neutral100: var(--jybopzu-hue-gray100); --jybopzu-color-neutral150: var(--jybopzu-hue-gray150); --jybopzu-color-neutral200: var(--jybopzu-hue-gray200); --jybopzu-color-neutral300: var(--jybopzu-hue-gray300); --jybopzu-color-neutral400: var(--jybopzu-hue-gray400); --jybopzu-color-neutral500: var(--jybopzu-hue-gray500); --jybopzu-color-neutral600: var(--jybopzu-hue-gray600); --jybopzu-color-neutral700: var(--jybopzu-hue-gray700); --jybopzu-color-neutral800: var(--jybopzu-hue-gray800); --jybopzu-color-neutral900: var(--jybopzu-hue-gray900); --jybopzu-color-neutral950: var(--jybopzu-hue-gray950); --jybopzu-color-brand50: var(--jybopzu-hue-purple50); --jybopzu-color-brand100: var(--jybopzu-hue-purple100); --jybopzu-color-brand200: var(--jybopzu-hue-purple200); --jybopzu-color-brand300: var(--jybopzu-hue-purple300); --jybopzu-color-brand400: var(--jybopzu-hue-purple400); --jybopzu-color-brand500: var(--jybopzu-hue-purple500); --jybopzu-color-brand600: var(--jybopzu-hue-purple600); --jybopzu-color-brand700: var(--jybopzu-hue-purple700); --jybopzu-color-brand800: var(--jybopzu-hue-purple800); --jybopzu-color-brand900: var(--jybopzu-hue-purple900); --jybopzu-color-info50: var(--jybopzu-hue-blue50); --jybopzu-color-info100: var(--jybopzu-hue-blue100); --jybopzu-color-info150: var(--jybopzu-hue-blue150); --jybopzu-color-info200: var(--jybopzu-hue-blue200); --jybopzu-color-info300: var(--jybopzu-hue-blue300); --jybopzu-color-info400: var(--jybopzu-hue-blue400); --jybopzu-color-info500: var(--jybopzu-hue-blue500); --jybopzu-color-info600: var(--jybopzu-hue-blue600); --jybopzu-color-info700: var(--jybopzu-hue-blue700); --jybopzu-color-info800: var(--jybopzu-hue-blue800); --jybopzu-color-info900: var(--jybopzu-hue-blue900); --jybopzu-color-success50: var(--jybopzu-hue-green50); --jybopzu-color-success100: var(--jybopzu-hue-green100); --jybopzu-color-success150: var(--jybopzu-hue-green150); --jybopzu-color-success200: var(--jybopzu-hue-green200); --jybopzu-color-success300: var(--jybopzu-hue-green300); --jybopzu-color-success400: var(--jybopzu-hue-green400); --jybopzu-color-success500: var(--jybopzu-hue-green500); --jybopzu-color-success600: var(--jybopzu-hue-green600); --jybopzu-color-success700: var(--jybopzu-hue-green700); --jybopzu-color-success800: var(--jybopzu-hue-green800); --jybopzu-color-success900: var(--jybopzu-hue-green900); --jybopzu-color-attention50: var(--jybopzu-hue-orange50); --jybopzu-color-attention100: var(--jybopzu-hue-orange100); --jybopzu-color-attention150: var(--jybopzu-hue-orange150); --jybopzu-color-attention200: var(--jybopzu-hue-orange200); --jybopzu-color-attention300: var(--jybopzu-hue-orange300); --jybopzu-color-attention400: var(--jybopzu-hue-orange400); --jybopzu-color-attention500: var(--jybopzu-hue-orange500); --jybopzu-color-attention600: var(--jybopzu-hue-orange600); --jybopzu-color-attention700: var(--jybopzu-hue-orange700); --jybopzu-color-attention800: var(--jybopzu-hue-orange800); --jybopzu-color-attention900: var(--jybopzu-hue-orange900); --jybopzu-color-critical50: var(--jybopzu-hue-red50); --jybopzu-color-critical100: var(--jybopzu-hue-red100); --jybopzu-color-critical150: var(--jybopzu-hue-red150); --jybopzu-color-critical200: var(--jybopzu-hue-red200); --jybopzu-color-critical300: var(--jybopzu-hue-red300); --jybopzu-color-critical400: var(--jybopzu-hue-red400); --jybopzu-color-critical500: var(--jybopzu-hue-red500); --jybopzu-color-critical600: var(--jybopzu-hue-red600); --jybopzu-color-critical700: var(--jybopzu-hue-red700); --jybopzu-color-critical800: var(--jybopzu-hue-red800); --jybopzu-color-critical900: var(--jybopzu-hue-red900); --jybopzu-backgroundColor-surface: var(--jybopzu-color-neutral0); --jybopzu-backgroundColor-container: var(--jybopzu-color-neutral50); --jybopzu-borderColor-neutral: var(--jybopzu-color-neutral150); --jybopzu-borderColor-critical: var(--jybopzu-color-critical500); --jybopzu-iconColor-primary: var(--jybopzu-color-neutral600); --jybopzu-iconColor-secondary: var(--jybopzu-color-neutral400); --jybopzu-iconColor-disabled: var(--jybopzu-color-neutral200); --jybopzu-iconColor-brand: var(--jybopzu-color-brand400); --jybopzu-iconColor-info: var(--jybopzu-color-info400); --jybopzu-iconColor-success: var(--jybopzu-color-success400); --jybopzu-iconColor-attention: var(--jybopzu-color-attention400); --jybopzu-iconColor-critical: var(--jybopzu-color-critical400); --jybopzu-textColor-primary: var(--jybopzu-color-neutral700); --jybopzu-textColor-secondary: var(--jybopzu-color-neutral500); --jybopzu-textColor-disabled: var(--jybopzu-color-neutral300); --jybopzu-textColor-brand: var(--jybopzu-color-brand500); --jybopzu-textColor-info: var(--jybopzu-color-info500); --jybopzu-textColor-success: var(--jybopzu-color-success500); --jybopzu-textColor-attention: var(--jybopzu-color-attention500); --jybopzu-textColor-critical: var(--jybopzu-color-critical500); --jybopzu-overflow-hidden: hidden; --jybopzu-radius-none: none; --jybopzu-radius-xsmall: 4px; --jybopzu-radius-small: 4px; --jybopzu-radius-medium: 8px; --jybopzu-radius-large: 10px; --jybopzu-radius-rounded: 999em; --jybopzu-shadow-none: none; --jybopzu-shadow-top: rgb(0 0 0 / 12%) 0px 1px 1px 0px; --jybopzu-shadow-base: rgb(64 68 82 / 8%) 0px 2px 5px 0px, 0 0 0 0 transparent; --jybopzu-shadow-hover: rgb(64 68 82 / 8%) 0px 2px 5px 0px, rgb(64 68 82 / 8%) 0px 3px 9px 0px; --jybopzu-shadow-focus: 0 0 0 4px rgb(1 150 237 / 36%); --jybopzu-size-0: 0px; --jybopzu-size-1: var(--jybopzu-space-1); --jybopzu-size-25: var(--jybopzu-space-25); --jybopzu-size-50: var(--jybopzu-space-50); --jybopzu-size-75: var(--jybopzu-space-75); --jybopzu-size-100: var(--jybopzu-space-100); --jybopzu-size-150: var(--jybopzu-space-150); --jybopzu-size-200: var(--jybopzu-space-200); --jybopzu-size-250: var(--jybopzu-space-250); --jybopzu-size-300: var(--jybopzu-space-300); --jybopzu-size-350: var(--jybopzu-space-350); --jybopzu-size-400: var(--jybopzu-space-400); --jybopzu-size-500: var(--jybopzu-space-500); --jybopzu-size-600: var(--jybopzu-space-600); --jybopzu-size-fill: 100%; --jybopzu-size-min: min-content; --jybopzu-size-max: max-content; --jybopzu-size-fit: fit-content; --jybopzu-size-1\/2: 50%; --jybopzu-size-1\/3: 33.3333%; --jybopzu-size-2\/3: 66.6667%; --jybopzu-size-1\/4: 25%; --jybopzu-size-2\/4: 50%; --jybopzu-size-3\/4: 75%; --jybopzu-size-1\/5: 20%; --jybopzu-size-2\/5: 40%; --jybopzu-size-3\/5: 60%; --jybopzu-size-4\/5: 80%; --jybopzu-size-1\/6: 16.6667%; --jybopzu-size-2\/6: 33.3333%; --jybopzu-size-3\/6: 50%; --jybopzu-size-4\/6: 66.6667%; --jybopzu-size-5\/6: 83.3333%; --jybopzu-size-1\/12: 8.3333%; --jybopzu-size-2\/12: 16.6667%; --jybopzu-size-3\/12: 25%; --jybopzu-size-4\/12: 33.3333%; --jybopzu-size-5\/12: 41.6667%; --jybopzu-size-6\/12: 50%; --jybopzu-size-7\/12: 58.3333%; --jybopzu-size-8\/12: 66.6667%; --jybopzu-size-9\/12: 75%; --jybopzu-size-10\/12: 83.3333%; --jybopzu-size-11\/12: 91.6667%; --jybopzu-space-0: 0px; --jybopzu-space-1: 1px; --jybopzu-space-25: 2px; --jybopzu-space-50: 4px; --jybopzu-space-75: 6px; --jybopzu-space-100: 8px; --jybopzu-space-150: 12px; --jybopzu-space-200: 16px; --jybopzu-space-250: 20px; --jybopzu-space-300: 24px; --jybopzu-space-350: 28px; --jybopzu-space-400: 32px; --jybopzu-space-500: 40px; --jybopzu-space-600: 48px; --jybopzu-space-xxsmall: var(--jybopzu-space-25); --jybopzu-space-xsmall: var(--jybopzu-space-50); --jybopzu-space-small: var(--jybopzu-space-100); --jybopzu-space-medium: var(--jybopzu-space-200); --jybopzu-space-large: var(--jybopzu-space-300); --jybopzu-space-xlarge: var(--jybopzu-space-400); --jybopzu-space-xxlarge: var(--jybopzu-space-600); --jybopzu-typeface-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; --jybopzu-typeface-monospace: 'Source Code Pro', Menlo, Monaco, monospace; --jybopzu-weight-regular: 400; --jybopzu-weight-semibold: 600; --jybopzu-weight-bold: 700; --jybopzu-zIndex-overlay: 299; --jybopzu-zIndex-partial: 400; }#​#​ .rs-3::before {
+content: var(--s--baseline-alignment-content);user-select: none;align-self: baseline;margin-right: calc(-1 \* var(--s--column-gap));
+}
+#​#​ .rs-8[aria-invalid="true"] {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sail-table-row:not(:hover) .row-actions-trigger {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-4 {
+display: var(--s--display-block);
+}
+#​#​ .rs-2 {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-6:active:not([aria-disabled="true"]) {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sail-table-row:hover .row-actions-trigger {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-5:hover:not(:active):not([aria-disabled="true"]) {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-7:focus {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sn-d7kp2a { --distribute-x: initial; --distribute-y: initial; --align-x: initial; --align-y: initial; }
+#​#​ .sn-d7kp2a > \* { --align-self-x: initial; --align-self-y: initial; --flex-x: 1 1 auto; --flex-y: 1 1 auto; }
+#​#​ .sn-1fnc4mz { --row-gap: normal; --column-gap: normal; gap: var(--row-gap) var(--column-gap); }
+#​#​ .sn-1c37ise { --padding-top: 0; --padding-right: 0; --padding-bottom: 0; --padding-left: 0; padding: var(--padding-top) var(--padding-right) var(--padding-bottom) var(--padding-left); }
+.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​:root, :host #​#​#​#​#​#​#​, #​#​#​#​#​#​#​ .sn-token-provider {
+--s-806179: var(--s-1ipujfj);--qyckuc: 200ms;--s-1xyzpq3: 0ms;--ch7862: 50ms;--s-5jzhfa: 100ms;--s-12b75vv: 150ms;--rsnfo1: 300ms;--s-12ljnrj: 400ms;--s-10dnt5v: cubic-bezier(0, .09, .4, 1);--s-12oyqav: ease-in-out;--im41o8: ease-out;--s-1fdsmh8: ease-in;--s-1pzb1xw: 120;--s-6429u6: 14;--dutg7l: 300;--rjlba6: 20;--s-117eyx7: 400;--slm412: 10;--s-1pt58bw: 30ms;--pu6lsa: 50ms;--s-1ca225m: 80ms;--h9q5hc: 0.95;--s-1308p7c: 0.99;--s-1paplcg: 0.98;--s-19omtc6: 1.02;--eef79q: #ffffff;--s-8qwlk1: #F4F7FA;--o3gs5n: #ECF1F6;--hyhghw: #D4DEE9;--s-1b58r1w: #BAC8DA;--ovqch4: #95A4BA;--ggantb: #7D8BA4;--s-1a8u6zz: #667691;--k08wfi: #50617A;--s-169hr3v: #3C4F69;--ymu9b7: #273951;--ny99wq: #1A2C44;--s-1nmzh8w: #ffffff;--s-421sqo: #e2fbfe;--s-4qj11w: #cbf5fd;--s-1u1nr1c: #a7e7fc;--dj5edy: #6dc9fc;--s-3blua0: #3babfd;--s-172n6d2: #088ef9;--s-1l3w4rb: #0072e9;--s-1yzoj9a: #045ad0;--kvmyi1: #0b46ad;--s-1ah8y8v: #0d3485;--s-1v7mjmv: #0a2156;--s-1cbef47: #ffffff;--ncitdb: #eafcdd;--khndpt: #d1fab3;--fcix74: #a8f170;--s-1jt7b3q: #7cd548;--rz6g85: #58ba27;--s-10in11e: #3da00b;--jet5ih: #2b8700;--s-11ws3zn: #217005;--mkuc60: #1c5a0d;--s-5vneq4: #184310;--s-1ybzlmc: #112a0d;--s-1idvp5s: #ffffff;--s-1ronw4t: #fdf8c9;--een7nd: #fceeb5;--s-1j3zdk7: #fbd992;--bpq42r: #fcaf4f;--d5srfd: #f7870f;--s-7gt7xl: #e46602;--s-1bt4nax: #cc4b00;--s-1m90cr3: #b13600;--s-105rx08: #922700;--s-3csqoi: #701b01;--s-1x99otv: #4a0f02;--s-18rmc6q: #ffffff;--m4edry: #fef4f6;--pfpugw: #fde9ee;--s-1at7tzv: #fbd3dc;--s-8ik67: #faa9b8;--s-1brqpgc: #fa7e91;--s-1k4y65: #fa4a67;--s-1t7w85x: #e61947;--j769ku: #c0123c;--s-105k9ow: #9b0c36;--s-1bradsh: #76072f;--s-17cbcf1: #4e0322;--s-1m3ejd7: #ffffff;--wclsxb: #f7f5fd;--s-1nuetr3: #efecfc;--s-1rgwov0: #e0d9fb;--d427sf: #c3b6fb;--s-1gm5hwl: #a497fc;--d7ng6f: #857afe;--s-1wqs2n2: #675dff;--s-1rqwfiu: #533afd;--cb9l9o: #4e11e2;--b00e2n: #44139f;--yvasq2: #2f0e63;--s-35hf94: hsla(0, 0%, 100%, 0.2);--s-13ypoy8: var(--eef79q);--s-114rdv4: var(--s-8qwlk1);--s-1bcqfda: var(--o3gs5n);--s-1kkti1r: var(--hyhghw);--s-16pqfer: var(--s-1b58r1w);--s-1kmer3i: var(--ovqch4);--s-13py8ob: var(--ggantb);--s-1wdog5l: var(--s-1a8u6zz);--jkp57b: var(--k08wfi);--s-1xkgkxo: var(--s-169hr3v);--s-1egalvn: var(--ymu9b7);--v2y5bm: var(--ny99wq);--s-1ona342: var(--s-1m3ejd7);--s-1xikbvo: var(--wclsxb);--ek860z: var(--s-1nuetr3);--s-3qadn4: var(--s-1rgwov0);--nl7ypg: var(--d427sf);--hm37ax: var(--s-1gm5hwl);--s-142x5wh: var(--d7ng6f);--s-1nbkq3e: var(--s-1wqs2n2);--s-1b0l18k: var(--s-1rqwfiu);--s-1y0ta6r: var(--cb9l9o);--pxx34h: var(--b00e2n);--xp2k2: var(--yvasq2);--s-13od8gw: var(--s-1idvp5s);--fox699: var(--s-1ronw4t);--p5cdic: var(--een7nd);--s-1jh7fp5: var(--s-1j3zdk7);--lsye2d: var(--bpq42r);--t3987n: var(--d5srfd);--s-1vcezov: var(--s-7gt7xl);--s-1qk1a9q: var(--s-1bt4nax);--s-1ipujfj: var(--s-1m90cr3);--s-1vhr1m: var(--s-105rx08);--s-1oqa1l5: var(--s-3csqoi);--kubwak: var(--s-1x99otv);--whf9po: var(--s-18rmc6q);--gqp7g1: var(--m4edry);--s-1j0j6fb: var(--pfpugw);--o1xbta: var(--s-1at7tzv);--vyde9h: var(--s-8ik67);--s-875rxv: var(--s-1brqpgc);--s-1xn82ef: var(--s-1k4y65);--xi7x09: var(--s-1t7w85x);--uk4ts2: var(--j769ku);--s-9ukgu0: var(--s-105k9ow);--s-15yycft: var(--s-1bradsh);--s-1v6ybst: var(--s-17cbcf1);--s-1f39zfp: var(--s-1nmzh8w);--s-1bf76tl: var(--s-421sqo);--s-1sypgcr: var(--s-4qj11w);--u7pgeo: var(--s-1u1nr1c);--qev2nh: var(--dj5edy);--rqlrpr: var(--s-3blua0);--s-8vaodq: var(--s-172n6d2);--s-1m519r1: var(--s-1l3w4rb);--r3g89x: var(--s-1yzoj9a);--n0umvo: var(--kvmyi1);--c0109p: var(--s-1ah8y8v);--s-26e45o: var(--s-1v7mjmv);--s-1a4o86t: var(--s-1cbef47);--nxbwn6: var(--ncitdb);--s-18tv9xz: var(--khndpt);--s-660zz9: var(--fcix74);--s-5y9ijm: var(--s-1jt7b3q);--s-1gwptpc: var(--rz6g85);--t5jail: var(--s-10in11e);--qcdf10: var(--jet5ih);--s-1o92vf6: var(--s-11ws3zn);--s-1spzwnv: var(--mkuc60);--s-35q6a2: var(--s-5vneq4);--axxngb: var(--s-1ybzlmc);--s-1hj7tfd: var(--s-18rmc6q);--s-1xf1h3f: var(--m4edry);--aqxmtx: var(--pfpugw);--s-1um7fco: var(--s-1at7tzv);--d2i300: var(--s-8ik67);--cae9kd: var(--s-1brqpgc);--s-1a4c91b: var(--s-1k4y65);--s-1jvllvw: var(--s-1t7w85x);--x379qy: var(--j769ku);--s-1owp6iv: var(--s-105k9ow);--m26qys: var(--s-1bradsh);--s-3rumb4: var(--s-17cbcf1);--s-5tm7hx: var(--s-1cbef47);--h22sh6: var(--ncitdb);--s-11rdejd: var(--khndpt);--s-1g2t37u: var(--fcix74);--wesn6: var(--s-1jt7b3q);--s-1hhq31p: var(--rz6g85);--yji28s: var(--s-10in11e);--s-169ogke: var(--jet5ih);--hr7syg: var(--s-11ws3zn);--s-14wylcr: var(--mkuc60);--s-289q66: var(--s-5vneq4);--v27jy: var(--s-1ybzlmc);--s-1hldvhn: #9966FF;--s-1xwen3a: #0055BC;--hxpspa: #00A1C2;--s-5ghlc9: #ED6804;--nap71a: #B3063D;--s-1sz15nh: var(--mkuc60);--mygevb: var(--s-1k4y65);--nrw914: var(--s-105rx08);--bu79cc: var(--s-10in11e);--s-1rfvf0n: var(--s-114rdv4);--s-9fypy8: var(--s-13ypoy8);--s-8muhy8: var(--s-35hf94);--s-153sf3j: rgba(186, 200, 218, 0.7);--s-1mkjmgu: var(--s-1b0l18k);--s-9u3gcm: var(--s-1b0l18k);--s-1pk4mhu: var(--s-1y0ta6r);--s-1wze59r: var(--s-1b0l18k);--s-1gzyq0k: var(--s-1b0l18k);--s-1eg71kz: var(--s-9fypy8);--uftl0g: var(--s-9fypy8);--s-1wj6iyq: var(--s-114rdv4);--s-1jrjwpv: var(--s-9fypy8);--b5b0q1: var(--s-9fypy8);--jix8n1: var(--xi7x09);--s-1isx4n7: var(--xi7x09);--s-1owgngi: var(--uk4ts2);--s-1tqa4ka: var(--xi7x09);--s-1dl2eq8: var(--xi7x09);--s-14a2tiz: var(--s-13ypoy8);--s-1b3o71a: var(--s-1nbkq3e);--qkwke3: var(--s-1nbkq3e);--s-1afrigr: var(--s-1b0l18k);--s-1orf6yv: var(--s-1nbkq3e);--s-18eec8a: var(--s-1kkti1r);--rfaik3: var(--s-13ypoy8);--s-1xn7irg: var(--s-1bcqfda);--s-1x4qw9u: var(--s-13ypoy8);--s-4m5wr6: var(--s-1bcqfda);--s-1mbtsu2: var(--s-13ypoy8);--s-1im6yhz: var(--s-13ypoy8);--syi4h: var(--s-13ypoy8);--a37hit: var(--s-13ypoy8);--s-2av06t: var(--s-114rdv4);--s-1pjx0uz: var(--s-1bcqfda);--s-175jw0u: var(--s-114rdv4);--pz1vgx: var(--s-1wdog5l);--s-6j56kn: var(--s-1egalvn);--jg0c26: var(--s-1sypgcr);--s-1g3vynh: var(--s-1bf76tl);--lg8mcu: var(--s-1m519r1);--s-12izfvv: var(--s-18tv9xz);--s-1t53zya: var(--nxbwn6);--zuu90a: var(--qcdf10);--s-414lsb: var(--p5cdic);--ulpd63: var(--fox699);--s-15wlbw2: var(--s-1qk1a9q);--s-1dn6rk: var(--s-1j0j6fb);--s-1k641wx: var(--gqp7g1);--aw0phz: var(--xi7x09);--s-15xulsv: var(--s-1kkti1r);--w22o9l: var(--s-1b0l18k);--s-8c655s: var(--pxx34h);--s-1ok36r9: var(--pxx34h);--s-158s5xz: var(--s-1b0l18k);--xw6qjn: var(--s-1b0l18k);--s-4lkz9i: var(--s-15xulsv);--s-1amkzr1: var(--s-1kmer3i);--s-17kovyh: var(--s-15xulsv);--s-125pidq: var(--s-15xulsv);--s-8to5ry: var(--s-15xulsv);--s-17n5yam: var(--xi7x09);--eyrjow: var(--s-9ukgu0);--s-1u2do9: var(--s-9ukgu0);--qzxx9l: var(--xi7x09);--s-1draesn: var(--xi7x09);--s-17tmi4r: var(--s-1kkti1r);--b7ifjk: var(--xi7x09);--s-6o7nrw: var(--uk4ts2);--s-73zwar: var(--xi7x09);--d3be3c: var(--xi7x09);--npx6zl: var(--xi7x09);--wt6h1z: var(--s-1nbkq3e);--s-19hm5u2: var(--s-1b0l18k);--s-1ki2h5s: var(--s-1b0l18k);--s-1upode3: var(--s-1nbkq3e);--e619vt: var(--s-1kkti1r);--h29g9m: var(--s-1kmer3i);--o26ijo: var(--s-1kkti1r);--s-1fqa73g: var(--s-1kkti1r);--s-1t2fj50: var(--s-1kkti1r);--s-1p5fyku: var(--s-1kkti1r);--s-7st1q: var(--s-1kkti1r);--s-177yrws: var(--s-1wdog5l);--s-1x5q6fw: var(--s-1egalvn);--s-1cn97xm: var(--u7pgeo);--s-9nkfwt: var(--u7pgeo);--s-7pqyn6: var(--s-1m519r1);--s-9bkbz: var(--s-660zz9);--s-1qd49a9: var(--s-660zz9);--s-17mlsdr: var(--qcdf10);--s-1ow1a4n: var(--s-1jh7fp5);--s-1mnr65s: var(--s-1jh7fp5);--s-1yfj4t4: var(--s-1qk1a9q);--fg7f6q: var(--o1xbta);--d8waz0: var(--o1xbta);--s-8cc9re: var(--xi7x09);--s-13hmetb: var(--v2y5bm);--oiv4a4: var(--s-1b0l18k);--s-6obdb0: var(--s-1y0ta6r);--s-17yrw5r: var(--pxx34h);--s-1o9jit1: var(--s-1b0l18k);--s-17snam4: var(--s-13py8ob);--s-1xyyyk2: var(--s-1egalvn);--s-1ui80l2: var(--v2y5bm);--jus5c7: var(--v2y5bm);--s-184ljp4: var(--s-1egalvn);--eb4u9z: var(--jkp57b);--o8bs57: var(--uk4ts2);--s-10w80od: var(--s-9ukgu0);--s-1c9sq9t: var(--s-15yycft);--ruipx: var(--uk4ts2);--s-1wer54: var(--s-13py8ob);--uvjldp: var(--s-13ypoy8);--rygqjm: var(--s-13ypoy8);--s-3zsim4: var(--s-3qadn4);--nqzz7a: var(--s-13ypoy8);--fmcfok: var(--s-13ypoy8);--s-13dhk1f: var(--s-1egalvn);--s-97x5jr: var(--s-1egalvn);--s-148oer1: var(--s-1xkgkxo);--qzwqpe: var(--s-1egalvn);--s-9i3k0u: var(--s-1egalvn);--s-87wktm: var(--s-13ypoy8);--s-13hlbvk: var(--s-13ypoy8);--s-114300b: var(--o1xbta);--l5jmjk: var(--s-13ypoy8);--oalgln: var(--s-13ypoy8);--wukrzp: var(--s-1egalvn);--fa9lug: var(--s-1wdog5l);--s-1oi81m8: var(--s-1egalvn);--x0orno: var(--s-1egalvn);--s-1pxcz58: var(--s-1egalvn);--p0bjsc: var(--s-13py8ob);--u320f7: var(--r3g89x);--s-1iv5nq8: var(--r3g89x);--uj52u9: var(--n0umvo);--s-6v1wws: var(--s-1o92vf6);--s-1tqfmwd: var(--s-1o92vf6);--g8y80y: var(--s-1spzwnv);--uflrw: var(--s-1ipujfj);--jg0bei: var(--s-1ipujfj);--s-1kdpopy: var(--s-1vhr1m);--ibollp: var(--uk4ts2);--evfcf2: var(--uk4ts2);--qj0juw: var(--s-9ukgu0);--s-1u9outy: var(--jkp57b);--s-18brxby: var(--jkp57b);--s-5wyt2d: var(--s-13ypoy8);--s-15m6t6b: var(--s-13ypoy8);--nph474: var(--r3g89x);--s-9j04rl: var(--r3g89x);--s-18eqkid: var(--s-13ypoy8);--k9sgh3: var(--s-1o92vf6);--s-679qlr: var(--s-1o92vf6);--s-1gxwr4: var(--s-13ypoy8);--i7djdz: var(--s-1ipujfj);--s-1yqvg4v: var(--s-13ypoy8);--s-1uywv9f: var(--uk4ts2);--xfgvhn: var(--uk4ts2);--s-1l3ikln: var(--s-13ypoy8);--s-1hknj82: var(--v2y5bm);--xd9t29: var(--v2y5bm);--s-1qz4hey: var(--s-1xkgkxo);--s-13mj3ey: var(--s-1nbkq3e);--yfq5jb: var(--s-1b0l18k);--s-1d5tn5g: var(--s-1y0ta6r);--s-1ts3wnp: var(--s-1nbkq3e);--mtnc2e: var(--s-1kmer3i);--s-1ggs8se: var(--s-1xkgkxo);--s-1983a3r: var(--s-1egalvn);--s-1rbj8zq: var(--v2y5bm);--s-12x7xov: var(--s-1xkgkxo);--q5xz4t: var(--s-1wdog5l);--s-2ojt3v: var(--xi7x09);--s-1c4musi: var(--uk4ts2);--rwzmwu: var(--s-9ukgu0);--s-1k156kb: var(--xi7x09);--s-1njcrbd: var(--s-1kmer3i);--s-1auir75: var(--s-13ypoy8);--tipuka: var(--s-13ypoy8);--s-1myp5o1: var(--s-3qadn4);--s-5didwj: var(--s-13ypoy8);--s-1wf2wvi: var(--s-13ypoy8);--s-15w0yfc: var(--s-1qz4hey);--fc8g0t: var(--s-1qz4hey);--s-17uj1m3: var(--jkp57b);--g8dxu4: var(--s-1qz4hey);--s-2e4gj5: var(--s-1qz4hey);--s-1xsl5v6: var(--s-13ypoy8);--s-1vjzvov: var(--s-13ypoy8);--s-1n46b59: var(--o1xbta);--u90thq: var(--s-13ypoy8);--s-19o7zaa: var(--s-13ypoy8);--s-10q3p1o: var(--s-1xkgkxo);--s-8jpmhq: var(--s-1xkgkxo);--s-1nuytc0: var(--s-1xkgkxo);--s-1vua7kb: var(--s-1xkgkxo);--brnaxe: var(--s-1kmer3i);--s-1ufxgw0: var(--s-13ypoy8);--qth5g3: var(--s-13ypoy8);--s-1hd7tld: var(--s-13ypoy8);--s-40ljxg: var(--s-13ypoy8);--s-1aln5xz: var(--s-114rdv4);--s-49rsbu: var(--s-1m519r1);--xsdaas: var(--s-1m519r1);--mglbt2: var(--r3g89x);--rtvqux: var(--qcdf10);--ko7qd: var(--qcdf10);--s-50f0qm: var(--s-1o92vf6);--eu61bi: var(--s-1qk1a9q);--y7jsf0: var(--s-1qk1a9q);--s-1ac7lwk: var(--s-1ipujfj);--s-9k5091: var(--xi7x09);--ruhzmh: var(--xi7x09);--s-2xp72p: var(--uk4ts2);--s-17iqe5q: var(--s-1wdog5l);--s-1253b2y: var(--s-1wdog5l);--s-1piwg9i: var(--s-13ypoy8);--s-7oniqh: var(--s-13ypoy8);--s-6ucdv7: var(--s-1m519r1);--s-1jcoye7: var(--s-1m519r1);--hnqjk9: var(--s-13ypoy8);--pgimab: var(--qcdf10);--xntlbj: var(--qcdf10);--s-14mlsvd: var(--s-13ypoy8);--s-1exie7f: var(--s-1qk1a9q);--yqmt02: var(--s-1qk1a9q);--s-17qjsgp: var(--s-13ypoy8);--e6rr02: var(--xi7x09);--qwe25a: var(--xi7x09);--s-1cx6227: var(--s-13ypoy8);--s-1o2c3h9: var(--s-1wdog5l);--s-6gs83q: var(--s-1egalvn);--ahgtyg: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';--dilwm: 2048;--s-6omq4: 1980;--nsaztv: 1443;--s-1ixv1ks: 1078;--s-1biv3ye: -432;--s-1te2tup: 0;--cdmbir: 300;--s-1mnxhel: 400;--s-1nt3wam: 600;--s-1ocxf4e: 700;--s-1vpgvqc: 'Source Code Pro', Menlo, Monaco, monospace;--s-1y398ge: 2048;--j5b9ko: 1556;--s-17c3qcu: 1493;--s-6zqpne: 1120;--s-1jib5q0: -492;--s-75pjiv: 410;--s-780oqg: var(--ahgtyg);--s-1c2w534: var(--dilwm);--s-4imvpn: var(--s-6omq4);--s-1ph4673: var(--nsaztv);--s-14qchrt: var(--s-1ixv1ks);--s-174cqiz: var(--s-1biv3ye);--s-1rnjjay: var(--s-1te2tup);--bwm4no: var(--s-1mnxhel);--s-1bfvuc2: var(--s-1i82044);--s-1vo01ya: var(--s-1db3chc);--s-1nrhtfr: var(--tk0isw);--s-1xlut57: var(--s-1lhqll2);--s-10rtirn: var(--s-11v0pqn);--s-1gj0nto: var(--s-6cbmuf);--z8c3ww: var(--yplwvi);--s-1itdcoa: var(--s-1m30mdf);--s-1e47fbj: var(--cd4zwn);--s-1i82044: var(--s-780oqg);--s-1db3chc: var(--s-1c2w534);--tk0isw: var(--s-4imvpn);--s-1lhqll2: var(--s-1ph4673);--s-11v0pqn: var(--s-14qchrt);--s-6cbmuf: var(--s-174cqiz);--yplwvi: var(--s-1rnjjay);--s-1m30mdf: 56px;--cd4zwn: 64px;--s-1fgn2x1: var(--s-1ocxf4e);--g8k6lo: var(--s-1mnxhel);--simh7g: var(--wsbs66);--s-11tag5s: var(--s-1cfwdq);--egn7v3: var(--s-18ll6fg);--s-1rfbcod: var(--s-13spi5k);--s-1luqrck: var(--s-15fn66i);--s-27iqeg: var(--d5drjy);--s-18wcjw: var(--s-1rsg6td);--s-1u9zl82: var(--n6jam8);--miv9l: var(--lq97ov);--wsbs66: var(--s-780oqg);--s-1cfwdq: var(--s-1c2w534);--s-18ll6fg: var(--s-4imvpn);--s-13spi5k: var(--s-1ph4673);--s-15fn66i: var(--s-14qchrt);--d5drjy: var(--s-174cqiz);--s-1rsg6td: var(--s-1rnjjay);--n6jam8: 48px;--lq97ov: 56px;--s-1ucmgz7: var(--s-1ocxf4e);--s-17ghi8h: var(--s-1mnxhel);--hbk0oo: var(--s-1wwy80b);--s-2dbb2a: var(--s-160c6gg);--yxaojm: var(--s-1npqh71);--nm1xrx: var(--s-68sjx3);--s-1ivbjtl: var(--wejrbv);--s-8vhotc: var(--si2vzf);--pakukh: var(--s-7035h);--icmlh7: var(--ad7wce);--s-8mv65e: var(--s-12zbgfl);--s-1wwy80b: var(--s-780oqg);--s-160c6gg: var(--s-1c2w534);--s-1npqh71: var(--s-4imvpn);--s-68sjx3: var(--s-1ph4673);--wejrbv: var(--s-14qchrt);--si2vzf: var(--s-174cqiz);--s-7035h: var(--s-1rnjjay);--ad7wce: 40px;--s-12zbgfl: 48px;--s-1xgajx6: var(--s-1ocxf4e);--s-1mb7r8p: var(--s-1mnxhel);--s-1jtr8l0: var(--dx0zsf);--bzblmh: var(--s-1s7fwor);--s-13z63vp: var(--s-1z08gqp);--s-1noeuap: var(--fdri1y);--s-1iotv3v: var(--s-1ktva78);--s-18s8xzd: var(--jrvk1a);--s-1xijmep: var(--s-62671d);--s-1nph8pw: var(--s-1eryk2b);--s-5jpu2o: var(--s-1rvvcgm);--dx0zsf: var(--s-780oqg);--s-1s7fwor: var(--s-1c2w534);--s-1z08gqp: var(--s-4imvpn);--fdri1y: var(--s-1ph4673);--s-1ktva78: var(--s-14qchrt);--jrvk1a: var(--s-174cqiz);--s-62671d: var(--s-1rnjjay);--s-1eryk2b: 32px;--s-1rvvcgm: 40px;--nusmm3: var(--s-1ocxf4e);--xcedj6: var(--ahgtyg);--s-14xlm6o: var(--dilwm);--msg65c: var(--s-6omq4);--s-1ywnfza: var(--nsaztv);--zjva6a: var(--s-1ixv1ks);--s-15n3uo5: var(--s-1biv3ye);--i6u0ap: var(--s-1te2tup);--xb6tkh: var(--s-1mnxhel);--s-1xmxn4q: var(--s-71ssjp);--s-1xgixpx: var(--db0w5x);--s-1k35674: var(--jed2z7);--s-12k91a7: var(--tv79ff);--s-1s0wyj4: var(--s-1x8so7v);--ig6ly8: var(--s-1j7acn3);--s-8l4ca5: var(--s-38ks7n);--s-1svi9x0: var(--x65r8g);--d7hr4e: var(--s-14j81vx);--s-1ylzxkj: var(--oq2dkr);--s-71ssjp: var(--xcedj6);--db0w5x: var(--s-14xlm6o);--jed2z7: var(--msg65c);--tv79ff: var(--s-1ywnfza);--s-1x8so7v: var(--zjva6a);--s-1j7acn3: var(--s-15n3uo5);--s-38ks7n: var(--i6u0ap);--x65r8g: 28px;--s-14j81vx: 36px;--s-1n4fl4h: var(--s-1ocxf4e);--oq2dkr: none;--f4w18u: var(--s-1mnxhel);--s-1rpa4qr: var(--jdmia2);--v1v838: var(--ts1hpc);--vn27bl: var(--s-187zl0b);--s-1vnqflb: var(--s-12s5kmm);--s-1n4dokk: var(--s-4fox1q);--wb62lm: var(--j3z1dw);--s-1f8ywlh: var(--s-1jvq51g);--s-1uud5hl: var(--s-1joebgy);--s-1qj9g61: var(--s-19hh4gw);--s-1bvu74j: var(--hdrt9t);--jdmia2: var(--xcedj6);--ts1hpc: var(--s-14xlm6o);--s-187zl0b: var(--msg65c);--s-12s5kmm: var(--s-1ywnfza);--s-4fox1q: var(--zjva6a);--j3z1dw: var(--s-15n3uo5);--s-1jvq51g: var(--i6u0ap);--s-1joebgy: 24px;--s-19hh4gw: 32px;--g65i9c: var(--s-1ocxf4e);--hdrt9t: none;--wpt2ge: var(--s-1mnxhel);--w4jvxk: var(--s-1bq9l67);--s-1mflgki: var(--s-1xsxprz);--s-1517qlh: var(--qfwzw4);--sdtaur: var(--o2sqss);--s-6qvd4o: var(--xxsoub);--y4gv3: var(--s-1hw9qk9);--s-193lww5: var(--s-9rewa3);--yem2xc: var(--s-1k0d4db);--s-1uz67ki: var(--syp0fc);--b4hhf7: var(--s-18pg62i);--s-1bq9l67: var(--xcedj6);--s-1xsxprz: var(--s-14xlm6o);--qfwzw4: var(--msg65c);--o2sqss: var(--s-1ywnfza);--xxsoub: var(--zjva6a);--s-1hw9qk9: var(--s-15n3uo5);--s-9rewa3: var(--i6u0ap);--s-1k0d4db: 20px;--syp0fc: 28px;--s-1vfd5li: var(--s-1ocxf4e);--s-18pg62i: none;--s-1p87an6: var(--s-1mnxhel);--gbhvil: var(--s-1tckhn5);--s-2wlxzm: var(--s-1bnzo0w);--s-1lhh5an: var(--ub00w8);--b57bg4: var(--vayv2j);--s-10pihpx: var(--s-1bg5wjj);--s-1de7swi: var(--ofc8t8);--p0d0ra: var(--s-1myygfh);--rdvhzd: var(--s-1vrlxop);--wxjtoa: var(--s-1fjdblk);--s-14i6ex0: var(--s-176iwse);--s-1tckhn5: var(--xcedj6);--s-1bnzo0w: var(--s-14xlm6o);--ub00w8: var(--msg65c);--vayv2j: var(--s-1ywnfza);--s-1bg5wjj: var(--zjva6a);--ofc8t8: var(--s-15n3uo5);--s-1myygfh: var(--i6u0ap);--s-1vrlxop: 16px;--s-1fjdblk: 24px;--s-15lxxlk: var(--s-1ocxf4e);--s-176iwse: none;--ihun98: var(--s-1mnxhel);--lzkj6b: var(--s-1fz1zwb);--s-19gq58y: var(--s-1e9sg5q);--s-1fndoqe: var(--s-1xty0l1);--s-1ozmd2v: var(--s-1c9087t);--s-1itf6ev: var(--njr6lf);--lqlo87: var(--wvavyz);--s-15g638a: var(--s-1bdp00y);--s-101nale: var(--s-1rv6t4);--rpuu4f: var(--onmy4p);--s-1x2ggh5: var(--s-135hi2l);--s-1fz1zwb: var(--xcedj6);--s-1e9sg5q: var(--s-14xlm6o);--s-1xty0l1: var(--msg65c);--s-1c9087t: var(--s-1ywnfza);--njr6lf: var(--zjva6a);--wvavyz: var(--s-15n3uo5);--s-1bdp00y: var(--i6u0ap);--s-1rv6t4: 12px;--onmy4p: 20px;--s-4yu78: var(--s-1ocxf4e);--s-135hi2l: none;--qsps49: var(--ahgtyg);--s-1m5o6xs: var(--dilwm);--s-1sl6m46: var(--s-6omq4);--s-1tlryov: var(--nsaztv);--kidu0o: var(--s-1ixv1ks);--l2fksn: var(--s-1biv3ye);--s-16fd3c8: var(--s-1te2tup);--s-1n41s7u: var(--s-1nt3wam);--njb836: var(--s-108w7yg);--s-18nbbqu: var(--s-6mvx34);--b9ogvo: var(--s-1pbhbhw);--h3wc70: var(--z5eq11);--u4c2q6: var(--e1e86);--s-1oj6z6t: var(--uik06i);--s-1qtuyvq: var(--s-1eah8e8);--l28r8y: var(--h7f28h);--fcsdep: var(--s-1vvlcgn);--s-1ikrpfx: var(--s-36ddn3);--s-108w7yg: var(--qsps49);--s-6mvx34: var(--s-1m5o6xs);--s-1pbhbhw: var(--s-1sl6m46);--z5eq11: var(--s-1tlryov);--e1e86: var(--kidu0o);--uik06i: var(--l2fksn);--s-1eah8e8: var(--s-16fd3c8);--h7f28h: 18px;--s-1vvlcgn: 28px;--s-5hgyej: var(--s-1mnxhel);--s-36ddn3: none;--p1b3a1: var(--s-1nt3wam);--s-10jfra1: var(--wtyf0o);--s-1m1wff1: var(--s-167pe37);--s-1savn4h: var(--s-10fnwqi);--s-1gygsl6: var(--s-1sdpwmi);--li3rbu: var(--s-1prlirw);--s-9cy93t: var(--s-1oay49k);--s-11a5wqu: var(--b7x093);--s-17qz9cg: var(--s-1nk8z4c);--s-1pqj9m0: var(--s-1adv7ix);--s-1ctdufq: var(--s-2vga1d);--wtyf0o: var(--qsps49);--s-167pe37: var(--s-1m5o6xs);--s-10fnwqi: var(--s-1sl6m46);--s-1sdpwmi: var(--s-1tlryov);--s-1prlirw: var(--kidu0o);--s-1oay49k: var(--l2fksn);--b7x093: var(--s-16fd3c8);--s-1nk8z4c: 16px;--s-1adv7ix: 24px;--e9j7zt: var(--s-1mnxhel);--s-2vga1d: none;--s-1e6wgok: var(--s-1nt3wam);--s-5twc1q: var(--iv638n);--s-13v453w: var(--zzbkbv);--q47ujb: var(--cw4443);--s-4fq1f8: var(--sf9nah);--s-8kvr39: var(--s-1lduq5c);--t9sogg: var(--s-49369g);--s-6dkjzu: var(--s-195juhb);--s-1wizgxe: var(--eoafo5);--s-7ih227: var(--s-7paqqe);--be5p7j: var(--pz3gk9);--iv638n: var(--qsps49);--zzbkbv: var(--s-1m5o6xs);--cw4443: var(--s-1sl6m46);--sf9nah: var(--s-1tlryov);--s-1lduq5c: var(--kidu0o);--s-49369g: var(--l2fksn);--s-195juhb: var(--s-16fd3c8);--eoafo5: 14px;--s-7paqqe: 20px;--x5dpqz: var(--s-1mnxhel);--pz3gk9: none;--pyk6k1: var(--ahgtyg);--s-1verpm8: var(--dilwm);--rd4b92: var(--s-6omq4);--s-1i90hyx: var(--nsaztv);--y96hdk: var(--s-1ixv1ks);--qkji3r: var(--s-1biv3ye);--s-1kwoc9c: var(--s-1te2tup);--s-1qv548f: var(--s-1nt3wam);--s-1tq5jkt: var(--v43x2t);--s-3uli8c: var(--tcmtp2);--s-10wdlk9: var(--g77870);--s-1iqa1pt: var(--s-1xy9kgq);--vxd1ew: var(--wqx1if);--w2b5wa: var(--s-1fysgfv);--s-16ck0e3: var(--s-18527no);--okauee: var(--s-1rxtcbb);--s-1fhkvft: var(--s-1a3m0xe);--hj8sur: var(--ayuh76);--v43x2t: var(--pyk6k1);--tcmtp2: var(--s-1verpm8);--g77870: var(--rd4b92);--s-1xy9kgq: var(--s-1i90hyx);--wqx1if: var(--y96hdk);--s-1fysgfv: var(--qkji3r);--s-18527no: var(--s-1kwoc9c);--s-1rxtcbb: 16px;--s-1a3m0xe: 24px;--s-5y4pqp: var(--s-1mnxhel);--ayuh76: none;--ep1e0f: var(--s-1nt3wam);--s-6vkd26: var(--huplq6);--s-1h9quwx: var(--l1gcj7);--t2iyzt: var(--s-3mrwm8);--s-1xn3ax7: var(--l6yv66);--s-15oh72s: var(--s-1k1xktp);--s-1ohirt0: var(--s-3dxl6s);--juchqv: var(--s7es0h);--s-1g9cdsy: var(--tlxlq6);--yfph9h: var(--s-432ttp);--r31u81: var(--s-59wabm);--huplq6: var(--pyk6k1);--l1gcj7: var(--s-1verpm8);--s-3mrwm8: var(--rd4b92);--l6yv66: var(--s-1i90hyx);--s-1k1xktp: var(--y96hdk);--s-3dxl6s: var(--qkji3r);--s7es0h: var(--s-1kwoc9c);--tlxlq6: 14px;--s-432ttp: 20px;--s-1htz8iq: var(--s-1mnxhel);--s-59wabm: none;--ereqaf: var(--s-1nt3wam);--yiyhsh: var(--ft4em7);--sodrin: var(--ngt1c6);--bfuocu: var(--s-1vj0i13);--s-2nir93: var(--c3yjur);--s-1jh3kwa: var(--r99a4f);--hfec15: var(--s-19xhaty);--s-16ewvzx: var(--ctnn8n);--zzbsa1: var(--mae4h0);--ki0zdj: var(--s-1kc6i1b);--s-12qaksx: var(--s-1k0dbzs);--ft4em7: var(--pyk6k1);--ngt1c6: var(--s-1verpm8);--s-1vj0i13: var(--rd4b92);--c3yjur: var(--s-1i90hyx);--r99a4f: var(--y96hdk);--s-19xhaty: var(--qkji3r);--ctnn8n: var(--s-1kwoc9c);--mae4h0: 12px;--s-1kc6i1b: 16px;--s-10ubhie: var(--s-1mnxhel);--s-1k0dbzs: none;--l5cirb: var(--s-1camloi);--s-3ab8ub: var(--s-1fverle);--s-15f02i8: var(--s-2c6wsx);--s-1f29tr2: var(--s-19hyq79);--s-18tqzme: var(--s-1wum1rt);--s-1s3tcwv: var(--s-1p07rxq);--s-1sr9szs: var(--s-18ns0of);--s-72fzvy: 0px;--s-1n66wtu: 1px;--s-1camloi: 2px;--s-1fverle: 4px;--s-1eo1l6l: 6px;--s-2c6wsx: 8px;--s-14t02z3: 10px;--s-1cn5k4b: 12px;--s-10yt1e6: 14px;--s-19hyq79: 16px;--zmqxvl: 18px;--s-16s2r5d: 20px;--s-1wum1rt: 24px;--s-11p7nl: 28px;--s-1p07rxq: 32px;--s-18g2og9: 36px;--x3ux79: 40px;--s-18ns0of: 48px;--s-7dpk8n: 56px;--s-1ubl41v: 64px;--s-12tsswl: 72px;--s-1e1s3yj: 80px;--s-1c4fwdw: var(--s-282tnx);--jpxxql: var(--s-282tnx);--u4yslg: none;--s-1l4o7cj: 4px;--s-282tnx: 6px;--s-9fb64w: 8px;--s-721m59: 12px;--eazveb: 16px;--s-1pfp217: 9999em;--s-11c5ftm: solid;--s-5oekti: dashed;--s-12pesem: 1px;--s-1p3l5ml: 2px;--f0gr6w: 4px;--li639m: 100%;--s-18ciw8m: min-content;--s-15qxt3g: max-content;--s-22nfqw: fit-content;--cvc234: 50%;--bcipp6: 33.3333%;--s-1990hu4: 66.6667%;--hrim1e: 25%;--ys322a: 50%;--s-2hrodg: 75%;--ywypcv: 20%;--s-1j1r695: 40%;--s-3qcouv: 60%;--s-1c433cn: 80%;--s-1o6hvkt: 16.6667%;--v94vw1: 33.3333%;--ncjl8c: 50%;--s-14apa3: 66.6667%;--kcudzm: 83.3333%;--s-1sq848d: 8.3333%;--k9vhhg: 16.6667%;--s-1m2eq9s: 25%;--s-1hfpugt: 33.3333%;--s-12j0rnv: 41.6667%;--s-1ce5jho: 50%;--yca82r: 58.3333%;--s-1bb34n7: 66.6667%;--x6iu4: 75%;--s-1qjxzud: 83.3333%;--d52z5c: 91.6667%;--s-1qqjf1s: 0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 2px 5px 0px rgba(48, 49, 61, 0.08);--s29i93: 0px 3px 6px 0px rgba(0, 0, 0, 0.12), 0px 7px 14px 0px rgba(48, 49, 61, 0.08);--s-144bgvr: 0px 5px 15px 0px rgba(0, 0, 0, 0.12), 0px 15px 35px 0px rgba(48, 49, 61, 0.08);--qbcnik: 0px 5px 15px 0px rgba(0, 0, 0, 0.12), 0px 15px 35px 0px rgba(48, 49, 61, 0.08), 0px 50px 100px 0px rgba(48, 49, 61, 0.08);--s-46hi4m: var(--s-144bgvr);--s-4fcpev: 0px 0px 15px 0px rgba(0, 0, 0, 0.12), 0px 0px 35px 0px rgba(48, 49, 61, 0.08);--s-8kdpya: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1q5y78: 0px -1px 1px 0px rgba(20, 19, 78, 0.32);--s-1kgpzka: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-186fre1: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1fb3eog: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1ibn4id: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-1l32yqd: 0px -1px 1px 0px rgba(16, 17, 26, 0.16);--wq0k6h: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--fur145: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-1fecqxp: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--ytuq2g: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--k2t3ri: 0px -1px 1px 0px rgba(62, 2, 26, 0.32);--s-1fc7ea9: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--s-8p4pnm: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--s-1s9evt6: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--pga66p: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-7nyne0: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1p8nnzk: 0px -1px 1px 0px rgba(1, 28, 58, 0.16);--s-4fmi5d: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1mw80b4: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1mp6cz9: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--o68lqt: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1srjzen: 0px -1px 1px 0px rgba(62, 2, 26, .16);--s-5cda5b: 0px 1px 1px 0px rgba(62, 2, 26, .16);--uojav1: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1xpb9p2: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1atvbio: 0px -1px 1px 0px rgba(16, 17, 26, 0.16);--s-9l041r: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--fcko44: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--zh5azq: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--tnw4uh: 490px;--p6z4q9: 768px;--s-1tolf8z: 1040px;--s-13qggw6: 1440px;--s-1oz5pfq: 0;--s-52qljy: 490px;--m9yfsr: 768px;--s-1gz3jh8: 1040px;--s-1ad545m: 1440px;--s-1xy6qjm: 0 0 0 4px rgba(1, 150, 237, .36);
+}
+#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
+```
+
+**playwright**
+```
+Key concepts | Stripe Documentation
+
+
+
+
+#​ .sn-1q4qxi9 { --jybopzu-hue-gray0: #ffffff; --jybopzu-hue-gray50: #f6f8fa; --jybopzu-hue-gray100: #ebeef1; --jybopzu-hue-gray150: #d5dbe1; --jybopzu-hue-gray200: #c0c8d2; --jybopzu-hue-gray300: #a3acba; --jybopzu-hue-gray400: #87909f; --jybopzu-hue-gray500: #687385; --jybopzu-hue-gray600: #545969; --jybopzu-hue-gray700: #414552; --jybopzu-hue-gray800: #30313d; --jybopzu-hue-gray900: #1a1b25; --jybopzu-hue-gray950: #10111a; --jybopzu-hue-blue50: #ddfffe; --jybopzu-hue-blue100: #cff5f6; --jybopzu-hue-blue150: #a2e5ef; --jybopzu-hue-blue200: #75d5e8; --jybopzu-hue-blue300: #06b9ef; --jybopzu-hue-blue400: #0096eb; --jybopzu-hue-blue500: #0570de; --jybopzu-hue-blue600: #0055bc; --jybopzu-hue-blue700: #04438c; --jybopzu-hue-blue800: #003262; --jybopzu-hue-blue900: #011c3a; --jybopzu-hue-green50: #ecfed7; --jybopzu-hue-green100: #d7f7c2; --jybopzu-hue-green150: #a6eb84; --jybopzu-hue-green200: #76df47; --jybopzu-hue-green300: #48c404; --jybopzu-hue-green400: #3fa40d; --jybopzu-hue-green500: #228403; --jybopzu-hue-green600: #006908; --jybopzu-hue-green700: #0b5019; --jybopzu-hue-green800: #043b15; --jybopzu-hue-green900: #02220d; --jybopzu-hue-orange50: #fef9da; --jybopzu-hue-orange100: #fcedb9; --jybopzu-hue-orange150: #fcd579; --jybopzu-hue-orange200: #fcbd3a; --jybopzu-hue-orange300: #ff8f0e; --jybopzu-hue-orange400: #ed6704; --jybopzu-hue-orange500: #c84801; --jybopzu-hue-orange600: #a82c00; --jybopzu-hue-orange700: #842106; --jybopzu-hue-orange800: #5f1a05; --jybopzu-hue-orange900: #331302; --jybopzu-hue-red50: #fff5fa; --jybopzu-hue-red100: #ffe7f2; --jybopzu-hue-red150: #ffccdf; --jybopzu-hue-red200: #ffb1cd; --jybopzu-hue-red300: #fe87a1; --jybopzu-hue-red400: #fc526a; --jybopzu-hue-red500: #df1b41; --jybopzu-hue-red600: #b3093c; --jybopzu-hue-red700: #890d37; --jybopzu-hue-red800: #68052b; --jybopzu-hue-red900: #3e021a; --jybopzu-hue-purple50: #f9f7ff; --jybopzu-hue-purple100: #f2ebff; --jybopzu-hue-purple150: #dfd3fc; --jybopzu-hue-purple200: #d1befe; --jybopzu-hue-purple300: #b49cfc; --jybopzu-hue-purple400: #8d7ffa; --jybopzu-hue-purple500: #625afa; --jybopzu-hue-purple600: #513dd9; --jybopzu-hue-purple700: #3f32a1; --jybopzu-hue-purple800: #302476; --jybopzu-hue-purple900: #14134e; --jybopzu-color-neutral0: var(--jybopzu-hue-gray0); --jybopzu-color-neutral50: var(--jybopzu-hue-gray50); --jybopzu-color-neutral100: var(--jybopzu-hue-gray100); --jybopzu-color-neutral150: var(--jybopzu-hue-gray150); --jybopzu-color-neutral200: var(--jybopzu-hue-gray200); --jybopzu-color-neutral300: var(--jybopzu-hue-gray300); --jybopzu-color-neutral400: var(--jybopzu-hue-gray400); --jybopzu-color-neutral500: var(--jybopzu-hue-gray500); --jybopzu-color-neutral600: var(--jybopzu-hue-gray600); --jybopzu-color-neutral700: var(--jybopzu-hue-gray700); --jybopzu-color-neutral800: var(--jybopzu-hue-gray800); --jybopzu-color-neutral900: var(--jybopzu-hue-gray900); --jybopzu-color-neutral950: var(--jybopzu-hue-gray950); --jybopzu-color-brand50: var(--jybopzu-hue-purple50); --jybopzu-color-brand100: var(--jybopzu-hue-purple100); --jybopzu-color-brand200: var(--jybopzu-hue-purple200); --jybopzu-color-brand300: var(--jybopzu-hue-purple300); --jybopzu-color-brand400: var(--jybopzu-hue-purple400); --jybopzu-color-brand500: var(--jybopzu-hue-purple500); --jybopzu-color-brand600: var(--jybopzu-hue-purple600); --jybopzu-color-brand700: var(--jybopzu-hue-purple700); --jybopzu-color-brand800: var(--jybopzu-hue-purple800); --jybopzu-color-brand900: var(--jybopzu-hue-purple900); --jybopzu-color-info50: var(--jybopzu-hue-blue50); --jybopzu-color-info100: var(--jybopzu-hue-blue100); --jybopzu-color-info150: var(--jybopzu-hue-blue150); --jybopzu-color-info200: var(--jybopzu-hue-blue200); --jybopzu-color-info300: var(--jybopzu-hue-blue300); --jybopzu-color-info400: var(--jybopzu-hue-blue400); --jybopzu-color-info500: var(--jybopzu-hue-blue500); --jybopzu-color-info600: var(--jybopzu-hue-blue600); --jybopzu-color-info700: var(--jybopzu-hue-blue700); --jybopzu-color-info800: var(--jybopzu-hue-blue800); --jybopzu-color-info900: var(--jybopzu-hue-blue900); --jybopzu-color-success50: var(--jybopzu-hue-green50); --jybopzu-color-success100: var(--jybopzu-hue-green100); --jybopzu-color-success150: var(--jybopzu-hue-green150); --jybopzu-color-success200: var(--jybopzu-hue-green200); --jybopzu-color-success300: var(--jybopzu-hue-green300); --jybopzu-color-success400: var(--jybopzu-hue-green400); --jybopzu-color-success500: var(--jybopzu-hue-green500); --jybopzu-color-success600: var(--jybopzu-hue-green600); --jybopzu-color-success700: var(--jybopzu-hue-green700); --jybopzu-color-success800: var(--jybopzu-hue-green800); --jybopzu-color-success900: var(--jybopzu-hue-green900); --jybopzu-color-attention50: var(--jybopzu-hue-orange50); --jybopzu-color-attention100: var(--jybopzu-hue-orange100); --jybopzu-color-attention150: var(--jybopzu-hue-orange150); --jybopzu-color-attention200: var(--jybopzu-hue-orange200); --jybopzu-color-attention300: var(--jybopzu-hue-orange300); --jybopzu-color-attention400: var(--jybopzu-hue-orange400); --jybopzu-color-attention500: var(--jybopzu-hue-orange500); --jybopzu-color-attention600: var(--jybopzu-hue-orange600); --jybopzu-color-attention700: var(--jybopzu-hue-orange700); --jybopzu-color-attention800: var(--jybopzu-hue-orange800); --jybopzu-color-attention900: var(--jybopzu-hue-orange900); --jybopzu-color-critical50: var(--jybopzu-hue-red50); --jybopzu-color-critical100: var(--jybopzu-hue-red100); --jybopzu-color-critical150: var(--jybopzu-hue-red150); --jybopzu-color-critical200: var(--jybopzu-hue-red200); --jybopzu-color-critical300: var(--jybopzu-hue-red300); --jybopzu-color-critical400: var(--jybopzu-hue-red400); --jybopzu-color-critical500: var(--jybopzu-hue-red500); --jybopzu-color-critical600: var(--jybopzu-hue-red600); --jybopzu-color-critical700: var(--jybopzu-hue-red700); --jybopzu-color-critical800: var(--jybopzu-hue-red800); --jybopzu-color-critical900: var(--jybopzu-hue-red900); --jybopzu-backgroundColor-surface: var(--jybopzu-color-neutral0); --jybopzu-backgroundColor-container: var(--jybopzu-color-neutral50); --jybopzu-borderColor-neutral: var(--jybopzu-color-neutral150); --jybopzu-borderColor-critical: var(--jybopzu-color-critical500); --jybopzu-iconColor-primary: var(--jybopzu-color-neutral600); --jybopzu-iconColor-secondary: var(--jybopzu-color-neutral400); --jybopzu-iconColor-disabled: var(--jybopzu-color-neutral200); --jybopzu-iconColor-brand: var(--jybopzu-color-brand400); --jybopzu-iconColor-info: var(--jybopzu-color-info400); --jybopzu-iconColor-success: var(--jybopzu-color-success400); --jybopzu-iconColor-attention: var(--jybopzu-color-attention400); --jybopzu-iconColor-critical: var(--jybopzu-color-critical400); --jybopzu-textColor-primary: var(--jybopzu-color-neutral700); --jybopzu-textColor-secondary: var(--jybopzu-color-neutral500); --jybopzu-textColor-disabled: var(--jybopzu-color-neutral300); --jybopzu-textColor-brand: var(--jybopzu-color-brand500); --jybopzu-textColor-info: var(--jybopzu-color-info500); --jybopzu-textColor-success: var(--jybopzu-color-success500); --jybopzu-textColor-attention: var(--jybopzu-color-attention500); --jybopzu-textColor-critical: var(--jybopzu-color-critical500); --jybopzu-overflow-hidden: hidden; --jybopzu-radius-none: none; --jybopzu-radius-xsmall: 4px; --jybopzu-radius-small: 4px; --jybopzu-radius-medium: 8px; --jybopzu-radius-large: 10px; --jybopzu-radius-rounded: 999em; --jybopzu-shadow-none: none; --jybopzu-shadow-top: rgb(0 0 0 / 12%) 0px 1px 1px 0px; --jybopzu-shadow-base: rgb(64 68 82 / 8%) 0px 2px 5px 0px, 0 0 0 0 transparent; --jybopzu-shadow-hover: rgb(64 68 82 / 8%) 0px 2px 5px 0px, rgb(64 68 82 / 8%) 0px 3px 9px 0px; --jybopzu-shadow-focus: 0 0 0 4px rgb(1 150 237 / 36%); --jybopzu-size-0: 0px; --jybopzu-size-1: var(--jybopzu-space-1); --jybopzu-size-25: var(--jybopzu-space-25); --jybopzu-size-50: var(--jybopzu-space-50); --jybopzu-size-75: var(--jybopzu-space-75); --jybopzu-size-100: var(--jybopzu-space-100); --jybopzu-size-150: var(--jybopzu-space-150); --jybopzu-size-200: var(--jybopzu-space-200); --jybopzu-size-250: var(--jybopzu-space-250); --jybopzu-size-300: var(--jybopzu-space-300); --jybopzu-size-350: var(--jybopzu-space-350); --jybopzu-size-400: var(--jybopzu-space-400); --jybopzu-size-500: var(--jybopzu-space-500); --jybopzu-size-600: var(--jybopzu-space-600); --jybopzu-size-fill: 100%; --jybopzu-size-min: min-content; --jybopzu-size-max: max-content; --jybopzu-size-fit: fit-content; --jybopzu-size-1\/2: 50%; --jybopzu-size-1\/3: 33.3333%; --jybopzu-size-2\/3: 66.6667%; --jybopzu-size-1\/4: 25%; --jybopzu-size-2\/4: 50%; --jybopzu-size-3\/4: 75%; --jybopzu-size-1\/5: 20%; --jybopzu-size-2\/5: 40%; --jybopzu-size-3\/5: 60%; --jybopzu-size-4\/5: 80%; --jybopzu-size-1\/6: 16.6667%; --jybopzu-size-2\/6: 33.3333%; --jybopzu-size-3\/6: 50%; --jybopzu-size-4\/6: 66.6667%; --jybopzu-size-5\/6: 83.3333%; --jybopzu-size-1\/12: 8.3333%; --jybopzu-size-2\/12: 16.6667%; --jybopzu-size-3\/12: 25%; --jybopzu-size-4\/12: 33.3333%; --jybopzu-size-5\/12: 41.6667%; --jybopzu-size-6\/12: 50%; --jybopzu-size-7\/12: 58.3333%; --jybopzu-size-8\/12: 66.6667%; --jybopzu-size-9\/12: 75%; --jybopzu-size-10\/12: 83.3333%; --jybopzu-size-11\/12: 91.6667%; --jybopzu-space-0: 0px; --jybopzu-space-1: 1px; --jybopzu-space-25: 2px; --jybopzu-space-50: 4px; --jybopzu-space-75: 6px; --jybopzu-space-100: 8px; --jybopzu-space-150: 12px; --jybopzu-space-200: 16px; --jybopzu-space-250: 20px; --jybopzu-space-300: 24px; --jybopzu-space-350: 28px; --jybopzu-space-400: 32px; --jybopzu-space-500: 40px; --jybopzu-space-600: 48px; --jybopzu-space-xxsmall: var(--jybopzu-space-25); --jybopzu-space-xsmall: var(--jybopzu-space-50); --jybopzu-space-small: var(--jybopzu-space-100); --jybopzu-space-medium: var(--jybopzu-space-200); --jybopzu-space-large: var(--jybopzu-space-300); --jybopzu-space-xlarge: var(--jybopzu-space-400); --jybopzu-space-xxlarge: var(--jybopzu-space-600); --jybopzu-typeface-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; --jybopzu-typeface-monospace: 'Source Code Pro', Menlo, Monaco, monospace; --jybopzu-weight-regular: 400; --jybopzu-weight-semibold: 600; --jybopzu-weight-bold: 700; --jybopzu-zIndex-overlay: 299; --jybopzu-zIndex-partial: 400; }#​#​ .rs-3::before {
+content: var(--s--baseline-alignment-content);user-select: none;align-self: baseline;margin-right: calc(-1 \* var(--s--column-gap));
+}
+#​#​ .rs-8[aria-invalid="true"] {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sail-table-row:not(:hover) .row-actions-trigger {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-4 {
+display: var(--s--display-block);
+}
+#​#​ .rs-2 {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-6:active:not([aria-disabled="true"]) {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sail-table-row:hover .row-actions-trigger {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-5:hover:not(:active):not([aria-disabled="true"]) {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .rs-7:focus {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
+#​#​ .sn-d7kp2a { --distribute-x: initial; --distribute-y: initial; --align-x: initial; --align-y: initial; }
+#​#​ .sn-d7kp2a > \* { --align-self-x: initial; --align-self-y: initial; --flex-x: 1 1 auto; --flex-y: 1 1 auto; }
+#​#​ .sn-1fnc4mz { --row-gap: normal; --column-gap: normal; gap: var(--row-gap) var(--column-gap); }
+#​#​ .sn-1c37ise { --padding-top: 0; --padding-right: 0; --padding-bottom: 0; --padding-left: 0; padding: var(--padding-top) var(--padding-right) var(--padding-bottom) var(--padding-left); }
+.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​:root, :host #​#​#​#​#​#​#​, #​#​#​#​#​#​#​ .sn-token-provider {
+--s-806179: var(--s-1ipujfj);--qyckuc: 200ms;--s-1xyzpq3: 0ms;--ch7862: 50ms;--s-5jzhfa: 100ms;--s-12b75vv: 150ms;--rsnfo1: 300ms;--s-12ljnrj: 400ms;--s-10dnt5v: cubic-bezier(0, .09, .4, 1);--s-12oyqav: ease-in-out;--im41o8: ease-out;--s-1fdsmh8: ease-in;--s-1pzb1xw: 120;--s-6429u6: 14;--dutg7l: 300;--rjlba6: 20;--s-117eyx7: 400;--slm412: 10;--s-1pt58bw: 30ms;--pu6lsa: 50ms;--s-1ca225m: 80ms;--h9q5hc: 0.95;--s-1308p7c: 0.99;--s-1paplcg: 0.98;--s-19omtc6: 1.02;--eef79q: #ffffff;--s-8qwlk1: #F4F7FA;--o3gs5n: #ECF1F6;--hyhghw: #D4DEE9;--s-1b58r1w: #BAC8DA;--ovqch4: #95A4BA;--ggantb: #7D8BA4;--s-1a8u6zz: #667691;--k08wfi: #50617A;--s-169hr3v: #3C4F69;--ymu9b7: #273951;--ny99wq: #1A2C44;--s-1nmzh8w: #ffffff;--s-421sqo: #e2fbfe;--s-4qj11w: #cbf5fd;--s-1u1nr1c: #a7e7fc;--dj5edy: #6dc9fc;--s-3blua0: #3babfd;--s-172n6d2: #088ef9;--s-1l3w4rb: #0072e9;--s-1yzoj9a: #045ad0;--kvmyi1: #0b46ad;--s-1ah8y8v: #0d3485;--s-1v7mjmv: #0a2156;--s-1cbef47: #ffffff;--ncitdb: #eafcdd;--khndpt: #d1fab3;--fcix74: #a8f170;--s-1jt7b3q: #7cd548;--rz6g85: #58ba27;--s-10in11e: #3da00b;--jet5ih: #2b8700;--s-11ws3zn: #217005;--mkuc60: #1c5a0d;--s-5vneq4: #184310;--s-1ybzlmc: #112a0d;--s-1idvp5s: #ffffff;--s-1ronw4t: #fdf8c9;--een7nd: #fceeb5;--s-1j3zdk7: #fbd992;--bpq42r: #fcaf4f;--d5srfd: #f7870f;--s-7gt7xl: #e46602;--s-1bt4nax: #cc4b00;--s-1m90cr3: #b13600;--s-105rx08: #922700;--s-3csqoi: #701b01;--s-1x99otv: #4a0f02;--s-18rmc6q: #ffffff;--m4edry: #fef4f6;--pfpugw: #fde9ee;--s-1at7tzv: #fbd3dc;--s-8ik67: #faa9b8;--s-1brqpgc: #fa7e91;--s-1k4y65: #fa4a67;--s-1t7w85x: #e61947;--j769ku: #c0123c;--s-105k9ow: #9b0c36;--s-1bradsh: #76072f;--s-17cbcf1: #4e0322;--s-1m3ejd7: #ffffff;--wclsxb: #f7f5fd;--s-1nuetr3: #efecfc;--s-1rgwov0: #e0d9fb;--d427sf: #c3b6fb;--s-1gm5hwl: #a497fc;--d7ng6f: #857afe;--s-1wqs2n2: #675dff;--s-1rqwfiu: #533afd;--cb9l9o: #4e11e2;--b00e2n: #44139f;--yvasq2: #2f0e63;--s-35hf94: hsla(0, 0%, 100%, 0.2);--s-13ypoy8: var(--eef79q);--s-114rdv4: var(--s-8qwlk1);--s-1bcqfda: var(--o3gs5n);--s-1kkti1r: var(--hyhghw);--s-16pqfer: var(--s-1b58r1w);--s-1kmer3i: var(--ovqch4);--s-13py8ob: var(--ggantb);--s-1wdog5l: var(--s-1a8u6zz);--jkp57b: var(--k08wfi);--s-1xkgkxo: var(--s-169hr3v);--s-1egalvn: var(--ymu9b7);--v2y5bm: var(--ny99wq);--s-1ona342: var(--s-1m3ejd7);--s-1xikbvo: var(--wclsxb);--ek860z: var(--s-1nuetr3);--s-3qadn4: var(--s-1rgwov0);--nl7ypg: var(--d427sf);--hm37ax: var(--s-1gm5hwl);--s-142x5wh: var(--d7ng6f);--s-1nbkq3e: var(--s-1wqs2n2);--s-1b0l18k: var(--s-1rqwfiu);--s-1y0ta6r: var(--cb9l9o);--pxx34h: var(--b00e2n);--xp2k2: var(--yvasq2);--s-13od8gw: var(--s-1idvp5s);--fox699: var(--s-1ronw4t);--p5cdic: var(--een7nd);--s-1jh7fp5: var(--s-1j3zdk7);--lsye2d: var(--bpq42r);--t3987n: var(--d5srfd);--s-1vcezov: var(--s-7gt7xl);--s-1qk1a9q: var(--s-1bt4nax);--s-1ipujfj: var(--s-1m90cr3);--s-1vhr1m: var(--s-105rx08);--s-1oqa1l5: var(--s-3csqoi);--kubwak: var(--s-1x99otv);--whf9po: var(--s-18rmc6q);--gqp7g1: var(--m4edry);--s-1j0j6fb: var(--pfpugw);--o1xbta: var(--s-1at7tzv);--vyde9h: var(--s-8ik67);--s-875rxv: var(--s-1brqpgc);--s-1xn82ef: var(--s-1k4y65);--xi7x09: var(--s-1t7w85x);--uk4ts2: var(--j769ku);--s-9ukgu0: var(--s-105k9ow);--s-15yycft: var(--s-1bradsh);--s-1v6ybst: var(--s-17cbcf1);--s-1f39zfp: var(--s-1nmzh8w);--s-1bf76tl: var(--s-421sqo);--s-1sypgcr: var(--s-4qj11w);--u7pgeo: var(--s-1u1nr1c);--qev2nh: var(--dj5edy);--rqlrpr: var(--s-3blua0);--s-8vaodq: var(--s-172n6d2);--s-1m519r1: var(--s-1l3w4rb);--r3g89x: var(--s-1yzoj9a);--n0umvo: var(--kvmyi1);--c0109p: var(--s-1ah8y8v);--s-26e45o: var(--s-1v7mjmv);--s-1a4o86t: var(--s-1cbef47);--nxbwn6: var(--ncitdb);--s-18tv9xz: var(--khndpt);--s-660zz9: var(--fcix74);--s-5y9ijm: var(--s-1jt7b3q);--s-1gwptpc: var(--rz6g85);--t5jail: var(--s-10in11e);--qcdf10: var(--jet5ih);--s-1o92vf6: var(--s-11ws3zn);--s-1spzwnv: var(--mkuc60);--s-35q6a2: var(--s-5vneq4);--axxngb: var(--s-1ybzlmc);--s-1hj7tfd: var(--s-18rmc6q);--s-1xf1h3f: var(--m4edry);--aqxmtx: var(--pfpugw);--s-1um7fco: var(--s-1at7tzv);--d2i300: var(--s-8ik67);--cae9kd: var(--s-1brqpgc);--s-1a4c91b: var(--s-1k4y65);--s-1jvllvw: var(--s-1t7w85x);--x379qy: var(--j769ku);--s-1owp6iv: var(--s-105k9ow);--m26qys: var(--s-1bradsh);--s-3rumb4: var(--s-17cbcf1);--s-5tm7hx: var(--s-1cbef47);--h22sh6: var(--ncitdb);--s-11rdejd: var(--khndpt);--s-1g2t37u: var(--fcix74);--wesn6: var(--s-1jt7b3q);--s-1hhq31p: var(--rz6g85);--yji28s: var(--s-10in11e);--s-169ogke: var(--jet5ih);--hr7syg: var(--s-11ws3zn);--s-14wylcr: var(--mkuc60);--s-289q66: var(--s-5vneq4);--v27jy: var(--s-1ybzlmc);--s-1hldvhn: #9966FF;--s-1xwen3a: #0055BC;--hxpspa: #00A1C2;--s-5ghlc9: #ED6804;--nap71a: #B3063D;--s-1sz15nh: var(--mkuc60);--mygevb: var(--s-1k4y65);--nrw914: var(--s-105rx08);--bu79cc: var(--s-10in11e);--s-1rfvf0n: var(--s-114rdv4);--s-9fypy8: var(--s-13ypoy8);--s-8muhy8: var(--s-35hf94);--s-153sf3j: rgba(186, 200, 218, 0.7);--s-1mkjmgu: var(--s-1b0l18k);--s-9u3gcm: var(--s-1b0l18k);--s-1pk4mhu: var(--s-1y0ta6r);--s-1wze59r: var(--s-1b0l18k);--s-1gzyq0k: var(--s-1b0l18k);--s-1eg71kz: var(--s-9fypy8);--uftl0g: var(--s-9fypy8);--s-1wj6iyq: var(--s-114rdv4);--s-1jrjwpv: var(--s-9fypy8);--b5b0q1: var(--s-9fypy8);--jix8n1: var(--xi7x09);--s-1isx4n7: var(--xi7x09);--s-1owgngi: var(--uk4ts2);--s-1tqa4ka: var(--xi7x09);--s-1dl2eq8: var(--xi7x09);--s-14a2tiz: var(--s-13ypoy8);--s-1b3o71a: var(--s-1nbkq3e);--qkwke3: var(--s-1nbkq3e);--s-1afrigr: var(--s-1b0l18k);--s-1orf6yv: var(--s-1nbkq3e);--s-18eec8a: var(--s-1kkti1r);--rfaik3: var(--s-13ypoy8);--s-1xn7irg: var(--s-1bcqfda);--s-1x4qw9u: var(--s-13ypoy8);--s-4m5wr6: var(--s-1bcqfda);--s-1mbtsu2: var(--s-13ypoy8);--s-1im6yhz: var(--s-13ypoy8);--syi4h: var(--s-13ypoy8);--a37hit: var(--s-13ypoy8);--s-2av06t: var(--s-114rdv4);--s-1pjx0uz: var(--s-1bcqfda);--s-175jw0u: var(--s-114rdv4);--pz1vgx: var(--s-1wdog5l);--s-6j56kn: var(--s-1egalvn);--jg0c26: var(--s-1sypgcr);--s-1g3vynh: var(--s-1bf76tl);--lg8mcu: var(--s-1m519r1);--s-12izfvv: var(--s-18tv9xz);--s-1t53zya: var(--nxbwn6);--zuu90a: var(--qcdf10);--s-414lsb: var(--p5cdic);--ulpd63: var(--fox699);--s-15wlbw2: var(--s-1qk1a9q);--s-1dn6rk: var(--s-1j0j6fb);--s-1k641wx: var(--gqp7g1);--aw0phz: var(--xi7x09);--s-15xulsv: var(--s-1kkti1r);--w22o9l: var(--s-1b0l18k);--s-8c655s: var(--pxx34h);--s-1ok36r9: var(--pxx34h);--s-158s5xz: var(--s-1b0l18k);--xw6qjn: var(--s-1b0l18k);--s-4lkz9i: var(--s-15xulsv);--s-1amkzr1: var(--s-1kmer3i);--s-17kovyh: var(--s-15xulsv);--s-125pidq: var(--s-15xulsv);--s-8to5ry: var(--s-15xulsv);--s-17n5yam: var(--xi7x09);--eyrjow: var(--s-9ukgu0);--s-1u2do9: var(--s-9ukgu0);--qzxx9l: var(--xi7x09);--s-1draesn: var(--xi7x09);--s-17tmi4r: var(--s-1kkti1r);--b7ifjk: var(--xi7x09);--s-6o7nrw: var(--uk4ts2);--s-73zwar: var(--xi7x09);--d3be3c: var(--xi7x09);--npx6zl: var(--xi7x09);--wt6h1z: var(--s-1nbkq3e);--s-19hm5u2: var(--s-1b0l18k);--s-1ki2h5s: var(--s-1b0l18k);--s-1upode3: var(--s-1nbkq3e);--e619vt: var(--s-1kkti1r);--h29g9m: var(--s-1kmer3i);--o26ijo: var(--s-1kkti1r);--s-1fqa73g: var(--s-1kkti1r);--s-1t2fj50: var(--s-1kkti1r);--s-1p5fyku: var(--s-1kkti1r);--s-7st1q: var(--s-1kkti1r);--s-177yrws: var(--s-1wdog5l);--s-1x5q6fw: var(--s-1egalvn);--s-1cn97xm: var(--u7pgeo);--s-9nkfwt: var(--u7pgeo);--s-7pqyn6: var(--s-1m519r1);--s-9bkbz: var(--s-660zz9);--s-1qd49a9: var(--s-660zz9);--s-17mlsdr: var(--qcdf10);--s-1ow1a4n: var(--s-1jh7fp5);--s-1mnr65s: var(--s-1jh7fp5);--s-1yfj4t4: var(--s-1qk1a9q);--fg7f6q: var(--o1xbta);--d8waz0: var(--o1xbta);--s-8cc9re: var(--xi7x09);--s-13hmetb: var(--v2y5bm);--oiv4a4: var(--s-1b0l18k);--s-6obdb0: var(--s-1y0ta6r);--s-17yrw5r: var(--pxx34h);--s-1o9jit1: var(--s-1b0l18k);--s-17snam4: var(--s-13py8ob);--s-1xyyyk2: var(--s-1egalvn);--s-1ui80l2: var(--v2y5bm);--jus5c7: var(--v2y5bm);--s-184ljp4: var(--s-1egalvn);--eb4u9z: var(--jkp57b);--o8bs57: var(--uk4ts2);--s-10w80od: var(--s-9ukgu0);--s-1c9sq9t: var(--s-15yycft);--ruipx: var(--uk4ts2);--s-1wer54: var(--s-13py8ob);--uvjldp: var(--s-13ypoy8);--rygqjm: var(--s-13ypoy8);--s-3zsim4: var(--s-3qadn4);--nqzz7a: var(--s-13ypoy8);--fmcfok: var(--s-13ypoy8);--s-13dhk1f: var(--s-1egalvn);--s-97x5jr: var(--s-1egalvn);--s-148oer1: var(--s-1xkgkxo);--qzwqpe: var(--s-1egalvn);--s-9i3k0u: var(--s-1egalvn);--s-87wktm: var(--s-13ypoy8);--s-13hlbvk: var(--s-13ypoy8);--s-114300b: var(--o1xbta);--l5jmjk: var(--s-13ypoy8);--oalgln: var(--s-13ypoy8);--wukrzp: var(--s-1egalvn);--fa9lug: var(--s-1wdog5l);--s-1oi81m8: var(--s-1egalvn);--x0orno: var(--s-1egalvn);--s-1pxcz58: var(--s-1egalvn);--p0bjsc: var(--s-13py8ob);--u320f7: var(--r3g89x);--s-1iv5nq8: var(--r3g89x);--uj52u9: var(--n0umvo);--s-6v1wws: var(--s-1o92vf6);--s-1tqfmwd: var(--s-1o92vf6);--g8y80y: var(--s-1spzwnv);--uflrw: var(--s-1ipujfj);--jg0bei: var(--s-1ipujfj);--s-1kdpopy: var(--s-1vhr1m);--ibollp: var(--uk4ts2);--evfcf2: var(--uk4ts2);--qj0juw: var(--s-9ukgu0);--s-1u9outy: var(--jkp57b);--s-18brxby: var(--jkp57b);--s-5wyt2d: var(--s-13ypoy8);--s-15m6t6b: var(--s-13ypoy8);--nph474: var(--r3g89x);--s-9j04rl: var(--r3g89x);--s-18eqkid: var(--s-13ypoy8);--k9sgh3: var(--s-1o92vf6);--s-679qlr: var(--s-1o92vf6);--s-1gxwr4: var(--s-13ypoy8);--i7djdz: var(--s-1ipujfj);--s-1yqvg4v: var(--s-13ypoy8);--s-1uywv9f: var(--uk4ts2);--xfgvhn: var(--uk4ts2);--s-1l3ikln: var(--s-13ypoy8);--s-1hknj82: var(--v2y5bm);--xd9t29: var(--v2y5bm);--s-1qz4hey: var(--s-1xkgkxo);--s-13mj3ey: var(--s-1nbkq3e);--yfq5jb: var(--s-1b0l18k);--s-1d5tn5g: var(--s-1y0ta6r);--s-1ts3wnp: var(--s-1nbkq3e);--mtnc2e: var(--s-1kmer3i);--s-1ggs8se: var(--s-1xkgkxo);--s-1983a3r: var(--s-1egalvn);--s-1rbj8zq: var(--v2y5bm);--s-12x7xov: var(--s-1xkgkxo);--q5xz4t: var(--s-1wdog5l);--s-2ojt3v: var(--xi7x09);--s-1c4musi: var(--uk4ts2);--rwzmwu: var(--s-9ukgu0);--s-1k156kb: var(--xi7x09);--s-1njcrbd: var(--s-1kmer3i);--s-1auir75: var(--s-13ypoy8);--tipuka: var(--s-13ypoy8);--s-1myp5o1: var(--s-3qadn4);--s-5didwj: var(--s-13ypoy8);--s-1wf2wvi: var(--s-13ypoy8);--s-15w0yfc: var(--s-1qz4hey);--fc8g0t: var(--s-1qz4hey);--s-17uj1m3: var(--jkp57b);--g8dxu4: var(--s-1qz4hey);--s-2e4gj5: var(--s-1qz4hey);--s-1xsl5v6: var(--s-13ypoy8);--s-1vjzvov: var(--s-13ypoy8);--s-1n46b59: var(--o1xbta);--u90thq: var(--s-13ypoy8);--s-19o7zaa: var(--s-13ypoy8);--s-10q3p1o: var(--s-1xkgkxo);--s-8jpmhq: var(--s-1xkgkxo);--s-1nuytc0: var(--s-1xkgkxo);--s-1vua7kb: var(--s-1xkgkxo);--brnaxe: var(--s-1kmer3i);--s-1ufxgw0: var(--s-13ypoy8);--qth5g3: var(--s-13ypoy8);--s-1hd7tld: var(--s-13ypoy8);--s-40ljxg: var(--s-13ypoy8);--s-1aln5xz: var(--s-114rdv4);--s-49rsbu: var(--s-1m519r1);--xsdaas: var(--s-1m519r1);--mglbt2: var(--r3g89x);--rtvqux: var(--qcdf10);--ko7qd: var(--qcdf10);--s-50f0qm: var(--s-1o92vf6);--eu61bi: var(--s-1qk1a9q);--y7jsf0: var(--s-1qk1a9q);--s-1ac7lwk: var(--s-1ipujfj);--s-9k5091: var(--xi7x09);--ruhzmh: var(--xi7x09);--s-2xp72p: var(--uk4ts2);--s-17iqe5q: var(--s-1wdog5l);--s-1253b2y: var(--s-1wdog5l);--s-1piwg9i: var(--s-13ypoy8);--s-7oniqh: var(--s-13ypoy8);--s-6ucdv7: var(--s-1m519r1);--s-1jcoye7: var(--s-1m519r1);--hnqjk9: var(--s-13ypoy8);--pgimab: var(--qcdf10);--xntlbj: var(--qcdf10);--s-14mlsvd: var(--s-13ypoy8);--s-1exie7f: var(--s-1qk1a9q);--yqmt02: var(--s-1qk1a9q);--s-17qjsgp: var(--s-13ypoy8);--e6rr02: var(--xi7x09);--qwe25a: var(--xi7x09);--s-1cx6227: var(--s-13ypoy8);--s-1o2c3h9: var(--s-1wdog5l);--s-6gs83q: var(--s-1egalvn);--ahgtyg: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';--dilwm: 2048;--s-6omq4: 1980;--nsaztv: 1443;--s-1ixv1ks: 1078;--s-1biv3ye: -432;--s-1te2tup: 0;--cdmbir: 300;--s-1mnxhel: 400;--s-1nt3wam: 600;--s-1ocxf4e: 700;--s-1vpgvqc: 'Source Code Pro', Menlo, Monaco, monospace;--s-1y398ge: 2048;--j5b9ko: 1556;--s-17c3qcu: 1493;--s-6zqpne: 1120;--s-1jib5q0: -492;--s-75pjiv: 410;--s-780oqg: var(--ahgtyg);--s-1c2w534: var(--dilwm);--s-4imvpn: var(--s-6omq4);--s-1ph4673: var(--nsaztv);--s-14qchrt: var(--s-1ixv1ks);--s-174cqiz: var(--s-1biv3ye);--s-1rnjjay: var(--s-1te2tup);--bwm4no: var(--s-1mnxhel);--s-1bfvuc2: var(--s-1i82044);--s-1vo01ya: var(--s-1db3chc);--s-1nrhtfr: var(--tk0isw);--s-1xlut57: var(--s-1lhqll2);--s-10rtirn: var(--s-11v0pqn);--s-1gj0nto: var(--s-6cbmuf);--z8c3ww: var(--yplwvi);--s-1itdcoa: var(--s-1m30mdf);--s-1e47fbj: var(--cd4zwn);--s-1i82044: var(--s-780oqg);--s-1db3chc: var(--s-1c2w534);--tk0isw: var(--s-4imvpn);--s-1lhqll2: var(--s-1ph4673);--s-11v0pqn: var(--s-14qchrt);--s-6cbmuf: var(--s-174cqiz);--yplwvi: var(--s-1rnjjay);--s-1m30mdf: 56px;--cd4zwn: 64px;--s-1fgn2x1: var(--s-1ocxf4e);--g8k6lo: var(--s-1mnxhel);--simh7g: var(--wsbs66);--s-11tag5s: var(--s-1cfwdq);--egn7v3: var(--s-18ll6fg);--s-1rfbcod: var(--s-13spi5k);--s-1luqrck: var(--s-15fn66i);--s-27iqeg: var(--d5drjy);--s-18wcjw: var(--s-1rsg6td);--s-1u9zl82: var(--n6jam8);--miv9l: var(--lq97ov);--wsbs66: var(--s-780oqg);--s-1cfwdq: var(--s-1c2w534);--s-18ll6fg: var(--s-4imvpn);--s-13spi5k: var(--s-1ph4673);--s-15fn66i: var(--s-14qchrt);--d5drjy: var(--s-174cqiz);--s-1rsg6td: var(--s-1rnjjay);--n6jam8: 48px;--lq97ov: 56px;--s-1ucmgz7: var(--s-1ocxf4e);--s-17ghi8h: var(--s-1mnxhel);--hbk0oo: var(--s-1wwy80b);--s-2dbb2a: var(--s-160c6gg);--yxaojm: var(--s-1npqh71);--nm1xrx: var(--s-68sjx3);--s-1ivbjtl: var(--wejrbv);--s-8vhotc: var(--si2vzf);--pakukh: var(--s-7035h);--icmlh7: var(--ad7wce);--s-8mv65e: var(--s-12zbgfl);--s-1wwy80b: var(--s-780oqg);--s-160c6gg: var(--s-1c2w534);--s-1npqh71: var(--s-4imvpn);--s-68sjx3: var(--s-1ph4673);--wejrbv: var(--s-14qchrt);--si2vzf: var(--s-174cqiz);--s-7035h: var(--s-1rnjjay);--ad7wce: 40px;--s-12zbgfl: 48px;--s-1xgajx6: var(--s-1ocxf4e);--s-1mb7r8p: var(--s-1mnxhel);--s-1jtr8l0: var(--dx0zsf);--bzblmh: var(--s-1s7fwor);--s-13z63vp: var(--s-1z08gqp);--s-1noeuap: var(--fdri1y);--s-1iotv3v: var(--s-1ktva78);--s-18s8xzd: var(--jrvk1a);--s-1xijmep: var(--s-62671d);--s-1nph8pw: var(--s-1eryk2b);--s-5jpu2o: var(--s-1rvvcgm);--dx0zsf: var(--s-780oqg);--s-1s7fwor: var(--s-1c2w534);--s-1z08gqp: var(--s-4imvpn);--fdri1y: var(--s-1ph4673);--s-1ktva78: var(--s-14qchrt);--jrvk1a: var(--s-174cqiz);--s-62671d: var(--s-1rnjjay);--s-1eryk2b: 32px;--s-1rvvcgm: 40px;--nusmm3: var(--s-1ocxf4e);--xcedj6: var(--ahgtyg);--s-14xlm6o: var(--dilwm);--msg65c: var(--s-6omq4);--s-1ywnfza: var(--nsaztv);--zjva6a: var(--s-1ixv1ks);--s-15n3uo5: var(--s-1biv3ye);--i6u0ap: var(--s-1te2tup);--xb6tkh: var(--s-1mnxhel);--s-1xmxn4q: var(--s-71ssjp);--s-1xgixpx: var(--db0w5x);--s-1k35674: var(--jed2z7);--s-12k91a7: var(--tv79ff);--s-1s0wyj4: var(--s-1x8so7v);--ig6ly8: var(--s-1j7acn3);--s-8l4ca5: var(--s-38ks7n);--s-1svi9x0: var(--x65r8g);--d7hr4e: var(--s-14j81vx);--s-1ylzxkj: var(--oq2dkr);--s-71ssjp: var(--xcedj6);--db0w5x: var(--s-14xlm6o);--jed2z7: var(--msg65c);--tv79ff: var(--s-1ywnfza);--s-1x8so7v: var(--zjva6a);--s-1j7acn3: var(--s-15n3uo5);--s-38ks7n: var(--i6u0ap);--x65r8g: 28px;--s-14j81vx: 36px;--s-1n4fl4h: var(--s-1ocxf4e);--oq2dkr: none;--f4w18u: var(--s-1mnxhel);--s-1rpa4qr: var(--jdmia2);--v1v838: var(--ts1hpc);--vn27bl: var(--s-187zl0b);--s-1vnqflb: var(--s-12s5kmm);--s-1n4dokk: var(--s-4fox1q);--wb62lm: var(--j3z1dw);--s-1f8ywlh: var(--s-1jvq51g);--s-1uud5hl: var(--s-1joebgy);--s-1qj9g61: var(--s-19hh4gw);--s-1bvu74j: var(--hdrt9t);--jdmia2: var(--xcedj6);--ts1hpc: var(--s-14xlm6o);--s-187zl0b: var(--msg65c);--s-12s5kmm: var(--s-1ywnfza);--s-4fox1q: var(--zjva6a);--j3z1dw: var(--s-15n3uo5);--s-1jvq51g: var(--i6u0ap);--s-1joebgy: 24px;--s-19hh4gw: 32px;--g65i9c: var(--s-1ocxf4e);--hdrt9t: none;--wpt2ge: var(--s-1mnxhel);--w4jvxk: var(--s-1bq9l67);--s-1mflgki: var(--s-1xsxprz);--s-1517qlh: var(--qfwzw4);--sdtaur: var(--o2sqss);--s-6qvd4o: var(--xxsoub);--y4gv3: var(--s-1hw9qk9);--s-193lww5: var(--s-9rewa3);--yem2xc: var(--s-1k0d4db);--s-1uz67ki: var(--syp0fc);--b4hhf7: var(--s-18pg62i);--s-1bq9l67: var(--xcedj6);--s-1xsxprz: var(--s-14xlm6o);--qfwzw4: var(--msg65c);--o2sqss: var(--s-1ywnfza);--xxsoub: var(--zjva6a);--s-1hw9qk9: var(--s-15n3uo5);--s-9rewa3: var(--i6u0ap);--s-1k0d4db: 20px;--syp0fc: 28px;--s-1vfd5li: var(--s-1ocxf4e);--s-18pg62i: none;--s-1p87an6: var(--s-1mnxhel);--gbhvil: var(--s-1tckhn5);--s-2wlxzm: var(--s-1bnzo0w);--s-1lhh5an: var(--ub00w8);--b57bg4: var(--vayv2j);--s-10pihpx: var(--s-1bg5wjj);--s-1de7swi: var(--ofc8t8);--p0d0ra: var(--s-1myygfh);--rdvhzd: var(--s-1vrlxop);--wxjtoa: var(--s-1fjdblk);--s-14i6ex0: var(--s-176iwse);--s-1tckhn5: var(--xcedj6);--s-1bnzo0w: var(--s-14xlm6o);--ub00w8: var(--msg65c);--vayv2j: var(--s-1ywnfza);--s-1bg5wjj: var(--zjva6a);--ofc8t8: var(--s-15n3uo5);--s-1myygfh: var(--i6u0ap);--s-1vrlxop: 16px;--s-1fjdblk: 24px;--s-15lxxlk: var(--s-1ocxf4e);--s-176iwse: none;--ihun98: var(--s-1mnxhel);--lzkj6b: var(--s-1fz1zwb);--s-19gq58y: var(--s-1e9sg5q);--s-1fndoqe: var(--s-1xty0l1);--s-1ozmd2v: var(--s-1c9087t);--s-1itf6ev: var(--njr6lf);--lqlo87: var(--wvavyz);--s-15g638a: var(--s-1bdp00y);--s-101nale: var(--s-1rv6t4);--rpuu4f: var(--onmy4p);--s-1x2ggh5: var(--s-135hi2l);--s-1fz1zwb: var(--xcedj6);--s-1e9sg5q: var(--s-14xlm6o);--s-1xty0l1: var(--msg65c);--s-1c9087t: var(--s-1ywnfza);--njr6lf: var(--zjva6a);--wvavyz: var(--s-15n3uo5);--s-1bdp00y: var(--i6u0ap);--s-1rv6t4: 12px;--onmy4p: 20px;--s-4yu78: var(--s-1ocxf4e);--s-135hi2l: none;--qsps49: var(--ahgtyg);--s-1m5o6xs: var(--dilwm);--s-1sl6m46: var(--s-6omq4);--s-1tlryov: var(--nsaztv);--kidu0o: var(--s-1ixv1ks);--l2fksn: var(--s-1biv3ye);--s-16fd3c8: var(--s-1te2tup);--s-1n41s7u: var(--s-1nt3wam);--njb836: var(--s-108w7yg);--s-18nbbqu: var(--s-6mvx34);--b9ogvo: var(--s-1pbhbhw);--h3wc70: var(--z5eq11);--u4c2q6: var(--e1e86);--s-1oj6z6t: var(--uik06i);--s-1qtuyvq: var(--s-1eah8e8);--l28r8y: var(--h7f28h);--fcsdep: var(--s-1vvlcgn);--s-1ikrpfx: var(--s-36ddn3);--s-108w7yg: var(--qsps49);--s-6mvx34: var(--s-1m5o6xs);--s-1pbhbhw: var(--s-1sl6m46);--z5eq11: var(--s-1tlryov);--e1e86: var(--kidu0o);--uik06i: var(--l2fksn);--s-1eah8e8: var(--s-16fd3c8);--h7f28h: 18px;--s-1vvlcgn: 28px;--s-5hgyej: var(--s-1mnxhel);--s-36ddn3: none;--p1b3a1: var(--s-1nt3wam);--s-10jfra1: var(--wtyf0o);--s-1m1wff1: var(--s-167pe37);--s-1savn4h: var(--s-10fnwqi);--s-1gygsl6: var(--s-1sdpwmi);--li3rbu: var(--s-1prlirw);--s-9cy93t: var(--s-1oay49k);--s-11a5wqu: var(--b7x093);--s-17qz9cg: var(--s-1nk8z4c);--s-1pqj9m0: var(--s-1adv7ix);--s-1ctdufq: var(--s-2vga1d);--wtyf0o: var(--qsps49);--s-167pe37: var(--s-1m5o6xs);--s-10fnwqi: var(--s-1sl6m46);--s-1sdpwmi: var(--s-1tlryov);--s-1prlirw: var(--kidu0o);--s-1oay49k: var(--l2fksn);--b7x093: var(--s-16fd3c8);--s-1nk8z4c: 16px;--s-1adv7ix: 24px;--e9j7zt: var(--s-1mnxhel);--s-2vga1d: none;--s-1e6wgok: var(--s-1nt3wam);--s-5twc1q: var(--iv638n);--s-13v453w: var(--zzbkbv);--q47ujb: var(--cw4443);--s-4fq1f8: var(--sf9nah);--s-8kvr39: var(--s-1lduq5c);--t9sogg: var(--s-49369g);--s-6dkjzu: var(--s-195juhb);--s-1wizgxe: var(--eoafo5);--s-7ih227: var(--s-7paqqe);--be5p7j: var(--pz3gk9);--iv638n: var(--qsps49);--zzbkbv: var(--s-1m5o6xs);--cw4443: var(--s-1sl6m46);--sf9nah: var(--s-1tlryov);--s-1lduq5c: var(--kidu0o);--s-49369g: var(--l2fksn);--s-195juhb: var(--s-16fd3c8);--eoafo5: 14px;--s-7paqqe: 20px;--x5dpqz: var(--s-1mnxhel);--pz3gk9: none;--pyk6k1: var(--ahgtyg);--s-1verpm8: var(--dilwm);--rd4b92: var(--s-6omq4);--s-1i90hyx: var(--nsaztv);--y96hdk: var(--s-1ixv1ks);--qkji3r: var(--s-1biv3ye);--s-1kwoc9c: var(--s-1te2tup);--s-1qv548f: var(--s-1nt3wam);--s-1tq5jkt: var(--v43x2t);--s-3uli8c: var(--tcmtp2);--s-10wdlk9: var(--g77870);--s-1iqa1pt: var(--s-1xy9kgq);--vxd1ew: var(--wqx1if);--w2b5wa: var(--s-1fysgfv);--s-16ck0e3: var(--s-18527no);--okauee: var(--s-1rxtcbb);--s-1fhkvft: var(--s-1a3m0xe);--hj8sur: var(--ayuh76);--v43x2t: var(--pyk6k1);--tcmtp2: var(--s-1verpm8);--g77870: var(--rd4b92);--s-1xy9kgq: var(--s-1i90hyx);--wqx1if: var(--y96hdk);--s-1fysgfv: var(--qkji3r);--s-18527no: var(--s-1kwoc9c);--s-1rxtcbb: 16px;--s-1a3m0xe: 24px;--s-5y4pqp: var(--s-1mnxhel);--ayuh76: none;--ep1e0f: var(--s-1nt3wam);--s-6vkd26: var(--huplq6);--s-1h9quwx: var(--l1gcj7);--t2iyzt: var(--s-3mrwm8);--s-1xn3ax7: var(--l6yv66);--s-15oh72s: var(--s-1k1xktp);--s-1ohirt0: var(--s-3dxl6s);--juchqv: var(--s7es0h);--s-1g9cdsy: var(--tlxlq6);--yfph9h: var(--s-432ttp);--r31u81: var(--s-59wabm);--huplq6: var(--pyk6k1);--l1gcj7: var(--s-1verpm8);--s-3mrwm8: var(--rd4b92);--l6yv66: var(--s-1i90hyx);--s-1k1xktp: var(--y96hdk);--s-3dxl6s: var(--qkji3r);--s7es0h: var(--s-1kwoc9c);--tlxlq6: 14px;--s-432ttp: 20px;--s-1htz8iq: var(--s-1mnxhel);--s-59wabm: none;--ereqaf: var(--s-1nt3wam);--yiyhsh: var(--ft4em7);--sodrin: var(--ngt1c6);--bfuocu: var(--s-1vj0i13);--s-2nir93: var(--c3yjur);--s-1jh3kwa: var(--r99a4f);--hfec15: var(--s-19xhaty);--s-16ewvzx: var(--ctnn8n);--zzbsa1: var(--mae4h0);--ki0zdj: var(--s-1kc6i1b);--s-12qaksx: var(--s-1k0dbzs);--ft4em7: var(--pyk6k1);--ngt1c6: var(--s-1verpm8);--s-1vj0i13: var(--rd4b92);--c3yjur: var(--s-1i90hyx);--r99a4f: var(--y96hdk);--s-19xhaty: var(--qkji3r);--ctnn8n: var(--s-1kwoc9c);--mae4h0: 12px;--s-1kc6i1b: 16px;--s-10ubhie: var(--s-1mnxhel);--s-1k0dbzs: none;--l5cirb: var(--s-1camloi);--s-3ab8ub: var(--s-1fverle);--s-15f02i8: var(--s-2c6wsx);--s-1f29tr2: var(--s-19hyq79);--s-18tqzme: var(--s-1wum1rt);--s-1s3tcwv: var(--s-1p07rxq);--s-1sr9szs: var(--s-18ns0of);--s-72fzvy: 0px;--s-1n66wtu: 1px;--s-1camloi: 2px;--s-1fverle: 4px;--s-1eo1l6l: 6px;--s-2c6wsx: 8px;--s-14t02z3: 10px;--s-1cn5k4b: 12px;--s-10yt1e6: 14px;--s-19hyq79: 16px;--zmqxvl: 18px;--s-16s2r5d: 20px;--s-1wum1rt: 24px;--s-11p7nl: 28px;--s-1p07rxq: 32px;--s-18g2og9: 36px;--x3ux79: 40px;--s-18ns0of: 48px;--s-7dpk8n: 56px;--s-1ubl41v: 64px;--s-12tsswl: 72px;--s-1e1s3yj: 80px;--s-1c4fwdw: var(--s-282tnx);--jpxxql: var(--s-282tnx);--u4yslg: none;--s-1l4o7cj: 4px;--s-282tnx: 6px;--s-9fb64w: 8px;--s-721m59: 12px;--eazveb: 16px;--s-1pfp217: 9999em;--s-11c5ftm: solid;--s-5oekti: dashed;--s-12pesem: 1px;--s-1p3l5ml: 2px;--f0gr6w: 4px;--li639m: 100%;--s-18ciw8m: min-content;--s-15qxt3g: max-content;--s-22nfqw: fit-content;--cvc234: 50%;--bcipp6: 33.3333%;--s-1990hu4: 66.6667%;--hrim1e: 25%;--ys322a: 50%;--s-2hrodg: 75%;--ywypcv: 20%;--s-1j1r695: 40%;--s-3qcouv: 60%;--s-1c433cn: 80%;--s-1o6hvkt: 16.6667%;--v94vw1: 33.3333%;--ncjl8c: 50%;--s-14apa3: 66.6667%;--kcudzm: 83.3333%;--s-1sq848d: 8.3333%;--k9vhhg: 16.6667%;--s-1m2eq9s: 25%;--s-1hfpugt: 33.3333%;--s-12j0rnv: 41.6667%;--s-1ce5jho: 50%;--yca82r: 58.3333%;--s-1bb34n7: 66.6667%;--x6iu4: 75%;--s-1qjxzud: 83.3333%;--d52z5c: 91.6667%;--s-1qqjf1s: 0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 2px 5px 0px rgba(48, 49, 61, 0.08);--s29i93: 0px 3px 6px 0px rgba(0, 0, 0, 0.12), 0px 7px 14px 0px rgba(48, 49, 61, 0.08);--s-144bgvr: 0px 5px 15px 0px rgba(0, 0, 0, 0.12), 0px 15px 35px 0px rgba(48, 49, 61, 0.08);--qbcnik: 0px 5px 15px 0px rgba(0, 0, 0, 0.12), 0px 15px 35px 0px rgba(48, 49, 61, 0.08), 0px 50px 100px 0px rgba(48, 49, 61, 0.08);--s-46hi4m: var(--s-144bgvr);--s-4fcpev: 0px 0px 15px 0px rgba(0, 0, 0, 0.12), 0px 0px 35px 0px rgba(48, 49, 61, 0.08);--s-8kdpya: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1q5y78: 0px -1px 1px 0px rgba(20, 19, 78, 0.32);--s-1kgpzka: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-186fre1: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1fb3eog: 0px 1px 1px 0px rgba(20, 19, 78, 0.32);--s-1ibn4id: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-1l32yqd: 0px -1px 1px 0px rgba(16, 17, 26, 0.16);--wq0k6h: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--fur145: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-1fecqxp: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--ytuq2g: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--k2t3ri: 0px -1px 1px 0px rgba(62, 2, 26, 0.32);--s-1fc7ea9: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--s-8p4pnm: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--s-1s9evt6: 0px 1px 1px 0px rgba(62, 2, 26, 0.32);--pga66p: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--s-7nyne0: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1p8nnzk: 0px -1px 1px 0px rgba(1, 28, 58, 0.16);--s-4fmi5d: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1mw80b4: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--s-1mp6cz9: 0px 1px 1px 0px rgba(1, 28, 58, 0.16);--o68lqt: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1srjzen: 0px -1px 1px 0px rgba(62, 2, 26, .16);--s-5cda5b: 0px 1px 1px 0px rgba(62, 2, 26, .16);--uojav1: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1xpb9p2: 0px 1px 1px 0px rgba(62, 2, 26, .16);--s-1atvbio: 0px -1px 1px 0px rgba(16, 17, 26, 0.16);--s-9l041r: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--fcko44: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--zh5azq: 0px 1px 1px 0px rgba(16, 17, 26, 0.16);--tnw4uh: 490px;--p6z4q9: 768px;--s-1tolf8z: 1040px;--s-13qggw6: 1440px;--s-1oz5pfq: 0;--s-52qljy: 490px;--m9yfsr: 768px;--s-1gz3jh8: 1040px;--s-1ad545m: 1440px;--s-1xy6qjm: 0 0 0 4px rgba(1, 150, 237, .36);
+}
+#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
+```
+
+**firecrawl** — no output for this URL
+
+</details>
+
+<details>
+<summary>Per-page word counts and preamble [1]</summary>
+
+| URL | markcrawl words / preamble [1] | crawl4ai words / preamble [1] | crawl4ai-raw words / preamble [1] | scrapy+md words / preamble [1] | crawlee words / preamble [1] | colly+md words / preamble [1] | playwright words / preamble [1] | firecrawl words / preamble [1] |
+|---|---|---|---|---|---|---|---|---|
+| docs.stripe.com/acceptable-verification-documents | 968 / 27 | 1378 / 144 | 1378 / 144 | 1116 / 141 | 16329 / 7825 | 16196 / 7771 | 16326 / 7843 | — |
+| docs.stripe.com/ach-deprecated | 2399 / 13 | 2558 / 36 | 2558 / 36 | 2453 / 33 | 30600 / 10574 | 30430 / 10511 | 30561 / 10556 | — |
+| docs.stripe.com/agentic-commerce | 236 / 8 | 437 / 150 | 437 / 150 | 409 / 147 | 10210 / 7775 | 10135 / 7721 | 10189 / 7775 | — |
+| docs.stripe.com/agentic-commerce/apps | 357 / 11 | 561 / 159 | 561 / 159 | 536 / 156 | 10523 / 7903 | 10445 / 7858 | 10502 / 7903 | — |
+| docs.stripe.com/agentic-commerce/apps/accept-payment | 957 / 7 | 1243 / 163 | 1243 / 163 | 1144 / 160 | 16562 / 10765 | 16405 / 10711 | 16536 / 10765 | — |
+| docs.stripe.com/agentic-commerce/concepts | 385 / 8 | 628 / 162 | 628 / 162 | 570 / 159 | 10675 / 7938 | 10541 / 7866 | 10645 / 7929 | — |
+| docs.stripe.com/agentic-commerce/concepts/shared-paymen | 477 / 7 | 749 / 166 | 749 / 166 | 667 / 163 | 11053 / 8161 | 10922 / 8116 | 11050 / 8179 | — |
+| docs.stripe.com/agentic-commerce/enable-in-context-sell | 1007 / 11 | 1375 / 158 | 1375 / 158 | 1188 / 155 | 14487 / 8159 | 14244 / 8105 | 14457 / 8150 | — |
+| docs.stripe.com/agentic-commerce/product-feed | 742 / 15 | 1010 / 165 | 989 / 165 | 923 / 162 | 13813 / 7923 | 13674 / 7869 | 13801 / 7932 | — |
+| docs.stripe.com/agentic-commerce/protocol | 595 / 11 | 848 / 169 | 827 / 169 | 784 / 166 | 11096 / 7948 | 10960 / 7876 | 11048 / 7921 | — |
+| docs.stripe.com/agentic-commerce/protocol/specification | 4075 / 7 | 4439 / 173 | 4439 / 173 | 4272 / 170 | 17362 / 8329 | 17198 / 8284 | 17350 / 8338 | — |
+| docs.stripe.com/agents | 306 / 17 | 490 / 132 | 490 / 132 | 452 / 129 | 18983 / 10762 | 18887 / 10708 | 18962 / 10762 | — |
+| docs.stripe.com/agents-billing-workflows | 726 / 11 | 925 / 124 | 904 / 124 | 870 / 121 | 16206 / 7549 | 16102 / 7504 | 16212 / 7576 | — |
+| docs.stripe.com/api-includable-response-values | 612 / 20 | 808 / 170 | 808 / 170 | 793 / 167 | 20265 / 10700 | 20192 / 10646 | 20244 / 10700 | — |
+| docs.stripe.com/api-v2-overview | 1660 / 18 | 1970 / 165 | 1970 / 165 | 1838 / 162 | 21832 / 10922 | 21644 / 10868 | 21829 / 10940 | — |
+| docs.stripe.com/apis | 292 / 21 | 485 / 160 | 464 / 160 | 462 / 157 | 15046 / 7335 | 14971 / 7281 | 15025 / 7335 | — |
+| docs.stripe.com/apple-pay | 2390 / 16 | 2838 / 266 | 2838 / 266 | 2674 / 263 | 22059 / 11491 | 21860 / 11437 | 22038 / 11491 | — |
+| docs.stripe.com/apple-pay/apple-pay-recurring | 1071 / 13 | 1454 / 271 | 1454 / 271 | 1360 / 268 | 15327 / 11115 | 15157 / 11043 | 15297 / 11106 | — |
+| docs.stripe.com/apple-pay/best-practices | 1296 / 16 | 1708 / 269 | 1708 / 269 | 1580 / 266 | 12612 / 7958 | 12418 / 7895 | 12573 / 7940 | — |
+| docs.stripe.com/apple-pay/cartes-bancaires | 275 / 16 | 620 / 272 | 599 / 272 | 563 / 269 | 13511 / 10816 | 13396 / 10762 | 13490 / 10816 | — |
+| docs.stripe.com/apple-pay/disputes-refunds | 222 / 14 | 546 / 274 | 546 / 274 | 513 / 271 | 10271 / 7805 | 10162 / 7733 | 10232 / 7787 | — |
+| docs.stripe.com/apple-pay/merchant-tokens | 609 / 14 | 942 / 271 | 942 / 271 | 897 / 268 | 11502 / 8069 | 11419 / 8033 | 11490 / 8078 | — |
+| docs.stripe.com/atlas | 513 / 22 | 737 / 191 | 737 / 191 | 717 / 188 | 10603 / 7664 | 10531 / 7610 | 10582 / 7664 | — |
+| docs.stripe.com/atlas/83b-election | 1179 / 23 | 1455 / 193 | 1455 / 193 | 1380 / 190 | 12204 / 7860 | 12089 / 7824 | 12192 / 7869 | — |
+| docs.stripe.com/atlas/83b-elections-non-us-founders | 280 / 19 | 503 / 194 | 503 / 194 | 486 / 191 | 10164 / 7683 | 10089 / 7629 | 10143 / 7683 | — |
+| docs.stripe.com/atlas/accept-payments | 402 / 27 | 639 / 194 | 639 / 194 | 600 / 191 | 10488 / 7711 | 10382 / 7648 | 10467 / 7711 | — |
+| docs.stripe.com/atlas/business-taxes | 1190 / 22 | 1472 / 192 | 1472 / 192 | 1391 / 189 | 12836 / 8021 | 12719 / 7985 | 12815 / 8021 | — |
+| docs.stripe.com/atlas/company-types | 313 / 21 | 569 / 192 | 569 / 192 | 521 / 189 | 10405 / 7698 | 10301 / 7644 | 10384 / 7698 | — |
+| docs.stripe.com/atlas/equity-terms | 714 / 19 | 973 / 193 | 973 / 193 | 919 / 190 | 11196 / 7860 | 11109 / 7824 | 11193 / 7878 | — |
+| docs.stripe.com/atlas/fundraise-with-safes | 758 / 18 | 1025 / 193 | 1004 / 193 | 964 / 190 | 11308 / 7700 | 11218 / 7673 | 11287 / 7700 | — |
+| docs.stripe.com/atlas/incorporation-documents | 665 / 18 | 887 / 192 | 866 / 192 | 870 / 189 | 11032 / 7745 | 10957 / 7691 | 11011 / 7745 | — |
+| docs.stripe.com/atlas/indian-founder-guide | 1511 / 22 | 1779 / 197 | 1779 / 197 | 1719 / 194 | 12636 / 7717 | 12538 / 7672 | 12615 / 7717 | — |
+| docs.stripe.com/atlas/payments-business-bank | 320 / 18 | 551 / 193 | 551 / 193 | 526 / 190 | 10253 / 7700 | 10188 / 7664 | 10250 / 7718 | — |
+| docs.stripe.com/atlas/signup | 1884 / 19 | 2224 / 195 | 2224 / 195 | 2096 / 192 | 14053 / 8266 | 13868 / 8212 | 14041 / 8275 | — |
+| docs.stripe.com/atlas/singapore-founder-guide | 1803 / 76 | 2067 / 196 | 2067 / 196 | 1958 / 193 | 13390 / 7945 | 13260 / 7900 | 13369 / 7945 | — |
+| docs.stripe.com/atlas/stripe-treasury-offer | 198 / 27 | 255 / 36 | 255 / 36 | 238 / 33 | 20709 / 7014 | 20634 / 6960 | 20688 / 7014 | — |
+| docs.stripe.com/automated-testing | 650 / 14 | 865 / 162 | 865 / 162 | 829 / 159 | 19790 / 10826 | 19696 / 10772 | 19769 / 10826 | — |
+| docs.stripe.com/batch-api | 2786 / 10 | 3191 / 161 | 3191 / 161 | 2968 / 158 | 20916 / 8179 | 20645 / 8125 | 20886 / 8170 | — |
+| docs.stripe.com/billing | 557 / 16 | 710 / 108 | 689 / 108 | 682 / 105 | 9630 / 7663 | 9555 / 7609 | 9609 / 7663 | — |
+| docs.stripe.com/billing/automation-recipes | 565 / 25 | 750 / 116 | 750 / 116 | 687 / 113 | 9682 / 7598 | 9552 / 7535 | 9670 / 7607 | — |
+| docs.stripe.com/billing/automations | 1254 / 38 | 1418 / 117 | 1418 / 117 | 1364 / 114 | 11533 / 8041 | 11414 / 7987 | 11503 / 8032 | — |
+| docs.stripe.com/billing/billing-apis | 867 / 18 | 1119 / 111 | 1119 / 111 | 1002 / 108 | 10793 / 7896 | 10618 / 7842 | 10772 / 7896 | — |
+| docs.stripe.com/billing/collection-method | 1345 / 21 | 1687 / 217 | 1666 / 217 | 1572 / 214 | 12394 / 8307 | 12230 / 8262 | 12391 / 8325 | — |
+| docs.stripe.com/billing/customer | 1462 / 10 | 1758 / 152 | 1758 / 152 | 1635 / 149 | 12794 / 7878 | 12608 / 7815 | 12746 / 7851 | — |
+| docs.stripe.com/billing/customer/balance | 1181 / 8 | 1448 / 154 | 1448 / 154 | 1358 / 151 | 15278 / 11166 | 15129 / 11094 | 15257 / 11166 | — |
+| docs.stripe.com/billing/customer/tax-ids | 3597 / 14 | 2920 / 217 | 2920 / 217 | 3831 / 214 | 13864 / 8231 | 13724 / 8177 | 13843 / 8231 | — |
+| docs.stripe.com/billing/entitlements | 559 / 17 | 852 / 215 | 852 / 215 | 788 / 212 | 11664 / 7771 | 11530 / 7717 | 11643 / 7771 | — |
+| docs.stripe.com/billing/invoices/subscription | 2215 / 18 | 2699 / 216 | 2699 / 216 | 2444 / 213 | 19350 / 11411 | 19050 / 11366 | 19320 / 11402 | — |
+| docs.stripe.com/billing/multi-entity-business | 620 / 20 | 849 / 124 | 828 / 124 | 765 / 121 | 10063 / 7657 | 9921 / 7603 | 10051 / 7666 | — |
+| docs.stripe.com/billing/revenue-recovery | 440 / 12 | 610 / 120 | 610 / 120 | 579 / 117 | 10132 / 8220 | 10052 / 8175 | 10111 / 8220 | — |
+| docs.stripe.com/billing/revenue-recovery/customer-email | 955 / 18 | 1166 / 122 | 1166 / 122 | 1090 / 119 | 10649 / 7635 | 10514 / 7581 | 10646 / 7653 | — |
+| docs.stripe.com/billing/revenue-recovery/recovery-analy | 594 / 24 | 779 / 121 | 779 / 121 | 722 / 118 | 9907 / 7764 | 9783 / 7701 | 9895 / 7773 | — |
+| docs.stripe.com/billing/revenue-recovery/smart-retries | 1175 / 11 | 1366 / 122 | 1366 / 122 | 1317 / 119 | 11985 / 8222 | 11887 / 8177 | 11964 / 8222 | — |
+| docs.stripe.com/billing/subscriptions/acss-debit | 1901 / 13 | 2315 / 270 | 2315 / 270 | 2192 / 267 | 19309 / 11332 | 19104 / 11260 | 19288 / 11332 | — |
+| docs.stripe.com/billing/subscriptions/analytics | 780 / 11 | 1101 / 216 | 1101 / 216 | 1016 / 213 | 12235 / 8132 | 12107 / 8087 | 12223 / 8141 | — |
+| docs.stripe.com/billing/subscriptions/au-becs-debit | 2466 / 13 | 2879 / 271 | 2879 / 271 | 2758 / 268 | 22599 / 11373 | 22422 / 11328 | 22578 / 11373 | — |
+| docs.stripe.com/billing/subscriptions/backdating | 1193 / 18 | 1491 / 216 | 1470 / 216 | 1422 / 213 | 15231 / 11087 | 15109 / 11033 | 15201 / 11078 | — |
+| docs.stripe.com/billing/subscriptions/bank-transfer | 378 / 12 | 718 / 268 | 718 / 268 | 665 / 265 | 14016 / 11049 | 13894 / 10986 | 13995 / 11049 | — |
+| docs.stripe.com/billing/subscriptions/billing-cycle | 1951 / 19 | 2289 / 217 | 2289 / 217 | 2192 / 214 | 19255 / 11068 | 19100 / 11014 | 19234 / 11068 | — |
+| docs.stripe.com/billing/subscriptions/billing-mode | 1157 / 20 | 1477 / 223 | 1477 / 223 | 1392 / 220 | 17873 / 11105 | 17742 / 11060 | 17861 / 11114 | — |
+| docs.stripe.com/billing/subscriptions/billing-mode/comp | 1986 / 29 | 2429 / 230 | 2429 / 230 | 2218 / 227 | 13111 / 8184 | 12815 / 8103 | 13072 / 8166 | — |
+| docs.stripe.com/billing/subscriptions/build-subscriptio | 2225 / 18 | 2602 / 237 | 2602 / 237 | 2486 / 234 | 102890 / 12139 | 102717 / 12085 | 102854 / 12139 | — |
+| docs.stripe.com/billing/subscriptions/build-subscriptio | 2748 / 18 | 3159 / 237 | 3159 / 237 | 3004 / 234 | 103447 / 12141 | — | 103415 / 12141 | — |
+| docs.stripe.com/billing/subscriptions/build-subscriptio | 3526 / 18 | 4054 / 237 | 4054 / 237 | 3783 / 234 | 104371 / 12171 | 103237 / 12087 | 104348 / 12171 | — |
+| docs.stripe.com/billing/subscriptions/build-subscriptio | 1807 / 18 | 2168 / 237 | 2168 / 237 | 2064 / 234 | 102764 / 12451 | 102607 / 12397 | 102743 / 12451 | — |
+| docs.stripe.com/billing/subscriptions/build-subscriptio | 3126 / 18 | 3676 / 237 | 3676 / 237 | 3383 / 234 | 103395 / 11574 | — | 103372 / 11574 | — |
+| docs.stripe.com/billing/subscriptions/build-subscriptio | 3220 / 18 | 3785 / 237 | 3785 / 237 | 3477 / 234 | 103511 / 11580 | — | 103488 / 11580 | — |
+| docs.stripe.com/billing/subscriptions/build-subscriptio | 3487 / 18 | 4062 / 237 | 4062 / 237 | 3744 / 234 | 103782 / 11574 | 103049 / 11520 | 103759 / 11574 | — |
+| docs.stripe.com/billing/subscriptions/cancel | 1754 / 23 | 2098 / 216 | 2098 / 216 | 1981 / 213 | 17380 / 11280 | 17208 / 11235 | 17350 / 11271 | — |
+| docs.stripe.com/billing/subscriptions/change | 351 / 39 | 591 / 223 | 591 / 223 | 566 / 220 | 9570 / 7919 | 9478 / 7856 | 9531 / 7901 | — |
+| docs.stripe.com/billing/subscriptions/change-price | 1197 / 20 | 1518 / 226 | 1518 / 226 | 1434 / 223 | 16938 / 11308 | 16778 / 11236 | 16926 / 11317 | — |
+| docs.stripe.com/billing/subscriptions/coupons | 2997 / 21 | 3392 / 216 | 3392 / 216 | 3223 / 213 | 22006 / 11622 | 21786 / 11568 | 21985 / 11622 | — |
+| docs.stripe.com/billing/subscriptions/deferred-payment | 591 / 19 | 868 / 217 | 868 / 217 | 821 / 214 | 10384 / 8164 | 10284 / 8101 | 10345 / 8146 | — |
+| docs.stripe.com/billing/subscriptions/design-an-integra | 1763 / 17 | 2107 / 217 | 2107 / 217 | 2000 / 214 | 12775 / 8323 | 12654 / 8269 | 12745 / 8314 | — |
+| docs.stripe.com/billing/subscriptions/migrate-subscript | 360 / 19 | 645 / 228 | 645 / 228 | 601 / 225 | 9604 / 7906 | 9527 / 7870 | 9601 / 7924 | — |
+| docs.stripe.com/billing/subscriptions/mixed-interval | 1213 / 16 | 1530 / 218 | 1530 / 218 | 1447 / 215 | 14331 / 8206 | 14199 / 8161 | 14292 / 8188 | — |
+| docs.stripe.com/billing/subscriptions/overview | 2035 / 16 | 2384 / 217 | 2384 / 217 | 2273 / 214 | 13900 / 8120 | 13751 / 8084 | 13888 / 8129 | — |
+| docs.stripe.com/billing/subscriptions/pause | 745 / 16 | 1047 / 216 | 1047 / 216 | 976 / 213 | 13791 / 11309 | 13635 / 11228 | 13761 / 11300 | — |
+| docs.stripe.com/billing/subscriptions/pause-payment | 900 / 20 | 1208 / 217 | 1208 / 217 | 1128 / 214 | 15506 / 11109 | 15368 / 11055 | 15485 / 11109 | — |
+| docs.stripe.com/billing/subscriptions/payment-methods-s | 667 / 18 | 998 / 265 | 998 / 265 | 945 / 262 | 13457 / 10793 | 13334 / 10730 | 13436 / 10793 | — |
+| docs.stripe.com/billing/subscriptions/paypal | 1184 / 11 | 1577 / 267 | 1577 / 267 | 1472 / 264 | 29187 / 11300 | 29020 / 11246 | 29166 / 11300 | — |
+| docs.stripe.com/billing/subscriptions/pending-updates | 904 / 21 | 1216 / 227 | 1216 / 227 | 1141 / 224 | 14471 / 11224 | 14326 / 11161 | 14450 / 11224 | — |
+| docs.stripe.com/billing/subscriptions/prebilling | 676 / 13 | 943 / 218 | 943 / 218 | 912 / 215 | 10738 / 7907 | 10649 / 7853 | 10735 / 7925 | — |
+| docs.stripe.com/billing/subscriptions/prorations | 2584 / 16 | 2962 / 226 | 2962 / 226 | 2825 / 223 | 20656 / 11202 | 20471 / 11157 | 20642 / 11220 | — |
+| docs.stripe.com/billing/subscriptions/quantities | 1594 / 19 | 1744 / 36 | 1744 / 36 | 1646 / 33 | 30459 / 10798 | 30285 / 10726 | 30429 / 10789 | — |
+| docs.stripe.com/billing/subscriptions/sales-led-billing | 1844 / 18 | 2052 / 36 | 2052 / 36 | 1893 / 33 | 25419 / 7976 | 25176 / 7895 | 25380 / 7958 | — |
+| docs.stripe.com/billing/subscriptions/stablecoins | 1057 / 16 | 1448 / 267 | 1448 / 267 | 1351 / 264 | 21316 / 11388 | 21168 / 11334 | 21295 / 11388 | — |
+| docs.stripe.com/billing/subscriptions/subscription-sche | 3113 / 13 | 3463 / 216 | 3463 / 216 | 3347 / 213 | 34875 / 11163 | 34705 / 11109 | 34854 / 11163 | — |
+| docs.stripe.com/billing/subscriptions/third-party-payme | 2400 / 13 | 2826 / 219 | 2826 / 219 | 2640 / 216 | 28755 / 11029 | 28514 / 10975 | 28731 / 11029 | — |
+| docs.stripe.com/billing/subscriptions/trials | 2365 / 5 | 2905 / 228 | 2905 / 228 | 2635 / 225 | 25744 / 11417 | 25428 / 11372 | 25732 / 11426 | — |
+| docs.stripe.com/billing/subscriptions/trials/free-trial | 2111 / 6 | 2615 / 233 | 2615 / 233 | 2369 / 230 | 22217 / 11233 | 21902 / 11170 | 22178 / 11215 | — |
+| docs.stripe.com/billing/subscriptions/trials/manage-tri | 672 / 11 | 1014 / 236 | 1014 / 236 | 928 / 233 | 10280 / 7937 | 10130 / 7874 | 10259 / 7937 | — |
+| docs.stripe.com/billing/subscriptions/usage-based | 139 / 12 | 320 / 134 | 320 / 134 | 296 / 131 | 8807 / 7620 | 8732 / 7566 | 8786 / 7620 | — |
+| docs.stripe.com/billing/subscriptions/usage-based-legac | 810 / 3 | 945 / 36 | 945 / 36 | 877 / 33 | 30252 / 7627 | 30133 / 7573 | 30231 / 7627 | — |
+| docs.stripe.com/billing/subscriptions/usage-based-legac | 984 / 10 | 1094 / 36 | 1094 / 36 | 1041 / 33 | 30932 / 10423 | 30830 / 10378 | 30920 / 10432 | — |
+| docs.stripe.com/billing/subscriptions/usage-based-legac | 1417 / 8 | 1534 / 36 | 1534 / 36 | 1488 / 33 | 31902 / 10840 | 31803 / 10786 | 31881 / 10840 | — |
+| docs.stripe.com/billing/subscriptions/usage-based-legac | 649 / 10 | 749 / 36 | 749 / 36 | 711 / 33 | 25580 / 10468 | 25484 / 10414 | 25559 / 10468 | — |
+| docs.stripe.com/billing/subscriptions/usage-based-v1/us | 118 / 8 | 304 / 146 | 304 / 146 | 287 / 143 | 8838 / 7666 | 8763 / 7612 | 8817 / 7666 | — |
+| docs.stripe.com/billing/subscriptions/usage-based-v1/us | 1596 / 15 | 1868 / 151 | 1847 / 151 | 1769 / 148 | 16921 / 8109 | 16791 / 8064 | 16909 / 8118 | — |
+| docs.stripe.com/billing/subscriptions/usage-based-v2/ov | 77 / 10 | 267 / 120 | 267 / 120 | 218 / 117 | 8896 / 7776 | 8790 / 7722 | 8875 / 7776 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/advan | 8806 / 18 | 3137 / 124 | 3137 / 124 | 8943 / 121 | 25713 / 11406 | 25491 / 11334 | 25674 / 11388 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/advan | 1963 / 18 | 1299 / 136 | 1299 / 136 | 2112 / 133 | 13561 / 8672 | 13353 / 8636 | 13558 / 8690 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/alert | 563 / 8 | 777 / 139 | 777 / 139 | 737 / 136 | 14415 / 10889 | 14330 / 10844 | 14394 / 10889 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/analy | 1057 / 9 | 1235 / 36 | 1235 / 36 | 1115 / 33 | 13597 / 10565 | 13392 / 10484 | 13558 / 10547 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/billi | 1503 / 52 | 1791 / 140 | 1770 / 140 | 1622 / 137 | 11983 / 7980 | 11782 / 7935 | 11971 / 7989 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/billi | 502 / 11 | 759 / 145 | 738 / 145 | 667 / 142 | 12789 / 8029 | 12641 / 7966 | 12768 / 8029 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/confi | 666 / 11 | 901 / 163 | 901 / 163 | 849 / 160 | 10364 / 8102 | 10239 / 8030 | 10343 / 8102 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/how-i | 525 / 11 | 733 / 137 | 733 / 137 | 687 / 134 | 10083 / 7969 | 9988 / 7924 | 10053 / 7960 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/imple | 1296 / 11 | 1571 / 151 | 1571 / 151 | 1473 / 148 | 15012 / 8285 | 14869 / 8231 | 14982 / 8276 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/manag | 1036 / 28 | 1212 / 137 | 1212 / 137 | 1176 / 134 | 15637 / 10805 | 15534 / 10742 | 15634 / 10823 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/meter | 843 / 8 | 1082 / 165 | 1082 / 165 | 1036 / 162 | 14440 / 10912 | 14328 / 10840 | 14401 / 10894 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/monit | 397 / 11 | 574 / 137 | 574 / 137 | 554 / 134 | 9396 / 7701 | 9321 / 7647 | 9375 / 7701 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/prici | 3573 / 9 | 2844 / 121 | 2844 / 121 | 3727 / 118 | 32279 / 11538 | 32094 / 11475 | 32240 / 11520 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/recor | 1880 / 14 | 2172 / 164 | 2172 / 164 | 2061 / 161 | 16487 / 11210 | 16329 / 11156 | 16466 / 11210 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/recor | 537 / 16 | 784 / 165 | 784 / 165 | 717 / 162 | 9867 / 7937 | 9725 / 7856 | 9819 / 7910 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/thres | 1094 / 9 | 1319 / 139 | 1319 / 139 | 1267 / 136 | 13908 / 10866 | 13798 / 10812 | 13896 / 10875 | — |
+| docs.stripe.com/billing/subscriptions/usage-based/use-c | 1864 / 5 | 2203 / 150 | 2203 / 150 | 2042 / 147 | 20570 / 8108 | 20368 / 8045 | 20558 / 8117 | — |
+| docs.stripe.com/billing/subscriptions/use-cases | 172 / 17 | 245 / 36 | 224 / 36 | 222 / 33 | 20513 / 6863 | 20438 / 6809 | 20492 / 6863 | — |
+| docs.stripe.com/billing/subscriptions/webhooks | 4033 / 18 | 3355 / 217 | 3355 / 217 | 4263 / 214 | 16959 / 8470 | 16819 / 8425 | 16947 / 8479 | — |
+| docs.stripe.com/billing/taxes/collect-taxes | 1561 / 10 | 1925 / 218 | 1925 / 218 | 1801 / 215 | 24076 / 11283 | 23890 / 11229 | 24055 / 11283 | — |
+| docs.stripe.com/billing/taxes/migration | 1773 / 9 | 2136 / 219 | 2136 / 219 | 2014 / 216 | 20395 / 11135 | 20218 / 11081 | 20374 / 11135 | — |
+| docs.stripe.com/billing/taxes/tax-rates | 2749 / 11 | 3125 / 216 | 3125 / 216 | 2985 / 213 | 17762 / 11189 | 17582 / 11153 | 17759 / 11207 | — |
+| docs.stripe.com/billing/testing | 3648 / 20 | 2970 / 125 | 2970 / 125 | 3796 / 122 | 17316 / 8372 | 17094 / 8327 | 17304 / 8381 | — |
+| docs.stripe.com/billing/testing/test-clocks | 173 / 8 | 348 / 129 | 348 / 129 | 325 / 126 | 8535 / 7282 | 8460 / 7228 | 8514 / 7282 | — |
+| docs.stripe.com/billing/testing/test-clocks/api-advance | 2251 / 12 | 2520 / 134 | 2520 / 134 | 2404 / 131 | 24394 / 10886 | 24205 / 10823 | 24355 / 10868 | — |
+| docs.stripe.com/billing/testing/test-clocks/simulate-su | 295 / 8 | 467 / 132 | 467 / 132 | 450 / 129 | 9115 / 7589 | 9040 / 7535 | 9094 / 7589 | — |
+| docs.stripe.com/billing/token-billing | 595 / 20 | 756 / 36 | 735 / 36 | 642 / 33 | 9898 / 7635 | 9731 / 7581 | 9859 / 7617 | — |
+| docs.stripe.com/building-extensions | 1054 / 11 | 1428 / 249 | 1428 / 249 | 1323 / 246 | 20688 / 10981 | 20525 / 10927 | 20667 / 10981 | — |
+| docs.stripe.com/building-plugins | 1317 / 12 | 1614 / 170 | 1614 / 170 | 1506 / 167 | 21873 / 11144 | 21698 / 11081 | 21852 / 11144 | — |
+| docs.stripe.com/capital/api-integration | 1802 / 10 | 2081 / 115 | 2081 / 115 | 1938 / 112 | 15830 / 11578 | 15629 / 11524 | 15800 / 11569 | — |
+| docs.stripe.com/capital/embedded-component-integration | 1813 / 14 | 2085 / 118 | 2085 / 118 | 1955 / 115 | 13341 / 8705 | 13144 / 8633 | 13320 / 8705 | — |
+| docs.stripe.com/capital/getting-started | 1482 / 12 | 1655 / 108 | 1655 / 108 | 1609 / 105 | 12135 / 8373 | 12029 / 8310 | 12114 / 8373 | — |
+| docs.stripe.com/capital/how-capital-for-platforms-works | 2389 / 8 | 2670 / 98 | 2670 / 98 | 2514 / 95 | 15186 / 8397 | 14986 / 8343 | 15165 / 8397 | — |
+| docs.stripe.com/capital/how-stripe-capital-works | 2216 / 29 | 2429 / 76 | 2408 / 76 | 2301 / 73 | 18269 / 7924 | 18095 / 7870 | 18248 / 7924 | — |
+| docs.stripe.com/capital/import-non-stripe-data | 1756 / 14 | 1946 / 99 | 1946 / 99 | 1872 / 96 | 12781 / 8465 | 12615 / 8384 | 12751 / 8456 | — |
+| docs.stripe.com/capital/marketing | 3330 / 5 | 3569 / 94 | 3569 / 94 | 3452 / 91 | 18593 / 8426 | 18432 / 8390 | 18581 / 8435 | — |
+| docs.stripe.com/capital/mca-marketing-guidelines | 2226 / 9 | 2389 / 36 | 2389 / 36 | 2284 / 33 | 13077 / 8121 | 12933 / 8058 | 13047 / 8112 | — |
+| docs.stripe.com/capital/no-code-integration | 1107 / 12 | 1375 / 111 | 1375 / 111 | 1238 / 108 | 11194 / 8133 | 10999 / 8079 | 11173 / 8133 | — |
+| docs.stripe.com/capital/overview | 568 / 12 | 693 / 74 | 672 / 74 | 665 / 71 | 9390 / 7756 | 9315 / 7702 | 9369 / 7756 | — |
+| docs.stripe.com/capital/promotional-tile | 840 / 11 | 1075 / 103 | 1075 / 103 | 968 / 100 | 14395 / 11299 | 14229 / 11227 | 14356 / 11281 | — |
+| docs.stripe.com/capital/refills | 652 / 9 | 853 / 118 | 832 / 118 | 792 / 115 | 10100 / 8117 | 9963 / 8045 | 10061 / 8099 | — |
+| docs.stripe.com/capital/regulatory-compliance | 2036 / 9 | 2219 / 95 | 2219 / 95 | 2153 / 92 | 13298 / 8579 | 13188 / 8534 | 13286 / 8588 | — |
+| docs.stripe.com/capital/replacements | 764 / 7 | 951 / 118 | 951 / 118 | 906 / 115 | 10323 / 8129 | 10196 / 8057 | 10293 / 8120 | — |
+| docs.stripe.com/changelog/2014-08-20/disputes-provide-s | 145 / 0 | 433 / 232 | 433 / 232 | 408 / 229 | 15833 / 7879 | 15732 / 7807 | 15812 / 7879 | — |
+| docs.stripe.com/changelog/2014-09-08/bank-accounts-incl | 149 / 0 | 437 / 232 | 437 / 232 | 412 / 229 | 15842 / 7875 | 15777 / 7839 | 15830 / 7884 | — |
+| docs.stripe.com/changelog/2014-10-07/create-card-bank-a | 159 / 0 | 447 / 232 | 447 / 232 | 422 / 229 | 15870 / 7879 | 15787 / 7825 | 15849 / 7879 | — |
+| docs.stripe.com/changelog/2014-10-07/no-longer-retrieve | 134 / 0 | 422 / 232 | 422 / 232 | 397 / 229 | 15808 / 7873 | 15734 / 7828 | 15778 / 7864 | — |
+| docs.stripe.com/changelog/2014-11-05/renames-charge-acc | 143 / 0 | 431 / 232 | 431 / 232 | 406 / 229 | 15835 / 7882 | 15743 / 7819 | 15823 / 7891 | — |
+| docs.stripe.com/changelog/2014-11-20/disputes-reported- | 166 / 0 | 454 / 232 | 454 / 232 | 429 / 229 | 15869 / 7867 | 15804 / 7831 | 15875 / 7894 | — |
+| docs.stripe.com/changelog/2014-11-20/invoice-items-refl | 177 / 0 | 465 / 232 | 465 / 232 | 440 / 229 | 15911 / 7886 | 15819 / 7823 | 15902 / 7877 | — |
+| docs.stripe.com/changelog/2014-12-17/creating-accounts- | 144 / 0 | 432 / 232 | 432 / 232 | 407 / 229 | 15832 / 7875 | 15758 / 7830 | 15802 / 7866 | — |
+| docs.stripe.com/changelog/2014-12-17/introduces-stateme | 203 / 0 | 491 / 232 | 491 / 232 | 466 / 229 | 15960 / 7880 | 15886 / 7835 | 15939 / 7880 | — |
+| docs.stripe.com/changelog/2014-12-22/cards-use-unchecke | 198 / 0 | 486 / 232 | 486 / 232 | 461 / 229 | 15963 / 7891 | 15880 / 7837 | 15951 / 7900 | — |
+| docs.stripe.com/changelog/2014-12-22/tokens-cards-no-lo | 155 / 0 | 443 / 232 | 443 / 232 | 418 / 229 | 15859 / 7882 | 15776 / 7828 | 15829 / 7873 | — |
+| docs.stripe.com/changelog/2015-01-11/file-uploads-descr | 168 / 0 | 456 / 232 | 456 / 232 | 431 / 229 | 15875 / 7868 | 15801 / 7823 | 15872 / 7886 | — |
+| docs.stripe.com/changelog/2015-01-26/subscriptions-repo | 182 / 0 | 470 / 232 | 470 / 232 | 445 / 229 | 15918 / 7880 | 15826 / 7817 | 15888 / 7871 | — |
+| docs.stripe.com/changelog/2015-02-16/renames-transfer-c | 136 / 0 | 424 / 232 | 424 / 232 | 399 / 229 | 15826 / 7889 | 15743 / 7835 | 15787 / 7871 | — |
+| docs.stripe.com/changelog/2015-02-18/charges-have-sourc | 176 / 0 | 464 / 232 | 464 / 232 | 439 / 229 | 15889 / 7867 | 15815 / 7822 | 15877 / 7876 | — |
+| docs.stripe.com/changelog/2015-02-18/charges-succeed-ha | 149 / 0 | 437 / 232 | 437 / 232 | 412 / 229 | 15845 / 7881 | 15762 / 7827 | 15824 / 7881 | — |
+| docs.stripe.com/changelog/2015-02-18/customers-have-sou | 190 / 0 | 478 / 232 | 478 / 232 | 453 / 229 | 15936 / 7881 | 15871 / 7845 | 15915 / 7881 | — |
+| docs.stripe.com/changelog/2015-03-24/coupons-no-longer- | 173 / 0 | 461 / 232 | 461 / 232 | 436 / 229 | 15892 / 7876 | 15800 / 7813 | 15871 / 7876 | — |
+| docs.stripe.com/changelog/2019-02-11/renames-allowed-so | 150 / 0 | 438 / 232 | 417 / 232 | 413 / 229 | 15847 / 7881 | 15773 / 7836 | 15826 / 7881 | — |
+| docs.stripe.com/changelog/2019-02-11/renames-authorize- | 143 / 0 | 431 / 232 | 410 / 232 | 406 / 229 | 15817 / 7864 | 15743 / 7819 | 15796 / 7864 | — |
+| docs.stripe.com/changelog/2019-02-11/renames-next-sourc | 156 / 0 | 444 / 232 | 444 / 232 | 419 / 229 | 15843 / 7864 | 15769 / 7819 | 15831 / 7873 | — |
+| docs.stripe.com/changelog/2019-02-11/renames-save-sourc | 153 / 0 | 441 / 232 | 441 / 232 | 416 / 229 | 15853 / 7881 | 15752 / 7809 | 15832 / 7881 | — |
+| docs.stripe.com/changelog/2019-02-19/accounts-no-longer | 190 / 0 | 478 / 232 | 478 / 232 | 453 / 229 | 15997 / 7893 | 15914 / 7839 | 15976 / 7893 | — |
+| docs.stripe.com/changelog/2019-02-19/accounts-us-requir | 177 / 0 | 465 / 232 | 465 / 232 | 440 / 229 | 15926 / 7884 | 15834 / 7821 | 15887 / 7866 | — |
+| docs.stripe.com/changelog/2019-02-19/business-details-m | 177 / 0 | 465 / 232 | 465 / 232 | 440 / 229 | 15902 / 7877 | 15810 / 7814 | 15881 / 7877 | — |
+| docs.stripe.com/changelog/2019-02-19/changes-statement- | 259 / 0 | 548 / 232 | 527 / 232 | 522 / 229 | 16086 / 7865 | 16021 / 7829 | 16074 / 7874 | — |
+| docs.stripe.com/changelog/2019-02-19/renames-business-i | 166 / 0 | 454 / 232 | 454 / 232 | 429 / 229 | 15865 / 7865 | 15809 / 7838 | 15862 / 7883 | — |
+| docs.stripe.com/changelog/2019-02-19/several-fields-acc | 310 / 0 | 598 / 232 | 598 / 232 | 573 / 229 | 16165 / 7891 | 16082 / 7837 | 16135 / 7882 | — |
+| docs.stripe.com/changelog/2019-02-19/verification-accou | 185 / 0 | 473 / 232 | 473 / 232 | 448 / 229 | 15923 / 7886 | 15840 / 7832 | 15884 / 7868 | — |
+| docs.stripe.com/changelog/2019-08-14/accounts-many-coun | 220 / 0 | 508 / 232 | 508 / 232 | 483 / 229 | 16001 / 7888 | 15927 / 7843 | 15980 / 7888 | — |
+| docs.stripe.com/changelog/2019-08-14/configuring-person | 213 / 0 | 501 / 232 | 501 / 232 | 476 / 229 | 15978 / 7881 | 15904 / 7836 | 15966 / 7890 | — |
+| docs.stripe.com/changelog/2019-09-09/2019-09-09-1 | 201 / 0 | 489 / 232 | 489 / 232 | 464 / 229 | 15983 / 7893 | 15891 / 7830 | 15944 / 7875 | — |
+| docs.stripe.com/changelog/2019-09-09/adds-detail-code-p | 154 / 0 | 442 / 232 | 421 / 232 | 417 / 229 | 15846 / 7872 | 15772 / 7827 | 15825 / 7872 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/affirm-tran | 250 / 0 | 437 / 132 | 437 / 132 | 413 / 129 | 16553 / 8376 | 16457 / 8313 | 16523 / 8367 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/billing-ale | 219 / 0 | 408 / 132 | 408 / 132 | 382 / 129 | 16502 / 8359 | 16422 / 8314 | 16508 / 8386 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/billing-ale | 224 / 0 | 413 / 132 | 413 / 132 | 387 / 129 | 16538 / 8378 | 16449 / 8324 | 16499 / 8360 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/billing-ale | 245 / 0 | 434 / 132 | 434 / 132 | 408 / 129 | 16469 / 8308 | 16398 / 8272 | 16457 / 8317 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/billing-due | 199 / 0 | 386 / 132 | 386 / 132 | 362 / 129 | 16437 / 8381 | 16350 / 8327 | 16425 / 8390 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/billing-mut | 198 / 0 | 385 / 132 | 385 / 132 | 361 / 129 | 16578 / 8525 | 16482 / 8462 | 16548 / 8516 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/checkout-up | 174 / 0 | 356 / 132 | 335 / 132 | 337 / 129 | 16456 / 8488 | 16373 / 8434 | 16426 / 8479 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/disputes-ca | 190 / 0 | 375 / 132 | 375 / 132 | 353 / 129 | 16684 / 8674 | 16599 / 8620 | 16675 / 8665 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/identity-ve | 217 / 0 | 402 / 132 | 402 / 132 | 380 / 129 | 16743 / 8681 | 16649 / 8618 | 16713 / 8672 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/issuing-add | 246 / 0 | 434 / 132 | 434 / 132 | 409 / 129 | 16963 / 8833 | 16856 / 8761 | 16933 / 8824 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/issuing-web | 258 / 0 | 447 / 132 | 447 / 132 | 421 / 129 | 16987 / 8824 | 16889 / 8761 | 16975 / 8833 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/support-cus | 280 / 0 | 469 / 132 | 469 / 132 | 443 / 129 | 17062 / 8829 | 16973 / 8775 | 17041 / 8829 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/support-pay | 191 / 0 | 376 / 132 | 376 / 132 | 354 / 129 | 16699 / 8674 | 16605 / 8611 | 16669 / 8665 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/tax-registr | 262 / 0 | 451 / 132 | 451 / 132 | 425 / 129 | 17036 / 8819 | 16947 / 8765 | 17024 / 8828 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/terminal-of | 235 / 0 | 421 / 132 | 421 / 132 | 398 / 129 | 16633 / 8515 | 16564 / 8479 | 16612 / 8515 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/terminal-re | 198 / 0 | 385 / 132 | 385 / 132 | 361 / 129 | 16441 / 8380 | 16354 / 8326 | 16429 / 8389 | — |
+| docs.stripe.com/changelog/acacia/2024-09-30/twint-suppo | 200 / 0 | 387 / 132 | 387 / 132 | 363 / 129 | 16412 / 8367 | 16316 / 8304 | 16400 / 8376 | — |
+| docs.stripe.com/connect/supported-embedded-components/c | 129 / 6 | 388 / 201 | 367 / 201 | 355 / 198 | 9004 / 7945 | 8922 / 7900 | 8983 / 7945 | — |
+| docs.stripe.com/connect/supported-embedded-components/c | 766 / 12 | 1026 / 121 | 1026 / 121 | 911 / 118 | 14279 / 11419 | 14103 / 11365 | 14224 / 11410 | — |
+| docs.stripe.com/connect/supported-embedded-components/c | 1070 / 8 | 1343 / 121 | 1343 / 121 | 1219 / 118 | 15187 / 11401 | 15003 / 11347 | 15141 / 11401 | — |
+| docs.stripe.com/connect/supported-embedded-components/c | 1139 / 15 | 1403 / 121 | 1403 / 121 | 1281 / 118 | 15386 / 11392 | 15222 / 11356 | 15383 / 11410 | — |
+| docs.stripe.com/connect/use-accounts-as-customers | 1626 / 13 | 1832 / 137 | 1832 / 137 | 1781 / 134 | 16265 / 11133 | 16142 / 11088 | 16271 / 11160 | — |
+| docs.stripe.com/context | 337 / 17 | 588 / 162 | 588 / 162 | 513 / 159 | 15908 / 7925 | 15775 / 7871 | 15887 / 7925 | — |
+| docs.stripe.com/customer-management | 2258 / 59 | 2410 / 152 | 2410 / 152 | 2386 / 149 | 12850 / 7706 | 12775 / 7652 | 12829 / 7706 | — |
+| docs.stripe.com/customer-management/activate-no-code-cu | 294 / 9 | 513 / 157 | 513 / 157 | 474 / 154 | 9161 / 7512 | 9063 / 7458 | 9140 / 7512 | — |
+| docs.stripe.com/customer-management/cancellation-page | 412 / 11 | 637 / 159 | 637 / 159 | 591 / 156 | 9564 / 7683 | 9461 / 7629 | 9561 / 7701 | — |
+| docs.stripe.com/customer-management/configure-portal | 1115 / 10 | 1357 / 155 | 1336 / 155 | 1291 / 152 | 11121 / 8086 | 11005 / 8041 | 11109 / 8095 | — |
+| docs.stripe.com/customer-management/integrate-customer- | 1723 / 80 | 1927 / 159 | 1927 / 159 | 1837 / 156 | 17472 / 11238 | 17318 / 11175 | 17469 / 11256 | — |
+| docs.stripe.com/customer-management/portal-deep-links | 803 / 9 | 1040 / 159 | 1040 / 159 | 984 / 156 | 16408 / 11101 | 16312 / 11047 | 16387 / 11101 | — |
+| docs.stripe.com/error-codes | 5429 / 23 | 4618 / 161 | 4618 / 161 | 5600 / 158 | 24870 / 8051 | 24795 / 7997 | 24849 / 8051 | — |
+| docs.stripe.com/error-handling | 3009 / 14 | 3354 / 164 | 3354 / 164 | 3192 / 161 | 51915 / 11199 | 51742 / 11136 | 51868 / 11181 | — |
+| docs.stripe.com/error-low-level | 1769 / 14 | 2029 / 168 | 2029 / 168 | 1954 / 165 | 22147 / 11024 | 21994 / 10943 | 22108 / 11006 | — |
+| docs.stripe.com/file-upload | 1219 / 16 | 1400 / 120 | 1400 / 120 | 1354 / 117 | 20875 / 10973 | 20753 / 10901 | 20854 / 10973 | — |
+| docs.stripe.com/get-started/account | 256 / 9 | 446 / 142 | 446 / 142 | 423 / 139 | 8284 / 7317 | 8209 / 7263 | 8263 / 7317 | — |
+| docs.stripe.com/get-started/account/activate | 799 / 13 | 1025 / 144 | 1004 / 144 | 978 / 141 | 10190 / 7983 | 10091 / 7929 | 10187 / 8001 | — |
+| docs.stripe.com/get-started/account/add-funds | 1003 / 39 | 1214 / 146 | 1193 / 146 | 1141 / 143 | 10810 / 8283 | 10688 / 8238 | 10807 / 8301 | — |
+| docs.stripe.com/get-started/account/checklist | 748 / 9 | 958 / 143 | 958 / 143 | 941 / 140 | 10291 / 7983 | 10216 / 7929 | 10270 / 7983 | — |
+| docs.stripe.com/get-started/account/linked-external-acc | 1318 / 5 | 1563 / 144 | 1563 / 144 | 1488 / 141 | 10971 / 7811 | 10864 / 7775 | 10968 / 7829 | — |
+| docs.stripe.com/get-started/account/multiple-accounts | 407 / 10 | 608 / 144 | 587 / 144 | 587 / 141 | 9202 / 7811 | 9127 / 7757 | 9181 / 7811 | — |
+| docs.stripe.com/get-started/account/orgs | 400 / 8 | 637 / 159 | 637 / 159 | 605 / 156 | 9287 / 7855 | 9212 / 7801 | 9266 / 7855 | — |
+| docs.stripe.com/get-started/account/orgs/build | 673 / 7 | 952 / 163 | 952 / 163 | 871 / 160 | 9827 / 7878 | 9678 / 7824 | 9806 / 7878 | — |
+| docs.stripe.com/get-started/account/orgs/setup | 441 / 11 | 976 / 162 | 976 / 162 | 623 / 159 | 9888 / 7669 | 9480 / 7615 | 9885 / 7687 | — |
+| docs.stripe.com/get-started/account/orgs/sharing/custom | 1400 / 25 | 1866 / 165 | 1866 / 165 | 1584 / 162 | 12001 / 8252 | 11652 / 8189 | 11904 / 8243 | — |
+| docs.stripe.com/get-started/account/orgs/team | 1131 / 10 | 1416 / 165 | 1395 / 165 | 1321 / 162 | 10528 / 7698 | 10372 / 7653 | 10489 / 7680 | — |
+| docs.stripe.com/get-started/account/statement-descripto | 1191 / 5 | 1439 / 143 | 1439 / 143 | 1364 / 140 | 14915 / 11053 | 14773 / 10990 | 14885 / 11044 | — |
+| docs.stripe.com/get-started/account/teams | 472 / 9 | 691 / 146 | 691 / 146 | 655 / 143 | 9460 / 7831 | 9345 / 7759 | 9430 / 7822 | — |
+| docs.stripe.com/get-started/account/teams/roles | 4610 / 21 | 4792 / 149 | 4792 / 149 | 4769 / 146 | 13437 / 8277 | 13362 / 8223 | 13416 / 8277 | — |
+| docs.stripe.com/get-started/data-migrations/export-file | 6738 / 23 | 1990 / 140 | 1990 / 140 | 6886 / 137 | 16129 / 8168 | 15978 / 8114 | 16090 / 8150 | — |
+| docs.stripe.com/get-started/data-migrations/map-payment | 283 / 34 | 455 / 128 | 455 / 128 | 408 / 125 | 9097 / 8077 | 9022 / 8041 | 9076 / 8077 | — |
+| docs.stripe.com/get-started/data-migrations/pan-copy-se | 2587 / 9 | 2889 / 128 | 2889 / 128 | 2745 / 125 | 15156 / 7852 | 14968 / 7807 | 15144 / 7861 | — |
+| docs.stripe.com/get-started/data-migrations/pan-export | 426 / 5 | 605 / 136 | 605 / 136 | 588 / 133 | 8975 / 7643 | 8900 / 7589 | 8954 / 7643 | — |
+| docs.stripe.com/get-started/data-migrations/pan-import | 2580 / 29 | 2877 / 124 | 2877 / 124 | 2724 / 121 | 14759 / 8292 | 14567 / 8247 | 14747 / 8301 | — |
+| docs.stripe.com/get-started/data-migrations/payment-met | 1570 / 17 | 1847 / 129 | 1847 / 129 | 1724 / 126 | 16484 / 7995 | 16316 / 7941 | 16463 / 7995 | — |
+| docs.stripe.com/get-started/data-migrations/supplementa | 519 / 20 | 692 / 128 | 671 / 128 | 663 / 125 | 9351 / 7825 | 9246 / 7753 | 9321 / 7816 | — |
+| docs.stripe.com/ips | 617 / 14 | 842 / 163 | 842 / 163 | 797 / 160 | 16098 / 7876 | 15979 / 7804 | 16059 / 7858 | — |
+| docs.stripe.com/issuing/customer-support | 1669 / 10 | 1998 / 268 | 1998 / 268 | 1961 / 265 | 12479 / 8022 | 12393 / 7977 | 12485 / 8049 | — |
+| docs.stripe.com/issuing/integration-guides | 123 / 13 | 431 / 267 | 410 / 267 | 408 / 264 | 8231 / 7420 | 8156 / 7366 | 8210 / 7420 | — |
+| docs.stripe.com/issuing/integration-guides/b2b-payments | 790 / 7 | 1149 / 270 | 1149 / 270 | 1085 / 267 | 15354 / 10967 | 15241 / 10922 | 15324 / 10958 | — |
+| docs.stripe.com/issuing/integration-guides/embedded-fin | 2398 / 12 | 2817 / 270 | 2817 / 270 | 2690 / 267 | 27685 / 11323 | 27488 / 11260 | 27664 / 11323 | — |
+| docs.stripe.com/issuing/integration-guides/fleet | 1852 / 8 | 2275 / 269 | 2275 / 269 | 2146 / 266 | 24143 / 11186 | 23951 / 11132 | 24113 / 11177 | — |
+| docs.stripe.com/issuing/onboarding-overview | 1092 / 4 | 1475 / 262 | 1475 / 262 | 1381 / 259 | 12408 / 7883 | 12260 / 7829 | 12387 / 7883 | — |
+| docs.stripe.com/issuing/sample-app | 515 / 26 | 910 / 262 | 910 / 262 | 789 / 259 | 11976 / 8100 | 11812 / 8046 | 11955 / 8100 | — |
+| docs.stripe.com/keys | 3569 / 16 | 3906 / 168 | 3906 / 168 | 3779 / 165 | 26073 / 11248 | 25833 / 11194 | 26079 / 11275 | — |
+| docs.stripe.com/keys-best-practices | 1189 / 15 | 1515 / 173 | 1515 / 173 | 1380 / 170 | 20838 / 10852 | 20651 / 10798 | 20817 / 10852 | — |
+| docs.stripe.com/keys/restricted-api-keys | 1704 / 14 | 2154 / 172 | 2133 / 172 | 1909 / 169 | 18912 / 7936 | 18603 / 7882 | 18909 / 7954 | — |
+| docs.stripe.com/metadata | 1593 / 15 | 1887 / 162 | 1887 / 162 | 1771 / 159 | 24044 / 11205 | 23863 / 11142 | 24005 / 11187 | — |
+| docs.stripe.com/metadata/use-cases | 2122 / 15 | 2423 / 165 | 2423 / 165 | 2303 / 162 | 29287 / 11010 | 29127 / 10974 | 29266 / 11010 | — |
+| docs.stripe.com/money-management | 181 / 23 | 277 / 64 | 277 / 64 | 253 / 61 | 7973 / 7077 | 7898 / 7023 | 7952 / 7077 | — |
+| docs.stripe.com/payment-authentication/writing-queries | 624 / 14 | 845 / 169 | 845 / 169 | 810 / 166 | 11052 / 8089 | 10959 / 8035 | 11040 / 8098 | — |
+| docs.stripe.com/payments/checkout/pricing-table | 2244 / 19 | 2656 / 218 | 2656 / 218 | 2483 / 215 | 18011 / 11340 | 17797 / 11295 | 17972 / 11322 | — |
+| docs.stripe.com/products | 20 / 20 | 243 / 100 | 243 / 100 | 219 / 97 | 7849 / 7213 | 7774 / 7159 | 7828 / 7213 | — |
+| docs.stripe.com/products-prices/manage-prices | 3915 / 21 | 4169 / 139 | 4169 / 139 | 4073 / 136 | 28420 / 10821 | 28225 / 10767 | 28390 / 10812 | — |
+| docs.stripe.com/products-prices/overview | 133 / 19 | 306 / 134 | 306 / 134 | 283 / 131 | 8020 / 7275 | 7945 / 7221 | 7999 / 7275 | — |
+| docs.stripe.com/products-prices/pricing-models | 262 / 17 | 544 / 241 | 544 / 241 | 527 / 238 | 9560 / 8014 | 9485 / 7960 | 9539 / 8014 | — |
+| docs.stripe.com/rate-limits | 1647 / 14 | 1891 / 161 | 1870 / 161 | 1825 / 158 | 21539 / 10847 | 21399 / 10775 | 21518 / 10847 | — |
+| docs.stripe.com/saas | 978 / 19 | 1127 / 36 | 1127 / 36 | 1032 / 33 | 23789 / 7905 | 23656 / 7851 | 23795 / 7932 | — |
+| docs.stripe.com/subscriptions/pricing-models/flat-rate- | 316 / 8 | 608 / 243 | 608 / 243 | 582 / 240 | 11033 / 7836 | 10958 / 7782 | 11012 / 7836 | — |
+| docs.stripe.com/subscriptions/pricing-models/per-seat-p | 323 / 7 | 609 / 242 | 609 / 242 | 589 / 239 | 10651 / 7834 | 10576 / 7780 | 10630 / 7834 | — |
+| docs.stripe.com/subscriptions/pricing-models/tiered-pri | 1111 / 7 | 1418 / 242 | 1418 / 242 | 1379 / 239 | 12664 / 8010 | 12573 / 7956 | 12634 / 8001 | — |
+| docs.stripe.com/upgrades | 7660 / 17 | 7884 / 122 | 7884 / 122 | 7811 / 119 | 30109 / 7926 | 29957 / 7863 | 30097 / 7935 | — |
+| docs.stripe.com/upgrades/manage-payment-methods | 788 / 17 | 1041 / 197 | 1041 / 197 | 999 / 194 | 17424 / 10586 | 17324 / 10532 | 17403 / 10586 | — |
+
+</details>
+
+## blog-engineering
+
+| Tool | Avg words | Preamble [1] | Repeat rate | Junk found | Headings | Code blocks | Precision | Recall |
+|---|---|---|---|---|---|---|---|---|
+| **markcrawl** | 667 | 36 | 0% | 1 | 14.3 | 0.4 | 100% | 33% |
+| crawl4ai | 2301 | 697 ⚠ | 2% | 201 | 20.3 | 0.4 | 100% | 72% |
+| crawl4ai-raw | 2301 | 697 ⚠ | 2% | 201 | 20.3 | 0.4 | 100% | 72% |
+| scrapy+md | 659 | 8 | 0% | 1 | 14.3 | 0.4 | 100% | 33% |
+| crawlee | 3576 | 1923 ⚠ | 3% | 228 | 20.3 | 0.4 | 100% | 98% |
+| colly+md | 3048 | 1526 ⚠ | 4% | 141 | 20.3 | 0.3 | 99% | 93% |
+| playwright | 3584 | 1930 ⚠ | 3% | 231 | 20.3 | 0.4 | 99% | 98% |
+| firecrawl | — | — | — | — | — | — | — | — |
+
+**[1]** Avg words per page before the first heading (nav chrome). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
+
+**Reading the numbers:**
+**scrapy+md** produces the cleanest output with 8 words of preamble per page, while **playwright** injects 1930 words of nav chrome before content begins. The word count gap (659 vs 3584 avg words) is largely explained by preamble: 1930 words of nav chrome account for ~54% of playwright's output on this site. scrapy+md's lower recall (33% vs 98%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
+
+<details>
+<summary>Sample output — first 40 lines of <code>github.blog/news-insights/the-library/diff-your-gist</code></summary>
+
+This shows what each tool outputs at the *top* of the same page.
+Nav boilerplate appears here before the real content starts.
+
+**markcrawl**
+```
+*@NV has ported ucnv’s Diff for Gist Greasemonkey script to a Chrome Extension. img http://img.skitch.com/20100127-nxct1q4y315uwen8nr6w896upk.png http://chrome.google.com/extensions/detail/ekibhngllckenihijddjkmehiocljcpc Pretty cool – I’ve been using it since I first saw it. And if…*
+
+
+[Home](https://github.blog/) / [News & insights](https://github.blog/news-insights/) / [The library](https://github.blog/news-insights/the-library/)
+
+# Diff Your Gist
+
+@NV has ported ucnv’s Diff for Gist Greasemonkey script to a Chrome Extension. img http://img.skitch.com/20100127-nxct1q4y315uwen8nr6w896upk.png http://chrome.google.com/extensions/detail/ekibhngllckenihijddjkmehiocljcpc Pretty cool – I’ve been using it since I first saw it. And if…
+
+[Chris Wanstrath](https://github.blog/author/defunkt/ "Posts by Chris Wanstrath")·[@defunkt](https://github.com/defunkt)
+
+January 27, 2010
+|
+
+Updated January 4, 2019
+
+* Share:
+
+@NV has ported [ucnv’s](http://userscripts.org/users/ucnv) [Diff for Gist](http://userscripts.org/scripts/show/62706) Greasemonkey script to a [Chrome Extension](http://chrome.google.com/extensions/detail/ekibhngllckenihijddjkmehiocljcpc).
+
+img <http://img.skitch.com/20100127-nxct1q4y315uwen8nr6w896upk.png> <http://chrome.google.com/extensions/detail/ekibhngllckenihijddjkmehiocljcpc>
+
+Pretty cool – I’ve been using it since I first saw it. And if you’re looking for more UserScripts, @NV has also released a [github-live-preview](http://github.com/NV/github-live-preview).
+
+## Written by
+
+### [Chris Wanstrath](https://github.blog/author/defunkt/)
+
+[@defunkt](https://github.com/defunkt)
+
+## Related posts
+
+[Company news](https://github.blog/news-insights/company-news/)
+
+### [GitHub availability report: March 2026](https://github.blog/news-insights/company-news/github-availability-report-march-2026/)
+
+In March, we experienced four incidents that resulted in degraded performance across GitHub services.
+
+[Company news](https://github.blog/news-insights/company-news/)
+```
+
+**crawl4ai**
+```
+[ Skip to content ](https://github.blog/news-insights/the-library/diff-your-gist/#start-of-content) [ Skip to sidebar ](https://github.blog/news-insights/the-library/diff-your-gist/#sidebar)
+[ ](https://github.com) / [ Blog](https://github.blog/)
+  * [Changelog](https://github.blog/changelog/)
+  * [Docs](https://docs.github.com/)
+  * [Customer stories](https://github.com/customer-stories)
+
+
+[ Try GitHub Copilot  ](https://github.com/features/copilot?utm_source=blog-tap-nav&utm_medium=blog&utm_campaign=universe25) [ See what's new  ](https://github.com/events/universe/recap?utm_source=k2k-blog-tap-nav&utm_medium=blog&utm_campaign=universe25)
+  * [AI & ML](https://github.blog/ai-and-ml/)
+    * [AI & ML](https://github.blog/ai-and-ml/)
+Learn about artificial intelligence and machine learning across the GitHub ecosystem and the wider industry.
+      * [Generative AI](https://github.blog/ai-and-ml/generative-ai/)
+Learn how to build with generative AI.
+      * [GitHub Copilot](https://github.blog/ai-and-ml/github-copilot/)
+Change how you work with GitHub Copilot.
+      * [LLMs](https://github.blog/ai-and-ml/llms/)
+Everything developers need to know about LLMs.
+      * [Machine learning](https://github.blog/ai-and-ml/machine-learning/)
+Machine learning tips, tricks, and best practices.
+    * ![](https://github.blog/wp-content/uploads/2024/06/AI-DarkMode-4.png?resize=800%2C425)
+[How AI code generation works](https://github.blog/ai-and-ml/generative-ai/how-ai-code-generation-works/)
+Explore the capabilities and benefits of AI code generation and how it can improve your developer experience.
+Learn more
+  * [Developer skills](https://github.blog/developer-skills/)
+    * [Developer skills](https://github.blog/developer-skills/)
+Resources for developers to grow in their skills and careers.
+      * [Application development](https://github.blog/developer-skills/application-development/)
+Insights and best practices for building apps.
+      * [Career growth](https://github.blog/developer-skills/career-growth/)
+Tips & tricks to grow as a professional developer.
+      * [GitHub](https://github.blog/developer-skills/github/)
+Improve how you use GitHub at work.
+      * [GitHub Education](https://github.blog/developer-skills/github-education/)
+Learn how to move into your first professional role.
+      * [Programming languages & frameworks](https://github.blog/developer-skills/programming-languages-and-frameworks/)
+Stay current on what’s new (or new again).
+    * ![](https://github.blog/wp-content/uploads/2024/05/Enterprise-DarkMode-3.png?resize=800%2C425)
+[Get started with GitHub documentation](https://docs.github.com/en/get-started)
+Learn how to start building, shipping, and maintaining software with GitHub.
+Learn more
+```
+
+**crawl4ai-raw**
+```
+[ Skip to content ](https://github.blog/news-insights/the-library/diff-your-gist/#start-of-content) [ Skip to sidebar ](https://github.blog/news-insights/the-library/diff-your-gist/#sidebar)
+[ ](https://github.com) / [ Blog](https://github.blog/)
+  * [Changelog](https://github.blog/changelog/)
+  * [Docs](https://docs.github.com/)
+  * [Customer stories](https://github.com/customer-stories)
+
+
+[ Try GitHub Copilot  ](https://github.com/features/copilot?utm_source=blog-tap-nav&utm_medium=blog&utm_campaign=universe25) [ See what's new  ](https://github.com/events/universe/recap?utm_source=k2k-blog-tap-nav&utm_medium=blog&utm_campaign=universe25)
+  * [AI & ML](https://github.blog/ai-and-ml/)
+    * [AI & ML](https://github.blog/ai-and-ml/)
+Learn about artificial intelligence and machine learning across the GitHub ecosystem and the wider industry.
+      * [Generative AI](https://github.blog/ai-and-ml/generative-ai/)
+Learn how to build with generative AI.
+      * [GitHub Copilot](https://github.blog/ai-and-ml/github-copilot/)
+Change how you work with GitHub Copilot.
+      * [LLMs](https://github.blog/ai-and-ml/llms/)
+Everything developers need to know about LLMs.
+      * [Machine learning](https://github.blog/ai-and-ml/machine-learning/)
+Machine learning tips, tricks, and best practices.
+    * ![](https://github.blog/wp-content/uploads/2024/06/AI-DarkMode-4.png?resize=800%2C425)
+[How AI code generation works](https://github.blog/ai-and-ml/generative-ai/how-ai-code-generation-works/)
+Explore the capabilities and benefits of AI code generation and how it can improve your developer experience.
+Learn more
+  * [Developer skills](https://github.blog/developer-skills/)
+    * [Developer skills](https://github.blog/developer-skills/)
+Resources for developers to grow in their skills and careers.
+      * [Application development](https://github.blog/developer-skills/application-development/)
+Insights and best practices for building apps.
+      * [Career growth](https://github.blog/developer-skills/career-growth/)
+Tips & tricks to grow as a professional developer.
+      * [GitHub](https://github.blog/developer-skills/github/)
+Improve how you use GitHub at work.
+      * [GitHub Education](https://github.blog/developer-skills/github-education/)
+Learn how to move into your first professional role.
+      * [Programming languages & frameworks](https://github.blog/developer-skills/programming-languages-and-frameworks/)
+Stay current on what’s new (or new again).
+    * ![](https://github.blog/wp-content/uploads/2024/05/Enterprise-DarkMode-3.png?resize=800%2C425)
+[Get started with GitHub documentation](https://docs.github.com/en/get-started)
+Learn how to start building, shipping, and maintaining software with GitHub.
+Learn more
+```
+
+**scrapy+md**
+```
+[Home](https://github.blog/) / [News & insights](https://github.blog/news-insights/) / [The library](https://github.blog/news-insights/the-library/)
+
+# Diff Your Gist
+
+@NV has ported ucnv’s Diff for Gist Greasemonkey script to a Chrome Extension. img http://img.skitch.com/20100127-nxct1q4y315uwen8nr6w896upk.png http://chrome.google.com/extensions/detail/ekibhngllckenihijddjkmehiocljcpc Pretty cool – I’ve been using it since I first saw it. And if…
+
+[Chris Wanstrath](https://github.blog/author/defunkt/ "Posts by Chris Wanstrath")·[@defunkt](https://github.com/defunkt)
+
+January 27, 2010 
+|
+
+Updated January 4, 2019
+
+* Share:
+
+@NV has ported [ucnv’s](http://userscripts.org/users/ucnv) [Diff for Gist](http://userscripts.org/scripts/show/62706) Greasemonkey script to a [Chrome Extension](http://chrome.google.com/extensions/detail/ekibhngllckenihijddjkmehiocljcpc).
+
+img <http://img.skitch.com/20100127-nxct1q4y315uwen8nr6w896upk.png> <http://chrome.google.com/extensions/detail/ekibhngllckenihijddjkmehiocljcpc>
+
+Pretty cool – I’ve been using it since I first saw it. And if you’re looking for more UserScripts, @NV has also released a [github-live-preview](http://github.com/NV/github-live-preview).
+
+## Written by
+
+### [Chris Wanstrath](https://github.blog/author/defunkt/)
+
+[@defunkt](https://github.com/defunkt)
+
+## Related posts
+
+[Company news](https://github.blog/news-insights/company-news/)
+
+### [GitHub availability report: March 2026](https://github.blog/news-insights/company-news/github-availability-report-march-2026/)
+
+In March, we experienced four incidents that resulted in degraded performance across GitHub services.
+
+[Jakub Oleksy](https://github.blog/author/jakuboleksy/ "Posts by Jakub Oleksy")
+
+[Company news](https://github.blog/news-insights/company-news/)
+
+### [GitHub Universe is back: We want you to take the stage](https://github.blog/news-insights/company-news/github-universe-is-back-we-want-you-to-take-the-stage/)
+```
+
+**crawlee**
+```
+Diff Your Gist - The GitHub Blog
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"@context":"https:\/\/schema.org","headline":"Diff Your Gist","author":{"@type":"Person","name":"Chris Wanstrath"},"datePublished":"2010-01-27T20:54:21-08:00","abstract":"@NV has ported ucnv&#8217;s Diff for Gist Greasemonkey script to a Chrome Extension. img http:\/\/img.skitch.com\/20100127-nxct1q4y315uwen8nr6w896upk.png http:\/\/chrome.google.com\/extensions\/detail\/ekibhngllckenihijddjkmehiocljcpc Pretty cool &#8211; I&#8217;ve been using it since I first saw it. And if&hellip;","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/the-library\/diff-your-gist\/"},"@type":"TechArticle"}
+{"@context":"https:\/\/schema.org","headline":"Diff Your Gist","author":{"@type":"Person","name":"Chris Wanstrath"},"datePublished":"2010-01-27T20:54:21-08:00","abstract":"@NV has ported ucnv&#8217;s Diff for Gist Greasemonkey script to a Chrome Extension. img http:\/\/img.skitch.com\/20100127-nxct1q4y315uwen8nr6w896upk.png http:\/\/chrome.google.com\/extensions\/detail\/ekibhngllckenihijddjkmehiocljcpc Pretty cool &#8211; I&#8217;ve been using it since I first saw it. And if&hellip;","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/the-library\/diff-your-gist\/"},"@type":"BlogPosting"}
+{"@context":"https:\/\/schema.org","@graph":[{"@type":"Article","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#article","isPartOf":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/"},"author":[{"@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d"}],"headline":"Diff Your Gist","datePublished":"2010-01-28T04:54:21+00:00","dateModified":"2019-01-04T16:40:55+00:00","mainEntityOfPage":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/"},"wordCount":64,"articleSection":["News &amp; insights","The library"],"inLanguage":"en-US"},{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/","url":"https:\/\/github.blog\/news-insights\/diff-your-gist\/","name":"Diff Your Gist - The GitHub Blog","isPartOf":{"@id":"https:\/\/github.blog\/#website"},"datePublished":"2010-01-28T04:54:21+00:00","dateModified":"2019-01-04T16:40:55+00:00","author":{"@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d"},"breadcrumb":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https:\/\/github.blog\/news-insights\/diff-your-gist\/"]}]},{"@type":"BreadcrumbList","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https:\/\/github.blog\/"},{"@type":"ListItem","position":2,"name":"News &amp; insights","item":"https:\/\/github.blog\/news-insights\/"},{"@type":"ListItem","position":3,"name":"The library","item":"https:\/\/github.blog\/news-insights\/the-library\/"},{"@type":"ListItem","position":4,"name":"Diff Your Gist"}]},{"@type":"WebSite","@id":"https:\/\/github.blog\/#website","url":"https:\/\/github.blog\/","name":"The GitHub Blog","description":"Updates, ideas, and inspiration from GitHub to help developers build and design software.","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/github.blog\/?s={search\_term\_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search\_term\_string"}}],"inLanguage":"en-US"},{"@type":"Person","@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d","name":"Chris Wanstrath","image":{"@type":"ImageObject","inLanguage":"en-US","@id":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g289c11bc82a60609a31604c4517156a7","url":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g","contentUrl":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g","caption":"Chris Wanstrath"},"sameAs":["http:\/\/chriswanstrath.com\/"],"url":"https:\/\/github.blog\/author\/defunkt\/"}]}
+
+
+
+
+
+
+
+
+
+
+
+
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/\*# sourceURL=wp-img-auto-sizes-contain-inline-css \*/
+
+img.wp-smiley, img.emoji {
+display: inline !important;
+border: none !important;
+box-shadow: none !important;
+height: 1em !important;
+width: 1em !important;
+margin: 0 0.07em !important;
+vertical-align: -0.1em !important;
+```
+
+**colly+md**
+```
+Diff Your Gist - The GitHub Blog
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"@context":"https:\/\/schema.org","headline":"Diff Your Gist","author":{"@type":"Person","name":"Chris Wanstrath"},"datePublished":"2010-01-27T20:54:21-08:00","abstract":"@NV has ported ucnv&#8217;s Diff for Gist Greasemonkey script to a Chrome Extension. img http:\/\/img.skitch.com\/20100127-nxct1q4y315uwen8nr6w896upk.png http:\/\/chrome.google.com\/extensions\/detail\/ekibhngllckenihijddjkmehiocljcpc Pretty cool &#8211; I&#8217;ve been using it since I first saw it. And if&hellip;","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/the-library\/diff-your-gist\/"},"@type":"TechArticle"}
+{"@context":"https:\/\/schema.org","headline":"Diff Your Gist","author":{"@type":"Person","name":"Chris Wanstrath"},"datePublished":"2010-01-27T20:54:21-08:00","abstract":"@NV has ported ucnv&#8217;s Diff for Gist Greasemonkey script to a Chrome Extension. img http:\/\/img.skitch.com\/20100127-nxct1q4y315uwen8nr6w896upk.png http:\/\/chrome.google.com\/extensions\/detail\/ekibhngllckenihijddjkmehiocljcpc Pretty cool &#8211; I&#8217;ve been using it since I first saw it. And if&hellip;","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/the-library\/diff-your-gist\/"},"@type":"BlogPosting"}
+{"@context":"https:\/\/schema.org","@graph":[{"@type":"Article","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#article","isPartOf":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/"},"author":[{"@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d"}],"headline":"Diff Your Gist","datePublished":"2010-01-28T04:54:21+00:00","dateModified":"2019-01-04T16:40:55+00:00","mainEntityOfPage":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/"},"wordCount":64,"articleSection":["News &amp; insights","The library"],"inLanguage":"en-US"},{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/","url":"https:\/\/github.blog\/news-insights\/diff-your-gist\/","name":"Diff Your Gist - The GitHub Blog","isPartOf":{"@id":"https:\/\/github.blog\/#website"},"datePublished":"2010-01-28T04:54:21+00:00","dateModified":"2019-01-04T16:40:55+00:00","author":{"@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d"},"breadcrumb":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https:\/\/github.blog\/news-insights\/diff-your-gist\/"]}]},{"@type":"BreadcrumbList","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https:\/\/github.blog\/"},{"@type":"ListItem","position":2,"name":"News &amp; insights","item":"https:\/\/github.blog\/news-insights\/"},{"@type":"ListItem","position":3,"name":"The library","item":"https:\/\/github.blog\/news-insights\/the-library\/"},{"@type":"ListItem","position":4,"name":"Diff Your Gist"}]},{"@type":"WebSite","@id":"https:\/\/github.blog\/#website","url":"https:\/\/github.blog\/","name":"The GitHub Blog","description":"Updates, ideas, and inspiration from GitHub to help developers build and design software.","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/github.blog\/?s={search\_term\_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search\_term\_string"}}],"inLanguage":"en-US"},{"@type":"Person","@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d","name":"Chris Wanstrath","image":{"@type":"ImageObject","inLanguage":"en-US","@id":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g289c11bc82a60609a31604c4517156a7","url":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g","contentUrl":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g","caption":"Chris Wanstrath"},"sameAs":["http:\/\/chriswanstrath.com\/"],"url":"https:\/\/github.blog\/author\/defunkt\/"}]}
+
+
+
+
+
+
+
+
+
+
+
+
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/\*# sourceURL=wp-img-auto-sizes-contain-inline-css \*/
+
+img.wp-smiley, img.emoji {
+display: inline !important;
+border: none !important;
+box-shadow: none !important;
+height: 1em !important;
+width: 1em !important;
+margin: 0 0.07em !important;
+vertical-align: -0.1em !important;
+```
+
+**playwright**
+```
+Diff Your Gist - The GitHub Blog
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"@context":"https:\/\/schema.org","headline":"Diff Your Gist","author":{"@type":"Person","name":"Chris Wanstrath"},"datePublished":"2010-01-27T20:54:21-08:00","abstract":"@NV has ported ucnv&#8217;s Diff for Gist Greasemonkey script to a Chrome Extension. img http:\/\/img.skitch.com\/20100127-nxct1q4y315uwen8nr6w896upk.png http:\/\/chrome.google.com\/extensions\/detail\/ekibhngllckenihijddjkmehiocljcpc Pretty cool &#8211; I&#8217;ve been using it since I first saw it. And if&hellip;","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/the-library\/diff-your-gist\/"},"@type":"TechArticle"}
+{"@context":"https:\/\/schema.org","headline":"Diff Your Gist","author":{"@type":"Person","name":"Chris Wanstrath"},"datePublished":"2010-01-27T20:54:21-08:00","abstract":"@NV has ported ucnv&#8217;s Diff for Gist Greasemonkey script to a Chrome Extension. img http:\/\/img.skitch.com\/20100127-nxct1q4y315uwen8nr6w896upk.png http:\/\/chrome.google.com\/extensions\/detail\/ekibhngllckenihijddjkmehiocljcpc Pretty cool &#8211; I&#8217;ve been using it since I first saw it. And if&hellip;","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/the-library\/diff-your-gist\/"},"@type":"BlogPosting"}
+{"@context":"https:\/\/schema.org","@graph":[{"@type":"Article","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#article","isPartOf":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/"},"author":[{"@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d"}],"headline":"Diff Your Gist","datePublished":"2010-01-28T04:54:21+00:00","dateModified":"2019-01-04T16:40:55+00:00","mainEntityOfPage":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/"},"wordCount":64,"articleSection":["News &amp; insights","The library"],"inLanguage":"en-US"},{"@type":"WebPage","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/","url":"https:\/\/github.blog\/news-insights\/diff-your-gist\/","name":"Diff Your Gist - The GitHub Blog","isPartOf":{"@id":"https:\/\/github.blog\/#website"},"datePublished":"2010-01-28T04:54:21+00:00","dateModified":"2019-01-04T16:40:55+00:00","author":{"@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d"},"breadcrumb":{"@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https:\/\/github.blog\/news-insights\/diff-your-gist\/"]}]},{"@type":"BreadcrumbList","@id":"https:\/\/github.blog\/news-insights\/diff-your-gist\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https:\/\/github.blog\/"},{"@type":"ListItem","position":2,"name":"News &amp; insights","item":"https:\/\/github.blog\/news-insights\/"},{"@type":"ListItem","position":3,"name":"The library","item":"https:\/\/github.blog\/news-insights\/the-library\/"},{"@type":"ListItem","position":4,"name":"Diff Your Gist"}]},{"@type":"WebSite","@id":"https:\/\/github.blog\/#website","url":"https:\/\/github.blog\/","name":"The GitHub Blog","description":"Updates, ideas, and inspiration from GitHub to help developers build and design software.","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/github.blog\/?s={search\_term\_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search\_term\_string"}}],"inLanguage":"en-US"},{"@type":"Person","@id":"https:\/\/github.blog\/#\/schema\/person\/159f1a6ddb285af554ae75915884730d","name":"Chris Wanstrath","image":{"@type":"ImageObject","inLanguage":"en-US","@id":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g289c11bc82a60609a31604c4517156a7","url":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g","contentUrl":"https:\/\/secure.gravatar.com\/avatar\/33666dec44de96b88e8c117b8c17efe29a62dacd06c4abf72cf969a74775381a?s=96&d=mm&r=g","caption":"Chris Wanstrath"},"sameAs":["http:\/\/chriswanstrath.com\/"],"url":"https:\/\/github.blog\/author\/defunkt\/"}]}
+
+
+
+
+
+
+
+
+
+
+
+
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/\*# sourceURL=wp-img-auto-sizes-contain-inline-css \*/
+
+img.wp-smiley, img.emoji {
+display: inline !important;
+border: none !important;
+box-shadow: none !important;
+height: 1em !important;
+width: 1em !important;
+margin: 0 0.07em !important;
+vertical-align: -0.1em !important;
+```
+
+**firecrawl** — no output for this URL
+
+</details>
+
+<details>
+<summary>Per-page word counts and preamble [1]</summary>
+
+| URL | markcrawl words / preamble [1] | crawl4ai words / preamble [1] | crawl4ai-raw words / preamble [1] | scrapy+md words / preamble [1] | crawlee words / preamble [1] | colly+md words / preamble [1] | playwright words / preamble [1] | firecrawl words / preamble [1] |
+|---|---|---|---|---|---|---|---|---|
+| github.blog/engineering/architecture-optimization/intro | 2215 / 37 | 3900 / 697 | 3900 / 697 | 2211 / 7 | 5052 / 1847 | 4563 / 1449 | 5052 / 1847 | — |
+| github.blog/engineering/engineering-principles/move-fas | 4027 / 36 | 5717 / 697 | 5717 / 697 | 4023 / 6 | 7390 / 2372 | — | 6882 / 1865 | — |
+| github.blog/engineering/engineering-principles/scripts- | 777 / 36 | 2445 / 697 | 2445 / 697 | 773 / 6 | 3628 / 1861 | 3139 / 1463 | 4136 / 2368 | — |
+| github.blog/engineering/infrastructure/building-resilie | 3235 / 35 | 4913 / 697 | 4913 / 697 | 3231 / 5 | 6080 / 1855 | 5591 / 1457 | 6080 / 1855 | — |
+| github.blog/engineering/infrastructure/context-aware-my | 2584 / 35 | 4260 / 697 | 4260 / 697 | 2580 / 5 | 5439 / 1865 | — | 5439 / 1865 | — |
+| github.blog/engineering/infrastructure/evolution-of-our | 1487 / 35 | 3159 / 697 | 3159 / 697 | 1483 / 5 | 4337 / 1860 | 4356 / 1969 | 4337 / 1860 | — |
+| github.blog/engineering/infrastructure/githubs-metal-cl | 1727 / 35 | 3407 / 697 | 3407 / 697 | 1723 / 5 | 4593 / 1876 | 4104 / 1478 | 4593 / 1876 | — |
+| github.blog/engineering/infrastructure/glb-director-ope | 3858 / 35 | 5601 / 697 | 5601 / 697 | 3854 / 5 | 7221 / 2372 | 6224 / 1467 | 6713 / 1865 | — |
+| github.blog/engineering/infrastructure/kubernetes-at-gi | 3034 / 35 | 4735 / 697 | 4735 / 697 | 3030 / 5 | 5874 / 1850 | — | 6382 / 2357 | — |
+| github.blog/engineering/infrastructure/orchestrator-git | 2752 / 35 | 4436 / 697 | 4436 / 697 | 2748 / 5 | 5590 / 1848 | — | 5590 / 1848 | — |
+| github.blog/engineering/infrastructure/transit-and-peer | 1508 / 35 | 3185 / 697 | 3185 / 697 | 1504 / 5 | 4381 / 1883 | — | 4381 / 1883 | — |
+| github.blog/engineering/platform-security/soft-u2f | 675 / 36 | 2346 / 697 | 2346 / 697 | 671 / 6 | 3508 / 1843 | 3019 / 1445 | 3508 / 1843 | — |
+| github.blog/engineering/platform-security/syn-flood-mit | 1876 / 36 | 3558 / 697 | 3558 / 697 | 1872 / 6 | 4729 / 1863 | 4240 / 1465 | 5237 / 2370 | — |
+| github.blog/engineering/user-experience/like-injection | 1054 / 36 | 2721 / 697 | 2721 / 697 | 1050 / 6 | 3887 / 1843 | — | 3887 / 1843 | — |
+| github.blog/engineering/user-experience/topics | 2946 / 36 | 4620 / 697 | 4620 / 697 | 2943 / 6 | 5804 / 1867 | 5315 / 1469 | 6312 / 2374 | — |
+| github.blog/latest | 808 / 16 | 2942 / 692 | 2942 / 692 | 1039 / 3 | 4325 / 2295 | 3329 / 1390 | 3817 / 1788 | — |
+| github.blog/news-insights/company-news/ddos-incident-re | 991 / 38 | 2629 / 697 | 2629 / 697 | 980 / 8 | 3839 / 1865 | — | 3839 / 1865 | — |
+| github.blog/news-insights/company-news/gh-ost-github-s- | 3138 / 38 | 4761 / 697 | 4761 / 697 | 3127 / 8 | 6006 / 1885 | — | 6006 / 1885 | — |
+| github.blog/news-insights/company-news/sha-1-collision- | 1193 / 38 | 2815 / 697 | 2815 / 697 | 1182 / 8 | 4041 / 1865 | — | 4549 / 2372 | — |
+| github.blog/news-insights/policy-news-and-insights/work | 670 / 37 | 2292 / 697 | 2292 / 697 | 659 / 7 | 3531 / 1878 | 3042 / 1480 | 3531 / 1878 | — |
+| github.blog/news-insights/product-news/recover-accounts | 1274 / 37 | 2903 / 697 | 2903 / 697 | 1263 / 7 | 4132 / 1875 | 3643 / 1477 | 4640 / 2382 | — |
+| github.blog/news-insights/the-library/a-few-words-on-th | 578 / 38 | 2200 / 697 | 2200 / 697 | 567 / 8 | 3438 / 1877 | — | 3438 / 1877 | — |
+| github.blog/news-insights/the-library/a-note-on-the-rec | 869 / 38 | 2491 / 697 | 2491 / 697 | 858 / 8 | 3723 / 1871 | 3234 / 1473 | 3723 / 1871 | — |
+| github.blog/news-insights/the-library/adhearsion-moves- | 396 / 38 | 2020 / 697 | 2020 / 697 | 385 / 8 | 3238 / 1859 | 2749 / 1461 | 3238 / 1859 | — |
+| github.blog/news-insights/the-library/annotated-downloa | 500 / 38 | 2122 / 697 | 2122 / 697 | 489 / 8 | 3330 / 1847 | 2841 / 1449 | 3330 / 1847 | — |
+| github.blog/news-insights/the-library/announcing-ernie- | 1160 / 38 | 2782 / 697 | 2782 / 697 | 1149 / 8 | 4008 / 1865 | 3519 / 1467 | 4008 / 1865 | — |
+| github.blog/news-insights/the-library/api-forum-grand-o | 361 / 38 | 1985 / 697 | 1985 / 697 | 350 / 8 | 3203 / 1859 | 2714 / 1461 | 3203 / 1859 | — |
+| github.blog/news-insights/the-library/basic-auth-post-r | 322 / 27 | 1957 / 697 | 1957 / 697 | 322 / 8 | 3147 / 1831 | 2658 / 1433 | 3147 / 1831 | — |
+| github.blog/news-insights/the-library/benchmarking-gith | 1973 / 38 | 3660 / 697 | 3660 / 697 | 1962 / 8 | 4809 / 1853 | 4320 / 1455 | 4809 / 1853 | — |
+| github.blog/news-insights/the-library/branch-lists | 777 / 38 | 2399 / 697 | 2399 / 697 | 766 / 8 | 3607 / 1847 | — | 3607 / 1847 | — |
+| github.blog/news-insights/the-library/brubeck | 1696 / 38 | 3327 / 697 | 3327 / 697 | 1685 / 8 | 4550 / 1871 | 4061 / 1473 | 4550 / 1871 | — |
+| github.blog/news-insights/the-library/cheat-git-chit | 426 / 38 | 2050 / 697 | 2050 / 697 | 415 / 8 | 3274 / 1865 | 2785 / 1467 | 3274 / 1865 | — |
+| github.blog/news-insights/the-library/check-your-usage | 369 / 38 | 1993 / 697 | 1993 / 697 | 358 / 8 | 3205 / 1853 | 2716 / 1455 | 3205 / 1853 | — |
+| github.blog/news-insights/the-library/cleaning-house | 407 / 38 | 2031 / 697 | 2031 / 697 | 396 / 8 | 3237 / 1847 | 2748 / 1449 | 3237 / 1847 | — |
+| github.blog/news-insights/the-library/closing-issues-wi | 364 / 38 | 1988 / 697 | 1988 / 697 | 353 / 8 | 3206 / 1859 | 2717 / 1461 | 3206 / 1859 | — |
+| github.blog/news-insights/the-library/code-in-the-open | 402 / 38 | 2026 / 697 | 2026 / 697 | 391 / 8 | 3244 / 1859 | — | 3244 / 1859 | — |
+| github.blog/news-insights/the-library/code-search-on-va | 329 / 29 | 1962 / 697 | 1962 / 697 | 327 / 8 | 3162 / 1841 | — | 3670 / 2348 | — |
+| github.blog/news-insights/the-library/committing-like-c | 431 / 38 | 2053 / 697 | 2053 / 697 | 420 / 8 | 3267 / 1853 | — | 3775 / 2360 | — |
+| github.blog/news-insights/the-library/control-git-with- | 359 / 38 | 1983 / 697 | 1983 / 697 | 348 / 8 | 3201 / 1859 | — | 3201 / 1859 | — |
+| github.blog/news-insights/the-library/cross-platform-ui | 1673 / 38 | 3306 / 697 | 3306 / 697 | 1662 / 8 | 4524 / 1868 | — | 4524 / 1868 | — |
+| github.blog/news-insights/the-library/cyber-monday-25-o | 454 / 38 | 2078 / 697 | 2078 / 697 | 443 / 8 | 3308 / 1871 | 3327 / 1980 | 3308 / 1871 | — |
+| github.blog/news-insights/the-library/dashboard-for-ipa | 346 / 35 | 1973 / 697 | 1973 / 697 | 338 / 8 | 3687 / 2354 | 2690 / 1449 | 3179 / 1847 | — |
+| github.blog/news-insights/the-library/deploying-without | 350 / 36 | 1976 / 697 | 1976 / 697 | 341 / 8 | 3190 / 1855 | — | 3190 / 1855 | — |
+| github.blog/news-insights/the-library/developing-with-s | 359 / 38 | 1983 / 697 | 1983 / 697 | 348 / 8 | 3195 / 1853 | — | 3703 / 2360 | — |
+| github.blog/news-insights/the-library/diff-your-gist | 366 / 38 | 1990 / 697 | 1990 / 697 | 355 / 8 | 3202 / 1853 | 2713 / 1455 | 3202 / 1853 | — |
+| github.blog/news-insights/the-library/dj-god | 299 / 20 | 1941 / 697 | 1941 / 697 | 306 / 8 | 3613 / 2312 | 2616 / 1407 | 3105 / 1805 | — |
+| github.blog/news-insights/the-library/downtime-tonight | 354 / 38 | 1978 / 697 | 1978 / 697 | 343 / 8 | 3184 / 1847 | 3203 / 1956 | 3184 / 1847 | — |
+| github.blog/news-insights/the-library/easily-share-ubiq | 329 / 29 | 1964 / 697 | 1964 / 697 | 327 / 8 | 3162 / 1841 | — | 3670 / 2348 | — |
+| github.blog/news-insights/the-library/easy-peezy-capist | 356 / 38 | 1980 / 697 | 1980 / 697 | 345 / 8 | 3198 / 1859 | — | 3198 / 1859 | — |
+| github.blog/news-insights/the-library/enhanced-ubiquity | 310 / 23 | 1949 / 697 | 1949 / 697 | 314 / 8 | 3131 / 1823 | 3150 / 1932 | 3131 / 1823 | — |
+| github.blog/news-insights/the-library/european-training | 403 / 38 | 2028 / 697 | 2028 / 697 | 392 / 8 | 3233 / 1847 | — | 3233 / 1847 | — |
+| github.blog/news-insights/the-library/exception-monitor | 1550 / 38 | 3197 / 697 | 3197 / 697 | 1539 / 8 | 4901 / 2367 | — | 4393 / 1860 | — |
+| github.blog/news-insights/the-library/facebook-s-memcac | 408 / 38 | 2032 / 697 | 2032 / 697 | 397 / 8 | 3250 / 1859 | — | 3250 / 1859 | — |
+| github.blog/news-insights/the-library/flash-in-javascri | 363 / 38 | 1987 / 697 | 1987 / 697 | 352 / 8 | 3199 / 1853 | — | 3199 / 1853 | — |
+| github.blog/news-insights/the-library/fork-you-india-2 | 317 / 25 | 1954 / 697 | 1954 / 697 | 319 / 8 | 3146 / 1833 | 2657 / 1435 | 3146 / 1833 | — |
+| github.blog/news-insights/the-library/fork-you-on-the-t | 271 / 9 | 1926 / 697 | 1926 / 697 | 289 / 8 | 3604 / 2320 | — | 3096 / 1813 | — |
+| github.blog/news-insights/the-library/fork-you-sighting | 306 / 21 | 1947 / 697 | 1947 / 697 | 312 / 8 | 3137 / 1831 | — | 3137 / 1831 | — |
+| github.blog/news-insights/the-library/fork-you-sighting | 269 / 9 | 1924 / 697 | 1924 / 697 | 287 / 8 | 3082 / 1801 | — | 3082 / 1801 | — |
+| github.blog/news-insights/the-library/fork-you-the-perf | 334 / 30 | 1968 / 697 | 1968 / 697 | 331 / 8 | 3180 / 1855 | — | 3180 / 1855 | — |
+| github.blog/news-insights/the-library/get-ready-to-rail | 411 / 38 | 2037 / 697 | 2037 / 697 | 400 / 8 | 3259 / 1865 | 3278 / 1974 | 3259 / 1865 | — |
+| github.blog/news-insights/the-library/ghc-haskell-movin | 413 / 38 | 2037 / 697 | 2037 / 697 | 402 / 8 | 3261 / 1865 | 2772 / 1467 | 3261 / 1865 | — |
+| github.blog/news-insights/the-library/gist-support-for- | 428 / 38 | 2052 / 697 | 2052 / 697 | 417 / 8 | 3270 / 1859 | 2781 / 1461 | 3270 / 1859 | — |
+| github.blog/news-insights/the-library/gist-vim-and-gist | 398 / 38 | 2024 / 697 | 2024 / 697 | 387 / 8 | 3234 / 1853 | 2745 / 1455 | 3234 / 1853 | — |
+| github.blog/news-insights/the-library/git-concurrency-i | 1686 / 38 | 3317 / 697 | 3317 / 697 | 1675 / 8 | 4534 / 1865 | — | 4534 / 1865 | — |
+| github.blog/news-insights/the-library/git-down-speaker- | 381 / 38 | 2008 / 697 | 2008 / 697 | 370 / 8 | 3223 / 1859 | 2734 / 1461 | 3223 / 1859 | — |
+| github.blog/news-insights/the-library/git-helps-people- | 378 / 38 | 2002 / 697 | 2002 / 697 | 367 / 8 | 3226 / 1865 | — | 3226 / 1865 | — |
+| github.blog/news-insights/the-library/git-in-haskell | 328 / 29 | 1961 / 697 | 1961 / 697 | 326 / 8 | 3155 / 1835 | 2666 / 1437 | 3155 / 1835 | — |
+| github.blog/news-insights/the-library/git-on-windows-ag | 308 / 22 | 1950 / 697 | 1950 / 697 | 313 / 8 | 3134 / 1827 | 3153 / 1936 | 3134 / 1827 | — |
+| github.blog/news-insights/the-library/git-over-bonjour | 384 / 38 | 2008 / 697 | 2008 / 697 | 373 / 8 | 3220 / 1853 | 2731 / 1455 | 3220 / 1853 | — |
+| github.blog/news-insights/the-library/git-remote-branch | 379 / 38 | 2003 / 697 | 2003 / 697 | 368 / 8 | 3203 / 1841 | — | 3203 / 1841 | — |
+| github.blog/news-insights/the-library/git-training | 354 / 38 | 1980 / 697 | 1980 / 697 | 343 / 8 | 3184 / 1847 | 3203 / 1956 | 3184 / 1847 | — |
+| github.blog/news-insights/the-library/git-tricks | 383 / 38 | 2008 / 697 | 2008 / 697 | 372 / 8 | 3213 / 1847 | — | 3213 / 1847 | — |
+| github.blog/news-insights/the-library/github-at-posscon | 393 / 38 | 2017 / 697 | 2017 / 697 | 382 / 8 | 3229 / 1853 | 2740 / 1455 | 3229 / 1853 | — |
+| github.blog/news-insights/the-library/github-at-railsco | 560 / 38 | 2182 / 697 | 2182 / 697 | 549 / 8 | 3396 / 1853 | — | 3396 / 1853 | — |
+| github.blog/news-insights/the-library/github-at-zendcon | 360 / 38 | 1984 / 697 | 1984 / 697 | 349 / 8 | 3196 / 1853 | 2707 / 1455 | 3196 / 1853 | — |
+| github.blog/news-insights/the-library/github-bookmarkle | 362 / 38 | 1986 / 697 | 1986 / 697 | 351 / 8 | 3192 / 1847 | — | 3192 / 1847 | — |
+| github.blog/news-insights/the-library/github-debug | 505 / 38 | 2135 / 697 | 2135 / 697 | 494 / 8 | 3336 / 1848 | 3355 / 1957 | 3336 / 1848 | — |
+| github.blog/news-insights/the-library/github-disaster-g | 458 / 38 | 2080 / 697 | 2080 / 697 | 447 / 8 | 3294 / 1853 | — | 3294 / 1853 | — |
+| github.blog/news-insights/the-library/github-for-the-re | 375 / 38 | 1999 / 697 | 1999 / 697 | 364 / 8 | 3235 / 1877 | 2746 / 1479 | 3235 / 1877 | — |
+| github.blog/news-insights/the-library/github-free-for-o | 492 / 38 | 2114 / 697 | 2114 / 697 | 481 / 8 | 3340 / 1865 | 2851 / 1467 | 3340 / 1865 | — |
+| github.blog/news-insights/the-library/github-google-gro | 331 / 30 | 1964 / 697 | 1964 / 697 | 328 / 8 | 3159 / 1837 | 2670 / 1439 | 3159 / 1837 | — |
+| github.blog/news-insights/the-library/github-in-your-la | 521 / 38 | 2143 / 697 | 2143 / 697 | 510 / 8 | 3363 / 1859 | 2874 / 1461 | 3363 / 1859 | — |
+| github.blog/news-insights/the-library/github-is-about-p | 374 / 38 | 1998 / 697 | 1998 / 697 | 363 / 8 | 3216 / 1859 | 2727 / 1461 | 3216 / 1859 | — |
+| github.blog/news-insights/the-library/github-is-hiring | 304 / 21 | 1945 / 697 | 1945 / 697 | 310 / 8 | 3631 / 2326 | 2634 / 1421 | 3631 / 2326 | — |
+| github.blog/news-insights/the-library/github-languages | 410 / 38 | 2035 / 697 | 2035 / 697 | 399 / 8 | 3240 / 1847 | 2751 / 1449 | 3240 / 1847 | — |
+| github.blog/news-insights/the-library/github-loves-ruby | 456 / 38 | 2078 / 697 | 2078 / 697 | 445 / 8 | 3298 / 1859 | 2809 / 1461 | 3298 / 1859 | — |
+| github.blog/news-insights/the-library/github-meetup-bou | 398 / 38 | 2023 / 697 | 2023 / 697 | 387 / 8 | 3252 / 1871 | — | 3760 / 2378 | — |
+| github.blog/news-insights/the-library/github-meetup-rio | 369 / 38 | 1993 / 697 | 1993 / 697 | 358 / 8 | 3217 / 1865 | — | 3217 / 1865 | — |
+| github.blog/news-insights/the-library/github-meetup-sf- | 384 / 38 | 2009 / 697 | 2009 / 697 | 373 / 8 | 3226 / 1859 | — | 3226 / 1859 | — |
+| github.blog/news-insights/the-library/github-meetup-sf- | 411 / 38 | 2038 / 697 | 2038 / 697 | 400 / 8 | 3253 / 1859 | 2764 / 1461 | 3253 / 1859 | — |
+| github.blog/news-insights/the-library/github-rebase-1 | 316 / 25 | 1955 / 697 | 1955 / 697 | 318 / 8 | 3139 / 1827 | 2650 / 1429 | 3139 / 1827 | — |
+| github.blog/news-insights/the-library/github-rebase-3 | 579 / 38 | 2203 / 697 | 2203 / 697 | 568 / 8 | 3415 / 1853 | — | 3415 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-33 | 780 / 38 | 2403 / 697 | 2403 / 697 | 769 / 8 | 3616 / 1853 | — | 3616 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-34 | 830 / 38 | 2453 / 697 | 2453 / 697 | 819 / 8 | 3666 / 1853 | 3177 / 1455 | 3666 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-35 | 843 / 38 | 2466 / 697 | 2466 / 697 | 832 / 8 | 4187 / 2360 | 3190 / 1455 | 3679 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-36 | 724 / 38 | 2347 / 697 | 2347 / 697 | 713 / 8 | 3560 / 1853 | — | 3560 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-4 | 630 / 38 | 2253 / 697 | 2253 / 697 | 619 / 8 | 3464 / 1853 | — | 3466 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-5 | 775 / 38 | 2398 / 697 | 2398 / 697 | 764 / 8 | 3611 / 1853 | 3122 / 1455 | 3611 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-6 | 807 / 38 | 2429 / 697 | 2429 / 697 | 796 / 8 | 3643 / 1853 | — | 3643 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-7 | 886 / 38 | 2509 / 697 | 2509 / 697 | 875 / 8 | 3722 / 1853 | 3233 / 1455 | 3722 / 1853 | — |
+| github.blog/news-insights/the-library/github-rebase-8 | 797 / 38 | 2419 / 697 | 2419 / 697 | 786 / 8 | 3633 / 1853 | — | 3633 / 1853 | — |
+| github.blog/news-insights/the-library/github-services-i | 407 / 38 | 2031 / 697 | 2031 / 697 | 396 / 8 | 3243 / 1853 | 2754 / 1455 | 3243 / 1853 | — |
+| github.blog/news-insights/the-library/github-support | 360 / 38 | 1986 / 697 | 1986 / 697 | 349 / 8 | 3190 / 1847 | — | 3190 / 1847 | — |
+| github.blog/news-insights/the-library/github-supports-o | 614 / 38 | 2237 / 697 | 2237 / 697 | 603 / 8 | 3492 / 1895 | 3003 / 1497 | 3492 / 1895 | — |
+| github.blog/news-insights/the-library/github-textmate-b | 364 / 38 | 1988 / 697 | 1988 / 697 | 353 / 8 | 3200 / 1853 | 2711 / 1455 | 3200 / 1853 | — |
+| github.blog/news-insights/the-library/github-turns-one | 474 / 38 | 2096 / 697 | 2096 / 697 | 463 / 8 | 3310 / 1853 | — | 3310 / 1853 | — |
+| github.blog/news-insights/the-library/github-userscript | 359 / 38 | 1985 / 697 | 1985 / 697 | 348 / 8 | 3697 / 2354 | 2700 / 1449 | 3189 / 1847 | — |
+| github.blog/news-insights/the-library/github-wiki-upgra | 566 / 38 | 2190 / 697 | 2190 / 697 | 555 / 8 | 3414 / 1865 | 2925 / 1467 | 3414 / 1865 | — |
+| github.blog/news-insights/the-library/githubbin-from-wo | 400 / 38 | 2024 / 697 | 2024 / 697 | 389 / 8 | 3744 / 2360 | 2747 / 1455 | 3236 / 1853 | — |
+| github.blog/news-insights/the-library/grailscrowd | 344 / 35 | 1973 / 697 | 1973 / 697 | 336 / 8 | 3673 / 2342 | — | 3673 / 2342 | — |
+| github.blog/news-insights/the-library/has-my-gem-built- | 324 / 27 | 1961 / 697 | 1961 / 697 | 324 / 8 | 3161 / 1843 | — | 3161 / 1843 | — |
+| github.blog/news-insights/the-library/hello-world | 388 / 38 | 2012 / 697 | 2012 / 697 | 377 / 8 | 3218 / 1847 | — | 3726 / 2354 | — |
+| github.blog/news-insights/the-library/hot-ruby-projects | 376 / 38 | 2000 / 697 | 2000 / 697 | 365 / 8 | 3224 / 1865 | 2735 / 1467 | 3224 / 1865 | — |
+| github.blog/news-insights/the-library/how-to-run-a-goog | 1385 / 38 | 3007 / 697 | 3007 / 697 | 1374 / 8 | 4269 / 1901 | 3780 / 1503 | 4269 / 1901 | — |
+| github.blog/news-insights/the-library/http-cloning | 407 / 38 | 2031 / 697 | 2031 / 697 | 396 / 8 | 3237 / 1847 | 3256 / 1956 | 3237 / 1847 | — |
+| github.blog/news-insights/the-library/it-s-a-mirror | 411 / 38 | 2035 / 697 | 2035 / 697 | 400 / 8 | 3755 / 2360 | 2758 / 1455 | 3755 / 2360 | — |
+| github.blog/news-insights/the-library/janky | 326 / 29 | 1961 / 697 | 1961 / 697 | 324 / 8 | 3141 / 1823 | 3160 / 1932 | 3649 / 2330 | — |
+| github.blog/news-insights/the-library/janky-5 | 326 / 29 | 1961 / 697 | 1961 / 697 | 324 / 8 | 3141 / 1823 | 3160 / 1932 | 3141 / 1823 | — |
+| github.blog/news-insights/the-library/join-virtual-clas | 721 / 38 | 2345 / 697 | 2345 / 697 | 710 / 8 | 3587 / 1883 | — | 3587 / 1883 | — |
+| github.blog/news-insights/the-library/kindle-winner | 270 / 10 | 1924 / 697 | 1924 / 697 | 287 / 8 | 3072 / 1791 | 2583 / 1393 | 3072 / 1791 | — |
+| github.blog/news-insights/the-library/local-github-conf | 456 / 38 | 2078 / 697 | 2078 / 697 | 445 / 8 | 3292 / 1853 | 2803 / 1455 | 3292 / 1853 | — |
+| github.blog/news-insights/the-library/maintenance-video | 389 / 38 | 2013 / 697 | 2013 / 697 | 378 / 8 | 3219 / 1847 | — | 3219 / 1847 | — |
+| github.blog/news-insights/the-library/maven-enabled-pro | 400 / 38 | 2024 / 697 | 2024 / 697 | 389 / 8 | 3236 / 1853 | 2747 / 1455 | 3236 / 1853 | — |
+| github.blog/news-insights/the-library/more-db-optimizat | 356 / 38 | 1980 / 697 | 1980 / 697 | 345 / 8 | 3700 / 2360 | — | 3700 / 2360 | — |
+| github.blog/news-insights/the-library/more-github-gem-g | 376 / 38 | 2000 / 697 | 2000 / 697 | 365 / 8 | 3218 / 1859 | 3237 / 1968 | 3218 / 1859 | — |
+| github.blog/news-insights/the-library/more-javascript-g | 356 / 38 | 1980 / 697 | 1980 / 697 | 345 / 8 | 3198 / 1859 | 2709 / 1461 | 3198 / 1859 | — |
+| github.blog/news-insights/the-library/more-slowness-era | 325 / 28 | 1959 / 697 | 1959 / 697 | 324 / 8 | 3151 / 1833 | 2662 / 1435 | 3151 / 1833 | — |
+| github.blog/news-insights/the-library/more-textmate-bun | 377 / 38 | 2001 / 697 | 2001 / 697 | 366 / 8 | 3219 / 1859 | 3238 / 1968 | 3219 / 1859 | — |
+| github.blog/news-insights/the-library/myspace-for-hacke | 411 / 38 | 2035 / 697 | 2035 / 697 | 400 / 8 | 3247 / 1853 | — | 3755 / 2360 | — |
+| github.blog/news-insights/the-library/ncsa-mosaic-on-gi | 356 / 38 | 1980 / 697 | 1980 / 697 | 345 / 8 | 3198 / 1859 | — | 3198 / 1859 | — |
+| github.blog/news-insights/the-library/net-neutrality-up | 1100 / 42 | 2718 / 697 | 2718 / 697 | 1085 / 8 | 4051 / 1972 | 3562 / 1574 | 4051 / 1972 | — |
+| github.blog/news-insights/the-library/new-languages-hig | 458 / 38 | 2080 / 697 | 2080 / 697 | 447 / 8 | 3802 / 2360 | 2805 / 1455 | 3294 / 1853 | — |
+| github.blog/news-insights/the-library/new-post-receive- | 312 / 23 | 1951 / 697 | 1951 / 697 | 316 / 8 | 3653 / 2342 | 2656 / 1437 | 3653 / 2342 | — |
+| github.blog/news-insights/the-library/new-to-git | 437 / 38 | 2060 / 697 | 2060 / 697 | 426 / 8 | 3781 / 2360 | 2784 / 1455 | 3781 / 2360 | — |
+| github.blog/news-insights/the-library/new-to-git-cheat | 412 / 38 | 2036 / 697 | 2036 / 697 | 401 / 8 | 3254 / 1859 | — | 3254 / 1859 | — |
+| github.blog/news-insights/the-library/new-year-new-comp | 424 / 38 | 2048 / 697 | 2048 / 697 | 413 / 8 | 3774 / 2366 | — | 3266 / 1859 | — |
+| github.blog/news-insights/the-library/not-just-code | 386 / 38 | 2010 / 697 | 2010 / 697 | 375 / 8 | 3222 / 1853 | — | 3222 / 1853 | — |
+| github.blog/news-insights/the-library/nu-and-io-on-gith | 562 / 38 | 2184 / 697 | 2184 / 697 | 551 / 8 | 3410 / 1865 | 3429 / 1974 | 3410 / 1865 | — |
+| github.blog/news-insights/the-library/octocatalog-diff- | 1387 / 38 | 3015 / 697 | 3015 / 697 | 1376 / 8 | 4757 / 2386 | — | 4249 / 1879 | — |
+| github.blog/news-insights/the-library/one-more-thing | 362 / 38 | 1990 / 697 | 1990 / 697 | 351 / 8 | 3198 / 1853 | 2709 / 1455 | 3198 / 1853 | — |
+| github.blog/news-insights/the-library/open-source-proje | 400 / 38 | 2024 / 697 | 2024 / 697 | 389 / 8 | 3248 / 1865 | 2759 / 1467 | 3248 / 1865 | — |
+| github.blog/news-insights/the-library/open-sourcing-our | 516 / 38 | 2138 / 697 | 2138 / 697 | 505 / 8 | 3376 / 1877 | 2887 / 1479 | 3376 / 1877 | — |
+| github.blog/news-insights/the-library/our-rubygem-build | 366 / 38 | 1990 / 697 | 1990 / 697 | 355 / 8 | 3232 / 1883 | 2743 / 1485 | 3232 / 1883 | — |
+| github.blog/news-insights/the-library/pages-jekyll-to-v | 372 / 38 | 1996 / 697 | 1996 / 697 | 361 / 8 | 3226 / 1871 | 2737 / 1473 | 3226 / 1871 | — |
+| github.blog/news-insights/the-library/palm-goes-github | 371 / 38 | 1996 / 697 | 1996 / 697 | 360 / 8 | 3207 / 1853 | 2718 / 1455 | 3207 / 1853 | — |
+| github.blog/news-insights/the-library/paris-git-trainin | 365 / 38 | 1989 / 697 | 1989 / 697 | 354 / 8 | 3201 / 1853 | 2712 / 1455 | 3201 / 1853 | — |
+| github.blog/news-insights/the-library/participation-gra | 465 / 38 | 2087 / 697 | 2087 / 697 | 454 / 8 | 3307 / 1859 | 2818 / 1461 | 3307 / 1859 | — |
+| github.blog/news-insights/the-library/pearhub | 376 / 38 | 2000 / 697 | 2000 / 697 | 365 / 8 | 3200 / 1841 | — | 3200 / 1841 | — |
+| github.blog/news-insights/the-library/philadelphia-coha | 376 / 38 | 1999 / 697 | 1999 / 697 | 365 / 8 | 3212 / 1853 | — | 3212 / 1853 | — |
+| github.blog/news-insights/the-library/pimp-your-prototy | 473 / 38 | 2094 / 697 | 2094 / 697 | 462 / 8 | 3315 / 1859 | — | 3823 / 2366 | — |
+| github.blog/news-insights/the-library/postmortem-of-las | 691 / 38 | 2312 / 697 | 2312 / 697 | 680 / 8 | 3541 / 1867 | 3052 / 1469 | 3541 / 1867 | — |
+| github.blog/news-insights/the-library/pro-git-bloggin | 395 / 38 | 2020 / 697 | 2020 / 697 | 384 / 8 | 3231 / 1853 | 2742 / 1455 | 3231 / 1853 | — |
+| github.blog/news-insights/the-library/profitable-progra | 382 / 38 | 2006 / 697 | 2006 / 697 | 371 / 8 | 3732 / 2366 | — | 3732 / 2366 | — |
+| github.blog/news-insights/the-library/pushes | 393 / 38 | 2017 / 697 | 2017 / 697 | 382 / 8 | 3725 / 2348 | 2728 / 1443 | 3725 / 2348 | — |
+| github.blog/news-insights/the-library/pushing-and-pulli | 358 / 38 | 1982 / 697 | 1982 / 697 | 347 / 8 | 3194 / 1853 | — | 3194 / 1853 | — |
+| github.blog/news-insights/the-library/rails-moving-to-g | 415 / 38 | 2040 / 697 | 2040 / 697 | 404 / 8 | 3257 / 1859 | 2768 / 1461 | 3765 / 2366 | — |
+| github.blog/news-insights/the-library/random-repo | 369 / 38 | 1993 / 697 | 1993 / 697 | 358 / 8 | 3199 / 1847 | 2710 / 1449 | 3199 / 1847 | — |
+| github.blog/news-insights/the-library/removing-oobgc | 1034 / 38 | 2669 / 697 | 2669 / 697 | 1023 / 8 | 3882 / 1865 | 3901 / 1974 | 3882 / 1865 | — |
+| github.blog/news-insights/the-library/rolling-with-engi | 395 / 38 | 2019 / 697 | 2019 / 697 | 384 / 8 | 3237 / 1859 | — | 3237 / 1859 | — |
+| github.blog/news-insights/the-library/runnable-document | 1618 / 38 | 3240 / 697 | 3240 / 697 | 1607 / 8 | 4466 / 1865 | 3977 / 1467 | 4466 / 1865 | — |
+| github.blog/news-insights/the-library/scala-projects-cl | 432 / 38 | 2056 / 697 | 2056 / 697 | 421 / 8 | 3274 / 1859 | 2785 / 1461 | 3274 / 1859 | — |
+| github.blog/news-insights/the-library/scheduled-db-main | 386 / 38 | 2010 / 697 | 2010 / 697 | 375 / 8 | 3754 / 2384 | 2757 / 1479 | 3754 / 2384 | — |
+| github.blog/news-insights/the-library/scheduled-fileser | 374 / 38 | 1998 / 697 | 1998 / 697 | 363 / 8 | 3234 / 1877 | — | 3234 / 1877 | — |
+| github.blog/news-insights/the-library/services-galore | 447 / 38 | 2069 / 697 | 2069 / 697 | 436 / 8 | 3277 / 1847 | 2788 / 1449 | 3277 / 1847 | — |
+| github.blog/news-insights/the-library/side-projects-the | 369 / 38 | 1993 / 697 | 1993 / 697 | 358 / 8 | 3211 / 1859 | 2722 / 1461 | 3211 / 1859 | — |
+| github.blog/news-insights/the-library/smart-http-suppor | 604 / 38 | 2226 / 697 | 2226 / 697 | 593 / 8 | 3440 / 1853 | 2951 / 1455 | 3440 / 1853 | — |
+| github.blog/news-insights/the-library/smooth-support-lo | 356 / 38 | 1982 / 697 | 1982 / 697 | 345 / 8 | 3700 / 2360 | 2703 / 1455 | 3700 / 2360 | — |
+| github.blog/news-insights/the-library/sound-in-the-clou | 323 / 27 | 1960 / 697 | 1960 / 697 | 323 / 8 | 3154 / 1837 | 2665 / 1439 | 3154 / 1837 | — |
+| github.blog/news-insights/the-library/speedy-queries | 370 / 38 | 1994 / 697 | 1994 / 697 | 359 / 8 | 3200 / 1847 | 2711 / 1449 | 3200 / 1847 | — |
+| github.blog/news-insights/the-library/ssh-keys-generate | 536 / 38 | 2156 / 697 | 2156 / 697 | 525 / 8 | 3390 / 1871 | 2901 / 1473 | 3390 / 1871 | — |
+| github.blog/news-insights/the-library/submodule-display | 382 / 38 | 2006 / 697 | 2006 / 697 | 371 / 8 | 3720 / 2354 | — | 3720 / 2354 | — |
+| github.blog/news-insights/the-library/supercharged-git- | 618 / 38 | 2240 / 697 | 2240 / 697 | 607 / 8 | 3448 / 1847 | 2959 / 1449 | 3448 / 1847 | — |
+| github.blog/news-insights/the-library/tasty-tidbits | 357 / 38 | 1981 / 697 | 1981 / 697 | 346 / 8 | 3187 / 1847 | 2698 / 1449 | 3187 / 1847 | — |
+| github.blog/news-insights/the-library/the-api | 374 / 38 | 1998 / 697 | 1998 / 697 | 363 / 8 | 3712 / 2354 | 2715 / 1449 | 3712 / 2354 | — |
+| github.blog/news-insights/the-library/the-blog-arrives | 391 / 38 | 2015 / 697 | 2015 / 697 | 380 / 8 | 3735 / 2360 | 2738 / 1455 | 3735 / 2360 | — |
+| github.blog/news-insights/the-library/the-future-of-cod | 451 / 38 | 2073 / 697 | 2073 / 697 | 440 / 8 | 3293 / 1859 | 2804 / 1461 | 3293 / 1859 | — |
+| github.blog/news-insights/the-library/the-git-user-s-su | 409 / 38 | 2035 / 697 | 2035 / 697 | 398 / 8 | 3251 / 1859 | — | 3251 / 1859 | — |
+| github.blog/news-insights/the-library/the-github-podcas | 389 / 38 | 2013 / 697 | 2013 / 697 | 378 / 8 | 3225 / 1853 | — | 3225 / 1853 | — |
+| github.blog/news-insights/the-library/the-new-queue | 1052 / 38 | 2674 / 697 | 2674 / 697 | 1041 / 8 | 3890 / 1853 | — | 3890 / 1853 | — |
+| github.blog/news-insights/the-library/the-pricing-plans | 371 / 38 | 1995 / 697 | 1995 / 697 | 360 / 8 | 3207 / 1853 | 2718 / 1455 | 3207 / 1853 | — |
+| github.blog/news-insights/the-library/the-status-blog | 360 / 38 | 1984 / 697 | 1984 / 697 | 349 / 8 | 3196 / 1853 | 2707 / 1455 | 3196 / 1853 | — |
+| github.blog/news-insights/the-library/the-tree-slider | 529 / 38 | 2151 / 697 | 2151 / 697 | 518 / 8 | 3365 / 1853 | — | 3365 / 1853 | — |
+| github.blog/news-insights/the-library/tinymce-on-github | 364 / 38 | 1988 / 697 | 1988 / 697 | 353 / 8 | 3200 / 1853 | 3219 / 1962 | 3708 / 2360 | — |
+| github.blog/news-insights/the-library/tortoisegit-chall | 575 / 38 | 2197 / 697 | 2197 / 697 | 564 / 8 | 3405 / 1847 | 2916 / 1449 | 3405 / 1847 | — |
+| github.blog/news-insights/the-library/twitter-s-on-gith | 392 / 38 | 2017 / 697 | 2017 / 697 | 381 / 8 | 3228 / 1853 | — | 3228 / 1853 | — |
+| github.blog/news-insights/the-library/use-bit-ly-to-nam | 385 / 38 | 2010 / 697 | 2010 / 697 | 374 / 8 | 3233 / 1865 | 2744 / 1467 | 3233 / 1865 | — |
+| github.blog/news-insights/the-library/use-github-as-you | 492 / 38 | 2114 / 697 | 2114 / 697 | 481 / 8 | 3340 / 1865 | 2851 / 1467 | 3340 / 1865 | — |
+| github.blog/news-insights/the-library/using-git-in-ruby | 507 / 38 | 2129 / 697 | 2129 / 697 | 496 / 8 | 3355 / 1865 | — | 3355 / 1865 | — |
+| github.blog/news-insights/the-library/vote-for-github | 386 / 38 | 2012 / 697 | 2012 / 697 | 375 / 8 | 3222 / 1853 | 2733 / 1455 | 3222 / 1853 | — |
+| github.blog/news-insights/the-library/we-re-web-2-0 | 365 / 38 | 1989 / 697 | 1989 / 697 | 354 / 8 | 3201 / 1853 | 2712 / 1455 | 3201 / 1853 | — |
+| github.blog/news-insights/the-library/webpulp-tv-interv | 396 / 38 | 2020 / 697 | 2020 / 697 | 385 / 8 | 3244 / 1865 | 2755 / 1467 | 3244 / 1865 | — |
+| github.blog/news-insights/the-library/when-limits-are-e | 385 / 38 | 2009 / 697 | 2009 / 697 | 374 / 8 | 3227 / 1859 | — | 3227 / 1859 | — |
+| github.blog/news-insights/the-library/wiki-preview | 267 / 9 | 1920 / 697 | 1920 / 697 | 285 / 8 | 3068 / 1789 | — | 3068 / 1789 | — |
+| github.blog/news-insights/the-library/yesterday-s-outag | 500 / 38 | 2122 / 697 | 2122 / 697 | 489 / 8 | 3330 / 1847 | — | 3330 / 1847 | — |
+| github.blog/news-insights/the-library/yui-examples | 356 / 38 | 1980 / 697 | 1980 / 697 | 345 / 8 | 3186 / 1847 | 2697 / 1449 | 3186 / 1847 | — |
+| github.blog/news-insights/the-library/yui-on-github | 377 / 38 | 2003 / 697 | 2003 / 697 | 366 / 8 | 3213 / 1853 | — | 3213 / 1853 | — |
+| github.blog/news-insights/the-library/zendcon-2008-pics | 283 / 14 | 1931 / 697 | 1931 / 697 | 296 / 8 | 3095 / 1805 | 2606 / 1407 | 3095 / 1805 | — |
+| github.blog/open-source/git/git-2-13-has-been-released | 2003 / 36 | 3677 / 697 | 3677 / 697 | 2003 / 6 | 4858 / 1861 | — | 4858 / 1861 | — |
+| github.blog/open-source/improving-your-oss-dependency-w | 1383 / 34 | 3056 / 697 | 3056 / 697 | 1383 / 4 | 4758 / 2380 | 3761 / 1475 | 4250 / 1873 | — |
+| github.blog/security/subresource-integrity | 829 / 33 | 2498 / 697 | 2498 / 697 | 818 / 3 | 3653 / 1841 | 3672 / 1950 | 3653 / 1841 | — |
+
+</details>
+
+## See also
+
+- [RETRIEVAL_COMPARISON.md](RETRIEVAL_COMPARISON.md) — does cleaner Markdown improve retrieval?
+- [METHODOLOGY.md](METHODOLOGY.md) — full test setup and fairness decisions

@@ -972,8 +972,33 @@ def generate_comparison_report(
     concurrency: int = 1,
 ):
     """Generate SPEED_COMPARISON.md report."""
+    import datetime
+
+    # Compute overall fastest tool for one-line answer
+    tool_total_pages = {}
+    tool_total_time = {}
+    for tool in available_tools:
+        tool_results = results.get(tool, {})
+        successful = {k: v for k, v in tool_results.items() if not v.error}
+        tool_total_pages[tool] = sum(r.pages_median for r in successful.values())
+        tool_total_time[tool] = sum(r.time_median for r in successful.values())
+    tool_avg_pps = {
+        t: tool_total_pages[t] / tool_total_time[t]
+        for t in available_tools if tool_total_time.get(t, 0) > 0
+    }
+    fastest_tool = max(tool_avg_pps, key=tool_avg_pps.get) if tool_avg_pps else "unknown"
+    fastest_pps = tool_avg_pps.get(fastest_tool, 0)
+    runner_up = sorted(tool_avg_pps, key=tool_avg_pps.get, reverse=True)
+    runner_up_name = runner_up[1] if len(runner_up) > 1 else "N/A"
+    runner_up_pps = tool_avg_pps.get(runner_up_name, 0)
+
+    today = datetime.date.today().isoformat()
     lines = [
-        "# MarkCrawl Head-to-Head Comparison",
+        "# Speed Comparison",
+        f"<!-- style: v2, {today} -->",
+        "",
+        f"**{fastest_tool}** is the fastest crawler at {fastest_pps:.1f} pages/sec overall, "
+        f"followed by {runner_up_name} ({runner_up_pps:.1f} p/s).",
         "",
         f"Generated: {time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime())}",
         "",
@@ -1030,16 +1055,17 @@ def generate_comparison_report(
 
         for tool in available_tools:
             r = results.get(tool, {}).get(site_name)
+            tool_label = f"**{tool}**" if tool == "markcrawl" else tool
             if r and not r.error:
                 lines.append(
-                    f"| {tool} | {r.pages_median:.0f} | {r.time_median:.1f} | "
+                    f"| {tool_label} | {r.pages_median:.0f} | {r.time_median:.1f} | "
                     f"±{r.time_stddev:.1f} | {r.pps_median:.1f} | "
                     f"{r.avg_words:.0f} | {r.output_kb:.0f} | {r.peak_memory_mb:.0f} |"
                 )
             elif r and r.error:
-                lines.append(f"| {tool} | — | — | — | — | — | — | error: {r.error[:50]} |")
+                lines.append(f"| {tool_label} | — | — | — | — | — | — | error: {r.error[:50]} |")
             else:
-                lines.append(f"| {tool} | — | — | — | — | — | — | — |")
+                lines.append(f"| {tool_label} | — | — | — | — | — | — | — |")
 
         lines.append("")
 
@@ -1048,6 +1074,7 @@ def generate_comparison_report(
 
     total_sites = len(COMPARISON_SITES)
     for tool in available_tools:
+        tool_label = f"**{tool}**" if tool == "markcrawl" else tool
         tool_results = results.get(tool, {})
         successful = {k: v for k, v in tool_results.items() if not v.error}
         total_pages = sum(r.pages_median for r in successful.values())
@@ -1057,9 +1084,9 @@ def generate_comparison_report(
         if len(successful) < total_sites and len(successful) > 0:
             note = f" *({len(successful)}/{total_sites} sites)*"
         elif len(successful) == 0:
-            lines.append(f"| {tool} | — | — | — | *all sites errored* |")
+            lines.append(f"| {tool_label} | — | — | — | *all sites errored* |")
             continue
-        lines.append(f"| {tool} | {total_pages:.0f} | {total_time:.1f} | {avg_pps:.1f} |{note}")
+        lines.append(f"| {tool_label} | {total_pages:.0f} | {total_time:.1f} | {avg_pps:.1f} |{note}")
 
     lines.extend([
         "",
@@ -1085,6 +1112,12 @@ def generate_comparison_report(
         "export FIRECRAWL_API_URL=http://localhost:3002",
         "python benchmark_all_tools.py",
         "```",
+        "",
+        "## See also",
+        "",
+        "- [QUALITY_COMPARISON.md](QUALITY_COMPARISON.md) — higher word counts don't mean higher quality",
+        "- [COST_AT_SCALE.md](COST_AT_SCALE.md) — what these speed differences cost at 100K+ pages",
+        "- [METHODOLOGY.md](METHODOLOGY.md) — full test setup and fairness decisions",
     ])
 
     report = "\n".join(lines) + "\n"
@@ -1138,6 +1171,83 @@ def _get_tool_version(tool_name: str) -> str:
         return "unknown"
 
 
+def _regenerate_from_run(run_name: str, output_path: str):
+    """Regenerate the speed comparison report from a previous run's saved data.
+
+    Reads run_metadata.json for timing data and pages.jsonl files for content
+    metrics (avg words, output KB). No crawling is performed.
+    """
+    runs_dir = Path("runs")
+    run_dir = runs_dir / run_name
+    meta_path = run_dir / "run_metadata.json"
+
+    if not meta_path.exists():
+        logger.error("run_metadata.json not found in %s", run_dir)
+        sys.exit(1)
+
+    with open(meta_path) as f:
+        metadata = json.load(f)
+
+    bench_results = metadata["phases"]["benchmarking"]["results"]
+    tools_meta = metadata.get("tools", {})
+
+    # Reconstruct ToolSiteResult objects from saved data
+    results: dict[str, dict[str, ToolSiteResult]] = {}
+    available_tools = []
+
+    for tool_name, site_data in bench_results.items():
+        available_tools.append(tool_name)
+        results[tool_name] = {}
+        for site_name, site_info in site_data.items():
+            # Read pages.jsonl for content metrics
+            pages_path = run_dir / tool_name / site_name / "pages.jsonl"
+            avg_words = 0.0
+            output_kb = 0.0
+            if pages_path.exists():
+                word_counts = []
+                total_bytes = 0
+                with open(pages_path) as pf:
+                    for line in pf:
+                        try:
+                            page = json.loads(line)
+                            text = page.get("text", "")
+                            word_counts.append(len(text.split()))
+                            total_bytes += len(text.encode("utf-8"))
+                        except json.JSONDecodeError:
+                            continue
+                if word_counts:
+                    avg_words = statistics.mean(word_counts)
+                    output_kb = total_bytes / 1024
+
+            error = site_info.get("error")
+            description = COMPARISON_SITES.get(site_name, {}).get("description", site_name)
+            results[tool_name][site_name] = ToolSiteResult(
+                tool=tool_name,
+                site=site_name,
+                description=description,
+                pages_median=site_info.get("pages_median", 0),
+                time_median=site_info.get("time_median_s", 0),
+                time_stddev=0.0,  # not stored in metadata
+                pps_median=site_info.get("pps_median", 0),
+                output_kb=output_kb,
+                peak_memory_mb=0.0,  # not stored in metadata
+                avg_words=avg_words,
+                error=error,
+            )
+
+    # Sort tools to match original order
+    tool_order = ["markcrawl", "crawl4ai", "crawl4ai-raw", "scrapy+md", "crawlee", "colly+md", "playwright", "firecrawl"]
+    available_tools = [t for t in tool_order if t in available_tools]
+
+    concurrency = metadata.get("settings", {}).get("concurrency", 5)
+    logger.info("Regenerating report from %s (%d tools, %d sites)",
+                run_name, len(available_tools),
+                sum(len(sites) for sites in bench_results.values()) // max(len(available_tools), 1))
+
+    generate_comparison_report(results, available_tools, output_path, concurrency=concurrency)
+    logger.info("Report saved to: %s", output_path)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Head-to-head crawler comparison")
     parser.add_argument("--sites", default=None, help="Comma-separated sites to test")
@@ -1167,8 +1277,16 @@ def main():
                         help="Ignore any saved checkpoint and start fresh")
     parser.add_argument("--refresh-urls", action="store_true",
                         help="Force full URL rediscovery (ignore URL cache)")
+    parser.add_argument("--run", default=None,
+                        help="Regenerate report from a previous run's data (e.g. --run run_20260412_195003). "
+                             "Skips crawling entirely — reads run_metadata.json and pages.jsonl files.")
     parser.add_argument("--output", default="reports/SPEED_COMPARISON.md", help="Output report path")
     args = parser.parse_args()
+
+    # --run: regenerate report from saved data (no crawling)
+    if args.run:
+        _regenerate_from_run(args.run, args.output)
+        return
 
     # --sequential overrides --parallel
     if args.sequential:
