@@ -1,10 +1,18 @@
 # End-to-End RAG Pipeline Timing Benchmark
 <!-- style: v2, 2026-04-12 -->
 
-Measures how long each crawler takes across the full RAG pipeline:
-scraping, chunking, embedding, and querying.
+markcrawl completes the full RAG pipeline (scrape + chunk + embed + query) in 476.5s — 2.9x faster than the median tool. For HTTP-only crawlers, the LLM query phase dominates at 62-76% of total time, not scraping.
 
 **Run:** `run_20260412_195003` | **Sites:** blog-engineering, books-toscrape, fastapi-docs, python-docs, quotes-toscrape, react-dev, stripe-docs, wikipedia-python | **Embedding model:** text-embedding-3-small | **Answer model:** gpt-4o-mini
+
+## What these phases mean
+
+Each tool is measured across four pipeline phases:
+
+- **Scrape** = fetch HTML and convert to Markdown (dominated by network I/O). HTTP-only tools (markcrawl, scrapy+md, colly+md) scrape 2-7x faster than browser-based tools (crawl4ai, crawlee, playwright) because they skip JavaScript rendering overhead.
+- **Chunk** = split Markdown into overlapping text chunks (CPU-only, fast)
+- **Embed** = send chunks to OpenAI embedding API (scales with chunk count)
+- **Query** = embed question + retrieve top chunks + send to LLM for answer (scales with query count)
 
 ## Summary: Total Pipeline Time by Tool
 
@@ -43,7 +51,7 @@ time and cost per page for a fairer comparison.
 
 | Tool | Scrape % | Chunk % | Embed % | Query % |
 |------|---------|--------|--------|--------|
-| markcrawl | 21.8% | 0.2% | 1.1% | 76.9% |
+| **markcrawl** | 21.8% | 0.2% | 1.1% | 76.9% |
 | scrapy+md | 26.9% | 0.2% | 1.2% | 71.7% |
 | colly+md | 35.3% | 0.6% | 1.8% | 62.2% |
 | playwright | 69.4% | 0.4% | 1.3% | 29.0% |
@@ -68,6 +76,14 @@ time and cost per page for a fairer comparison.
 | crawl4ai-raw | 14,109,525 | $0.282 | 502,761 | 13,769 | $0.084 | **$0.366** |
 
 > **Embed tokens** = tokens sent to the embedding API (all chunks). **Query in/out tokens** = tokens sent to and received from the answer LLM. **Total cost** = Embed cost + Query cost.
+
+## What the results mean
+
+For fast HTTP-only crawlers, scraping is NOT the bottleneck — LLM queries dominate at 70-77% of total pipeline time. The scrape phase only matters for browser-based tools where JavaScript rendering adds 3-7x overhead.
+
+The biggest cost lever is chunk count: markcrawl produces 22,132 chunks vs crawlee's 47,560, leading to 8.4x lower embedding costs ($0.160 vs $1.34). At scale, the per-query cost difference is small; the savings compound from embedding fewer chunks.
+
+See [COST_AT_SCALE.md](COST_AT_SCALE.md) for projections of these per-run costs to production workloads.
 
 ## Per-Site Breakdown
 
@@ -188,3 +204,11 @@ Per-site tables use the same columns as the summary table above. See [summary le
 - **Cost tracking** counts actual tokens from API responses (embed tokens estimated via tiktoken, query tokens from response.usage)
 - **Embedding cache** — chunks are cached by content hash; re-runs with unchanged pages.jsonl skip API calls entirely
 - See [METHODOLOGY.md](METHODOLOGY.md) for full test setup
+
+## See also
+
+- [SPEED_COMPARISON.md](SPEED_COMPARISON.md) — raw crawl speed without pipeline overhead
+- [QUALITY_COMPARISON.md](QUALITY_COMPARISON.md) — why chunk counts vary between tools
+- [COST_AT_SCALE.md](COST_AT_SCALE.md) — what these per-run costs look like at scale
+- [ANSWER_QUALITY.md](ANSWER_QUALITY.md) — whether answer quality differs despite similar pipeline costs
+- [METHODOLOGY.md](METHODOLOGY.md) — full test setup

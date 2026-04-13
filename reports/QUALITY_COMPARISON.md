@@ -31,12 +31,12 @@ chunk in the vector index, degrading retrieval for every query.
 | Tool | Content signal [1] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|
 | **markcrawl** | 99% | 15 | 0% | 0.5 | 99% | 64% |
+| scrapy+md | 95% | 133 ⚠ | 1% | 2.5 | 100% | 68% |
 | crawl4ai | 89% | 311 ⚠ | 1% | 3.2 | 100% | 66% |
 | crawl4ai-raw | 89% | 311 ⚠ | 1% | 3.2 | 100% | 66% |
-| scrapy+md | 95% | 133 ⚠ | 1% | 2.5 | 100% | 68% |
-| crawlee | 66% | 2207 ⚠ | 1% | 3.8 | 94% | 97% |
 | colly+md | 68% | 1953 ⚠ | 1% | 3.8 | 99% | 96% |
 | playwright | 68% | 2037 ⚠ | 1% | 3.6 | 100% | 97% |
+| crawlee | 66% | 2207 ⚠ | 1% | 3.8 | 94% | 97% |
 | firecrawl | — | — | — | — | — | — |
 
 > **Column definitions:**
@@ -52,20 +52,20 @@ chunk in the vector index, degrading retrieval for every query.
 
 ## quotes-toscrape
 
-| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
+| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 214 | 15 | 0% | 0 | 0.9 | 0.0 | 100% | 100% |
-| crawl4ai | 242 | 0 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
-| crawl4ai-raw | 242 | 0 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
-| scrapy+md | 242 | 0 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
-| crawlee | 245 | 3 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
-| colly+md | 245 | 3 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
-| playwright | 245 | 3 | 2% | 1 | 2.7 | 0.0 | 100% | 100% |
+| crawl4ai | 242 | 0 | 2% | 0.1 | 2.7 | 0.0 | 100% | 100% |
+| crawl4ai-raw | 242 | 0 | 2% | 0.1 | 2.7 | 0.0 | 100% | 100% |
+| scrapy+md | 242 | 0 | 2% | 0.1 | 2.7 | 0.0 | 100% | 100% |
+| crawlee | 245 | 3 | 2% | 0.1 | 2.7 | 0.0 | 100% | 100% |
+| colly+md | 245 | 3 | 2% | 0.1 | 2.7 | 0.0 | 100% | 100% |
+| playwright | 245 | 3 | 2% | 0.1 | 2.7 | 0.0 | 100% | 100% |
+| **markcrawl** | 214 | 15 | 0% | 0.0 | 0.9 | 0.0 | 100% | 100% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
 > **Column definitions:**
 > **[6] Avg words** = mean words per page. **[2] Preamble** = avg words per page before the first heading (nav chrome). **[3] Repeat rate** = fraction of sentences on >50% of pages.
-> **[4] Junk found** = total known boilerplate phrases detected across all pages. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
+> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 <details>
@@ -391,20 +391,20 @@ Tags:
 
 ## books-toscrape
 
-| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
+| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 339 | 66 ⚠ | 0% | 0 | 1.8 | 0.0 | 100% | 99% |
-| crawl4ai | 493 | 178 ⚠ | 2% | 0 | 10.7 | 0.0 | 100% | 99% |
-| crawl4ai-raw | 493 | 178 ⚠ | 2% | 0 | 10.7 | 0.0 | 100% | 99% |
-| scrapy+md | 387 | 101 ⚠ | 1% | 0 | 1.8 | 0.0 | 100% | 99% |
-| crawlee | 395 | 110 ⚠ | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
-| colly+md | 395 | 110 ⚠ | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
-| playwright | 395 | 110 ⚠ | 1% | 0 | 1.8 | 0.0 | 100% | 100% |
+| **markcrawl** | 339 | 66 ⚠ | 0% | 0.0 | 1.8 | 0.0 | 100% | 99% |
+| scrapy+md | 387 | 101 ⚠ | 1% | 0.0 | 1.8 | 0.0 | 100% | 99% |
+| crawlee | 395 | 110 ⚠ | 1% | 0.0 | 1.8 | 0.0 | 100% | 100% |
+| colly+md | 395 | 110 ⚠ | 1% | 0.0 | 1.8 | 0.0 | 100% | 100% |
+| playwright | 395 | 110 ⚠ | 1% | 0.0 | 1.8 | 0.0 | 100% | 100% |
+| crawl4ai | 493 | 178 ⚠ | 2% | 0.0 | 10.7 | 0.0 | 100% | 99% |
+| crawl4ai-raw | 493 | 178 ⚠ | 2% | 0.0 | 10.7 | 0.0 | 100% | 99% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
 > **Column definitions:**
 > **[6] Avg words** = mean words per page. **[2] Preamble** = avg words per page before the first heading (nav chrome). **[3] Repeat rate** = fraction of sentences on >50% of pages.
-> **[4] Junk found** = total known boilerplate phrases detected across all pages. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
+> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
@@ -798,20 +798,20 @@ Books to Scrape - Sandbox
 
 ## fastapi-docs
 
-| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
+| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 2084 | 13 | 0% | 186 | 20.2 | 14.3 | 93% | 68% |
-| crawl4ai | 3519 | 1420 ⚠ | 1% | 183 | 20.1 | 14.2 | 100% | 92% |
-| crawl4ai-raw | 3521 | 1420 ⚠ | 1% | 183 | 20.1 | 14.2 | 100% | 92% |
-| scrapy+md | 2851 | 765 ⚠ | 0% | 328 | 20.2 | 14.3 | 100% | 69% |
-| crawlee | 3154 | 1004 ⚠ | 1% | 628 | 20.1 | 14.2 | 100% | 96% |
-| colly+md | 3175 | 986 ⚠ | 1% | 632 | 20.2 | 14.3 | 100% | 97% |
-| playwright | 3160 | 999 ⚠ | 1% | 632 | 20.1 | 14.3 | 100% | 97% |
+| **markcrawl** | 2084 | 13 | 0% | 1.2 | 20.2 | 14.3 | 93% | 68% |
+| scrapy+md | 2851 | 765 ⚠ | 0% | 2.1 | 20.2 | 14.3 | 100% | 69% |
+| colly+md | 3175 | 986 ⚠ | 1% | 4.1 | 20.2 | 14.3 | 100% | 97% |
+| playwright | 3160 | 999 ⚠ | 1% | 4.1 | 20.1 | 14.3 | 100% | 97% |
+| crawlee | 3154 | 1004 ⚠ | 1% | 4.1 | 20.1 | 14.2 | 100% | 96% |
+| crawl4ai | 3519 | 1420 ⚠ | 1% | 1.2 | 20.1 | 14.2 | 100% | 92% |
+| crawl4ai-raw | 3521 | 1420 ⚠ | 1% | 1.2 | 20.1 | 14.2 | 100% | 92% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
 > **Column definitions:**
 > **[6] Avg words** = mean words per page. **[2] Preamble** = avg words per page before the first heading (nav chrome). **[3] Repeat rate** = fraction of sentences on >50% of pages.
-> **[4] Junk found** = total known boilerplate phrases detected across all pages. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
+> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
@@ -1294,20 +1294,20 @@ visibility: hidden;
 
 ## python-docs
 
-| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
+| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 3766 | 5 | 0% | 378 | 11.9 | 7.3 | 98% | 82% |
-| crawl4ai | 4180 | 50 ⚠ | 0% | 3111 | 19.4 | 7.4 | 100% | 70% |
-| crawl4ai-raw | 4180 | 50 ⚠ | 0% | 3111 | 19.4 | 7.4 | 100% | 70% |
-| scrapy+md | 4796 | 4 | 0% | 2086 | 22.7 | 9.5 | 100% | 99% |
-| crawlee | 4140 | 47 | 0% | 3111 | 19.1 | 7.3 | 100% | 92% |
-| colly+md | 4070 | 26 | 0% | 3111 | 19.1 | 7.3 | 100% | 92% |
-| playwright | 4140 | 47 | 0% | 3111 | 19.1 | 7.3 | 100% | 92% |
+| scrapy+md | 4796 | 4 | 0% | 6.4 | 22.7 | 9.5 | 100% | 99% |
+| **markcrawl** | 3766 | 5 | 0% | 0.8 | 11.9 | 7.3 | 98% | 82% |
+| colly+md | 4070 | 26 | 0% | 6.2 | 19.1 | 7.3 | 100% | 92% |
+| crawlee | 4140 | 47 | 0% | 6.2 | 19.1 | 7.3 | 100% | 92% |
+| playwright | 4140 | 47 | 0% | 6.2 | 19.1 | 7.3 | 100% | 92% |
+| crawl4ai | 4180 | 50 ⚠ | 0% | 6.2 | 19.4 | 7.4 | 100% | 70% |
+| crawl4ai-raw | 4180 | 50 ⚠ | 0% | 6.2 | 19.4 | 7.4 | 100% | 70% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
 > **Column definitions:**
 > **[6] Avg words** = mean words per page. **[2] Preamble** = avg words per page before the first heading (nav chrome). **[3] Repeat rate** = fraction of sentences on >50% of pages.
-> **[4] Junk found** = total known boilerplate phrases detected across all pages. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
+> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
@@ -2140,20 +2140,20 @@ Dark
 
 ## react-dev
 
-| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
+| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 1559 | 13 | 0% | 136 | 15.4 | 9.9 | 100% | 44% |
-| crawl4ai | 2277 | 12 | 0% | 142 | 19.8 | 9.8 | 100% | 37% |
-| crawl4ai-raw | 2279 | 12 | 0% | 142 | 19.8 | 9.8 | 100% | 37% |
-| scrapy+md | 1601 | 6 | 0% | 137 | 15.4 | 9.9 | 100% | 44% |
-| crawlee | 4370 | 368 ⚠ | 0% | 144 | 21.6 | 9.8 | 99% | 98% |
-| colly+md | 4292 | 289 ⚠ | 0% | 144 | 21.6 | 9.9 | 98% | 100% |
-| playwright | 4292 | 289 ⚠ | 0% | 144 | 21.6 | 9.9 | 100% | 98% |
+| scrapy+md | 1601 | 6 | 0% | 0.6 | 15.4 | 9.9 | 100% | 44% |
+| crawl4ai | 2277 | 12 | 0% | 0.6 | 19.8 | 9.8 | 100% | 37% |
+| crawl4ai-raw | 2279 | 12 | 0% | 0.6 | 19.8 | 9.8 | 100% | 37% |
+| **markcrawl** | 1559 | 13 | 0% | 0.6 | 15.4 | 9.9 | 100% | 44% |
+| colly+md | 4292 | 289 ⚠ | 0% | 0.7 | 21.6 | 9.9 | 98% | 100% |
+| playwright | 4292 | 289 ⚠ | 0% | 0.7 | 21.6 | 9.9 | 100% | 98% |
+| crawlee | 4370 | 368 ⚠ | 0% | 0.7 | 21.6 | 9.8 | 99% | 98% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
 > **Column definitions:**
 > **[6] Avg words** = mean words per page. **[2] Preamble** = avg words per page before the first heading (nav chrome). **[3] Repeat rate** = fraction of sentences on >50% of pages.
-> **[4] Junk found** = total known boilerplate phrases detected across all pages. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
+> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
@@ -2714,20 +2714,20 @@ return localStorage.getItem('uwu') === 'true';
 
 ## wikipedia-python
 
-| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
+| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 3417 | 0 | 0% | 16 | 15.2 | 3.0 | 100% | 64% |
-| crawl4ai | 5106 | 252 ⚠ | 0% | 211 | 14.9 | 3.0 | 100% | 41% |
-| crawl4ai-raw | 5106 | 252 ⚠ | 0% | 211 | 14.9 | 3.0 | 100% | 41% |
-| scrapy+md | 4925 | 4 | 0% | 67 | 15.2 | 3.0 | 99% | 77% |
-| crawlee | 10493 | 5245 ⚠ | 3% | 162 | 16.1 | 3.0 | 52% | 89% |
-| colly+md | 5446 | 270 ⚠ | 0% | 162 | 16.1 | 3.0 | 100% | 91% |
-| playwright | 5249 | 387 ⚠ | 1% | 140 | 15.4 | 3.6 | 100% | 98% |
+| **markcrawl** | 3417 | 0 | 0% | 0.3 | 15.2 | 3.0 | 100% | 64% |
+| scrapy+md | 4925 | 4 | 0% | 1.3 | 15.2 | 3.0 | 99% | 77% |
+| crawl4ai | 5106 | 252 ⚠ | 0% | 4.2 | 14.9 | 3.0 | 100% | 41% |
+| crawl4ai-raw | 5106 | 252 ⚠ | 0% | 4.2 | 14.9 | 3.0 | 100% | 41% |
+| colly+md | 5446 | 270 ⚠ | 0% | 3.2 | 16.1 | 3.0 | 100% | 91% |
+| playwright | 5249 | 387 ⚠ | 1% | 3.3 | 15.4 | 3.6 | 100% | 98% |
+| crawlee | 10493 | 5245 ⚠ | 3% | 3.2 | 16.1 | 3.0 | 52% | 89% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
 > **Column definitions:**
 > **[6] Avg words** = mean words per page. **[2] Preamble** = avg words per page before the first heading (nav chrome). **[3] Repeat rate** = fraction of sentences on >50% of pages.
-> **[4] Junk found** = total known boilerplate phrases detected across all pages. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
+> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
@@ -3110,20 +3110,20 @@ Appearance
 
 ## stripe-docs
 
-| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
+| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 1165 | 13 | 0% | 35 | 10.3 | 2.2 | 98% | 22% |
-| crawl4ai | 1372 | 174 ⚠ | 0% | 819 | 12.0 | 2.2 | 100% | 18% |
-| crawl4ai-raw | 1369 | 174 ⚠ | 0% | 785 | 12.0 | 2.2 | 100% | 18% |
-| scrapy+md | 1360 | 171 ⚠ | 0% | 552 | 10.3 | 2.2 | 100% | 22% |
-| crawlee | 18095 | 8955 ⚠ | 1% | 1254 | 10.6 | 2.2 | 98% | 100% |
-| colly+md | 16950 | 8867 ⚠ | 1% | 977 | 10.1 | 2.0 | 98% | 94% |
-| playwright | 18073 | 8955 ⚠ | 1% | 999 | 10.6 | 2.2 | 98% | 95% |
+| **markcrawl** | 1165 | 13 | 0% | 0.1 | 10.3 | 2.2 | 98% | 22% |
+| scrapy+md | 1360 | 171 ⚠ | 0% | 2.1 | 10.3 | 2.2 | 100% | 22% |
+| crawl4ai | 1372 | 174 ⚠ | 0% | 3.2 | 12.0 | 2.2 | 100% | 18% |
+| crawl4ai-raw | 1369 | 174 ⚠ | 0% | 3.1 | 12.0 | 2.2 | 100% | 18% |
+| colly+md | 16950 | 8867 ⚠ | 1% | 3.8 | 10.1 | 2.0 | 98% | 94% |
+| crawlee | 18095 | 8955 ⚠ | 1% | 4.9 | 10.6 | 2.2 | 98% | 100% |
+| playwright | 18073 | 8955 ⚠ | 1% | 3.9 | 10.6 | 2.2 | 98% | 95% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
 > **Column definitions:**
 > **[6] Avg words** = mean words per page. **[2] Preamble** = avg words per page before the first heading (nav chrome). **[3] Repeat rate** = fraction of sentences on >50% of pages.
-> **[4] Junk found** = total known boilerplate phrases detected across all pages. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
+> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
@@ -3711,20 +3711,20 @@ box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width
 
 ## blog-engineering
 
-| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
+| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 667 | 36 | 0% | 1 | 14.3 | 0.4 | 100% | 33% |
-| crawl4ai | 2301 | 697 ⚠ | 2% | 201 | 20.3 | 0.4 | 100% | 72% |
-| crawl4ai-raw | 2301 | 697 ⚠ | 2% | 201 | 20.3 | 0.4 | 100% | 72% |
-| scrapy+md | 659 | 8 | 0% | 1 | 14.3 | 0.4 | 100% | 33% |
-| crawlee | 3576 | 1923 ⚠ | 3% | 228 | 20.3 | 0.4 | 100% | 98% |
-| colly+md | 3048 | 1526 ⚠ | 4% | 141 | 20.3 | 0.3 | 99% | 93% |
-| playwright | 3584 | 1930 ⚠ | 3% | 231 | 20.3 | 0.4 | 99% | 98% |
+| scrapy+md | 659 | 8 | 0% | 0.0 | 14.3 | 0.4 | 100% | 33% |
+| **markcrawl** | 667 | 36 | 0% | 0.0 | 14.3 | 0.4 | 100% | 33% |
+| crawl4ai | 2301 | 697 ⚠ | 2% | 1.0 | 20.3 | 0.4 | 100% | 72% |
+| crawl4ai-raw | 2301 | 697 ⚠ | 2% | 1.0 | 20.3 | 0.4 | 100% | 72% |
+| colly+md | 3048 | 1526 ⚠ | 4% | 1.1 | 20.3 | 0.3 | 99% | 93% |
+| crawlee | 3576 | 1923 ⚠ | 3% | 1.1 | 20.3 | 0.4 | 100% | 98% |
+| playwright | 3584 | 1930 ⚠ | 3% | 1.2 | 20.3 | 0.4 | 99% | 98% |
 | firecrawl | — | — | — | — | — | — | — | — |
 
 > **Column definitions:**
 > **[6] Avg words** = mean words per page. **[2] Preamble** = avg words per page before the first heading (nav chrome). **[3] Repeat rate** = fraction of sentences on >50% of pages.
-> **[4] Junk found** = total known boilerplate phrases detected across all pages. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
+> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. **[7] Headings** = avg headings per page. **[8] Code blocks** = avg fenced code blocks per page.
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**

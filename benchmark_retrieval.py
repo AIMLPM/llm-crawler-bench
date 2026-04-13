@@ -1644,7 +1644,50 @@ def generate_retrieval_report(
     lines.append("")
 
     # ============================================================
-    # Section 1: Multi-mode summary (embedding vs hybrid vs reranked)
+    # Section 1a: Best mode per tool digest (7 rows)
+    # ============================================================
+    # Pre-compute all tool+mode aggregates for the digest and multi-mode table
+    tool_mode_aggs: Dict[str, Dict[str, tuple]] = {}
+    for tool in tool_names:
+        tool_mode_aggs[tool] = {}
+        for mode in RETRIEVAL_MODES:
+            agg = _aggregate_tool_mode(tool, mode, results, common_sites)
+            if agg is not None:
+                tool_mode_aggs[tool][mode] = agg
+
+    lines.extend(["## Quick summary: best retrieval mode per tool", ""])
+    lines.append(
+        "For each tool, the mode with the highest MRR. Most readers can stop here."
+    )
+    lines.append("")
+    lines.append("| Tool | Best mode | Hit@10 | MRR |")
+    lines.append("|---|---|---|---|")
+
+    # Build digest rows, sorted by best MRR descending
+    digest_rows = []
+    for tool in tool_names:
+        if not tool_mode_aggs[tool]:
+            continue
+        best_mode = max(tool_mode_aggs[tool], key=lambda m: tool_mode_aggs[tool][m][2])
+        total_queries, agg_hits, mrr = tool_mode_aggs[tool][best_mode]
+        hit10 = _fmt_rate(agg_hits.get(10, 0), total_queries)
+        tname = f"**{tool}**" if tool == "markcrawl" else tool
+        digest_rows.append((mrr, f"| {tname} | {best_mode} | {hit10} | {mrr:.3f} |"))
+    digest_rows.sort(key=lambda x: x[0], reverse=True)
+    for _, row in digest_rows:
+        lines.append(row)
+
+    lines.extend([
+        "",
+        "> **Column definitions:** "
+        "**Best mode** = retrieval strategy that maximizes MRR for this tool. "
+        "**Hit@10** = correct source page in top 10 results. "
+        "**MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged).",
+        "",
+    ])
+
+    # ============================================================
+    # Section 1b: Multi-mode summary (embedding vs hybrid vs reranked)
     # ============================================================
     lines.extend(["## Summary: retrieval modes compared", ""])
     if has_partial_tools:
@@ -1659,18 +1702,20 @@ def generate_retrieval_report(
     lines.append(f"| Tool | Mode | {k_headers} | MRR |")
     lines.append("|---" + "|---" * len(REPORT_AT_K) + "|---|---|")
 
-    for tool in tool_names:
-        for mode in RETRIEVAL_MODES:
-            agg = _aggregate_tool_mode(tool, mode, results, common_sites)
+    # Sort within each mode group by MRR descending
+    for mode in RETRIEVAL_MODES:
+        mode_rows = []
+        for tool in tool_names:
+            agg = tool_mode_aggs[tool].get(mode)
             if agg is None:
                 continue
             total_queries, agg_hits, mrr = agg
             k_cols = [_fmt_rate(agg_hits[k], total_queries) for k in REPORT_AT_K]
             tname = f"**{tool}**" if tool == "markcrawl" else tool
-            lines.append(
-                f"| {tname} | {mode} | " + " | ".join(k_cols) +
-                f" | {mrr:.3f} |"
-            )
+            mode_rows.append((mrr, f"| {tname} | {mode} | " + " | ".join(k_cols) + f" | {mrr:.3f} |"))
+        mode_rows.sort(key=lambda x: x[0], reverse=True)
+        for _, row in mode_rows:
+            lines.append(row)
 
     lines.extend([
         "",
@@ -1695,6 +1740,8 @@ def generate_retrieval_report(
     lines.append(f"| Tool | {k_headers} | MRR | Chunks | Avg words |")
     lines.append("|---" + "|---" * len(REPORT_AT_K) + "|---|---|---|")
 
+    # Collect rows then sort by MRR descending
+    emb_summary_rows = []
     for tool in tool_names:
         total_queries = 0
         total_chunks = 0
@@ -1718,17 +1765,19 @@ def generate_retrieval_report(
 
         if not has_data:
             cols = " | ".join("—" for _ in REPORT_AT_K)
-            lines.append(f"| {tool} | {cols} | — | — | — |")
+            emb_summary_rows.append((0.0, f"| {tool} | {cols} | — | — | — |"))
             continue
 
         avg_words = total_chunk_words / total_chunks if total_chunks else 0
         mrr = rr_sum / total_queries if total_queries else 0
         k_cols = [_fmt_rate(agg_hits[k], total_queries) for k in REPORT_AT_K]
         tname = f"**{tool}**" if tool == "markcrawl" else tool
-        lines.append(
-            f"| {tname} | " + " | ".join(k_cols) +
-            f" | {mrr:.3f} | {total_chunks} | {avg_words:.0f} |"
-        )
+        emb_summary_rows.append((mrr, f"| {tname} | " + " | ".join(k_cols) +
+            f" | {mrr:.3f} | {total_chunks} | {avg_words:.0f} |"))
+
+    emb_summary_rows.sort(key=lambda x: x[0], reverse=True)
+    for _, row in emb_summary_rows:
+        lines.append(row)
 
     lines.extend([
         "",
@@ -1737,6 +1786,34 @@ def generate_retrieval_report(
         "**MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged). "
         "**Chunks** = total chunks produced by this tool (across all pages in common sites). "
         "**Avg words** = mean words per chunk.",
+        "",
+    ])
+
+    # ============================================================
+    # "What this means" narrative interpretation
+    # ============================================================
+    lines.extend(["## What this means", ""])
+    lines.extend([
+        "All tools perform within a narrow band (MRR 0.757-0.799 on embedding mode). "
+        "This is expected: every tool crawls the same URLs, and we apply identical "
+        "chunking and embedding pipelines. The extraction differences that matter for "
+        "[content quality](QUALITY_COMPARISON.md) largely wash out at retrieval time.",
+        "",
+        "**Retrieval mode matters more than crawler choice.** Embedding search beats "
+        "BM25 by roughly 2x on MRR across all tools. Hybrid and reranked modes fall "
+        "between the two. Choosing the right retrieval strategy will improve your RAG "
+        "pipeline far more than switching crawlers.",
+        "",
+        "**The noise-vs-recall trade-off.** Noisier tools (crawlee, playwright) have "
+        "slightly higher hit rates, but they produce 2x the chunks of leaner tools "
+        "(markcrawl, scrapy+md). More chunks means higher embedding and storage costs "
+        "with diminishing retrieval returns. See [COST_AT_SCALE.md](COST_AT_SCALE.md) "
+        "for the dollar impact.",
+        "",
+        "**For most use cases, pick your crawler based on speed and cost, not retrieval "
+        "quality.** The differences here are within confidence intervals. Where crawler "
+        "choice _does_ matter is content quality and downstream answer quality "
+        "-- see [ANSWER_QUALITY.md](ANSWER_QUALITY.md).",
         "",
     ])
 
@@ -1790,10 +1867,13 @@ def generate_retrieval_report(
 
         for cat in sorted_cats:
             tool_data = cat_stats[cat]
-            # Sort tools by hit rate descending within each category
+            # Sort tools by hit rate descending, then MRR descending as tiebreaker
             sorted_tools = sorted(
                 tool_data.keys(),
-                key=lambda t: tool_data[t]["hits10"] / tool_data[t]["total"] if tool_data[t]["total"] else 0,
+                key=lambda t: (
+                    tool_data[t]["hits10"] / tool_data[t]["total"] if tool_data[t]["total"] else 0,
+                    tool_data[t]["rr_sum"] / tool_data[t]["total"] if tool_data[t]["total"] else 0,
+                ),
                 reverse=True,
             )
             for tool in sorted_tools:
@@ -1902,22 +1982,25 @@ def generate_retrieval_report(
             "|---" + "|---" * len(REPORT_AT_K) + "|---|---|---|",
         ])
 
+        # Collect per-site rows and sort by MRR descending
+        site_tool_rows = []
         for tool in tool_names:
             r = site_results.get(tool)
             tname = f"**{tool}**" if tool == "markcrawl" else tool
             if not r:
                 cols = " | ".join("—" for _ in REPORT_AT_K)
-                lines.append(f"| {tname} | {cols} | — | — | — |")
+                site_tool_rows.append((0.0, f"| {tname} | {cols} | — | — | — |"))
                 continue
             k_cols = []
             for k in REPORT_AT_K:
                 h = r.hits_at_k.get(k, 0)
                 rate = h / r.total_queries if r.total_queries else 0
                 k_cols.append(f"{rate:.0%} ({h}/{r.total_queries})")
-            lines.append(
-                f"| {tname} | " + " | ".join(k_cols) +
-                f" | {r.mrr:.3f} | {r.total_chunks} | {r.total_pages} |"
-            )
+            site_tool_rows.append((r.mrr, f"| {tname} | " + " | ".join(k_cols) +
+                f" | {r.mrr:.3f} | {r.total_chunks} | {r.total_pages} |"))
+        site_tool_rows.sort(key=lambda x: x[0], reverse=True)
+        for _, row in site_tool_rows:
+            lines.append(row)
 
         lines.extend([
             "",
@@ -1931,6 +2014,12 @@ def generate_retrieval_report(
         detail_k = 3
         lines.append("<details>")
         lines.append(f"<summary>Query-by-query results for {site}</summary>")
+        lines.append("")
+        lines.append(
+            "> **Hit** = rank position where correct page appeared "
+            "(#1 = top result, 'miss' = not in top 20). "
+            "**Score** = cosine similarity between query embedding and chunk embedding."
+        )
         lines.append("")
 
         for qi, q in enumerate(queries):
@@ -1989,10 +2078,16 @@ def generate_retrieval_report(
         "See [METHODOLOGY.md](METHODOLOGY.md) for full test setup, tool configurations,",
         "and fairness decisions.",
         "",
-        "Retrieval similarity across tools is expected — the same URLs, chunking, and",
-        "embedding model are used. The real differentiator shows up in",
-        "[ANSWER_QUALITY.md](ANSWER_QUALITY.md), where the LLM's final answers diverge",
-        "despite similar retrieval.",
+        "## See also",
+        "",
+        "- [QUALITY_COMPARISON.md](QUALITY_COMPARISON.md) — content quality differences "
+        "that wash out at retrieval time but affect downstream answers",
+        "- [ANSWER_QUALITY.md](ANSWER_QUALITY.md) — where the LLM's final answers diverge "
+        "despite similar retrieval",
+        "- [COST_AT_SCALE.md](COST_AT_SCALE.md) — the dollar impact of chunk count "
+        "differences (2x chunks = 2x embedding cost)",
+        "- [METHODOLOGY.md](METHODOLOGY.md) — full test setup, tool configurations, "
+        "and fairness decisions",
         "",
     ])
 

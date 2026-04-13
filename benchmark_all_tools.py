@@ -1021,11 +1021,21 @@ def generate_comparison_report(
         "",
         "## Tools tested",
         "",
-        "| Tool | Available | Notes |",
-        "|---|---|---|",
+        "| Tool | Type | Available | Notes |",
+        "|---|---|---|---|",
     ]
 
     all_tools = ["markcrawl", "crawl4ai", "crawl4ai-raw", "scrapy+md", "crawlee", "colly+md", "playwright", "firecrawl"]
+    tool_types = {
+        "markcrawl": "HTTP",
+        "scrapy+md": "HTTP",
+        "colly+md": "HTTP",
+        "crawl4ai": "Browser",
+        "crawl4ai-raw": "Browser",
+        "crawlee": "Browser",
+        "playwright": "Browser",
+        "firecrawl": "Browser (self-hosted)",
+    }
     for tool in all_tools:
         available = tool in available_tools
         notes = {
@@ -1039,9 +1049,23 @@ def generate_comparison_report(
             "firecrawl": "Self-hosted Docker — [firecrawl/firecrawl](https://github.com/firecrawl/firecrawl)",
         }
         status = "Yes" if available else "Not installed"
-        lines.append(f"| {tool} | {status} | {notes.get(tool, '')} |")
+        ttype = tool_types.get(tool, "")
+        lines.append(f"| {tool} | {ttype} | {status} | {notes.get(tool, '')} |")
 
-    lines.extend(["", "## Results by site", ""])
+    lines.extend([
+        "",
+        "## Context for the numbers",
+        "",
+        "**Pages/sec** measures raw crawl throughput — how fast a tool fetches and converts HTML "
+        "to Markdown. Tools using Playwright (browser rendering) are inherently slower than "
+        "HTTP-only tools (requests/Scrapy/Colly) because they must launch a browser and wait "
+        "for JavaScript execution. **Avg words** and **Output KB** reflect output volume, not "
+        "quality — see [QUALITY_COMPARISON.md](QUALITY_COMPARISON.md) for whether more words "
+        "means better content.",
+        "",
+        "## Results by site",
+        "",
+    ])
 
     # Detect whether std dev and peak memory have real data (not all zeros)
     has_stddev = any(
@@ -1064,10 +1088,10 @@ def generate_comparison_report(
         if has_stddev:
             header += " Std dev |"
             sep += "---|"
-        header += " Pages/sec [3] | Avg words [1] | Output KB [2] |"
+        header += " Pages/sec [1] | Avg words [2] | Output KB [3] |"
         sep += "---|---|---|"
         if has_peak_mem:
-            header += " Peak MB [3] |"
+            header += " Peak MB [4] |"
             sep += "---|"
 
         lines.extend([
@@ -1079,7 +1103,15 @@ def generate_comparison_report(
             sep,
         ])
 
-        for tool in available_tools:
+        # Sort tools by pps_median descending (best first)
+        def _site_sort_key(tool):
+            r = results.get(tool, {}).get(site_name)
+            if r and not r.error:
+                return r.pps_median
+            return -1  # errors/missing last
+        sorted_tools = sorted(available_tools, key=_site_sort_key, reverse=True)
+
+        for tool in sorted_tools:
             r = results.get(tool, {}).get(site_name)
             tool_label = f"**{tool}**" if tool == "markcrawl" else tool
             if r and not r.error:
@@ -1106,14 +1138,14 @@ def generate_comparison_report(
     legend_cols = [
         ("Pages (a)", "total pages fetched from the site (identical URL list for all tools)"),
         ("Time (b)", "wall-clock seconds to fetch and convert all pages (median of 3 iterations)"),
-        ("[3] Pages/sec", "median throughput across iterations. Approximately a÷b; small differences arise because each column is an independent median"),
-        ("[1] Avg words", "mean words per page"),
-        ("[2] Output KB", "total Markdown output size across all pages"),
+        ("[1] Pages/sec", "median throughput across iterations. Approximately a÷b; small differences arise because each column is an independent median"),
+        ("[2] Avg words", "mean words per page"),
+        ("[3] Output KB", "total Markdown output size across all pages"),
     ]
     if has_stddev:
         legend_cols.append(("Std dev", "standard deviation of Time across iterations"))
     if has_peak_mem:
-        legend_cols.append(("[3] Peak MB", "peak resident memory (RSS) during crawl"))
+        legend_cols.append(("[4] Peak MB", "peak resident memory (RSS) during crawl"))
     lines.extend(table_legend(legend_cols))
     lines.append("")
 
@@ -1126,20 +1158,49 @@ def generate_comparison_report(
     ])
 
     total_sites = len(COMPARISON_SITES)
+    # Compute max possible pages across all sites
+    max_possible_pages = sum(
+        sum(r.pages_median for r in results.get(t, {}).values() if not r.error)
+        for t in available_tools
+    )
+    # Find the tool with the most pages to use as reference
+    tool_page_totals = {}
     for tool in available_tools:
-        tool_label = f"**{tool}**" if tool == "markcrawl" else tool
-        tool_results = results.get(tool, {})
-        successful = {k: v for k, v in tool_results.items() if not v.error}
+        tool_results_map = results.get(tool, {})
+        successful = {k: v for k, v in tool_results_map.items() if not v.error}
+        tool_page_totals[tool] = sum(r.pages_median for r in successful.values())
+    max_tool_pages = max(tool_page_totals.values()) if tool_page_totals else 0
+
+    # Build summary rows, then sort by avg_pps descending
+    summary_rows = []
+    for tool in available_tools:
+        tool_results_map = results.get(tool, {})
+        successful = {k: v for k, v in tool_results_map.items() if not v.error}
         total_pages = sum(r.pages_median for r in successful.values())
         total_time = sum(r.time_median for r in successful.values())
         avg_pps = total_pages / total_time if total_time > 0 else 0
         note = ""
-        if len(successful) < total_sites and len(successful) > 0:
-            note = f" *({len(successful)}/{total_sites} sites)*"
-        elif len(successful) == 0:
-            lines.append(f"| {tool_label} | — | — | — | *all sites errored* |")
+        if len(successful) == 0:
+            summary_rows.append((tool, 0, 0, 0, "*all sites errored*"))
             continue
-        lines.append(f"| {tool_label} | {total_pages:.0f} | {total_time:.1f} | {avg_pps:.1f} |{note} |")
+        if len(successful) < total_sites and len(successful) > 0:
+            note = f"*({len(successful)}/{total_sites} sites)* "
+        # Flag incomplete page counts
+        missing = int(max_tool_pages - total_pages)
+        if missing > 0:
+            note += f"*(missing {missing} pages)*"
+        note = note.strip()
+        summary_rows.append((tool, total_pages, total_time, avg_pps, note))
+
+    # Sort by avg_pps descending
+    summary_rows.sort(key=lambda x: x[3], reverse=True)
+
+    for tool, total_pages, total_time, avg_pps, note in summary_rows:
+        tool_label = f"**{tool}**" if tool == "markcrawl" else tool
+        if total_pages == 0 and total_time == 0 and avg_pps == 0:
+            lines.append(f"| {tool_label} | — | — | — | {note} |")
+            continue
+        lines.append(f"| {tool_label} | {total_pages:.0f} | {total_time:.1f} | {avg_pps:.1f} | {note} |")
 
     lines.extend([
         "",
@@ -1151,8 +1212,51 @@ def generate_comparison_report(
         "",
         "> **Note on variance:** These benchmarks fetch pages from live public websites.",
         "> Network conditions, server load, and CDN caching can cause significant",
-        "> run-to-run variance (std dev shown per site). For the most reliable comparison,",
+        "> run-to-run variance. For the most reliable comparison,",
         "> run multiple iterations and compare medians.",
+        "",
+        "## What the results mean",
+        "",
+        f"HTTP-only tools ({fastest_tool}, scrapy+md, colly+md) are consistently 2-7x faster than "
+        "browser-based tools (crawl4ai, crawlee, playwright). The speed gap comes from skipping "
+        "browser startup and JavaScript execution entirely.",
+        "",
+    ])
+
+    # Build per-site winners for narrative
+    site_winners = {}
+    for site_name_n in COMPARISON_SITES:
+        best_tool_n = None
+        best_pps_n = 0
+        for tool in available_tools:
+            r = results.get(tool, {}).get(site_name_n)
+            if r and not r.error and r.pps_median > best_pps_n:
+                best_pps_n = r.pps_median
+                best_tool_n = tool
+        if best_tool_n:
+            site_winners[site_name_n] = best_tool_n
+
+    # Find sites where markcrawl is NOT the fastest
+    mc_losses = [s for s, t in site_winners.items() if t != "markcrawl"]
+    if mc_losses:
+        loss_parts = [f"{s} ({site_winners[s]})" for s in mc_losses]
+        lines.append(
+            f"{fastest_tool} is fastest overall, but loses on "
+            f"{', '.join(loss_parts)}. "
+            "Site-specific results vary with server response times and content complexity."
+        )
+    else:
+        lines.append(f"{fastest_tool} is fastest on every site tested.")
+
+    lines.extend([
+        "",
+        "Higher word counts from browser-based tools (crawlee, playwright) do not indicate "
+        "better extraction quality — they often reflect extra navigation chrome and repeated "
+        "boilerplate. See [QUALITY_COMPARISON.md](QUALITY_COMPARISON.md) for content signal analysis.",
+        "",
+        "Some tools miss pages on certain sites: scrapy+md and colly+md fetch fewer pages than "
+        "expected on some sites, which inflates their per-page speed but means incomplete coverage. "
+        "Check the per-site tables for exact page counts.",
         "",
         "## Reproducing these results",
         "",

@@ -496,7 +496,15 @@ def generate_quality_report(
             "|---|---|---|---|---|---|---|",
         ])
 
-        for tool in tool_names:
+        # Sort tools by content signal (signal_ratio) descending; tools with
+        # no data go last.
+        sorted_tools = sorted(
+            tool_names,
+            key=lambda t: tool_summaries[t]["signal_ratio"] if t in tool_summaries else -1,
+            reverse=True,
+        )
+
+        for tool in sorted_tools:
             s = tool_summaries.get(tool)
             if not s:
                 lines.append(f"| {tool} | — | — | — | — | — | — |")
@@ -560,11 +568,26 @@ def generate_quality_report(
 
         # Summary table — includes the two new columns
         lines.extend([
-            "| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk found [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |",
+            "| Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |",
             "|---|---|---|---|---|---|---|---|---|",
         ])
 
+        # Compute per-tool stats for sorting
+        per_tool_stats: Dict[str, Dict] = {}
         for tool in tool_names:
+            pages = site_data.get(tool, [])
+            if not pages:
+                continue
+            avg_preamble = sum(p.signal.preamble_words for p in pages) / len(pages)
+            per_tool_stats[tool] = {"preamble": avg_preamble}
+
+        # Sort tools by preamble ascending; tools with no data go last.
+        sorted_site_tools = sorted(
+            tool_names,
+            key=lambda t: per_tool_stats[t]["preamble"] if t in per_tool_stats else float("inf"),
+        )
+
+        for tool in sorted_site_tools:
             pages = site_data.get(tool, [])
             if not pages:
                 lines.append(f"| {tool} | — | — | — | — | — | — | — | — |")
@@ -573,7 +596,7 @@ def generate_quality_report(
             avg_words = sum(p.signal.word_count for p in pages) / len(pages)
             avg_preamble = sum(p.signal.preamble_words for p in pages) / len(pages)
             repeat_rate = repeat_rates[tool]
-            total_junk = sum(len(p.signal.junk_found) for p in pages)
+            junk_per_page = sum(len(p.signal.junk_found) for p in pages) / len(pages)
             avg_headings = sum(p.signal.heading_count for p in pages) / len(pages)
             avg_code = sum(p.signal.code_block_count for p in pages) / len(pages)
             # Only average pages that had enough sentences for meaningful consensus.
@@ -590,7 +613,7 @@ def generate_quality_report(
             tool_label = f"**{tool}**" if tool == "markcrawl" else tool
             lines.append(
                 f"| {tool_label} | {avg_words:.0f} | {avg_preamble:.0f}{preamble_flag} | "
-                f"{repeat_rate:.0%}{repeat_flag} | {total_junk} | {avg_headings:.1f} | "
+                f"{repeat_rate:.0%}{repeat_flag} | {junk_per_page:.1f} | {avg_headings:.1f} | "
                 f"{avg_code:.1f} | {avg_precision:.0%} | {avg_recall:.0%} |"
             )
 
@@ -601,7 +624,7 @@ def generate_quality_report(
             "> **[6] Avg words** = mean words per page. "
             "**[2] Preamble** = avg words per page before the first heading (nav chrome). "
             "**[3] Repeat rate** = fraction of sentences on >50% of pages.",
-            "> **[4] Junk found** = total known boilerplate phrases detected across all pages. "
+            "> **[4] Junk/page** = known boilerplate phrases (nav, footer, cookie banners) detected per page. "
             "**[7] Headings** = avg headings per page. "
             "**[8] Code blocks** = avg fenced code blocks per page.",
             "> **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). "

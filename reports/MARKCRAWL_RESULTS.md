@@ -3,7 +3,7 @@
 
 > **Looking for the head-to-head comparison vs Crawl4AI and Scrapy?** See [SPEED_COMPARISON.md](SPEED_COMPARISON.md).
 
-MarkCrawl achieves 17.60 pages/sec across 728 pages with 100% title extraction and citation completeness across all 4 test sites.
+MarkCrawl achieves 17.63 pages/sec across 728 pages with 100% title extraction and citation completeness across all 4 test sites.
 
 This report measures MarkCrawl's own performance and extraction quality.
 No other tools are involved — this is a self-assessment of speed, content quality, and output completeness.
@@ -34,24 +34,24 @@ Source: [`benchmark_markcrawl.py`](benchmark_markcrawl.py)
 
 - **Sites tested:** 4
 - **Total pages crawled:** 728
-- **Total time:** 41.4s
-- **Overall pages/second:** 17.60
+- **Total time:** 41.3s
+- **Overall pages/second:** 17.63
 
 ## Performance
 
-### Medium (15-30 pages) — 668 pages in 37.1s (18.0 p/s), 22073 KB output
+### Medium — 668 pages in 37.1s (18.0 p/s), 22074 KB output
 
-| Site | Description | Pages (a) | Time (b) | Pages/sec (a÷b) | Avg words [1] | Output KB [2] | Peak MB [3] |
-|---|---|---|---|---|---|---|---|
-| fastapi-docs | FastAPI framework docs (API docs with code examples, tutorials) | 153 | 11.4 | 13.40 | 2084 | 2952 | 0 |
-| python-docs | Python standard library index + module pages | 500 | 22.1 | 22.63 | 3766 | 19103 | 0 |
-| quotes-toscrape | Paginated quotes (tests link-following across 10+ pages) | 15 | 3.6 | 4.15 | 199 | 19 | 0 |
+| Site | Description | Pages (a) | Time (b) | Pages/sec (a÷b) | Avg words [1] | Output KB [2] |
+|---|---|---|---|---|---|---|
+| fastapi-docs | FastAPI framework docs (API docs with code examples, tutorials) | 153 | 11.4 | 13.42 | 2084 | 2952 |
+| python-docs | Python standard library index + module pages | 500 | 22.1 | 22.62 | 3766 | 19103 |
+| quotes-toscrape | Paginated quotes (tests link-following across 10+ pages) | 15 | 3.6 | 4.17 | 199 | 19 |
 
-### Large (50-100 pages) — 60 pages in 4.2s (14.2 p/s), 155 KB output
+### Large — 60 pages in 4.2s (14.3 p/s), 155 KB output
 
-| Site | Description | Pages (a) | Time (b) | Pages/sec (a÷b) | Avg words [1] | Output KB [2] | Peak MB [3] |
-|---|---|---|---|---|---|---|---|
-| books-toscrape | E-commerce catalog (50+ product pages, pagination, categories) | 60 | 4.2 | 14.19 | 339 | 155 | 0 |
+| Site | Description | Pages (a) | Time (b) | Pages/sec (a÷b) | Avg words [1] | Output KB [2] |
+|---|---|---|---|---|---|---|
+| books-toscrape | E-commerce catalog (50+ product pages, pagination, categories) | 60 | 4.2 | 14.29 | 339 | 155 |
 
 
 ## Extraction Quality
@@ -62,6 +62,8 @@ Source: [`benchmark_markcrawl.py`](benchmark_markcrawl.py)
 | python-docs | 75 | 100% | 100% | 100% |
 | quotes-toscrape | 0 | 100% | 100% | 100% |
 | books-toscrape | 0 | 100% | 100% | 100% |
+
+> Column definitions are in [What these metrics mean](#extraction-quality-table) below.
 
 ## Quality Scores
 
@@ -77,21 +79,16 @@ Source: [`benchmark_markcrawl.py`](benchmark_markcrawl.py)
 
 ## Junk Detection Details
 
+> Counts are summed across all pages for each site — the same pattern can match on multiple pages.
+
 ### fastapi-docs
 - cookie.?banner: 1 match(es)
 - cookie.?consent: 1 match(es)
 
 ### python-docs
-- ©\s*\d{4}.*all rights reserved: 3 match(es)
-- all rights reserved: 3 match(es)
-- ©\s*\d{4}.*all rights reserved: 4 match(es)
-- all rights reserved: 5 match(es)
-- ©\s*\d{4}.*all rights reserved: 4 match(es)
-- all rights reserved: 5 match(es)
-- ©\s*\d{4}.*all rights reserved: 4 match(es)
-- all rights reserved: 5 match(es)
-- all rights reserved: 1 match(es)
-- ©\s*\d{4}.*all rights reserved: 3 match(es)
+- ©\s*\d{4}.*all rights reserved: 33 match(es)
+- all rights reserved: 40 match(es)
+- <script: 2 match(es)
 
 
 ## What these metrics mean
@@ -103,11 +100,10 @@ Source: [`benchmark_markcrawl.py`](benchmark_markcrawl.py)
 - **Pages/sec (a÷b)**: Crawl throughput. Affected by network, server response time, and `--delay`.
 - **[1] Avg words**: Mean words per page (total words ÷ page count).
 - **[2] Output KB**: Total Markdown output size across all pages.
-- **[3] Peak MB**: Peak resident memory (RSS) during crawl.
 
 ### Extraction quality table
 
-- **Junk detected**: Total count of navigation, footer, script, or cookie text found across all pages. Should be 0.
+- **Junk detected**: Total count of navigation, footer, script, or cookie text found across all pages (summed across pages — the same pattern can match on multiple pages). Should be 0.
 - **Title rate**: Percentage of pages where a `<title>` was successfully extracted.
 - **Citation rate**: Percentage of JSONL rows with a complete citation string.
 - **JSONL complete**: Percentage of JSONL rows with all required fields (url, title, path, crawled_at, citation, tool, text).

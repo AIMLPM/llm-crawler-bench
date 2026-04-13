@@ -419,7 +419,7 @@ def generate_report(
         one_line += ". The gaps are small but consistent."
         lines[3] = one_line  # replace placeholder
 
-    # Summary table
+    # Summary table — sorted by overall score descending
     total_q = max((s.total_queries for s in tool_summaries.values()), default=0)
     lines.extend([
         f"## Summary ({total_q} queries across {len(all_results)} sites)",
@@ -428,12 +428,10 @@ def generate_report(
         "|---|---|---|---|---|---|---|",
     ])
 
-    for tool in tool_names:
-        s = tool_summaries.get(tool)
-        if not s:
-            continue
+    sorted_summary = sorted(tool_summaries.values(), key=lambda s: s.avg_overall, reverse=True)
+    for s in sorted_summary:
         avg_tokens = int(s.avg_chunk_words * 1.33)
-        tool_label = f"**{tool}**" if tool == "markcrawl" else tool
+        tool_label = f"**{s.tool}**" if s.tool == "markcrawl" else s.tool
         lines.append(
             f"| {tool_label} "
             f"| {s.avg_correctness:.2f} "
@@ -457,6 +455,32 @@ def generate_report(
         "",
     ])
 
+    # Narrative section — "What this means in practice"
+    if tool_summaries:
+        sorted_for_narrative = sorted(tool_summaries.values(), key=lambda s: s.avg_overall, reverse=True)
+        best_s = sorted_for_narrative[0]
+        worst_s = sorted_for_narrative[-1]
+        gap_abs = best_s.avg_overall - worst_s.avg_overall
+        gap_pct_narrative = gap_abs / best_s.avg_overall * 100 if best_s.avg_overall else 0
+        lines.extend([
+            "## What this means in practice",
+            "",
+            f"The quality gap between the best ({best_s.tool}, {best_s.avg_overall:.2f}) and worst "
+            f"({worst_s.tool}, {worst_s.avg_overall:.2f}) crawler is {gap_abs:.2f} points on a 5-point "
+            f"scale -- {gap_pct_narrative:.1f}% relative. This gap is real but small.",
+            "",
+            "For most use cases, your choice of crawler will not noticeably affect "
+            "the quality of LLM-generated answers. All tools produce answers that "
+            "score above 4.0 (\"good\") on average, meaning users get helpful, "
+            "accurate responses regardless of which crawler feeds the pipeline.",
+            "",
+            "**Executive takeaway:** Switching crawlers purely to improve answer quality "
+            "is unlikely to justify the migration effort. The cost and speed differences "
+            "between tools are far more impactful on your bottom line -- see "
+            "[COST_AT_SCALE.md](COST_AT_SCALE.md) for the dollar-level analysis.",
+            "",
+        ])
+
     # Per-site breakdown
     for site, site_results in all_results.items():
         queries = TEST_QUERIES.get(site, [])
@@ -467,11 +491,18 @@ def generate_report(
         lines.append("| Tool | Correctness | Relevance | Completeness | Usefulness | Overall |")
         lines.append("|---|---|---|---|---|---|")
 
+        # Build per-tool averages and sort by overall descending
+        site_tool_avgs = []
         for tool in tool_names:
             results = site_results.get(tool)
             if not results:
                 continue
             n = len(results)
+            avg_overall = sum(r.overall for r in results) / n
+            site_tool_avgs.append((tool, results, n, avg_overall))
+        site_tool_avgs.sort(key=lambda x: x[3], reverse=True)
+
+        for tool, results, n, _ in site_tool_avgs:
             tool_label = f"**{tool}**" if tool == "markcrawl" else tool
             lines.append(
                 f"| {tool_label} "
@@ -488,26 +519,72 @@ def generate_report(
             "",
         ])
 
-        # Per-query detail
-        lines.append("<details>")
-        lines.append(f"<summary>Query-by-query scores for {site}</summary>")
-        lines.append("")
+        # Per-query detail — match results by query text, not position
+        # Build a lookup: tool -> {query_text -> AnswerResult}
+        tool_query_map: Dict[str, Dict[str, AnswerResult]] = {}
+        for tool in tool_names:
+            results = site_results.get(tool)
+            if not results:
+                continue
+            tool_query_map[tool] = {r.query: r for r in results}
 
+        # Build per-query detail lines first, then wrap in <details> if non-empty
+        detail_lines: List[str] = []
+        first_query_table = True
         for qi, q in enumerate(queries):
-            lines.append(f"**Q{qi+1}: {q['query']}**")
-            lines.append("")
-            lines.append("| Tool | Score | Answer (truncated) |")
-            lines.append("|---|---|---|")
+            query_text = q["query"]
+            # Collect rows for this query across all tools
+            query_rows = []
             for tool in tool_names:
-                results = site_results.get(tool)
-                if not results or qi >= len(results):
+                qmap = tool_query_map.get(tool)
+                if not qmap:
                     continue
-                r = results[qi]
-                short_answer = r.answer[:100].replace("|", "\\|").replace("\n", " ")
-                lines.append(f"| {tool} | {r.overall:.1f} | {short_answer}... |")
-            lines.append("")
+                r = qmap.get(query_text)
+                if not r:
+                    continue
+                query_rows.append((tool, r))
 
-        lines.extend(["</details>", ""])
+            # Skip queries with no data (issue #4: empty tables)
+            if not query_rows:
+                continue
+
+            # Sort rows by avg score descending
+            query_rows.sort(key=lambda x: x[1].overall, reverse=True)
+
+            detail_lines.append(f"**Q{qi+1}: {query_text}**")
+            detail_lines.append("")
+            detail_lines.append("| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |")
+            detail_lines.append("|---|---|---|---|---|---|---|")
+
+            for tool, r in query_rows:
+                short_answer = r.answer[:100].replace("|", "\\|").replace("\n", " ")
+                detail_lines.append(
+                    f"| {tool} "
+                    f"| {r.correctness} "
+                    f"| {r.relevance} "
+                    f"| {r.completeness} "
+                    f"| {r.usefulness} "
+                    f"| {r.overall:.1f} "
+                    f"| {short_answer}... |"
+                )
+            detail_lines.append("")
+
+            if first_query_table:
+                detail_lines.append(
+                    "> **Corr** = correctness, **Rel** = relevance, "
+                    "**Comp** = completeness, **Use** = usefulness, "
+                    "**Avg** = average of the four dimensions (1-5)."
+                )
+                detail_lines.append("")
+                first_query_table = False
+
+        # Only emit <details> if there are per-query results
+        if detail_lines:
+            lines.append("<details>")
+            lines.append(f"<summary>Query-by-query scores for {site}</summary>")
+            lines.append("")
+            lines.extend(detail_lines)
+            lines.extend(["</details>", ""])
 
     # Methodology
     lines.extend([

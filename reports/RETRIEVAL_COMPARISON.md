@@ -15,38 +15,54 @@ This benchmark chunks each tool's crawl output, embeds it with
 **109 queries** across 8 sites.
 Hit rate = correct source page in top-K results. Higher is better.
 
+## Quick summary: best retrieval mode per tool
+
+For each tool, the mode with the highest MRR. Most readers can stop here.
+
+| Tool | Best mode | Hit@10 | MRR |
+|---|---|---|---|
+| playwright | embedding | 94% (102/109) ±5% | 0.799 |
+| crawlee | embedding | 92% (100/109) ±5% | 0.782 |
+| crawl4ai | embedding | 90% (98/109) ±6% | 0.771 |
+| crawl4ai-raw | embedding | 90% (98/109) ±6% | 0.767 |
+| **markcrawl** | embedding | 91% (99/109) ±6% | 0.759 |
+| colly+md | embedding | 91% (99/109) ±6% | 0.759 |
+| scrapy+md | embedding | 93% (101/109) ±5% | 0.757 |
+
+> **Column definitions:** **Best mode** = retrieval strategy that maximizes MRR for this tool. **Hit@10** = correct source page in top 10 results. **MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged).
+
 ## Summary: retrieval modes compared
 
 | Tool | Mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR |
 |---|---|---|---|---|---|---|---|
-| **markcrawl** | embedding | 68% (74/109) ±9% | 83% (90/109) ±7% | 86% (94/109) ±6% | 91% (99/109) ±6% | 91% (99/109) ±6% | 0.759 |
-| **markcrawl** | bm25 | 26% (28/109) ±8% | 43% (47/109) ±9% | 56% (61/109) ±9% | 68% (74/109) ±9% | 77% (84/109) ±8% | 0.388 |
-| **markcrawl** | hybrid | 55% (60/109) ±9% | 78% (85/109) ±8% | 83% (90/109) ±7% | 91% (99/109) ±6% | 91% (99/109) ±6% | 0.675 |
-| **markcrawl** | reranked | 58% (63/109) ±9% | 84% (92/109) ±7% | 88% (96/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.715 |
-| crawl4ai | embedding | 71% (77/109) ±8% | 83% (91/109) ±7% | 89% (97/109) ±6% | 90% (98/109) ±6% | 93% (101/109) ±5% | 0.771 |
-| crawl4ai | bm25 | 21% (23/109) ±8% | 39% (42/109) ±9% | 48% (52/109) ±9% | 60% (65/109) ±9% | 70% (76/109) ±9% | 0.339 |
-| crawl4ai | hybrid | 57% (62/109) ±9% | 79% (86/109) ±8% | 87% (95/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.695 |
-| crawl4ai | reranked | 66% (72/109) ±9% | 84% (92/109) ±7% | 89% (97/109) ±6% | 91% (99/109) ±6% | 91% (99/109) ±6% | 0.754 |
-| crawl4ai-raw | embedding | 70% (76/109) ±9% | 83% (91/109) ±7% | 89% (97/109) ±6% | 90% (98/109) ±6% | 92% (100/109) ±5% | 0.767 |
-| crawl4ai-raw | bm25 | 21% (23/109) ±8% | 38% (41/109) ±9% | 47% (51/109) ±9% | 60% (65/109) ±9% | 69% (75/109) ±9% | 0.335 |
-| crawl4ai-raw | hybrid | 57% (62/109) ±9% | 78% (85/109) ±8% | 87% (95/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.691 |
-| crawl4ai-raw | reranked | 66% (72/109) ±9% | 84% (92/109) ±7% | 89% (97/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.755 |
-| scrapy+md | embedding | 66% (72/109) ±9% | 83% (91/109) ±7% | 91% (99/109) ±6% | 93% (101/109) ±5% | 94% (102/109) ±5% | 0.757 |
-| scrapy+md | bm25 | 26% (28/109) ±8% | 40% (44/109) ±9% | 50% (55/109) ±9% | 70% (76/109) ±9% | 83% (90/109) ±7% | 0.381 |
-| scrapy+md | hybrid | 61% (66/109) ±9% | 80% (87/109) ±7% | 88% (96/109) ±6% | 93% (101/109) ±5% | 93% (101/109) ±5% | 0.717 |
-| scrapy+md | reranked | 55% (60/109) ±9% | 82% (89/109) ±7% | 87% (95/109) ±6% | 92% (100/109) ±5% | 94% (102/109) ±5% | 0.694 |
-| crawlee | embedding | 72% (78/109) ±8% | 83% (90/109) ±7% | 88% (96/109) ±6% | 92% (100/109) ±5% | 93% (101/109) ±5% | 0.782 |
-| crawlee | bm25 | 30% (33/109) ±9% | 39% (43/109) ±9% | 51% (56/109) ±9% | 68% (74/109) ±9% | 79% (86/109) ±8% | 0.401 |
-| crawlee | hybrid | 62% (68/109) ±9% | 80% (87/109) ±7% | 85% (93/109) ±7% | 92% (100/109) ±5% | 92% (100/109) ±5% | 0.717 |
-| crawlee | reranked | 58% (63/109) ±9% | 82% (89/109) ±7% | 86% (94/109) ±6% | 90% (98/109) ±6% | 93% (101/109) ±5% | 0.704 |
-| colly+md | embedding | 69% (75/109) ±9% | 80% (87/109) ±7% | 86% (94/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.759 |
-| colly+md | bm25 | 27% (29/109) ±8% | 39% (42/109) ±9% | 50% (55/109) ±9% | 69% (75/109) ±9% | 80% (87/109) ±7% | 0.382 |
-| colly+md | hybrid | 62% (68/109) ±9% | 78% (85/109) ±8% | 83% (90/109) ±7% | 92% (100/109) ±5% | 93% (101/109) ±5% | 0.714 |
-| colly+md | reranked | 53% (58/109) ±9% | 81% (88/109) ±7% | 86% (94/109) ±6% | 92% (100/109) ±5% | 94% (102/109) ±5% | 0.681 |
 | playwright | embedding | 73% (80/109) ±8% | 83% (91/109) ±7% | 90% (98/109) ±6% | 94% (102/109) ±5% | 94% (102/109) ±5% | 0.799 |
+| crawlee | embedding | 72% (78/109) ±8% | 83% (90/109) ±7% | 88% (96/109) ±6% | 92% (100/109) ±5% | 93% (101/109) ±5% | 0.782 |
+| crawl4ai | embedding | 71% (77/109) ±8% | 83% (91/109) ±7% | 89% (97/109) ±6% | 90% (98/109) ±6% | 93% (101/109) ±5% | 0.771 |
+| crawl4ai-raw | embedding | 70% (76/109) ±9% | 83% (91/109) ±7% | 89% (97/109) ±6% | 90% (98/109) ±6% | 92% (100/109) ±5% | 0.767 |
+| **markcrawl** | embedding | 68% (74/109) ±9% | 83% (90/109) ±7% | 86% (94/109) ±6% | 91% (99/109) ±6% | 91% (99/109) ±6% | 0.759 |
+| colly+md | embedding | 69% (75/109) ±9% | 80% (87/109) ±7% | 86% (94/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.759 |
+| scrapy+md | embedding | 66% (72/109) ±9% | 83% (91/109) ±7% | 91% (99/109) ±6% | 93% (101/109) ±5% | 94% (102/109) ±5% | 0.757 |
 | playwright | bm25 | 33% (36/109) ±9% | 42% (46/109) ±9% | 54% (59/109) ±9% | 72% (79/109) ±8% | 82% (89/109) ±7% | 0.430 |
+| crawlee | bm25 | 30% (33/109) ±9% | 39% (43/109) ±9% | 51% (56/109) ±9% | 68% (74/109) ±9% | 79% (86/109) ±8% | 0.401 |
+| **markcrawl** | bm25 | 26% (28/109) ±8% | 43% (47/109) ±9% | 56% (61/109) ±9% | 68% (74/109) ±9% | 77% (84/109) ±8% | 0.388 |
+| colly+md | bm25 | 27% (29/109) ±8% | 39% (42/109) ±9% | 50% (55/109) ±9% | 69% (75/109) ±9% | 80% (87/109) ±7% | 0.382 |
+| scrapy+md | bm25 | 26% (28/109) ±8% | 40% (44/109) ±9% | 50% (55/109) ±9% | 70% (76/109) ±9% | 83% (90/109) ±7% | 0.381 |
+| crawl4ai | bm25 | 21% (23/109) ±8% | 39% (42/109) ±9% | 48% (52/109) ±9% | 60% (65/109) ±9% | 70% (76/109) ±9% | 0.339 |
+| crawl4ai-raw | bm25 | 21% (23/109) ±8% | 38% (41/109) ±9% | 47% (51/109) ±9% | 60% (65/109) ±9% | 69% (75/109) ±9% | 0.335 |
 | playwright | hybrid | 65% (71/109) ±9% | 82% (89/109) ±7% | 85% (93/109) ±7% | 94% (102/109) ±5% | 94% (102/109) ±5% | 0.737 |
+| scrapy+md | hybrid | 61% (66/109) ±9% | 80% (87/109) ±7% | 88% (96/109) ±6% | 93% (101/109) ±5% | 93% (101/109) ±5% | 0.717 |
+| crawlee | hybrid | 62% (68/109) ±9% | 80% (87/109) ±7% | 85% (93/109) ±7% | 92% (100/109) ±5% | 92% (100/109) ±5% | 0.717 |
+| colly+md | hybrid | 62% (68/109) ±9% | 78% (85/109) ±8% | 83% (90/109) ±7% | 92% (100/109) ±5% | 93% (101/109) ±5% | 0.714 |
+| crawl4ai | hybrid | 57% (62/109) ±9% | 79% (86/109) ±8% | 87% (95/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.695 |
+| crawl4ai-raw | hybrid | 57% (62/109) ±9% | 78% (85/109) ±8% | 87% (95/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.691 |
+| **markcrawl** | hybrid | 55% (60/109) ±9% | 78% (85/109) ±8% | 83% (90/109) ±7% | 91% (99/109) ±6% | 91% (99/109) ±6% | 0.675 |
+| crawl4ai-raw | reranked | 66% (72/109) ±9% | 84% (92/109) ±7% | 89% (97/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.755 |
+| crawl4ai | reranked | 66% (72/109) ±9% | 84% (92/109) ±7% | 89% (97/109) ±6% | 91% (99/109) ±6% | 91% (99/109) ±6% | 0.754 |
 | playwright | reranked | 61% (67/109) ±9% | 84% (92/109) ±7% | 89% (97/109) ±6% | 93% (101/109) ±5% | 94% (102/109) ±5% | 0.735 |
+| **markcrawl** | reranked | 58% (63/109) ±9% | 84% (92/109) ±7% | 88% (96/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.715 |
+| crawlee | reranked | 58% (63/109) ±9% | 82% (89/109) ±7% | 86% (94/109) ±6% | 90% (98/109) ±6% | 93% (101/109) ±5% | 0.704 |
+| scrapy+md | reranked | 55% (60/109) ±9% | 82% (89/109) ±7% | 87% (95/109) ±6% | 92% (100/109) ±5% | 94% (102/109) ±5% | 0.694 |
+| colly+md | reranked | 53% (58/109) ±9% | 81% (88/109) ±7% | 86% (94/109) ±6% | 92% (100/109) ±5% | 94% (102/109) ±5% | 0.681 |
 
 > **Column definitions:** **Hit@K** = percentage of queries where the correct source page appeared in the top K results (shown as % with raw counts). **MRR** (Mean Reciprocal Rank) = average of 1/rank for correct results (1.0 = always rank 1, 0.5 = always rank 2). **Mode** = retrieval strategy used (see definitions above).
 
@@ -54,15 +70,25 @@ Hit rate = correct source page in top-K results. Higher is better.
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Avg words |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 68% (74/109) ±9% | 83% (90/109) ±7% | 86% (94/109) ±6% | 91% (99/109) ±6% | 91% (99/109) ±6% | 0.759 | 22132 | 147 |
+| playwright | 73% (80/109) ±8% | 83% (91/109) ±7% | 90% (98/109) ±6% | 94% (102/109) ±5% | 94% (102/109) ±5% | 0.799 | 46439 | 212 |
+| crawlee | 72% (78/109) ±8% | 83% (90/109) ±7% | 88% (96/109) ±6% | 92% (100/109) ±5% | 93% (101/109) ±5% | 0.782 | 47560 | 212 |
 | crawl4ai | 71% (77/109) ±8% | 83% (91/109) ±7% | 89% (97/109) ±6% | 90% (98/109) ±6% | 93% (101/109) ±5% | 0.771 | 32735 | 132 |
 | crawl4ai-raw | 70% (76/109) ±9% | 83% (91/109) ±7% | 89% (97/109) ±6% | 90% (98/109) ±6% | 92% (100/109) ±5% | 0.767 | 32735 | 132 |
-| scrapy+md | 66% (72/109) ±9% | 83% (91/109) ±7% | 91% (99/109) ±6% | 93% (101/109) ±5% | 94% (102/109) ±5% | 0.757 | 23854 | 133 |
-| crawlee | 72% (78/109) ±8% | 83% (90/109) ±7% | 88% (96/109) ±6% | 92% (100/109) ±5% | 93% (101/109) ±5% | 0.782 | 47560 | 212 |
+| **markcrawl** | 68% (74/109) ±9% | 83% (90/109) ±7% | 86% (94/109) ±6% | 91% (99/109) ±6% | 91% (99/109) ±6% | 0.759 | 22132 | 147 |
 | colly+md | 69% (75/109) ±9% | 80% (87/109) ±7% | 86% (94/109) ±6% | 91% (99/109) ±6% | 92% (100/109) ±5% | 0.759 | 42934 | 210 |
-| playwright | 73% (80/109) ±8% | 83% (91/109) ±7% | 90% (98/109) ±6% | 94% (102/109) ±5% | 94% (102/109) ±5% | 0.799 | 46439 | 212 |
+| scrapy+md | 66% (72/109) ±9% | 83% (91/109) ±7% | 91% (99/109) ±6% | 93% (101/109) ±5% | 94% (102/109) ±5% | 0.757 | 23854 | 133 |
 
 > **Column definitions:** **Hit@K** = correct source page in top K results. **MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged). **Chunks** = total chunks produced by this tool (across all pages in common sites). **Avg words** = mean words per chunk.
+
+## What this means
+
+All tools perform within a narrow band (MRR 0.757-0.799 on embedding mode). This is expected: every tool crawls the same URLs, and we apply identical chunking and embedding pipelines. The extraction differences that matter for [content quality](QUALITY_COMPARISON.md) largely wash out at retrieval time.
+
+**Retrieval mode matters more than crawler choice.** Embedding search beats BM25 by roughly 2x on MRR across all tools. Hybrid and reranked modes fall between the two. Choosing the right retrieval strategy will improve your RAG pipeline far more than switching crawlers.
+
+**The noise-vs-recall trade-off.** Noisier tools (crawlee, playwright) have slightly higher hit rates, but they produce 2x the chunks of leaner tools (markcrawl, scrapy+md). More chunks means higher embedding and storage costs with diminishing retrieval returns. See [COST_AT_SCALE.md](COST_AT_SCALE.md) for the dollar impact.
+
+**For most use cases, pick your crawler based on speed and cost, not retrieval quality.** The differences here are within confidence intervals. Where crawler choice _does_ matter is content quality and downstream answer quality -- see [ANSWER_QUALITY.md](ANSWER_QUALITY.md).
 
 ## Per-category breakdown (embedding mode)
 
@@ -71,25 +97,25 @@ Query categories reveal where crawlers actually differ. Categories like `js-rend
 | Category | Tool | Hit@10 | MRR | Queries |
 |---|---|---|---|---|
 | api-function | crawlee | 97% (36/37) | 0.756 | 37 |
-| api-function | colly+md | 97% (36/37) | 0.720 | 37 |
 | api-function | playwright | 97% (36/37) | 0.756 | 37 |
+| api-function | colly+md | 97% (36/37) | 0.720 | 37 |
 | api-function | **markcrawl** | 95% (35/37) | 0.685 | 37 |
 | api-function | crawl4ai | 95% (35/37) | 0.674 | 37 |
 | api-function | crawl4ai-raw | 95% (35/37) | 0.674 | 37 |
 | api-function | scrapy+md | 95% (35/37) | 0.665 | 37 |
+| code-example | crawlee | 100% (11/11) | 0.821 | 11 |
+| code-example | playwright | 100% (11/11) | 0.821 | 11 |
 | code-example | **markcrawl** | 100% (11/11) | 0.818 | 11 |
+| code-example | scrapy+md | 100% (11/11) | 0.818 | 11 |
+| code-example | colly+md | 100% (11/11) | 0.814 | 11 |
 | code-example | crawl4ai | 100% (11/11) | 0.806 | 11 |
 | code-example | crawl4ai-raw | 100% (11/11) | 0.806 | 11 |
-| code-example | scrapy+md | 100% (11/11) | 0.818 | 11 |
-| code-example | crawlee | 100% (11/11) | 0.821 | 11 |
-| code-example | colly+md | 100% (11/11) | 0.814 | 11 |
-| code-example | playwright | 100% (11/11) | 0.821 | 11 |
 | conceptual | scrapy+md | 96% (25/26) | 0.773 | 26 |
-| conceptual | **markcrawl** | 92% (24/26) | 0.694 | 26 |
 | conceptual | crawl4ai | 92% (24/26) | 0.837 | 26 |
 | conceptual | crawl4ai-raw | 92% (24/26) | 0.816 | 26 |
-| conceptual | colly+md | 92% (24/26) | 0.672 | 26 |
 | conceptual | playwright | 92% (24/26) | 0.783 | 26 |
+| conceptual | **markcrawl** | 92% (24/26) | 0.694 | 26 |
+| conceptual | colly+md | 92% (24/26) | 0.672 | 26 |
 | conceptual | crawlee | 88% (23/26) | 0.713 | 26 |
 | cross-page | **markcrawl** | 100% (5/5) | 1.000 | 5 |
 | cross-page | crawl4ai | 100% (5/5) | 1.000 | 5 |
@@ -98,20 +124,20 @@ Query categories reveal where crawlers actually differ. Categories like `js-rend
 | cross-page | crawlee | 100% (5/5) | 1.000 | 5 |
 | cross-page | colly+md | 100% (5/5) | 1.000 | 5 |
 | cross-page | playwright | 100% (5/5) | 1.000 | 5 |
-| factual-lookup | **markcrawl** | 88% (14/16) | 0.833 | 16 |
-| factual-lookup | crawl4ai | 88% (14/16) | 0.825 | 16 |
-| factual-lookup | crawl4ai-raw | 88% (14/16) | 0.825 | 16 |
-| factual-lookup | scrapy+md | 88% (14/16) | 0.833 | 16 |
 | factual-lookup | crawlee | 88% (14/16) | 0.875 | 16 |
 | factual-lookup | colly+md | 88% (14/16) | 0.875 | 16 |
 | factual-lookup | playwright | 88% (14/16) | 0.875 | 16 |
+| factual-lookup | **markcrawl** | 88% (14/16) | 0.833 | 16 |
+| factual-lookup | scrapy+md | 88% (14/16) | 0.833 | 16 |
+| factual-lookup | crawl4ai | 88% (14/16) | 0.825 | 16 |
+| factual-lookup | crawl4ai-raw | 88% (14/16) | 0.825 | 16 |
 | js-rendered | **markcrawl** | 100% (5/5) | 1.000 | 5 |
 | js-rendered | crawl4ai | 100% (5/5) | 0.900 | 5 |
 | js-rendered | crawl4ai-raw | 100% (5/5) | 0.900 | 5 |
 | js-rendered | scrapy+md | 100% (5/5) | 0.800 | 5 |
+| js-rendered | playwright | 100% (5/5) | 0.750 | 5 |
 | js-rendered | crawlee | 100% (5/5) | 0.740 | 5 |
 | js-rendered | colly+md | 100% (5/5) | 0.733 | 5 |
-| js-rendered | playwright | 100% (5/5) | 0.750 | 5 |
 | navigation | **markcrawl** | 100% (1/1) | 1.000 | 1 |
 | navigation | crawl4ai | 100% (1/1) | 1.000 | 1 |
 | navigation | crawl4ai-raw | 100% (1/1) | 1.000 | 1 |
@@ -120,12 +146,12 @@ Query categories reveal where crawlers actually differ. Categories like `js-rend
 | navigation | colly+md | 100% (1/1) | 1.000 | 1 |
 | navigation | playwright | 100% (1/1) | 1.000 | 1 |
 | structured-data | **markcrawl** | 75% (6/8) | 0.750 | 8 |
-| structured-data | crawl4ai | 75% (6/8) | 0.604 | 8 |
-| structured-data | crawl4ai-raw | 75% (6/8) | 0.604 | 8 |
-| structured-data | scrapy+md | 75% (6/8) | 0.688 | 8 |
 | structured-data | crawlee | 75% (6/8) | 0.750 | 8 |
 | structured-data | colly+md | 75% (6/8) | 0.750 | 8 |
 | structured-data | playwright | 75% (6/8) | 0.750 | 8 |
+| structured-data | scrapy+md | 75% (6/8) | 0.688 | 8 |
+| structured-data | crawl4ai | 75% (6/8) | 0.604 | 8 |
+| structured-data | crawl4ai-raw | 75% (6/8) | 0.604 | 8 |
 
 > **Column definitions:** **Category** = query type (see [METHODOLOGY.md](METHODOLOGY.md) for definitions). **Hit@10** = correct page in top 10 results. **MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged). **Queries** = number of queries in this category.
 
@@ -149,18 +175,20 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 88% (7/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 0.917 | 18 | 14 |
 | crawl4ai | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 1.000 | 23 | 15 |
 | crawl4ai-raw | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 1.000 | 23 | 15 |
 | scrapy+md | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 1.000 | 25 | 15 |
 | crawlee | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 1.000 | 28 | 15 |
 | colly+md | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 1.000 | 28 | 15 |
 | playwright | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 1.000 | 28 | 15 |
+| **markcrawl** | 88% (7/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 0.917 | 18 | 14 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
 <details>
 <summary>Query-by-query results for quotes-toscrape</summary>
+
+> **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
 **Q1: What did Albert Einstein say about thinking and the world?** [factual-lookup]
 *(expects URL containing: `author/Albert-Einstein`)*
@@ -281,17 +309,19 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
 | **markcrawl** | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.800 | 139 | 60 |
-| crawl4ai | 50% (5/10) | 70% (7/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.603 | 628 | 60 |
-| crawl4ai-raw | 50% (5/10) | 70% (7/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.603 | 628 | 60 |
-| scrapy+md | 70% (7/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.750 | 130 | 60 |
 | crawlee | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.800 | 134 | 60 |
 | colly+md | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.800 | 134 | 60 |
 | playwright | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.800 | 134 | 60 |
+| scrapy+md | 70% (7/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.750 | 130 | 60 |
+| crawl4ai | 50% (5/10) | 70% (7/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.603 | 628 | 60 |
+| crawl4ai-raw | 50% (5/10) | 70% (7/10) | 80% (8/10) | 80% (8/10) | 80% (8/10) | 0.603 | 628 | 60 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
 <details>
 <summary>Query-by-query results for books-toscrape</summary>
+
+> **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
 **Q1: What mystery and thriller books are in the catalog?** [structured-data]
 *(expects URL containing: `category/books/mystery`)*
@@ -439,18 +469,20 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 65% (13/20) | 90% (18/20) | 95% (19/20) | 100% (20/20) | 100% (20/20) | 0.779 | 3413 | 153 |
+| crawlee | 75% (15/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 0.858 | 3856 | 153 |
+| playwright | 75% (15/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 0.858 | 3857 | 153 |
 | crawl4ai | 75% (15/20) | 95% (19/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 0.835 | 4143 | 153 |
 | crawl4ai-raw | 75% (15/20) | 95% (19/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 0.835 | 4144 | 153 |
 | scrapy+md | 65% (13/20) | 90% (18/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 0.781 | 3741 | 153 |
-| crawlee | 75% (15/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 0.858 | 3856 | 153 |
+| **markcrawl** | 65% (13/20) | 90% (18/20) | 95% (19/20) | 100% (20/20) | 100% (20/20) | 0.779 | 3413 | 153 |
 | colly+md | 65% (13/20) | 90% (18/20) | 95% (19/20) | 100% (20/20) | 100% (20/20) | 0.777 | 3871 | 153 |
-| playwright | 75% (15/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 100% (20/20) | 0.858 | 3857 | 153 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
 <details>
 <summary>Query-by-query results for fastapi-docs</summary>
+
+> **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
 **Q1: How do I add authentication to a FastAPI endpoint?** [api-function]
 *(expects URL containing: `security`)*
@@ -738,18 +770,20 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
+| crawlee | 63% (12/19) | 79% (15/19) | 95% (18/19) | 100% (19/19) | 100% (19/19) | 0.745 | 13304 | 500 |
+| colly+md | 63% (12/19) | 79% (15/19) | 95% (18/19) | 100% (19/19) | 100% (19/19) | 0.745 | 13221 | 500 |
+| playwright | 63% (12/19) | 79% (15/19) | 95% (18/19) | 100% (19/19) | 100% (19/19) | 0.745 | 13304 | 500 |
 | **markcrawl** | 63% (12/19) | 84% (16/19) | 89% (17/19) | 100% (19/19) | 100% (19/19) | 0.744 | 9479 | 500 |
 | crawl4ai | 63% (12/19) | 79% (15/19) | 95% (18/19) | 100% (19/19) | 100% (19/19) | 0.734 | 13248 | 500 |
 | crawl4ai-raw | 63% (12/19) | 79% (15/19) | 95% (18/19) | 100% (19/19) | 100% (19/19) | 0.734 | 13248 | 500 |
 | scrapy+md | 58% (11/19) | 84% (16/19) | 100% (19/19) | 100% (19/19) | 100% (19/19) | 0.730 | 10421 | 328 |
-| crawlee | 63% (12/19) | 79% (15/19) | 95% (18/19) | 100% (19/19) | 100% (19/19) | 0.745 | 13304 | 500 |
-| colly+md | 63% (12/19) | 79% (15/19) | 95% (18/19) | 100% (19/19) | 100% (19/19) | 0.745 | 13221 | 500 |
-| playwright | 63% (12/19) | 79% (15/19) | 95% (18/19) | 100% (19/19) | 100% (19/19) | 0.745 | 13304 | 500 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
 <details>
 <summary>Query-by-query results for python-docs</summary>
+
+> **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
 **Q1: What new features were added in Python 3.10?** [factual-lookup]
 *(expects URL containing: `whatsnew/3.10`)*
@@ -1023,9 +1057,9 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 69% (11/16) | 88% (14/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 0.804 | 3496 | 221 |
 | crawl4ai | 81% (13/16) | 100% (16/16) | 100% (16/16) | 100% (16/16) | 100% (16/16) | 0.885 | 4756 | 221 |
 | crawl4ai-raw | 75% (12/16) | 100% (16/16) | 100% (16/16) | 100% (16/16) | 100% (16/16) | 0.854 | 4756 | 221 |
+| **markcrawl** | 69% (11/16) | 88% (14/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 0.804 | 3496 | 221 |
 | scrapy+md | 69% (11/16) | 88% (14/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 0.804 | 3557 | 221 |
 | crawlee | 69% (11/16) | 88% (14/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 0.790 | 6444 | 221 |
 | colly+md | 69% (11/16) | 81% (13/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 0.785 | 6355 | 221 |
@@ -1035,6 +1069,8 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 <details>
 <summary>Query-by-query results for react-dev</summary>
+
+> **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
 **Q1: How do I manage state in a React component?** [conceptual]
 *(expects URL containing: `state`)*
@@ -1279,6 +1315,8 @@ _Spread = difference between best and worst tool. High spread categories are whe
 <details>
 <summary>Query-by-query results for wikipedia-python</summary>
 
+> **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
+
 **Q1: Who created the Python programming language?** [factual-lookup]
 *(expects URL containing: `Python_(programming_language)`)*
 
@@ -1425,18 +1463,20 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
+| colly+md | 67% (12/18) | 78% (14/18) | 83% (15/18) | 94% (17/18) | 94% (17/18) | 0.743 | 14661 | 254 |
+| playwright | 67% (12/18) | 72% (13/18) | 83% (15/18) | 94% (17/18) | 94% (17/18) | 0.735 | 15680 | 257 |
+| crawlee | 67% (12/18) | 72% (13/18) | 83% (15/18) | 94% (17/18) | 94% (17/18) | 0.732 | 15683 | 257 |
 | **markcrawl** | 67% (12/18) | 72% (13/18) | 72% (13/18) | 78% (14/18) | 78% (14/18) | 0.696 | 2772 | 257 |
 | crawl4ai | 61% (11/18) | 72% (13/18) | 78% (14/18) | 78% (14/18) | 89% (16/18) | 0.677 | 3379 | 257 |
 | crawl4ai-raw | 61% (11/18) | 72% (13/18) | 78% (14/18) | 78% (14/18) | 89% (16/18) | 0.677 | 3378 | 257 |
 | scrapy+md | 50% (9/18) | 78% (14/18) | 83% (15/18) | 89% (16/18) | 89% (16/18) | 0.631 | 3035 | 257 |
-| crawlee | 67% (12/18) | 72% (13/18) | 83% (15/18) | 94% (17/18) | 94% (17/18) | 0.732 | 15683 | 257 |
-| colly+md | 67% (12/18) | 78% (14/18) | 83% (15/18) | 94% (17/18) | 94% (17/18) | 0.743 | 14661 | 254 |
-| playwright | 67% (12/18) | 72% (13/18) | 83% (15/18) | 94% (17/18) | 94% (17/18) | 0.735 | 15680 | 257 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
 <details>
 <summary>Query-by-query results for stripe-docs</summary>
+
+> **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
 **Q1: How do I create a payment intent with Stripe?** [api-function]
 *(expects URL containing: `payment-intent`)*
@@ -1696,18 +1736,20 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| **markcrawl** | 50% (4/8) | 75% (6/8) | 88% (7/8) | 88% (7/8) | 88% (7/8) | 0.660 | 1791 | 200 |
+| playwright | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 1.000 | 5969 | 200 |
+| scrapy+md | 75% (6/8) | 75% (6/8) | 88% (7/8) | 88% (7/8) | 100% (8/8) | 0.791 | 1636 | 200 |
 | crawl4ai | 75% (6/8) | 75% (6/8) | 75% (6/8) | 75% (6/8) | 88% (7/8) | 0.757 | 5315 | 200 |
 | crawl4ai-raw | 75% (6/8) | 75% (6/8) | 75% (6/8) | 75% (6/8) | 75% (6/8) | 0.753 | 5315 | 200 |
-| scrapy+md | 75% (6/8) | 75% (6/8) | 88% (7/8) | 88% (7/8) | 100% (8/8) | 0.791 | 1636 | 200 |
+| **markcrawl** | 50% (4/8) | 75% (6/8) | 88% (7/8) | 88% (7/8) | 88% (7/8) | 0.660 | 1791 | 200 |
 | crawlee | 62% (5/8) | 62% (5/8) | 62% (5/8) | 62% (5/8) | 75% (6/8) | 0.635 | 5963 | 200 |
 | colly+md | 50% (4/8) | 50% (4/8) | 50% (4/8) | 50% (4/8) | 62% (5/8) | 0.512 | 3286 | 123 |
-| playwright | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 1.000 | 5969 | 200 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
 <details>
 <summary>Query-by-query results for blog-engineering</summary>
+
+> **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
 **Q1: How does GitHub handle Kubernetes at scale?** [conceptual]
 *(expects URL containing: `engineering/`)*
@@ -1839,8 +1881,10 @@ _Spread = difference between best and worst tool. High spread categories are whe
 See [METHODOLOGY.md](METHODOLOGY.md) for full test setup, tool configurations,
 and fairness decisions.
 
-Retrieval similarity across tools is expected — the same URLs, chunking, and
-embedding model are used. The real differentiator shows up in
-[ANSWER_QUALITY.md](ANSWER_QUALITY.md), where the LLM's final answers diverge
-despite similar retrieval.
+## See also
+
+- [QUALITY_COMPARISON.md](QUALITY_COMPARISON.md) -- content quality differences that wash out at retrieval time but affect downstream answers
+- [ANSWER_QUALITY.md](ANSWER_QUALITY.md) -- where the LLM's final answers diverge despite similar retrieval
+- [COST_AT_SCALE.md](COST_AT_SCALE.md) -- the dollar impact of chunk count differences (2x chunks = 2x embedding cost)
+- [METHODOLOGY.md](METHODOLOGY.md) -- full test setup, tool configurations, and fairness decisions
 
