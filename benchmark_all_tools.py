@@ -1043,29 +1043,61 @@ def generate_comparison_report(
 
     lines.extend(["", "## Results by site", ""])
 
+    # Detect whether std dev and peak memory have real data (not all zeros)
+    has_stddev = any(
+        r.time_stddev > 0
+        for tool_results in results.values()
+        for r in tool_results.values()
+        if not r.error
+    )
+    has_peak_mem = any(
+        r.peak_memory_mb > 0
+        for tool_results in results.values()
+        for r in tool_results.values()
+        if not r.error
+    )
+
     for site_name, site_config in COMPARISON_SITES.items():
+        # Build header dynamically based on available data
+        header = "| Tool | Pages | Time (s) |"
+        sep = "|---|---|---|"
+        if has_stddev:
+            header += " Std dev |"
+            sep += "---|"
+        header += " Pages/sec | Avg words | Output KB |"
+        sep += "---|---|---|"
+        if has_peak_mem:
+            header += " Peak MB |"
+            sep += "---|"
+
         lines.extend([
             f"### {site_name} — {site_config['description']}",
             "",
             f"Max pages: {site_config['max_pages']}",
             "",
-            "| Tool | Pages | Time (s) | Std dev | Pages/sec | Avg words | Output KB | Peak MB |",
-            "|---|---|---|---|---|---|---|---|",
+            header,
+            sep,
         ])
 
         for tool in available_tools:
             r = results.get(tool, {}).get(site_name)
             tool_label = f"**{tool}**" if tool == "markcrawl" else tool
             if r and not r.error:
-                lines.append(
-                    f"| {tool_label} | {r.pages_median:.0f} | {r.time_median:.1f} | "
-                    f"±{r.time_stddev:.1f} | {r.pps_median:.1f} | "
-                    f"{r.avg_words:.0f} | {r.output_kb:.0f} | {r.peak_memory_mb:.0f} |"
-                )
+                row = f"| {tool_label} | {r.pages_median:.0f} | {r.time_median:.1f} |"
+                if has_stddev:
+                    row += f" ±{r.time_stddev:.1f} |"
+                row += f" {r.pps_median:.1f} | {r.avg_words:.0f} | {r.output_kb:.0f} |"
+                if has_peak_mem:
+                    row += f" {r.peak_memory_mb:.0f} |"
+                lines.append(row)
             elif r and r.error:
-                lines.append(f"| {tool_label} | — | — | — | — | — | — | error: {r.error[:50]} |")
+                ncols = 4 + (1 if has_stddev else 0) + (1 if has_peak_mem else 0)
+                dashes = " — |" * (ncols - 1)
+                lines.append(f"| {tool_label} |{dashes} error: {r.error[:50]} |")
             else:
-                lines.append(f"| {tool_label} | — | — | — | — | — | — | — |")
+                ncols = 5 + (1 if has_stddev else 0) + (1 if has_peak_mem else 0)
+                dashes = " — |" * ncols
+                lines.append(f"| {tool_label} |{dashes}")
 
         lines.append("")
 
@@ -1086,7 +1118,7 @@ def generate_comparison_report(
         elif len(successful) == 0:
             lines.append(f"| {tool_label} | — | — | — | *all sites errored* |")
             continue
-        lines.append(f"| {tool_label} | {total_pages:.0f} | {total_time:.1f} | {avg_pps:.1f} |{note}")
+        lines.append(f"| {tool_label} | {total_pages:.0f} | {total_time:.1f} | {avg_pps:.1f} |{note} |")
 
     lines.extend([
         "",
