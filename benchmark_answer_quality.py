@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import math
 import os
 import re
 import sys
@@ -133,6 +134,17 @@ class ToolAnswerSummary:
     total_chunks: int
     avg_chunk_words: float
     results: List[AnswerResult]
+    ci_overall: float = 0.0  # 95% CI half-width for avg_overall
+
+
+def _ci95(values: List[float]) -> float:
+    """Compute 95% confidence interval half-width for a list of scores."""
+    n = len(values)
+    if n < 2:
+        return 0.0
+    mean = sum(values) / n
+    variance = sum((v - mean) ** 2 for v in values) / (n - 1)
+    return 1.96 * math.sqrt(variance / n)
 
 
 # ---------------------------------------------------------------------------
@@ -386,6 +398,7 @@ def generate_report(
             continue
 
         n = len(all_tool_results)
+        overall_scores = [r.overall for r in all_tool_results]
         tool_summaries[tool] = ToolAnswerSummary(
             tool=tool,
             total_queries=n,
@@ -393,10 +406,11 @@ def generate_report(
             avg_relevance=sum(r.relevance for r in all_tool_results) / n,
             avg_completeness=sum(r.completeness for r in all_tool_results) / n,
             avg_usefulness=sum(r.usefulness for r in all_tool_results) / n,
-            avg_overall=sum(r.overall for r in all_tool_results) / n,
+            avg_overall=sum(overall_scores) / n,
             total_chunks=sum(r.chunks_used for r in all_tool_results),
             avg_chunk_words=sum(r.chunk_words_total for r in all_tool_results) / n,
             results=all_tool_results,
+            ci_overall=_ci95(overall_scores),
         )
 
     # Generate dynamic one-line answer
@@ -432,13 +446,14 @@ def generate_report(
     for s in sorted_summary:
         avg_tokens = int(s.avg_chunk_words * 1.33)
         tool_label = f"**{s.tool}**" if s.tool == "markcrawl" else s.tool
+        ci_str = f" ±{s.ci_overall:.2f}" if s.ci_overall > 0 else ""
         lines.append(
             f"| {tool_label} "
             f"| {s.avg_correctness:.2f} "
             f"| {s.avg_relevance:.2f} "
             f"| {s.avg_completeness:.2f} "
             f"| {s.avg_usefulness:.2f} "
-            f"| **{s.avg_overall:.2f}** "
+            f"| **{s.avg_overall:.2f}{ci_str}** "
             f"| {avg_tokens:,} |"
         )
 
@@ -450,8 +465,9 @@ def generate_report(
         "**Relevance** = answers the question asked. "
         "**Completeness** = covers all aspects. "
         "**Usefulness** = practical value to the user. "
-        "**Overall** = mean of the four dimensions. "
-        "**Avg tokens/query** = estimated input tokens per query (chunk words x 1.33).",
+        "**Overall** = mean of the four dimensions (± 95% confidence interval). "
+        "**Avg tokens/query** = estimated input tokens per query (chunk words x 1.33). "
+        "Gaps within the ± range are not statistically significant.",
         "",
     ])
 
@@ -504,13 +520,15 @@ def generate_report(
 
         for tool, results, n, _ in site_tool_avgs:
             tool_label = f"**{tool}**" if tool == "markcrawl" else tool
+            site_ci = _ci95([r.overall for r in results])
+            ci_str = f" ±{site_ci:.2f}" if site_ci > 0 else ""
             lines.append(
                 f"| {tool_label} "
                 f"| {sum(r.correctness for r in results)/n:.2f} "
                 f"| {sum(r.relevance for r in results)/n:.2f} "
                 f"| {sum(r.completeness for r in results)/n:.2f} "
                 f"| {sum(r.usefulness for r in results)/n:.2f} "
-                f"| {sum(r.overall for r in results)/n:.2f} |"
+                f"| {sum(r.overall for r in results)/n:.2f}{ci_str} |"
             )
 
         lines.extend([

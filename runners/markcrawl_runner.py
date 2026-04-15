@@ -97,8 +97,6 @@ def _run_sync(url_list: List[str], out_dir: str, concurrency: int) -> int:
 
 def run(url: str, out_dir: str, max_pages: int, url_list: Optional[List[str]] = None, concurrency: int = 1, **kwargs) -> int:
     """Run MarkCrawl and return pages saved."""
-    from markcrawl.core import crawl
-
     if url_list:
         os.makedirs(out_dir, exist_ok=True)
         try:
@@ -107,15 +105,45 @@ def run(url: str, out_dir: str, max_pages: int, url_list: Optional[List[str]] = 
         except ImportError:
             return _run_sync(url_list, out_dir, concurrency)
     else:
-        result = crawl(
-            base_url=url,
-            out_dir=out_dir,
-            fmt="markdown",
-            max_pages=max_pages,
-            delay=0,
-            timeout=15,
-            show_progress=False,
-            min_words=5,
-            concurrency=concurrency,
+        # Discovery mode — crawl() uses signal handlers, which fail in threads.
+        # Run in a subprocess to avoid this.
+        import json
+        import subprocess
+        import sys
+
+        os.makedirs(out_dir, exist_ok=True)
+        script = f'''
+import json
+from markcrawl.core import crawl
+result = crawl(
+    base_url={url!r},
+    out_dir={out_dir!r},
+    fmt="markdown",
+    max_pages={max_pages},
+    delay=0,
+    timeout=15,
+    show_progress=False,
+    min_words=5,
+    concurrency={concurrency},
+)
+print(json.dumps({{"pages_saved": result.pages_saved}}))
+'''
+        proc = subprocess.run(
+            [sys.executable, "-c", script],
+            capture_output=True,
+            timeout=60 + 2 * max_pages,
+            check=False,
         )
-        return result.pages_saved
+        if proc.returncode != 0:
+            import logging
+            logging.getLogger(__name__).warning(
+                "markcrawl crawl subprocess failed: %s", proc.stderr.decode()[:200])
+            return 0
+        # Parse pages_saved from the last JSON line on stdout
+        for line in reversed(proc.stdout.decode().strip().splitlines()):
+            try:
+                data = json.loads(line)
+                return data.get("pages_saved", 0)
+            except json.JSONDecodeError:
+                continue
+        return 0

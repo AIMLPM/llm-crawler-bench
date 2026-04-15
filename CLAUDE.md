@@ -187,6 +187,8 @@ Reports should link to each other where findings connect:
   summary table. A reader with no context should understand if 3.91 is good.
 - Be honest that the gaps are small but consistent — frame as "real but not
   dramatic" rather than overstating or understating.
+- Include 95% confidence intervals on overall scores. Gaps within the CI range
+  are not statistically significant — say so explicitly.
 - Include a "what this means in practice" paragraph for the exec reader.
 
 **COST_AT_SCALE.md** (hand-written, derived from benchmark data)
