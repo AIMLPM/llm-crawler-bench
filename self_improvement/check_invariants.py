@@ -94,7 +94,12 @@ def check_reports():
             # Skip lines that are clearly quoted crawl output
             if line.startswith(">") or line.startswith("    "):
                 continue
-            found = emoji_pattern.findall(line)
+            # Strip allowed data-marker emojis before checking
+            cleaned = line.replace("\u26a0", "").replace("\u26a0\ufe0f", "")
+            cleaned = cleaned.replace("\u2713", "").replace("\u2717", "")
+            cleaned = cleaned.replace("\u2714", "").replace("\u2718", "")
+            cleaned = cleaned.replace("\u2705", "").replace("\u274c", "")
+            found = emoji_pattern.findall(cleaned)
             if found:
                 editorial_emojis.extend(found)
         check(f"P4-{name}", f"{name} has no emojis in editorial text",

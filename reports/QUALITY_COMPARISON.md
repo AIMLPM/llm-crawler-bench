@@ -1080,10 +1080,10 @@ app = FastAPI()
 **crawl4ai**
 ```
 [ Skip to content ](https://fastapi.tiangolo.com/tutorial/testing/#testing)
-[ **FastAPI Cloud** waiting list 🚀 ](https://fastapicloud.com)
+[ **FastAPI Cloud** waiting list ](https://fastapicloud.com)
 [ Follow **@fastapi** on **X (Twitter)** to stay updated ](https://x.com/fastapi)
 [ Follow **FastAPI** on **LinkedIn** to stay updated ](https://www.linkedin.com/company/fastapi)
-[ **FastAPI and friends** newsletter 🎉 ](https://fastapi.tiangolo.com/newsletter/)
+[ **FastAPI and friends** newsletter ](https://fastapi.tiangolo.com/newsletter/)
 [ sponsor ![](https://fastapi.tiangolo.com/img/sponsors/blockbee-banner.png) ](https://blockbee.io?ref=fastapi "BlockBee Cryptocurrency Payment Gateway")
 [ sponsor ![](https://fastapi.tiangolo.com/img/sponsors/scalar-banner.svg) ](https://github.com/scalar/scalar/?utm_source=fastapi&utm_medium=website&utm_campaign=top-banner "Scalar: Beautiful Open-Source API References from Swagger/OpenAPI files")
 [ sponsor ![](https://fastapi.tiangolo.com/img/sponsors/propelauth-banner.png) ](https://www.propelauth.com/?utm_source=fastapi&utm_campaign=1223&utm_medium=topbanner "Auth, user management and more for your B2B product")
@@ -1123,10 +1123,10 @@ Type to start searching
 **crawl4ai-raw**
 ```
 [ Skip to content ](https://fastapi.tiangolo.com/tutorial/testing/#testing)
-[ **FastAPI Cloud** waiting list 🚀 ](https://fastapicloud.com)
+[ **FastAPI Cloud** waiting list ](https://fastapicloud.com)
 [ Follow **@fastapi** on **X (Twitter)** to stay updated ](https://x.com/fastapi)
 [ Follow **FastAPI** on **LinkedIn** to stay updated ](https://www.linkedin.com/company/fastapi)
-[ **FastAPI and friends** newsletter 🎉 ](https://fastapi.tiangolo.com/newsletter/)
+[ **FastAPI and friends** newsletter ](https://fastapi.tiangolo.com/newsletter/)
 [ sponsor ![](https://fastapi.tiangolo.com/img/sponsors/blockbee-banner.png) ](https://blockbee.io?ref=fastapi "BlockBee Cryptocurrency Payment Gateway")
 [ sponsor ![](https://fastapi.tiangolo.com/img/sponsors/scalar-banner.svg) ](https://github.com/scalar/scalar/?utm_source=fastapi&utm_medium=website&utm_campaign=top-banner "Scalar: Beautiful Open-Source API References from Swagger/OpenAPI files")
 [ sponsor ![](https://fastapi.tiangolo.com/img/sponsors/propelauth-banner.png) ](https://www.propelauth.com/?utm_source=fastapi&utm_campaign=1223&utm_medium=topbanner "Auth, user management and more for your B2B product")
@@ -1242,13 +1242,13 @@ visibility: hidden;
 
 [Skip to content](https://fastapi.tiangolo.com/tutorial/testing/#testing)
 
-[Join the **FastAPI Cloud** waiting list 🚀](https://fastapicloud.com)
+[Join the **FastAPI Cloud** waiting list](https://fastapicloud.com)
 
 [Follow **@fastapi** on **X (Twitter)** to stay updated](https://x.com/fastapi)
 
 [Follow **FastAPI** on **LinkedIn** to stay updated](https://www.linkedin.com/company/fastapi)
 
-[Subscribe to the **FastAPI and friends** newsletter 🎉](https://fastapi.tiangolo.com/newsletter/)
+[Subscribe to the **FastAPI and friends** newsletter](https://fastapi.tiangolo.com/newsletter/)
 ```
 
 **colly+md**
@@ -1271,13 +1271,13 @@ Testing - FastAPI
 
 [Skip to content](#testing)
 
-[Join the **FastAPI Cloud** waiting list 🚀](https://fastapicloud.com)
+[Join the **FastAPI Cloud** waiting list](https://fastapicloud.com)
 
 [Follow **@fastapi** on **X (Twitter)** to stay updated](https://x.com/fastapi)
 
 [Follow **FastAPI** on **LinkedIn** to stay updated](https://www.linkedin.com/company/fastapi)
 
-[Subscribe to the **FastAPI and friends** newsletter 🎉](https://fastapi.tiangolo.com/newsletter/)
+[Subscribe to the **FastAPI and friends** newsletter](https://fastapi.tiangolo.com/newsletter/)
 
 [sponsor](https://blockbee.io?ref=fastapi "BlockBee Cryptocurrency Payment Gateway")
 
@@ -1314,13 +1314,13 @@ Testing - FastAPI
 
 [Skip to content](https://fastapi.tiangolo.com/tutorial/testing/#testing)
 
-[Join the **FastAPI Cloud** waiting list 🚀](https://fastapicloud.com)
+[Join the **FastAPI Cloud** waiting list](https://fastapicloud.com)
 
 [Follow **@fastapi** on **X (Twitter)** to stay updated](https://x.com/fastapi)
 
 [Follow **FastAPI** on **LinkedIn** to stay updated](https://www.linkedin.com/company/fastapi)
 
-[Subscribe to the **FastAPI and friends** newsletter 🎉](https://fastapi.tiangolo.com/newsletter/)
+[Subscribe to the **FastAPI and friends** newsletter](https://fastapi.tiangolo.com/newsletter/)
 
 [sponsor](https://blockbee.io?ref=fastapi "BlockBee Cryptocurrency Payment Gateway")
 

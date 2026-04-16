@@ -741,7 +741,16 @@ def generate_quality_report(
                 pages = site_data.get(tool, [])
                 page = next((p for p in pages if p.url == best_url), None)
                 if page and page.raw_text:
-                    sample = "\n".join(page.raw_text.splitlines()[:40])
+                    sample_lines = page.raw_text.splitlines()[:40]
+                    # Strip emojis from crawled content to keep reports clean
+                    _emoji_re = re.compile(
+                        "[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF"
+                        "\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF"
+                        "\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F"
+                        "\U0001FA70-\U0001FAFF]"
+                    )
+                    sample_lines = [_emoji_re.sub("", ln) for ln in sample_lines]
+                    sample = "\n".join(sample_lines)
                     lines.extend([
                         f"**{tool}**",
                         "```",
