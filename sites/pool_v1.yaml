@@ -20,13 +20,14 @@ released: "2026-04-24"
 sites:
   # ==========================================================================
   # v1.2 -- major pool swap.
-  # Dropped: the two toscrape sandboxes (hokey) and every v1.0/v1.1 site
-  # except react-dev and stripe-docs. gen2fund removed entirely. Rationale:
-  # shift the pool onto widely-used real-world content that reflects LLM/RAG
-  # workloads, and away from previously-disclosed names.
+  # Dropped all v1.0/v1.1 sites except react-dev and stripe-docs (anchors).
+  # gen2fund removed entirely. Also dropped REI and Warby Parker after
+  # drafting revealed both block WebFetch with anti-bot -- we cannot verify
+  # ground-truth URLs for queries. Replaced with Newegg (electronics) and
+  # IKEA (furniture): both accessible, both expose real pricing.
   # Mix: 5 dev docs, 1 reference, 1 tutorial, 1 wiki, 2 ecommerce (pricing),
-  # 1 recipe blog, 1 news — so crawlers are stressed on structured products
-  # and long-form editorial, not just dev docs.
+  # 1 recipe blog, 1 news -- so crawlers are stressed on structured
+  # products and long-form editorial, not just dev docs.
   # ==========================================================================
 
   # --- Carried over from v1.1 (anchors) ---
@@ -58,7 +59,7 @@ sites:
     max_pages: 300
     render_js: true
     description: "Hugging Face Transformers docs -- model cards, code examples, SPA"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    has_queries: true
 
   - name: kubernetes-docs
     url: https://kubernetes.io/docs/concepts/
@@ -67,7 +68,7 @@ sites:
     max_pages: 400
     render_js: false
     description: "Kubernetes concepts + reference docs -- long-form, cross-linked"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    has_queries: true
 
   - name: postgres-docs
     url: https://www.postgresql.org/docs/current/
@@ -76,7 +77,7 @@ sites:
     max_pages: 400
     render_js: false
     description: "PostgreSQL docs -- dense SQL reference, text-heavy"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    has_queries: true
 
   - name: mdn-css
     url: https://developer.mozilla.org/en-US/docs/Web/CSS
@@ -85,7 +86,7 @@ sites:
     max_pages: 300
     render_js: false
     description: "MDN CSS reference -- property/selector pages, deeply linked"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    has_queries: true
 
   - name: rust-book
     url: https://doc.rust-lang.org/book/
@@ -94,7 +95,7 @@ sites:
     max_pages: 200
     render_js: false
     description: "The Rust Programming Language book -- chaptered tutorial"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    has_queries: true
 
   - name: wikipedia-llm
     url: https://en.wikipedia.org/wiki/Large_language_model
@@ -103,27 +104,27 @@ sites:
     max_pages: 50
     render_js: false
     description: "Wikipedia: Large language model -- article + citations + infobox"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    has_queries: false  # extraction-only: single seed article doesn't yield URL-diverse retrieval targets
 
   # --- New in v1.2: non-technical content (ecommerce / blog / news) ---
 
-  - name: rei
-    url: https://www.rei.com/c/camping-and-hiking
+  - name: newegg
+    url: https://www.newegg.com/Laptops-Notebooks/SubCategory/ID-32
     category: ecommerce
     difficulty: [dynamic_js, paginated]
     max_pages: 200
     render_js: true
-    description: "REI camping + hiking catalog -- structured product pages, pricing"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    description: "Newegg electronics catalog -- product listings with pricing, clean /<slug>/p/<id> URL pattern"
+    has_queries: true
 
-  - name: warbyparker
-    url: https://www.warbyparker.com/eyeglasses
+  - name: ikea
+    url: https://www.ikea.com/us/en/cat/furniture-fu001/
     category: ecommerce
-    difficulty: [dynamic_js]
-    max_pages: 100
+    difficulty: [dynamic_js, paginated]
+    max_pages: 200
     render_js: true
-    description: "Warby Parker eyeglasses -- DTC product grid, Next.js, pricing"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    description: "IKEA US furniture catalog -- product + category pages with pricing"
+    has_queries: true
 
   - name: smittenkitchen
     url: https://smittenkitchen.com/recipes/
@@ -132,7 +133,7 @@ sites:
     max_pages: 200
     render_js: false
     description: "Smitten Kitchen recipe blog -- WordPress long-form, recipe microdata"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    has_queries: true
 
   - name: npr-news
     url: https://www.npr.org/sections/news/
@@ -141,4 +142,4 @@ sites:
     max_pages: 150
     render_js: false
     description: "NPR news section -- wire-style articles, deep linking, stable URLs"
-    has_queries: false  # TODO: add TEST_QUERIES before flipping to true
+    has_queries: true
