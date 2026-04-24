@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import hashlib
 import json
 import logging
 import math
@@ -31,6 +32,7 @@ import os
 import re
 import sys
 import time
+import time as _time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -73,6 +75,22 @@ RERANK_TOP_N = 20  # Rerank top-N from initial retrieval
 
 # BM25 + Embedding fusion weight (for RRF)
 RRF_K = 60  # Reciprocal Rank Fusion constant
+
+# HyDE — Hypothetical Document Embedding
+# Generate a hypothetical answer paragraph per query via LLM, embed that
+# instead of (or in addition to) the raw query. Cached by (prompt, model,
+# query) hash so runs are idempotent and cheap after the first.
+HYDE_MODEL_DEFAULT = "gpt-4o-mini"
+HYDE_CACHE_DIR = BENCH_DIR / "hyde_cache"
+HYDE_PROMPT_TEMPLATE = (
+    "Write a short paragraph (2–4 sentences) that would appear on a web page "
+    "answering this question. Write it in the style of documentation, a "
+    "reference page, or a technical blog post — as if excerpted from the "
+    "source material itself. Do not add preamble, reasoning, caveats, or any "
+    "meta-commentary. Output only the paragraph.\n\n"
+    "Question: {query}\n\n"
+    "Paragraph:"
+)
 
 # Test queries per site.  Each query has:
 #   - query text (what a user would ask)
@@ -872,6 +890,294 @@ TEST_QUERIES: Dict[str, List[Dict]] = {
             "description": "Find UX engineering content",
         },
     ],
+    "gen2fund": [
+        {
+            "query": "Where does Gen2 Fund have offices in the United States?",
+            "url_match": "locations/united-states",
+            "page_match": "locations-united-states",
+            "category": "factual-lookup",
+            "description": "Find US office location page",
+        },
+        {
+            "query": "How does Gen2 Fund handle AML and KYC compliance?",
+            "url_match": "aml-kyc",
+            "page_match": "aml-kyc",
+            "category": "api-function",
+            "description": "Find AML/KYC regulatory page",
+        },
+        {
+            "query": "What cash management and treasury services does Gen2 Fund offer?",
+            "url_match": "cash-management-treasury",
+            "page_match": "cash-management",
+            "category": "conceptual",
+            "description": "Find cash management services page",
+        },
+        {
+            "query": "Does Gen2 Fund work with emerging fund managers?",
+            "url_match": "emerging-managers",
+            "page_match": "emerging-managers",
+            "category": "conceptual",
+            "description": "Find emerging managers page",
+        },
+        {
+            "query": "Where is Gen2 Fund's Canada office?",
+            "url_match": "locations/canada",
+            "page_match": "locations-canada",
+            "category": "factual-lookup",
+            "description": "Find Canada location page",
+        },
+        {
+            "query": "How did AI chatbots perform against private equity experts in Gen2's study?",
+            "url_match": "ai-chatbots-vs-pe-experts",
+            "page_match": "ai-chatbots",
+            "category": "conceptual",
+            "description": "Find AI vs PE experts study",
+        },
+        {
+            "query": "What services does Gen2 Fund offer for mega fund managers with complex needs?",
+            "url_match": "services/mega-managers-complexity",
+            "page_match": "mega-managers",
+            "category": "conceptual",
+            "description": "Find mega managers services page",
+        },
+        {
+            "query": "Where can I find Gen2 Fund's regulatory public disclosures?",
+            "url_match": "regulatory/regulatory-public-disclosure",
+            "page_match": "regulatory-public-disclosure",
+            "category": "factual-lookup",
+            "description": "Find regulatory public disclosure page",
+        },
+        {
+            "query": "What does Gen2 Fund offer for private equity clients?",
+            "url_match": "client-sectors/private-equity",
+            "page_match": "private-equity",
+            "category": "conceptual",
+            "description": "Find private equity client sector page",
+        },
+        {
+            "query": "Where is Gen2 Fund's report on digitizing private equity?",
+            "url_match": "digitizing-private-equity-report",
+            "page_match": "digitizing-private-equity",
+            "category": "factual-lookup",
+            "description": "Find digitizing PE report page",
+        },
+    ],
+    "brex": [
+        {
+            "query": "How do I manage virtual bookkeeping at my business?",
+            "url_match": "virtual-bookkeeping",
+            "page_match": "virtual-bookkeeping",
+            "category": "conceptual",
+            "description": "Find virtual bookkeeping guide",
+        },
+        {
+            "query": "What are alternatives and competitors to Mercury business banking?",
+            "url_match": "mercury-alternatives-and-competitors",
+            "page_match": "mercury-alternatives",
+            "category": "factual-lookup",
+            "description": "Find Mercury alternatives comparison",
+        },
+        {
+            "query": "How do I get a DUNS number for my business?",
+            "url_match": "how-to-get-a-duns-number-for-my-business",
+            "page_match": "duns-number",
+            "category": "conceptual",
+            "description": "Find DUNS number guide",
+        },
+        {
+            "query": "How do I create an expense report at my company?",
+            "url_match": "how-to-create-an-expense-report",
+            "page_match": "how-to-create-an-expense-report",
+            "category": "conceptual",
+            "description": "Find expense report guide",
+        },
+        {
+            "query": "What is Brex's cash flow management guide?",
+            "url_match": "cash-flow-management-guide",
+            "page_match": "cash-flow-management",
+            "category": "conceptual",
+            "description": "Find cash flow management guide",
+        },
+        {
+            "query": "How does Brex handle ACH transfers?",
+            "url_match": "support/ach-transfers",
+            "page_match": "ach-transfers",
+            "category": "api-function",
+            "description": "Find ACH transfers support page",
+        },
+        {
+            "query": "What are business lines of credit for startups?",
+            "url_match": "business-lines-of-credit-for-startups",
+            "page_match": "business-lines-of-credit",
+            "category": "conceptual",
+            "description": "Find startup credit lines guide",
+        },
+        {
+            "query": "How do I manage budgets and spend limits in Brex?",
+            "url_match": "manage-budgets-and-spend-limits",
+            "page_match": "manage-budgets",
+            "category": "api-function",
+            "description": "Find budgets/spend limits support",
+        },
+        {
+            "query": "How does Brex help companies get IPO ready?",
+            "url_match": "how-brex-helps-companies-get-ipo-ready",
+            "page_match": "ipo-ready",
+            "category": "conceptual",
+            "description": "Find IPO readiness article",
+        },
+        {
+            "query": "What is Brex's procure-to-pay solution?",
+            "url_match": "procurement/procure-to-pay",
+            "page_match": "procure-to-pay",
+            "category": "conceptual",
+            "description": "Find procure-to-pay page",
+        },
+    ],
+    "supabase-docs": [
+        {
+            "query": "How do automatic embeddings work in Supabase?",
+            "url_match": "features/automatic-embeddings",
+            "page_match": "automatic-embeddings",
+            "category": "api-function",
+            "description": "Find automatic embeddings feature",
+        },
+        {
+            "query": "How does Supabase's database branching feature work?",
+            "url_match": "features/branching",
+            "page_match": "branching",
+            "category": "api-function",
+            "description": "Find branching feature page",
+        },
+        {
+            "query": "How do I use Deno edge functions in Supabase?",
+            "url_match": "features/deno-edge-functions",
+            "page_match": "deno-edge-functions",
+            "category": "api-function",
+            "description": "Find edge functions feature",
+        },
+        {
+            "query": "What are foreign data wrappers in Supabase?",
+            "url_match": "features/foreign-data-wrappers",
+            "page_match": "foreign-data-wrappers",
+            "category": "api-function",
+            "description": "Find FDW feature page",
+        },
+        {
+            "query": "How does Supabase handle database backups?",
+            "url_match": "features/database-backups",
+            "page_match": "database-backups",
+            "category": "api-function",
+            "description": "Find database backups feature",
+        },
+        {
+            "query": "How does Supabase compare to Firebase?",
+            "url_match": "alternatives/supabase-vs-firebase",
+            "page_match": "supabase-vs-firebase",
+            "category": "factual-lookup",
+            "description": "Find Firebase comparison page",
+        },
+        {
+            "query": "How did Mobbin scale to 200,000 users on Supabase?",
+            "url_match": "mobbin-supabase-200000-users",
+            "page_match": "mobbin",
+            "category": "conceptual",
+            "description": "Find Mobbin case study blog post",
+        },
+        {
+            "query": "How did Epsilon3 self-host Supabase?",
+            "url_match": "epsilon3-self-hosting",
+            "page_match": "epsilon3",
+            "category": "conceptual",
+            "description": "Find Epsilon3 self-host post",
+        },
+        {
+            "query": "Does Supabase have a Python client library?",
+            "url_match": "features/client-library-python",
+            "page_match": "client-library-python",
+            "category": "api-function",
+            "description": "Find Python client feature page",
+        },
+        {
+            "query": "Can Supabase transform images on the fly?",
+            "url_match": "features/image-transformations",
+            "page_match": "image-transformations",
+            "category": "api-function",
+            "description": "Find image transformations feature",
+        },
+    ],
+    "tailwind-docs": [
+        {
+            "query": "How do I set perspective on an element in Tailwind CSS?",
+            "url_match": "docs/perspective",
+            "page_match": "perspective",
+            "category": "api-function",
+            "description": "Find perspective utility docs",
+        },
+        {
+            "query": "How do I apply margin utilities in Tailwind?",
+            "url_match": "docs/margin",
+            "page_match": "margin",
+            "category": "api-function",
+            "description": "Find margin utility docs",
+        },
+        {
+            "query": "How do I control flex basis in Tailwind?",
+            "url_match": "docs/flex-basis",
+            "page_match": "flex-basis",
+            "category": "api-function",
+            "description": "Find flex-basis utility docs",
+        },
+        {
+            "query": "How do I use hover and focus variants in Tailwind?",
+            "url_match": "docs/hover-focus-and-other-states",
+            "page_match": "hover-focus",
+            "category": "conceptual",
+            "description": "Find interactive states docs",
+        },
+        {
+            "query": "How do I define grid auto columns in Tailwind?",
+            "url_match": "docs/grid-auto-columns",
+            "page_match": "grid-auto-columns",
+            "category": "api-function",
+            "description": "Find grid-auto-columns docs",
+        },
+        {
+            "query": "How do I transform text case (uppercase, lowercase) in Tailwind?",
+            "url_match": "docs/text-transform",
+            "page_match": "text-transform",
+            "category": "api-function",
+            "description": "Find text-transform docs",
+        },
+        {
+            "query": "How do I control background image size in Tailwind?",
+            "url_match": "docs/background-size",
+            "page_match": "background-size",
+            "category": "api-function",
+            "description": "Find background-size docs",
+        },
+        {
+            "query": "How do I apply a backdrop blur filter in Tailwind?",
+            "url_match": "docs/backdrop-filter-blur",
+            "page_match": "backdrop-filter-blur",
+            "category": "api-function",
+            "description": "Find backdrop-filter-blur docs",
+        },
+        {
+            "query": "How do I install Tailwind using the CLI?",
+            "url_match": "docs/installation/tailwind-cli",
+            "page_match": "installation-tailwind-cli",
+            "category": "conceptual",
+            "description": "Find Tailwind CLI install docs",
+        },
+        {
+            "query": "How do I specify which CSS properties transition in Tailwind?",
+            "url_match": "docs/transition-property",
+            "page_match": "transition-property",
+            "category": "api-function",
+            "description": "Find transition-property docs",
+        },
+    ],
 }
 
 
@@ -1019,19 +1325,111 @@ def _save_embed_cache(cache_key: str, vectors: List[List[float]]) -> None:
     _evict_embed_cache()
 
 
+def hyde_transform_queries(
+    client,
+    queries: List[str],
+    model: str = HYDE_MODEL_DEFAULT,
+    cache_dir: Path = HYDE_CACHE_DIR,
+) -> List[str]:
+    """Transform each query into a hypothetical answer paragraph via LLM.
+
+    Caches per-(prompt, model, query) hash to disk, so the first run pays
+    the LLM cost and subsequent runs are free. Uses the same OpenAI client
+    object as embed_texts — assumes the caller has already configured it.
+    """
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    out: List[str] = []
+    new_calls = 0
+    for q in queries:
+        h = hashlib.sha256(f"{HYDE_PROMPT_TEMPLATE}|{model}|{q}".encode("utf-8")).hexdigest()[:20]
+        cache_file = cache_dir / f"{h}.txt"
+        if cache_file.exists():
+            out.append(cache_file.read_text(encoding="utf-8"))
+            continue
+        # Miss: generate via LLM
+        prompt = HYDE_PROMPT_TEMPLATE.format(query=q)
+        for attempt in range(4):
+            try:
+                resp = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=300,
+                    temperature=0.0,  # deterministic for caching
+                    timeout=30,
+                )
+                text = resp.choices[0].message.content.strip()
+                cache_file.write_text(text, encoding="utf-8")
+                out.append(text)
+                new_calls += 1
+                break
+            except Exception as exc:
+                if attempt == 3:
+                    logger.warning("HyDE LLM call failed after 4 attempts for %r: %s — using raw query", q[:60], exc)
+                    out.append(q)  # fall back to raw query
+                    break
+                _time.sleep(1.5 ** attempt)
+    if new_calls:
+        logger.info(f"    HyDE: {new_calls} new LLM calls, {len(queries)-new_calls} cache hits")
+    else:
+        logger.info(f"    HyDE: {len(queries)} cache hits (no LLM calls)")
+    return out
+
+
+# Lazy-loaded sentence-transformers models (keyed by model name)
+_st_model_cache: Dict[str, object] = {}
+
+
+def _embed_sentence_transformer(texts: List[str], model_name: str) -> List[List[float]]:
+    """Embed via HuggingFace sentence-transformers. Used for any model name
+    containing ``/`` (e.g. ``BAAI/bge-large-en-v1.5``).
+
+    Model is loaded once per process and cached. Uses MPS on Apple Silicon
+    when available; falls back to CPU otherwise.
+    """
+    global _st_model_cache
+    if model_name not in _st_model_cache:
+        from sentence_transformers import SentenceTransformer
+        import torch
+        device = "mps" if torch.backends.mps.is_available() else ("cuda" if torch.cuda.is_available() else "cpu")
+        logger.info(f"    Loading sentence-transformer {model_name!r} on {device}...")
+        _st_model_cache[model_name] = SentenceTransformer(model_name, device=device)
+    st_model = _st_model_cache[model_name]
+    # SentenceTransformer.encode handles batching internally. Keep batch size modest for MPS memory.
+    # Normalize embeddings so cosine similarity == dot product (matches OpenAI convention).
+    vectors = st_model.encode(
+        texts, batch_size=32, show_progress_bar=False, normalize_embeddings=True,
+        convert_to_numpy=True,
+    )
+    return vectors.tolist()
+
+
 def embed_texts(client, texts: List[str], model: str = EMBEDDING_MODEL) -> List[List[float]]:
-    """Embed a batch of texts using OpenAI's API.
+    """Embed a batch of texts, dispatching by model name.
+
+    Dispatch rule: model names containing ``/`` are treated as HuggingFace
+    sentence-transformer identifiers (e.g. ``BAAI/bge-large-en-v1.5``);
+    everything else is treated as an OpenAI embedding model.
 
     Features:
-    - Disk cache: embeddings are cached by content hash, so re-runs are instant
+    - Disk cache keyed by (model, texts) — embeddings are cached by content
+      hash, so re-runs are instant, and different models get different cache
+      keys automatically.
     - Retry with timeout: survives wifi drops (retries 3x with 30s timeout)
-    - Batching: sends 100 texts per API call
+    - Batching: sends 100 texts per API call for OpenAI; uses ST's internal
+      batching for HuggingFace models.
     """
-    # Check full-batch cache first
+    # Check full-batch cache first (same mechanism for OpenAI and ST — model
+    # is part of the cache key).
     cache_key = _embed_cache_key(texts, model)
     cached = _load_embed_cache(cache_key)
     if cached is not None:
         return cached
+
+    # Dispatch to sentence-transformers for HF model identifiers.
+    if "/" in model:
+        vectors = _embed_sentence_transformer(texts, model)
+        _save_embed_cache(cache_key, vectors)
+        return vectors
 
     max_tokens_per_request = 250_000  # OpenAI limit is 300K; leave margin
 
@@ -1186,6 +1584,63 @@ def _reciprocal_rank_fusion(
     # Sort by RRF score descending
     merged = sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)
     return merged[:top_n]
+
+
+# ---------------------------------------------------------------------------
+# Maximal Marginal Relevance (MMR) diversification
+# ---------------------------------------------------------------------------
+
+def _mmr_rerank(
+    candidates: List[Tuple[int, float]],
+    vec_matrix,
+    top_k: int,
+    lambda_: float = 0.7,
+) -> List[Tuple[int, float]]:
+    """Greedy MMR re-rank. Picks diverse-yet-relevant top_k from candidates.
+
+    score(c) = lambda_ * relevance(c) - (1-lambda_) * max_sim(c, selected)
+    - lambda_ = 1.0: pure relevance (MMR disabled)
+    - lambda_ = 0.0: pure diversity
+    """
+    if not candidates or lambda_ >= 0.999:
+        return candidates[:top_k]
+
+    # Normalize candidate relevance to [0, 1] by min-max so scale matches diversity
+    scores_only = [s for _, s in candidates]
+    s_min, s_max = min(scores_only), max(scores_only)
+    denom = (s_max - s_min) or 1e-10
+    rel_by_idx = {idx: (s - s_min) / denom for idx, s in candidates}
+
+    remaining = [idx for idx, _ in candidates]
+    selected: List[int] = []
+    selected_scores: List[float] = []
+
+    # Pre-extract candidate vectors for diversity computation
+    cand_vecs = {idx: vec_matrix[idx] for idx in remaining}
+
+    # Seed: highest-relevance candidate
+    first = max(remaining, key=lambda i: rel_by_idx[i])
+    selected.append(first)
+    selected_scores.append(rel_by_idx[first])
+    remaining.remove(first)
+
+    while remaining and len(selected) < top_k:
+        # For each remaining, find max similarity to any already-selected
+        sel_matrix = [cand_vecs[s] for s in selected]
+        best_idx = None
+        best_mmr = -float("inf")
+        for idx in remaining:
+            sims = cosine_similarity(cand_vecs[idx], sel_matrix)
+            max_sim = float(max(sims)) if len(sel_matrix) > 0 else 0.0
+            mmr_score = lambda_ * rel_by_idx[idx] - (1.0 - lambda_) * max_sim
+            if mmr_score > best_mmr:
+                best_mmr = mmr_score
+                best_idx = idx
+        selected.append(best_idx)
+        selected_scores.append(best_mmr)
+        remaining.remove(best_idx)
+
+    return list(zip(selected, selected_scores))
 
 
 # ---------------------------------------------------------------------------
@@ -1351,6 +1806,44 @@ def chunk_pages(
     return chunks
 
 
+def _embedding_mode_top_indices(
+    query_vec,
+    chunks,
+    vec_matrix,
+    page_vec_by_url,
+    dual_index: bool,
+    page_weight: float,
+) -> Tuple[List[int], List[float]]:
+    """Return (top_indices, top_scores) for embedding mode (optionally dual-index).
+
+    Extracted so the ensemble path can call it twice (primary + secondary) and
+    fuse without duplicating the dual-index combination logic.
+    """
+    scores = cosine_similarity(query_vec, vec_matrix)
+    if dual_index and page_vec_by_url:
+        unique_urls = list(page_vec_by_url.keys())
+        page_vecs = [page_vec_by_url[u] for u in unique_urls]
+        page_scores_raw = cosine_similarity(query_vec, page_vecs)
+        page_score_by_url = {u: float(page_scores_raw[i]) for i, u in enumerate(unique_urls)}
+        combined = [
+            page_weight * page_score_by_url.get(chunks[i].url, 0.0)
+            + (1.0 - page_weight) * float(scores[i])
+            for i in range(len(chunks))
+        ]
+        indexed = sorted(enumerate(combined), key=lambda x: x[1], reverse=True)
+        top_indices = [i for i, _ in indexed[:TOP_K]]
+        top_scores = [combined[i] for i in top_indices]
+    else:
+        if hasattr(scores, 'argsort'):
+            import numpy as np
+            top_indices = list(np.argsort(scores)[-TOP_K:][::-1])
+        else:
+            indexed = sorted(enumerate(scores), key=lambda x: x[1], reverse=True)
+            top_indices = [i for i, _ in indexed[:TOP_K]]
+        top_scores = [float(scores[i]) for i in top_indices]
+    return top_indices, top_scores
+
+
 def _run_single_mode(
     mode: str,
     query_text: str,
@@ -1360,18 +1853,50 @@ def _run_single_mode(
     bm25_index,
     url_match: str,
     page_match: str,
+    page_vec_by_url: Optional[Dict[str, List[float]]] = None,
+    dual_index: bool = False,
+    page_weight: float = 0.3,
+    mmr_lambda: float = 1.0,
+    vec_matrix_ensemble: Optional[List[List[float]]] = None,
+    query_vec_ensemble: Optional[List[float]] = None,
+    page_vec_by_url_ensemble: Optional[Dict[str, List[float]]] = None,
 ) -> Tuple[List[str], List[float], bool, Optional[int]]:
-    """Run a single retrieval mode and return (urls, scores, hit, hit_rank)."""
+    """Run a single retrieval mode and return (urls, scores, hit, hit_rank).
+
+    If mmr_lambda < 1.0, apply MMR re-rank on the (embedding-mode) candidate set
+    over chunk vectors for diversity.
+
+    When vec_matrix_ensemble + query_vec_ensemble are provided, embedding-mode
+    retrieval becomes RRF fusion of (primary ranking, secondary ranking). The
+    secondary ranking uses the same dual-index configuration as the primary
+    (primary page vectors with primary embedder, secondary page vectors with
+    secondary embedder).
+    """
+    has_ensemble = vec_matrix_ensemble is not None and query_vec_ensemble is not None
+
     if mode == "embedding":
-        scores = cosine_similarity(query_vec, vec_matrix)
-        if hasattr(scores, 'argsort'):
-            import numpy as np
-            top_indices = list(np.argsort(scores)[-TOP_K:][::-1])
-        else:
-            indexed = sorted(enumerate(scores), key=lambda x: x[1], reverse=True)
-            top_indices = [i for i, _ in indexed[:TOP_K]]
+        top_indices, top_scores = _embedding_mode_top_indices(
+            query_vec, chunks, vec_matrix, page_vec_by_url, dual_index, page_weight,
+        )
+        if has_ensemble:
+            ens_indices, ens_scores = _embedding_mode_top_indices(
+                query_vec_ensemble, chunks, vec_matrix_ensemble,
+                page_vec_by_url_ensemble, dual_index, page_weight,
+            )
+            primary_ranked = [(i, s) for i, s in zip(top_indices, top_scores)]
+            secondary_ranked = [(i, s) for i, s in zip(ens_indices, ens_scores)]
+            fused = _reciprocal_rank_fusion([primary_ranked, secondary_ranked], top_n=TOP_K)
+            top_indices = [i for i, _ in fused]
+            top_scores = [s for _, s in fused]
+
         top_urls = [chunks[i].url for i in top_indices]
-        top_scores = [float(scores[i]) for i in top_indices]
+
+        if mmr_lambda < 0.999:
+            candidates = list(zip(top_indices, top_scores))
+            mmr_out = _mmr_rerank(candidates, vec_matrix, top_k=TOP_K, lambda_=mmr_lambda)
+            top_indices = [i for i, _ in mmr_out]
+            top_urls = [chunks[i].url for i in top_indices]
+            top_scores = [s for _, s in mmr_out]
 
     elif mode == "bm25":
         bm25_results = _bm25_search(bm25_index, query_text, TOP_K)
@@ -1437,10 +1962,24 @@ def run_retrieval_test(
     site: str,
     chunk_config_label: str = "",
     query_vectors: Optional[List[List[float]]] = None,
+    pages: Optional[List[Dict]] = None,
+    dual_index: bool = False,
+    page_weight: float = 0.3,
+    mmr_lambda: float = 1.0,
+    page_text_words: int = CHUNK_MAX_WORDS,
+    query_prefix: str = "",
+    ensemble_embedder: Optional[str] = None,
+    ensemble_query_vectors: Optional[List[List[float]]] = None,
 ) -> ToolSiteRetrievalResult:
     """Embed chunks, run queries across all retrieval modes, compute hit rates + MRR.
 
     If query_vectors is provided, skip embedding queries (reuse from prior tool).
+    If dual_index is True, also embed page-level text and combine scores:
+        final = page_weight * page_score + (1 - page_weight) * chunk_score
+    page_text_words controls how many body words are included in each page's
+    embedding (W18). Default matches CHUNK_MAX_WORDS for backward compat.
+    If ensemble_embedder is set, also embed chunks + queries with that model
+    and RRF-fuse the resulting rankings into the "embedding" mode output.
     """
     # Embed all chunks
     chunk_texts = [c.text for c in chunks]
@@ -1455,12 +1994,54 @@ def run_retrieval_test(
 
     vec_matrix = [c.vector for c in chunks]
 
+    # Ensemble: embed chunks with the secondary embedder too (independent vectors)
+    vec_matrix_ensemble: Optional[List[List[float]]] = None
+    if ensemble_embedder:
+        logger.info(f"    Ensemble: embedding {len(chunk_texts)} chunks with {ensemble_embedder}...")
+        ens_start = time.time()
+        vec_matrix_ensemble = embed_texts(client, chunk_texts, model=ensemble_embedder)
+        logger.info(f"    Ensemble embedded in {time.time() - ens_start:.1f}s")
+
+    # Dual-index: embed whole-page text (truncated) for unique URLs used by chunks
+    page_vec_by_url: Optional[Dict[str, List[float]]] = None
+    if dual_index and pages:
+        chunk_urls = {c.url for c in chunks}
+        page_text_by_url: Dict[str, str] = {}
+        for p in pages:
+            url = p.get("url", "")
+            if url not in chunk_urls:
+                continue
+            title = p.get("title", "") or ""
+            text = p.get("text", "") or ""
+            # Truncate to page_text_words for embedding budget control (W18).
+            words = text.split()
+            if len(words) > page_text_words:
+                text = " ".join(words[:page_text_words])
+            composed = f"{title}\n\n{text}" if title else text
+            if composed.strip():
+                page_text_by_url[url] = composed
+        if page_text_by_url:
+            urls_ordered = list(page_text_by_url.keys())
+            page_texts = [page_text_by_url[u] for u in urls_ordered]
+            logger.info(f"    Embedding {len(page_texts)} pages for dual-index ({tool}/{site})...")
+            page_vecs = embed_texts(client, page_texts)
+            page_vec_by_url = {u: v for u, v in zip(urls_ordered, page_vecs)}
+
+    # Ensemble dual-index: also embed pages with the secondary embedder
+    page_vec_by_url_ensemble: Optional[Dict[str, List[float]]] = None
+    if ensemble_embedder and dual_index and pages and page_vec_by_url:
+        urls_ordered = list(page_vec_by_url.keys())
+        page_texts_ens = [page_text_by_url[u] for u in urls_ordered]
+        logger.info(f"    Ensemble: embedding {len(page_texts_ens)} pages with {ensemble_embedder}...")
+        page_vecs_ens = embed_texts(client, page_texts_ens, model=ensemble_embedder)
+        page_vec_by_url_ensemble = {u: v for u, v in zip(urls_ordered, page_vecs_ens)}
+
     # Build BM25 index
     bm25_index = _build_bm25_index(chunk_texts)
 
     # Embed queries if not provided (batch all at once)
     if query_vectors is None:
-        query_texts = [q["query"] for q in queries]
+        query_texts = [query_prefix + q["query"] for q in queries]
         logger.info(f"    Embedding {len(query_texts)} queries...")
         query_vectors = embed_texts(client, query_texts)
 
@@ -1470,6 +2051,7 @@ def run_retrieval_test(
 
     for qi, q in enumerate(queries):
         query_vec = query_vectors[qi]
+        query_vec_ensemble = ensemble_query_vectors[qi] if ensemble_query_vectors else None
         url_match = q.get("url_match", "")
         page_match = q.get("page_match", "")
 
@@ -1477,6 +2059,13 @@ def run_retrieval_test(
             top_urls, top_scores, hit, hit_rank = _run_single_mode(
                 mode, q["query"], query_vec, chunks, vec_matrix, bm25_index,
                 url_match, page_match,
+                page_vec_by_url=page_vec_by_url,
+                dual_index=dual_index,
+                page_weight=page_weight,
+                mmr_lambda=mmr_lambda,
+                vec_matrix_ensemble=vec_matrix_ensemble,
+                query_vec_ensemble=query_vec_ensemble,
+                page_vec_by_url_ensemble=page_vec_by_url_ensemble,
             )
             mode_query_results[mode].append(QueryResult(
                 query=q["query"],
@@ -1671,7 +2260,7 @@ def generate_retrieval_report(
         best_mode = max(tool_mode_aggs[tool], key=lambda m: tool_mode_aggs[tool][m][2])
         total_queries, agg_hits, mrr = tool_mode_aggs[tool][best_mode]
         hit10 = _fmt_rate(agg_hits.get(10, 0), total_queries)
-        tname = f"**{tool}**" if tool == "markcrawl" else tool
+        tname = tool
         digest_rows.append((mrr, f"| {tname} | {best_mode} | {hit10} | {mrr:.3f} |"))
     digest_rows.sort(key=lambda x: x[0], reverse=True)
     for _, row in digest_rows:
@@ -1711,7 +2300,7 @@ def generate_retrieval_report(
                 continue
             total_queries, agg_hits, mrr = agg
             k_cols = [_fmt_rate(agg_hits[k], total_queries) for k in REPORT_AT_K]
-            tname = f"**{tool}**" if tool == "markcrawl" else tool
+            tname = tool
             mode_rows.append((mrr, f"| {tname} | {mode} | " + " | ".join(k_cols) + f" | {mrr:.3f} |"))
         mode_rows.sort(key=lambda x: x[0], reverse=True)
         for _, row in mode_rows:
@@ -1765,18 +2354,18 @@ def generate_retrieval_report(
 
         if not has_data:
             cols = " | ".join("—" for _ in REPORT_AT_K)
-            emb_summary_rows.append((0.0, f"| {tool} | {cols} | — | — | — |"))
+            emb_summary_rows.append((0.0, tool, f"| {tool} | {cols} | — | — | — |"))
             continue
 
         avg_words = total_chunk_words / total_chunks if total_chunks else 0
         mrr = rr_sum / total_queries if total_queries else 0
         k_cols = [_fmt_rate(agg_hits[k], total_queries) for k in REPORT_AT_K]
-        tname = f"**{tool}**" if tool == "markcrawl" else tool
-        emb_summary_rows.append((mrr, f"| {tname} | " + " | ".join(k_cols) +
+        tname = tool
+        emb_summary_rows.append((mrr, tool, f"| {tname} | " + " | ".join(k_cols) +
             f" | {mrr:.3f} | {total_chunks} | {avg_words:.0f} |"))
 
     emb_summary_rows.sort(key=lambda x: x[0], reverse=True)
-    for _, row in emb_summary_rows:
+    for _, _, row in emb_summary_rows:
         lines.append(row)
 
     lines.extend([
@@ -1793,26 +2382,74 @@ def generate_retrieval_report(
     # "What this means" narrative interpretation
     # ============================================================
     lines.extend(["## What this means", ""])
-    # Compute actual MRR range from the embedding summary rows
-    emb_mrrs = [mrr for mrr, _ in emb_summary_rows if mrr > 0]
-    if emb_mrrs:
-        mrr_min, mrr_max = min(emb_mrrs), max(emb_mrrs)
-        mrr_spread = mrr_max - mrr_min
-        if mrr_spread < 0.10:
-            band_desc = f"a narrow band (MRR {mrr_min:.3f}-{mrr_max:.3f} on embedding mode)"
-        else:
-            band_desc = (
-                f"MRR {mrr_min:.3f}-{mrr_max:.3f} on embedding mode "
-                f"(a {mrr_spread:.3f} spread)"
-            )
+    # Compute actual MRR range from the embedding summary rows.
+    # Detect outliers: a tool is an outlier if it sits noticeably below the
+    # cluster of the rest (gap to next-lowest >= 0.10, and >= 2x the spread of
+    # the remaining tools). When an outlier exists, describe the cluster
+    # separately rather than implying all tools are close.
+    emb_mrrs_sorted = sorted(
+        [(mrr, tool) for mrr, tool, _ in emb_summary_rows if mrr > 0],
+        key=lambda x: x[0],
+    )
+    outlier = None
+    cluster = emb_mrrs_sorted
+    if len(emb_mrrs_sorted) >= 3:
+        low_mrr, low_tool = emb_mrrs_sorted[0]
+        rest = emb_mrrs_sorted[1:]
+        rest_min = rest[0][0]
+        rest_max = rest[-1][0]
+        rest_spread = rest_max - rest_min
+        gap = rest_min - low_mrr
+        if gap >= 0.10 and (rest_spread == 0 or gap >= 2 * rest_spread):
+            outlier = (low_tool, low_mrr)
+            cluster = rest
+
+    c_min = cluster[0][0] if cluster else 0.0
+    c_max = cluster[-1][0] if cluster else 0.0
+    c_spread = c_max - c_min
+    cluster_count = len(cluster)
+    total_count = len(emb_mrrs_sorted)
+    if outlier:
+        out_tool, out_mrr = outlier
+        narrative = (
+            f"{cluster_count} of the {total_count} tools cluster tightly "
+            f"(MRR {c_min:.3f}-{c_max:.3f}, a {c_spread:.3f} spread on embedding "
+            f"mode), while **{out_tool}** trails at MRR {out_mrr:.3f} -- a real "
+            "outlier worth flagging rather than averaging away. "
+            "Within the cluster, tools crawl similar pages from the same seed URLs "
+            "and we apply identical chunking and embedding pipelines, so the "
+            "extraction differences that matter for "
+            "[content quality](QUALITY_COMPARISON.md) largely wash out at retrieval "
+            f"time. {out_tool}'s gap likely reflects fewer or less complete pages "
+            "discovered during crawling -- see the per-site coverage tables below."
+        )
+    elif cluster and c_spread < 0.10:
+        narrative = (
+            f"All tools perform within a narrow band (MRR {c_min:.3f}-{c_max:.3f} "
+            "on embedding mode). "
+            "This is expected: tools crawl similar pages from the same seed URLs, "
+            "and we apply identical chunking and embedding pipelines. The "
+            "extraction differences that matter for "
+            "[content quality](QUALITY_COMPARISON.md) largely wash out at "
+            "retrieval time."
+        )
+    elif cluster:
+        narrative = (
+            f"Tools span MRR {c_min:.3f}-{c_max:.3f} on embedding mode "
+            f"(a {c_spread:.3f} spread). "
+            "Tools crawl similar pages from the same seed URLs, and we apply "
+            "identical chunking and embedding pipelines, but extraction "
+            "differences -- see [content quality](QUALITY_COMPARISON.md) -- "
+            "show up at retrieval time."
+        )
     else:
-        band_desc = "similar MRR on embedding mode"
+        narrative = (
+            "All tools perform with similar MRR on embedding mode. "
+            "Tools crawl similar pages from the same seed URLs, and we apply "
+            "identical chunking and embedding pipelines."
+        )
     lines.extend([
-        f"All tools perform within {band_desc}. "
-        "This is expected: tools crawl similar pages from the same seed URLs, and we "
-        "apply identical chunking and embedding pipelines. The extraction differences "
-        "that matter for [content quality](QUALITY_COMPARISON.md) largely wash out at "
-        "retrieval time.",
+        narrative,
         "",
         "**Retrieval mode matters more than crawler choice.** Embedding search beats "
         "BM25 by roughly 2x on MRR across all tools. Hybrid and reranked modes fall "
@@ -1895,7 +2532,7 @@ def generate_retrieval_report(
                 cs = tool_data[tool]
                 rate = cs["hits10"] / cs["total"] if cs["total"] else 0
                 mrr = cs["rr_sum"] / cs["total"] if cs["total"] else 0
-                tname = f"**{tool}**" if tool == "markcrawl" else tool
+                tname = tool
                 lines.append(
                     f"| {cat} | {tname} | {rate:.0%} ({cs['hits10']}/{cs['total']}) "
                     f"| {mrr:.3f} | {cs['total']} |"
@@ -1921,7 +2558,7 @@ def generate_retrieval_report(
             best_rate = tool_data[best_tool]["hits10"] / tool_data[best_tool]["total"] if tool_data[best_tool]["total"] else 0
             worst_rate = tool_data[worst_tool]["hits10"] / tool_data[worst_tool]["total"] if tool_data[worst_tool]["total"] else 0
             spread = best_rate - worst_rate
-            tname = f"**{best_tool}**" if best_tool == "markcrawl" else best_tool
+            tname = best_tool
             lines.append(
                 f"| {cat} | {tname} | {best_rate:.0%} | {spread:.0%} |"
             )
@@ -2001,7 +2638,7 @@ def generate_retrieval_report(
         site_tool_rows = []
         for tool in tool_names:
             r = site_results.get(tool)
-            tname = f"**{tool}**" if tool == "markcrawl" else tool
+            tname = tool
             if not r:
                 cols = " | ".join("—" for _ in REPORT_AT_K)
                 site_tool_rows.append((0.0, f"| {tname} | {cols} | — | — | — |"))
@@ -2262,6 +2899,15 @@ def _run_benchmark_for_config(
     config_label: str,
     verbose: bool = True,
     add_context_headers: bool = False,
+    dual_index: bool = False,
+    page_weight: float = 0.3,
+    mmr_lambda: float = 1.0,
+    page_text_words: int = CHUNK_MAX_WORDS,
+    query_prefix: str = "",
+    hyde: bool = False,
+    hyde_model: str = HYDE_MODEL_DEFAULT,
+    hyde_cache_dir: Path = HYDE_CACHE_DIR,
+    ensemble_embedder: Optional[str] = None,
 ) -> Dict[str, Dict[str, ToolSiteRetrievalResult]]:
     """Run the full retrieval benchmark for a single chunk configuration.
 
@@ -2293,10 +2939,27 @@ def _run_benchmark_for_config(
             for t in available_tools
         )
         if needs_embedding:
-            query_texts = [q["query"] for q in queries]
+            raw_query_texts = [q["query"] for q in queries]
+            if hyde:
+                if verbose:
+                    logger.info(f"\n  HyDE: transforming {len(raw_query_texts)} queries for {site} via {hyde_model}...")
+                query_texts = hyde_transform_queries(
+                    client, raw_query_texts, model=hyde_model, cache_dir=hyde_cache_dir,
+                )
+            else:
+                query_texts = [query_prefix + q for q in raw_query_texts]
             if verbose:
                 logger.info(f"\n  Embedding {len(query_texts)} queries for {site} (shared across tools)...")
             query_vectors = embed_texts(client, query_texts)
+            # Ensemble: also embed queries with secondary embedder
+            if ensemble_embedder:
+                if verbose:
+                    logger.info(f"  Ensemble: embedding queries for {site} with {ensemble_embedder}...")
+                ensemble_query_vectors = embed_texts(client, query_texts, model=ensemble_embedder)
+            else:
+                ensemble_query_vectors = None
+        else:
+            ensemble_query_vectors = None
 
         for tool in available_tools:
             # Check for checkpoint first
@@ -2330,7 +2993,14 @@ def _run_benchmark_for_config(
                     logger.warning("    no chunks created, skipping")
                 continue
 
-            result = run_retrieval_test(client, chunks, queries, tool, site, config_label, query_vectors)
+            result = run_retrieval_test(
+                client, chunks, queries, tool, site, config_label, query_vectors,
+                pages=pages, dual_index=dual_index, page_weight=page_weight,
+                mmr_lambda=mmr_lambda, page_text_words=page_text_words,
+                query_prefix=query_prefix,
+                ensemble_embedder=ensemble_embedder,
+                ensemble_query_vectors=ensemble_query_vectors,
+            )
             site_results[tool] = result
 
             # Checkpoint immediately after each tool/site completes
@@ -2364,6 +3034,27 @@ def main():
                         help="Skip cross-encoder reranking (faster but less complete)")
     parser.add_argument("--context-headers", action="store_true",
                         help="Prepend page title, section heading, and URL path to each chunk")
+    parser.add_argument("--dual-index", action="store_true",
+                        help="Combine page-level + chunk-level embedding scores (W7B multi-granularity)")
+    parser.add_argument("--page-weight", type=float, default=0.3,
+                        help="Weight alpha for page score in dual-index: final = alpha*page + (1-alpha)*chunk (default 0.3)")
+    parser.add_argument("--mmr-lambda", type=float, default=1.0,
+                        help="MMR lambda for diversity re-rank (W14). 1.0=off (pure relevance), <1.0 trades relevance for diversity")
+    parser.add_argument("--page-text-words", type=int, default=CHUNK_MAX_WORDS,
+                        help="Words of page body text to include in page vector (dual-index only). Default matches CHUNK_MAX_WORDS (400).")
+    parser.add_argument("--query-prefix", type=str, default="",
+                        help="String to prepend to every query text before embedding (W19 instruction-style prefix). Default empty.")
+    parser.add_argument("--hyde", action="store_true",
+                        help="HyDE: use LLM-generated hypothetical answers as the text to embed, instead of raw queries. Generic retrieval-side technique.")
+    parser.add_argument("--hyde-model", type=str, default=HYDE_MODEL_DEFAULT,
+                        help=f"LLM model for HyDE answer generation (default: {HYDE_MODEL_DEFAULT}).")
+    parser.add_argument("--hyde-cache-dir", type=str, default=str(HYDE_CACHE_DIR),
+                        help=f"Directory for cached HyDE outputs (default: {HYDE_CACHE_DIR}).")
+    parser.add_argument("--ensemble-embedder", type=str, default=None,
+                        help="Secondary embedder for RRF ensemble with the primary (EMBEDDING_MODEL). "
+                             "Accepts an OpenAI model name or a HuggingFace sentence-transformers id "
+                             "(e.g. 'BAAI/bge-large-en-v1.5'). When set, embedding-mode retrieval "
+                             "becomes RRF fusion of primary + secondary rankings.")
     parser.add_argument("--fresh", action="store_true",
                         help="Clear checkpoints and embedding cache — start from scratch")
     parser.add_argument("--report-only", action="store_true",
@@ -2398,8 +3089,21 @@ def main():
 
     logger.info(f"Using benchmark run: {run_dir.name}")
 
-    # Determine sites and tools to test
-    sites = args.sites.split(",") if args.sites else list(TEST_QUERIES.keys())
+    # Determine sites and tools to test.
+    # Precedence: --sites CLI flag > run manifest sampled_sites > all TEST_QUERIES.
+    if args.sites:
+        sites = args.sites.split(",")
+    else:
+        try:
+            from sites.pool import read_manifest
+            m = read_manifest(run_dir)
+        except Exception:
+            m = None
+        if m and m.get("sampled_sites"):
+            sites = [entry["name"] for entry in m["sampled_sites"]]
+            logger.info(f"Using sampled sites from manifest ({len(sites)} sites)")
+        else:
+            sites = list(TEST_QUERIES.keys())
     tools = args.tools.split(",") if args.tools else TOOLS
 
     # Only test sites that have queries defined
@@ -2476,6 +3180,15 @@ def main():
             client, run_dir, sites, available_tools,
             max_words, overlap_words, config_label,
             add_context_headers=args.context_headers,
+            dual_index=args.dual_index,
+            page_weight=args.page_weight,
+            mmr_lambda=args.mmr_lambda,
+            page_text_words=args.page_text_words,
+            query_prefix=args.query_prefix,
+            hyde=args.hyde,
+            hyde_model=args.hyde_model,
+            hyde_cache_dir=Path(args.hyde_cache_dir),
+            ensemble_embedder=args.ensemble_embedder,
         )
 
         # Run chunk sensitivity analysis if requested

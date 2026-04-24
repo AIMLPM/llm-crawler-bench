@@ -38,10 +38,14 @@ from quality_scorer import (  # noqa: E402
 logger = logging.getLogger(__name__)
 
 TOOLS = ["markcrawl", "crawl4ai", "crawl4ai-raw", "scrapy+md", "crawlee", "colly+md", "playwright", "firecrawl"]
-SITES = [
-    "quotes-toscrape", "books-toscrape", "fastapi-docs", "python-docs",
-    "react-dev", "wikipedia-python", "stripe-docs", "blog-engineering",
-]
+
+# SITES is derived from the pool (sites/pool_v1.yaml) — has_queries filter keeps
+# parity with the retrieval/answer-quality benches. When a --run has a
+# manifest.json, use its sampled sites instead so reports match what was
+# actually crawled; fall back to this default for legacy runs.
+from sites.pool import load_pool as _load_pool  # noqa: E402
+
+SITES = [s.name for s in _load_pool().sites if s.has_queries]
 
 SAMPLE_LINES = 40   # lines of raw output to include in the sample section
 
@@ -118,11 +122,20 @@ def _fix_colly_jsonl(run_dir: Path, site: str) -> int:
     return changed
 
 
+def _sites_for_run(run_dir: Path) -> list[str]:
+    """Prefer the run's manifest.json if present (new sampled runs), else SITES."""
+    from sites.pool import read_manifest
+    m = read_manifest(run_dir)
+    if m and m.get("sampled_sites"):
+        return [entry["name"] for entry in m["sampled_sites"]]
+    return SITES
+
+
 def score_run(run_dir: Path) -> dict[str, dict[str, list[PageQuality]]]:
     """Load all pages.jsonl from a run directory and return scored PageQuality objects."""
     quality_results: dict[str, dict[str, list[PageQuality]]] = {}
 
-    for site in SITES:
+    for site in _sites_for_run(run_dir):
         quality_results[site] = {}
 
         # Fix colly URLs before loading

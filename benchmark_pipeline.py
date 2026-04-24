@@ -433,7 +433,7 @@ def generate_report(result: PipelineResult) -> str:
     lines.append("|------|-----------|----------|----------|----------|--------------|-------|--------|------|")
 
     for tool, agg in sorted_tools:
-        bold = "**" if tool == "markcrawl" else ""
+        bold = ""
         lines.append(
             f"| {bold}{tool}{bold} | {agg['scrape']:.1f} | {agg['chunk']:.1f} | "
             f"{agg['embed']:.1f} | {agg['query']:.1f} | "
@@ -467,7 +467,7 @@ def generate_report(result: PipelineResult) -> str:
 
     for tool, agg in sorted_tools:
         pages = agg["pages"] or 1
-        bold = "**" if tool == "markcrawl" else ""
+        bold = ""
         lines.append(
             f"| {bold}{tool}{bold} | {agg['pages']} | {agg['total']:.1f} | "
             f"{agg['total']/pages:.2f} | {_fmt_cost(agg['total_cost']/pages)} | "
@@ -489,7 +489,7 @@ def generate_report(result: PipelineResult) -> str:
     lines.append("|------|---------|--------|--------|--------|")
     for tool, agg in sorted_tools:
         total = agg["total"] or 1
-        bold = "**" if tool == "markcrawl" else ""
+        bold = ""
         lines.append(
             f"| {bold}{tool}{bold} | {agg['scrape']/total*100:.1f}% | {agg['chunk']/total*100:.1f}% | "
             f"{agg['embed']/total*100:.1f}% | {agg['query']/total*100:.1f}% |"
@@ -510,7 +510,7 @@ def generate_report(result: PipelineResult) -> str:
     lines.append("| Tool | Embed tokens | Embed cost | Query in tokens | Query out tokens | Query cost | **Total cost** |")
     lines.append("|------|-------------|-----------|----------------|-----------------|-----------|---------------|")
     for tool, agg in sorted_tools:
-        bold = "**" if tool == "markcrawl" else ""
+        bold = ""
         lines.append(
             f"| {bold}{tool}{bold} | {agg['embed_tokens']:,} | {_fmt_cost(agg['embed_cost'])} | "
             f"{agg['query_input_tokens']:,} | {agg['query_output_tokens']:,} | "
@@ -570,7 +570,7 @@ def generate_report(result: PipelineResult) -> str:
         lines.append("| Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |")
         lines.append("|------|-----------|----------|----------|----------|----------|-------|--------|------|")
         for t in sorted(site_timings, key=lambda x: x.total_seconds):
-            bold = "**" if t.tool == "markcrawl" else ""
+            bold = ""
             lines.append(
                 f"| {bold}{t.tool}{bold} | {t.scrape_seconds:.1f} | {t.chunk_seconds:.1f} | "
                 f"{t.embed_seconds:.1f} | {t.query_seconds:.1f} | "
@@ -689,7 +689,20 @@ def main():
                     available_sites.add(site_dir.name)
 
     tools = args.tools.split(",") if args.tools else sorted(available_tools)
-    sites = args.sites.split(",") if args.sites else sorted(available_sites)
+    if args.sites:
+        sites = args.sites.split(",")
+    else:
+        # Prefer manifest-sampled sites when present; fall back to disk scan.
+        try:
+            from sites.pool import read_manifest
+            m = read_manifest(run_dir)
+        except Exception:
+            m = None
+        if m and m.get("sampled_sites"):
+            sampled = [entry["name"] for entry in m["sampled_sites"]]
+            sites = [s for s in sampled if s in available_sites]
+        else:
+            sites = sorted(available_sites)
 
     # Filter to tools/sites with test queries
     query_sites = set(TEST_QUERIES.keys())

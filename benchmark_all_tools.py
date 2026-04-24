@@ -63,50 +63,29 @@ except ImportError:
 # Configuration
 # ---------------------------------------------------------------------------
 
-COMPARISON_SITES = {
-    "quotes-toscrape": {
-        "url": "http://quotes.toscrape.com",
-        "max_pages": 15,
-        "description": "Paginated quotes (simple HTML, link-following)",
-    },
-    "books-toscrape": {
-        "url": "http://books.toscrape.com",
-        "max_pages": 60,
-        "description": "E-commerce catalog (60 pages, pagination)",
-    },
-    "fastapi-docs": {
-        "url": "https://fastapi.tiangolo.com",
-        "max_pages": 500,
-        "description": "API documentation (code blocks, headings, tutorials)",
-    },
-    "python-docs": {
-        "url": "https://docs.python.org/3/library/",
-        "max_pages": 500,
-        "description": "Python standard library docs",
-    },
-    # --- New diverse sites ---
-    "react-dev": {
-        "url": "https://react.dev/learn",
-        "max_pages": 500,
-        "description": "React docs (SPA, JS-rendered, interactive examples)",
-        "render_js": True,
-    },
-    "wikipedia-python": {
-        "url": "https://en.wikipedia.org/wiki/Python_(programming_language)",
-        "max_pages": 50,
-        "description": "Wikipedia (tables, infoboxes, citations, deep linking)",
-    },
-    "stripe-docs": {
-        "url": "https://docs.stripe.com/payments",
-        "max_pages": 500,
-        "description": "Stripe API docs (tabbed content, code samples, sidebars)",
-    },
-    "blog-engineering": {
-        "url": "https://github.blog/engineering/",
-        "max_pages": 200,
-        "description": "GitHub Engineering Blog (articles, images, technical content)",
-    },
-}
+from sites.pool import load_pool as _load_pool  # noqa: E402
+
+
+def _build_comparison_sites(site_filter=None) -> dict:
+    """Materialize COMPARISON_SITES from the authoritative pool in sites/pool_v1.yaml.
+
+    By default, returns sites with has_queries=true (the "core" 8 that match
+    the pre-pool behavior). When site_filter is passed, returns exactly those
+    sites from the pool (used by the sampler to scope an in-progress run).
+    """
+    pool = _load_pool()
+    if site_filter is None:
+        subset = [s for s in pool.sites if s.has_queries]
+    else:
+        wanted = set(site_filter)
+        subset = [s for s in pool.sites if s.name in wanted]
+        missing = wanted - {s.name for s in subset}
+        if missing:
+            raise ValueError(f"sites not in pool: {sorted(missing)}")
+    return {s.name: s.as_legacy_dict() for s in subset}
+
+
+COMPARISON_SITES = _build_comparison_sites()
 
 
 # ---------------------------------------------------------------------------
@@ -766,7 +745,7 @@ def generate_comparison_report(
         "# Speed Comparison",
         f"<!-- style: v2, {today} -->",
         "",
-        f"**{fastest_tool}** is the fastest crawler at {fastest_pps:.1f} pages/sec overall, "
+        f"{fastest_tool} is the fastest crawler at {fastest_pps:.1f} pages/sec overall, "
         f"followed by {runner_up_name} ({runner_up_pps:.1f} p/s).",
         "",
         f"Generated: {time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime())}",
@@ -883,7 +862,7 @@ def generate_comparison_report(
 
         for tool in sorted_tools:
             r = results.get(tool, {}).get(site_name)
-            tool_label = f"**{tool}**" if tool == "markcrawl" else tool
+            tool_label = tool
             if r and not r.error:
                 row = f"| {tool_label} | {r.pages_median:.0f} | {r.time_median:.1f} |"
                 if has_stddev:
@@ -966,7 +945,7 @@ def generate_comparison_report(
     summary_rows.sort(key=lambda x: x[3], reverse=True)
 
     for tool, total_pages, total_time, avg_pps, note in summary_rows:
-        tool_label = f"**{tool}**" if tool == "markcrawl" else tool
+        tool_label = tool
         if total_pages == 0 and total_time == 0 and avg_pps == 0:
             lines.append(f"| {tool_label} | — | — | — | {note} |")
             continue
@@ -1212,6 +1191,18 @@ def main():
                         help="Regenerate report from a previous run's data (e.g. --run run_20260412_195003). "
                              "Skips crawling entirely — reads run_metadata.json and pages.jsonl files.")
     parser.add_argument("--output", default="reports/SPEED_COMPARISON.md", help="Output report path")
+    parser.add_argument("--seed", type=int, default=None,
+                        help="Enable stratified sampling from the site pool using this seed. "
+                             "Required when --per-category is set. Recorded in runs/<id>/manifest.json "
+                             "so the sample is reproducible.")
+    parser.add_argument("--per-category", type=int, default=None,
+                        help="N sites to sample per category from sites/pool_v1.yaml. "
+                             "Requires --seed. Without this flag, the benchmark runs the default "
+                             "set (all sites with has_queries=true).")
+    parser.add_argument("--pool-only-queries", action="store_true", default=False,
+                        help="When sampling, restrict to sites with has_queries=true "
+                             "(speed benches can still crawl non-query sites; this flag keeps "
+                             "parity with retrieval/answer-quality runs).")
     args = parser.parse_args()
 
     # --run: regenerate report from saved data (no crawling)
@@ -1229,10 +1220,44 @@ def main():
     run_start = time.time()
     run_start_iso = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(run_start))
 
-    # Select sites
+    # Select sites. Three modes:
+    #   1. --sites a,b,c            -> explicit names (pool-verified)
+    #   2. --seed X --per-category N -> stratified sample from the pool
+    #   3. (no flags)               -> default: sites with has_queries=true
+    if args.per_category is not None and args.seed is None:
+        logger.error("--per-category requires --seed for reproducibility")
+        sys.exit(1)
+    if args.seed is not None and args.per_category is None:
+        logger.error("--seed is only meaningful with --per-category")
+        sys.exit(1)
+
+    sample_strategy: dict = {"mode": "default_has_queries"}
+    sampled_site_names = None
+
     if args.sites:
         site_names = [s.strip() for s in args.sites.split(",")]
-        sites = {k: v for k, v in COMPARISON_SITES.items() if k in site_names}
+        sites = _build_comparison_sites(site_filter=site_names)
+        sample_strategy = {"mode": "explicit", "sites": sorted(site_names)}
+        sampled_site_names = sorted(site_names)
+    elif args.per_category is not None:
+        from sites.pool import load_pool, sample as pool_sample
+        _pool = load_pool()
+        sampled = pool_sample(
+            _pool, seed=args.seed, per_category=args.per_category,
+            requires_queries=args.pool_only_queries,
+        )
+        sites = _build_comparison_sites(site_filter=[s.name for s in sampled])
+        sample_strategy = {
+            "mode": "stratified",
+            "seed": args.seed,
+            "per_category": args.per_category,
+            "requires_queries": args.pool_only_queries,
+        }
+        sampled_site_names = sorted(s.name for s in sampled)
+        logger.info(
+            f"Sampled {len(sampled)} sites from pool (seed={args.seed}, "
+            f"per_category={args.per_category}): {sampled_site_names}"
+        )
     else:
         sites = COMPARISON_SITES
 
@@ -1604,7 +1629,38 @@ def main():
         json.dump(metadata, f, indent=2)
 
     # Save run data (keep last 10 runs)
-    _save_run_data(base_dir)
+    run_dest = _save_run_data(base_dir)
+
+    # Write sample manifest (runs/<id>/manifest.json) if we have a final location.
+    # The manifest records pool version, hash, seed, and sampled sites so anyone
+    # can reproduce the exact subset this run was evaluated on.
+    if run_dest:
+        try:
+            from sites.pool import load_pool, write_manifest
+            _pool = load_pool()
+            _sampled = [_pool.by_name(n) for n in sorted(sites.keys())]
+            _sampled = [s for s in _sampled if s is not None]
+            _tool_versions = {n: _get_tool_version(n) for n in available}
+            try:
+                import subprocess as _sub
+                _git_sha = _sub.check_output(
+                    ["git", "rev-parse", "--short", "HEAD"],
+                    stderr=_sub.DEVNULL, cwd=os.path.dirname(__file__) or ".",
+                ).decode().strip()
+            except Exception:
+                _git_sha = ""
+            write_manifest(
+                Path(run_dest),
+                pool=_pool,
+                seed=int(args.seed) if args.seed is not None else 0,
+                sampled=_sampled,
+                sample_strategy=sample_strategy,
+                tool_versions=_tool_versions,
+                git_sha=_git_sha,
+            )
+            logger.info(f"Manifest written: {run_dest}/manifest.json")
+        except Exception as e:
+            logger.warning(f"Could not write manifest.json: {e}")
 
 
 # ---------------------------------------------------------------------------
@@ -1702,8 +1758,11 @@ def _remove_checkpoint(path: str) -> None:
         pass
 
 
-def _save_run_data(base_dir: str) -> None:
-    """Copy run output to runs/ with timestamp. Keep last 10 runs (~35-40MB each)."""
+def _save_run_data(base_dir: str) -> Optional[str]:
+    """Copy run output to runs/ with timestamp. Keep last 10 runs (~35-40MB each).
+
+    Returns the final run_dest path on success, None on failure.
+    """
     runs_dir = os.path.join(os.path.dirname(__file__), "runs")
     os.makedirs(runs_dir, exist_ok=True)
 
@@ -1716,7 +1775,7 @@ def _save_run_data(base_dir: str) -> None:
     except Exception as exc:
         logger.warning(f"could not save run data: {exc}")
         shutil.rmtree(base_dir, ignore_errors=True)
-        return
+        return None
 
     # Clean up temp dir
     shutil.rmtree(base_dir, ignore_errors=True)
@@ -1730,6 +1789,8 @@ def _save_run_data(base_dir: str) -> None:
         oldest_path = os.path.join(runs_dir, oldest)
         shutil.rmtree(oldest_path, ignore_errors=True)
         logger.info(f"Removed old run: {oldest}")
+
+    return run_dest
 
 
 if __name__ == "__main__":

@@ -445,7 +445,7 @@ def generate_report(
     sorted_summary = sorted(tool_summaries.values(), key=lambda s: s.avg_overall, reverse=True)
     for s in sorted_summary:
         avg_tokens = int(s.avg_chunk_words * 1.33)
-        tool_label = f"**{s.tool}**" if s.tool == "markcrawl" else s.tool
+        tool_label = s.tool
         ci_str = f" ±{s.ci_overall:.2f}" if s.ci_overall > 0 else ""
         lines.append(
             f"| {tool_label} "
@@ -519,7 +519,7 @@ def generate_report(
         site_tool_avgs.sort(key=lambda x: x[3], reverse=True)
 
         for tool, results, n, _ in site_tool_avgs:
-            tool_label = f"**{tool}**" if tool == "markcrawl" else tool
+            tool_label = tool
             site_ci = _ci95([r.overall for r in results])
             ci_str = f" ±{site_ci:.2f}" if site_ci > 0 else ""
             lines.append(
@@ -656,7 +656,19 @@ def main():
             shutil.rmtree(CHECKPOINT_DIR)
             logger.info("Cleared answer quality checkpoints.")
 
-    sites = args.sites.split(",") if args.sites else [s for s in TEST_QUERIES.keys()]
+    if args.sites:
+        sites = args.sites.split(",")
+    else:
+        try:
+            from sites.pool import read_manifest
+            m = read_manifest(run_dir)
+        except Exception:
+            m = None
+        if m and m.get("sampled_sites"):
+            sites = [entry["name"] for entry in m["sampled_sites"]]
+            logger.info(f"Using sampled sites from manifest ({len(sites)} sites)")
+        else:
+            sites = list(TEST_QUERIES.keys())
     tools = args.tools.split(",") if args.tools else TOOLS
 
     # Filter to sites with queries and tools with data
