@@ -22,7 +22,7 @@ Total annual cost by scenario, all 8 tools ranked by total cost ascending. This 
 
 | Tool | 1K pages, 100 q/day | 100K pages, 1K q/day | 1M pages, 10K q/day | vs markcrawl (mid) |
 |---|---|---|---|---|
-| **markcrawl** | **$341** | **$4,505** | **$45,055** | **--** |
+| markcrawl | $341 | $4,505 | $45,055 | -- |
 | scrapy+md | $409 | $5,464 | $54,640 | +21.3% |
 | firecrawl | $443 | $5,835 | $58,347 | +29.5% |
 | crawl4ai | $513 | $6,960 | $69,596 | +54.5% |
@@ -77,7 +77,7 @@ All figures use [Claude Sonnet](https://www.anthropic.com/pricing) at $3.00/1M i
 
 | Tool | Quality at K=10 | Estimated K to match | Tokens/query |
 |---|---|---|---|
-| **markcrawl** | **3.91 (baseline)** | **10** | **3,000** |
+| markcrawl | 3.91 (baseline) | 10 | 3,000 |
 | scrapy+md | 3.86 (-1.3%) | ~12 | 3,600 |
 | firecrawl | 4.04 (+3.3%) | ~13 | 3,900 |
 | crawl4ai-raw | 3.84 (-1.8%) | ~15 | 4,500 |
@@ -115,7 +115,7 @@ A side project or internal tool. Storage is negligible; query costs dominate.
 
 | Tool | Storage/yr | Queries/yr | Total/yr | vs markcrawl |
 |---|---|---|---|---|
-| **markcrawl** | **$12** | **$328** | **$341** | **--** |
+| markcrawl | $12 | $328 | $341 | -- |
 | scrapy+md | $15 | $394 | $409 | +$69 (+20.2%) |
 | firecrawl | $16 | $427 | $443 | +$102 (+29.9%) |
 | crawl4ai | $20 | $493 | $513 | +$172 (+50.6%) |
@@ -130,7 +130,7 @@ A production RAG product. Both storage and query costs are meaningful.
 
 | Tool | Storage/yr | Queries/yr | Total/yr | vs markcrawl |
 |---|---|---|---|---|
-| **markcrawl** | **$1,220** | **$3,285** | **$4,505** | **--** |
+| markcrawl | $1,220 | $3,285 | $4,505 | -- |
 | scrapy+md | $1,522 | $3,942 | $5,464 | +$960 (+21.3%) |
 | firecrawl | $1,564 | $4,270 | $5,835 | +$1,330 (+29.5%) |
 | crawl4ai | $2,032 | $4,928 | $6,960 | +$2,455 (+54.5%) |
@@ -145,7 +145,7 @@ Enterprise scale. Both storage and query savings are substantial.
 
 | Tool | Storage/yr | Queries/yr | Total/yr | vs markcrawl |
 |---|---|---|---|---|
-| **markcrawl** | **$12,205** | **$32,850** | **$45,055** | **--** |
+| markcrawl | $12,205 | $32,850 | $45,055 | -- |
 | scrapy+md | $15,220 | $39,420 | $54,640 | +$9,585 (+21.3%) |
 | firecrawl | $15,642 | $42,705 | $58,347 | +$13,292 (+29.5%) |
 | crawl4ai | $20,321 | $49,275 | $69,596 | +$24,541 (+54.5%) |
@@ -313,7 +313,7 @@ Measured values for all tools (sorted by chunks/page ascending):
 
 | Tool | Total chunks | Pages | Chunks/page | Answer quality (/5) |
 |---|---|---|---|---|
-| **markcrawl** | **2,126** | **210** | **10.12** | **3.91** |
+| markcrawl | 2,126 | 210 | 10.12 | 3.91 |
 | scrapy+md | 2,574 | 204 | 12.62 | 3.86 |
 | firecrawl | 14,000 | 1,079 | 12.97 | 4.04 |
 | crawl4ai | 3,539 | 210 | 16.85 | 3.82 |

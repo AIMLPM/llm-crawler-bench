@@ -25,12 +25,12 @@ see where the differences actually matter.
 
 | Dimension | Winner | Key metric | Runner-up |
 |-----------|--------|------------|-----------|
-| [Speed](reports/SPEED_COMPARISON.md) | **markcrawl** | 12.1 pages/sec | scrapy+md (9.5 p/s) |
-| [Extraction quality](reports/QUALITY_COMPARISON.md) | **markcrawl** | 99% content signal, 14 words preamble | scrapy+md (93%, 208 words) |
+| [Speed](reports/SPEED_COMPARISON.md) | markcrawl | 12.1 pages/sec | scrapy+md (9.5 p/s) |
+| [Extraction quality](reports/QUALITY_COMPARISON.md) | markcrawl | 99% content signal, 14 words preamble | scrapy+md (93%, 208 words) |
 | [Retrieval quality](reports/RETRIEVAL_COMPARISON.md) | crawlee | 92% Hit@10, 0.733 MRR | playwright (92%, 0.727) |
 | [LLM answer quality](reports/ANSWER_QUALITY.md) | colly+md | 4.53/5 overall score | markcrawl (4.52/5) |
-| [Cost at scale](reports/COST_AT_SCALE.md) | **markcrawl** | $4,505/yr (100K pages, 1K q/day) | scrapy+md ($5,464/yr) |
-| [Pipeline timing](reports/PIPELINE_TIMING.md) | **markcrawl** | 476.5s end-to-end, $0.22 | scrapy+md (515.3s, $0.24) |
+| [Cost at scale](reports/COST_AT_SCALE.md) | markcrawl | $4,505/yr (100K pages, 1K q/day) | scrapy+md ($5,464/yr) |
+| [Pipeline timing](reports/PIPELINE_TIMING.md) | markcrawl | 476.5s end-to-end, $0.22 | scrapy+md (515.3s, $0.24) |
 
 ## Leaderboard (Benchmark v2.0)
 
@@ -38,13 +38,13 @@ All 7 tools, sorted by speed. 8 sites, 109 retrieval queries, scored on 5 dimens
 
 | Tool | Speed (p/s) | Content Signal | MRR | Answer (/5) | Cost (100K/yr) |
 |------|-------------|----------------|-----|-------------|----------------|
-| **markcrawl** | **12.1** | **99%** | **0.698** | **4.52** | **$4,505** |
+| markcrawl | 12.1 | 99% | 0.698 | 4.52 | $4,505 |
 | scrapy+md | 9.5 | 93% | 0.459 | 4.03 | $5,464 |
 | colly+md | 4.2 | 67% | 0.677 | 4.53 | $7,213 |
 | playwright | 2.2 | 64% | 0.727 | 4.42 | $7,320 |
 | crawlee | 1.7 | 63% | 0.733 | 4.52 | $7,467 |
-| crawl4ai-raw | 1.5 | 84% | 0.694 | 4.44 | $6,961 |
 | crawl4ai | 1.5 | 83% | 0.694 | 4.43 | $6,960 |
+| crawl4ai-raw | 1.5 | 84% | 0.694 | 4.44 | $6,961 |
 
 > **Column definitions:** **Speed** = pages/sec (median of 3 runs). **Content Signal** = (total words - preamble) / total words (higher = cleaner). **MRR** = Mean Reciprocal Rank, best retrieval mode per tool. **Answer** = LLM answer quality scored 1-5 by gpt-4o-mini. **Cost** = annual RAG pipeline cost at 100K pages, 1K queries/day.
 
@@ -174,7 +174,7 @@ docker run --rm \
 
 ## Benchmark version
 
-**v2.0** -- 2026-04-16
+**v2.0** -- 2026-04-17
 
 When benchmark methodology changes (new sites, different scoring, updated
 tool versions), we increment the version. Results from different versions

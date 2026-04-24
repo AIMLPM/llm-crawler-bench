@@ -1,5 +1,5 @@
 # End-to-End RAG Answer Quality
-<!-- style: v2, 2026-04-15 -->
+<!-- style: v2, 2026-04-16 -->
 
 All crawlers produce similar LLM answer quality (4.03-4.53 out of 5). colly+md leads slightly at 4.53; markcrawl ranks 2nd at 4.52 — a 0.3% gap from the best. The gaps are small but consistent.
 
@@ -14,7 +14,7 @@ and sent to `gpt-4o-mini` to generate an answer. Answers are scored by
 | Tool | Correctness | Relevance | Completeness | Usefulness | **Overall** | Avg tokens/query |
 |---|---|---|---|---|---|---|
 | colly+md | 4.64 | 4.60 | 4.36 | 4.54 | **4.53 ±0.19** | 1,659 |
-| **markcrawl** | 4.64 | 4.57 | 4.36 | 4.51 | **4.52 ±0.19** | 2,080 |
+| markcrawl | 4.64 | 4.57 | 4.36 | 4.51 | **4.52 ±0.19** | 2,080 |
 | crawlee | 4.65 | 4.60 | 4.31 | 4.50 | **4.52 ±0.19** | 1,724 |
 | crawl4ai-raw | 4.61 | 4.51 | 4.21 | 4.42 | **4.44 ±0.20** | 1,617 |
 | crawl4ai | 4.61 | 4.50 | 4.20 | 4.42 | **4.43 ±0.20** | 1,622 |
@@ -40,7 +40,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | colly+md | 4.62 | 4.38 | 3.88 | 4.38 | 4.31 ±0.80 |
 | crawlee | 4.62 | 4.38 | 3.75 | 4.25 | 4.25 ±0.79 |
 | playwright | 4.62 | 4.38 | 3.75 | 4.25 | 4.25 ±0.79 |
-| **markcrawl** | 4.25 | 3.88 | 3.50 | 3.88 | 3.88 ±1.03 |
+| markcrawl | 4.25 | 3.88 | 3.50 | 3.88 | 3.88 ±1.03 |
 | scrapy+md | 4.12 | 3.62 | 3.25 | 3.62 | 3.66 ±1.02 |
 
 > Scores are 1-5 averages. See summary table legend for dimension definitions.
@@ -155,7 +155,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | crawlee | 4.80 | 5.00 | 4.80 | 4.90 | 4.88 ±0.20 |
 | playwright | 4.80 | 5.00 | 4.80 | 4.90 | 4.88 ±0.20 |
 | colly+md | 4.80 | 4.90 | 4.80 | 4.90 | 4.85 ±0.24 |
-| **markcrawl** | 4.60 | 4.70 | 4.50 | 4.50 | 4.58 ±0.56 |
+| markcrawl | 4.60 | 4.70 | 4.50 | 4.50 | 4.58 ±0.56 |
 | crawl4ai-raw | 4.30 | 4.20 | 3.80 | 4.00 | 4.08 ±0.73 |
 | crawl4ai | 4.10 | 4.30 | 3.70 | 3.90 | 4.00 ±0.70 |
 | scrapy+md | 3.20 | 2.80 | 1.80 | 2.40 | 2.55 ±0.53 |
@@ -293,7 +293,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| **markcrawl** | 4.80 | 4.95 | 4.75 | 4.90 | 4.85 ±0.18 |
+| markcrawl | 4.80 | 4.95 | 4.75 | 4.90 | 4.85 ±0.18 |
 | crawl4ai | 4.85 | 4.90 | 4.60 | 4.80 | 4.79 ±0.26 |
 | crawl4ai-raw | 4.85 | 4.85 | 4.55 | 4.80 | 4.76 ±0.30 |
 | playwright | 4.75 | 4.85 | 4.70 | 4.75 | 4.76 ±0.28 |
@@ -554,7 +554,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| **markcrawl** | 4.68 | 4.53 | 4.37 | 4.53 | 4.53 ±0.51 |
+| markcrawl | 4.68 | 4.53 | 4.37 | 4.53 | 4.53 ±0.51 |
 | crawl4ai | 4.68 | 4.53 | 4.37 | 4.53 | 4.53 ±0.51 |
 | crawl4ai-raw | 4.63 | 4.58 | 4.37 | 4.47 | 4.51 ±0.48 |
 | crawlee | 4.58 | 4.37 | 4.16 | 4.37 | 4.37 ±0.57 |
@@ -803,7 +803,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| **markcrawl** | 5.00 | 5.00 | 5.00 | 5.00 | 5.00 |
+| markcrawl | 5.00 | 5.00 | 5.00 | 5.00 | 5.00 |
 | crawlee | 5.00 | 5.00 | 4.94 | 5.00 | 4.98 ±0.03 |
 | playwright | 5.00 | 5.00 | 4.94 | 5.00 | 4.98 ±0.03 |
 | scrapy+md | 4.88 | 4.81 | 4.75 | 4.81 | 4.81 ±0.37 |
@@ -1019,7 +1019,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | crawlee | 4.40 | 4.10 | 3.80 | 4.10 | 4.10 ±0.90 |
 | crawl4ai-raw | 4.20 | 3.90 | 3.40 | 3.80 | 3.83 ±0.91 |
 | crawl4ai | 4.20 | 3.80 | 3.40 | 3.80 | 3.80 ±0.93 |
-| **markcrawl** | 4.00 | 3.50 | 3.00 | 3.50 | 3.50 ±0.98 |
+| markcrawl | 4.00 | 3.50 | 3.00 | 3.50 | 3.50 ±0.98 |
 | scrapy+md | 3.80 | 3.20 | 2.60 | 3.20 | 3.20 ±0.96 |
 | playwright | 3.80 | 3.20 | 2.60 | 3.20 | 3.20 ±0.96 |
 
@@ -1148,7 +1148,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 |---|---|---|---|---|---|
 | crawl4ai | 4.89 | 4.83 | 4.78 | 4.83 | 4.83 ±0.33 |
 | crawl4ai-raw | 4.89 | 4.83 | 4.78 | 4.83 | 4.83 ±0.33 |
-| **markcrawl** | 4.72 | 4.67 | 4.50 | 4.67 | 4.64 ±0.43 |
+| markcrawl | 4.72 | 4.67 | 4.50 | 4.67 | 4.64 ±0.43 |
 | colly+md | 4.72 | 4.67 | 4.44 | 4.61 | 4.61 ±0.45 |
 | playwright | 4.61 | 4.56 | 4.28 | 4.44 | 4.47 ±0.50 |
 | crawlee | 4.61 | 4.50 | 4.11 | 4.44 | 4.42 ±0.52 |
@@ -1383,7 +1383,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| **markcrawl** | 4.50 | 4.50 | 4.12 | 4.12 | 4.31 ±0.75 |
+| markcrawl | 4.50 | 4.50 | 4.12 | 4.12 | 4.31 ±0.75 |
 | colly+md | 4.50 | 4.38 | 4.12 | 4.25 | 4.31 ±0.89 |
 | crawlee | 4.25 | 4.12 | 3.50 | 3.75 | 3.91 ±0.81 |
 | playwright | 4.25 | 4.00 | 3.38 | 3.75 | 3.84 ±0.88 |

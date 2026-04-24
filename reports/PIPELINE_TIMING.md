@@ -18,7 +18,7 @@ Each tool is measured across four pipeline phases:
 
 | Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | **Total (s)** | Pages | Chunks | Cost |
 |------|-----------|----------|----------|----------|--------------|-------|--------|------|
-| **markcrawl** | 103.9 | 1.2 | 5.1 | 366.4 | **476.5** | 1456 | 22132 | $0.222 |
+| markcrawl | 103.9 | 1.2 | 5.1 | 366.4 | 476.5 | 1456 | 22132 | $0.222 |
 | scrapy+md | 138.8 | 1.1 | 6.1 | 369.3 | **515.3** | 1284 | 23854 | $0.237 |
 | colly+md | 209.3 | 3.8 | 10.7 | 368.4 | **592.3** | 1376 | 42934 | $1.22 |
 | playwright | 692.8 | 3.6 | 12.8 | 289.5 | **998.7** | 1448 | 46439 | $1.33 |
@@ -37,7 +37,7 @@ time and cost per page for a fairer comparison.
 
 | Tool | Pages | Total (s) | s/page | Cost/page | Chunks/page |
 |------|-------|----------|--------|-----------|-------------|
-| **markcrawl** | 1456 | 476.5 | 0.33 | $0.0002 | 15.2 |
+| markcrawl | 1456 | 476.5 | 0.33 | $0.0002 | 15.2 |
 | scrapy+md | 1284 | 515.3 | 0.40 | $0.0002 | 18.6 |
 | colly+md | 1376 | 592.3 | 0.43 | $0.0009 | 31.2 |
 | playwright | 1448 | 998.7 | 0.69 | $0.0009 | 32.1 |
@@ -51,7 +51,7 @@ time and cost per page for a fairer comparison.
 
 | Tool | Scrape % | Chunk % | Embed % | Query % |
 |------|---------|--------|--------|--------|
-| **markcrawl** | 21.8% | 0.2% | 1.1% | 76.9% |
+| markcrawl | 21.8% | 0.2% | 1.1% | 76.9% |
 | scrapy+md | 26.9% | 0.2% | 1.2% | 71.7% |
 | colly+md | 35.3% | 0.6% | 1.8% | 62.2% |
 | playwright | 69.4% | 0.4% | 1.3% | 29.0% |
@@ -67,7 +67,7 @@ time and cost per page for a fairer comparison.
 
 | Tool | Embed tokens | Embed cost | Query in tokens | Query out tokens | Query cost | **Total cost** |
 |------|-------------|-----------|----------------|-----------------|-----------|---------------|
-| **markcrawl** | 8,004,177 | $0.160 | 356,550 | 14,636 | $0.062 | **$0.222** |
+| markcrawl | 8,004,177 | $0.160 | 356,550 | 14,636 | $0.062 | $0.222 |
 | scrapy+md | 8,231,949 | $0.165 | 418,797 | 15,091 | $0.072 | **$0.237** |
 | colly+md | 57,384,047 | $1.15 | 444,930 | 14,746 | $0.076 | **$1.22** |
 | playwright | 62,853,049 | $1.26 | 441,118 | 14,591 | $0.075 | **$1.33** |
@@ -94,7 +94,7 @@ Per-site tables use the same columns as the summary table above. See [summary le
 | Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
 |------|-----------|----------|----------|----------|----------|-------|--------|------|
 | scrapy+md | 6.7 | 0.0 | 0.3 | 24.6 | 31.6 | 200 | 1636 | $0.0085 |
-| **markcrawl** | 11.7 | 0.0 | 0.5 | 21.1 | 33.4 | 200 | 1791 | $0.0084 |
+| markcrawl | 11.7 | 0.0 | 0.5 | 21.1 | 33.4 | 200 | 1791 | $0.0084 |
 | colly+md | 28.9 | 0.2 | 0.6 | 29.1 | 58.8 | 123 | 3286 | $0.048 |
 | playwright | 40.2 | 0.3 | 1.4 | 20.3 | 62.3 | 200 | 5969 | $0.097 |
 | crawl4ai | 58.9 | 0.1 | 1.5 | 26.5 | 87.0 | 200 | 5315 | $0.030 |
@@ -106,7 +106,7 @@ Per-site tables use the same columns as the summary table above. See [summary le
 | Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
 |------|-----------|----------|----------|----------|----------|-------|--------|------|
 | crawl4ai | 11.4 | 0.0 | 0.1 | 45.3 | 56.9 | 60 | 628 | $0.021 |
-| **markcrawl** | 4.2 | 0.0 | 0.0 | 64.1 | 68.4 | 60 | 139 | $0.014 |
+| markcrawl | 4.2 | 0.0 | 0.0 | 64.1 | 68.4 | 60 | 139 | $0.014 |
 | crawl4ai-raw | 27.7 | 0.0 | 0.1 | 44.1 | 71.9 | 60 | 628 | $0.021 |
 | crawlee | 16.6 | 0.0 | 0.0 | 59.8 | 76.4 | 60 | 134 | $0.018 |
 | playwright | 35.1 | 0.0 | 0.0 | 42.7 | 77.8 | 60 | 134 | $0.018 |
@@ -117,7 +117,7 @@ Per-site tables use the same columns as the summary table above. See [summary le
 
 | Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
 |------|-----------|----------|----------|----------|----------|-------|--------|------|
-| **markcrawl** | 11.4 | 0.1 | 0.7 | 66.0 | 78.1 | 153 | 3413 | $0.022 |
+| markcrawl | 11.4 | 0.1 | 0.7 | 66.0 | 78.1 | 153 | 3413 | $0.022 |
 | scrapy+md | 29.6 | 0.1 | 0.8 | 59.0 | 89.4 | 153 | 3741 | $0.031 |
 | colly+md | 27.1 | 0.2 | 0.8 | 64.1 | 92.2 | 153 | 3871 | $0.036 |
 | playwright | 86.3 | 0.3 | 0.9 | 60.5 | 147.9 | 153 | 3857 | $0.042 |
@@ -129,7 +129,7 @@ Per-site tables use the same columns as the summary table above. See [summary le
 
 | Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
 |------|-----------|----------|----------|----------|----------|-------|--------|------|
-| **markcrawl** | 22.1 | 0.9 | 2.4 | 53.3 | 78.7 | 500 | 9479 | $0.115 |
+| markcrawl | 22.1 | 0.9 | 2.4 | 53.3 | 78.7 | 500 | 9479 | $0.115 |
 | colly+md | 43.5 | 0.6 | 3.2 | 39.7 | 87.0 | 500 | 13221 | $0.122 |
 | scrapy+md | 37.6 | 0.7 | 3.3 | 50.7 | 92.3 | 328 | 10421 | $0.094 |
 | crawlee | 74.4 | 1.1 | 3.9 | 39.2 | 118.6 | 500 | 13304 | $0.125 |
@@ -141,7 +141,7 @@ Per-site tables use the same columns as the summary table above. See [summary le
 
 | Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
 |------|-----------|----------|----------|----------|----------|-------|--------|------|
-| **markcrawl** | 3.6 | 0.0 | 0.0 | 21.3 | 24.9 | 15 | 18 | $0.0058 |
+| markcrawl | 3.6 | 0.0 | 0.0 | 21.3 | 24.9 | 15 | 18 | $0.0058 |
 | playwright | 5.1 | 0.0 | 0.0 | 21.5 | 26.6 | 15 | 28 | $0.010 |
 | crawlee | 6.8 | 0.0 | 0.0 | 26.2 | 33.0 | 15 | 28 | $0.010 |
 | colly+md | 4.0 | 0.0 | 0.0 | 29.8 | 33.8 | 15 | 28 | $0.010 |
@@ -153,7 +153,7 @@ Per-site tables use the same columns as the summary table above. See [summary le
 
 | Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
 |------|-----------|----------|----------|----------|----------|-------|--------|------|
-| **markcrawl** | 8.4 | 0.1 | 0.7 | 54.4 | 63.6 | 221 | 3496 | $0.019 |
+| markcrawl | 8.4 | 0.1 | 0.7 | 54.4 | 63.6 | 221 | 3496 | $0.019 |
 | scrapy+md | 22.9 | 0.1 | 0.8 | 46.8 | 70.7 | 221 | 3557 | $0.020 |
 | colly+md | 32.3 | 0.6 | 1.6 | 48.4 | 82.9 | 221 | 6355 | $0.075 |
 | playwright | 59.7 | 0.2 | 1.5 | 45.6 | 107.0 | 221 | 6355 | $0.075 |
@@ -166,7 +166,7 @@ Per-site tables use the same columns as the summary table above. See [summary le
 | Tool | Scrape (s) | Chunk (s) | Embed (s) | Query (s) | Total (s) | Pages | Chunks | Cost |
 |------|-----------|----------|----------|----------|----------|-------|--------|------|
 | scrapy+md | 24.2 | 0.1 | 0.7 | 38.1 | 63.0 | 257 | 3035 | $0.020 |
-| **markcrawl** | 35.7 | 0.1 | 0.5 | 35.6 | 71.9 | 257 | 2772 | $0.014 |
+| markcrawl | 35.7 | 0.1 | 0.5 | 35.6 | 71.9 | 257 | 2772 | $0.014 |
 | colly+md | 58.0 | 2.0 | 4.1 | 34.0 | 98.2 | 254 | 14661 | $0.875 |
 | crawl4ai | 268.5 | 0.1 | 0.7 | 39.3 | 308.5 | 257 | 3379 | $0.023 |
 | playwright | 333.2 | 2.0 | 4.7 | 37.1 | 377.1 | 257 | 15680 | $0.930 |
@@ -181,7 +181,7 @@ Per-site tables use the same columns as the summary table above. See [summary le
 | scrapy+md | 8.2 | 0.1 | 0.2 | 35.2 | 43.7 | 50 | 1309 | $0.034 |
 | colly+md | 9.0 | 0.2 | 0.3 | 41.9 | 51.3 | 50 | 1378 | $0.037 |
 | crawlee | 17.0 | 0.2 | 0.5 | 38.1 | 55.7 | 50 | 2148 | $0.113 |
-| **markcrawl** | 6.7 | 0.0 | 0.2 | 50.5 | 57.5 | 50 | 1024 | $0.023 |
+| markcrawl | 6.7 | 0.0 | 0.2 | 50.5 | 57.5 | 50 | 1024 | $0.023 |
 | crawl4ai-raw | 29.5 | 0.1 | 0.3 | 41.5 | 71.4 | 50 | 1243 | $0.038 |
 | crawl4ai | 41.7 | 0.1 | 0.3 | 59.7 | 101.7 | 50 | 1243 | $0.038 |
 
