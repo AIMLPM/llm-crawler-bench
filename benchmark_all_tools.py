@@ -40,7 +40,6 @@ import logging  # noqa: E402
 import random  # noqa: E402
 import shutil  # noqa: E402
 import statistics  # noqa: E402
-import subprocess  # noqa: E402
 import tempfile  # noqa: E402
 import threading  # noqa: E402
 import time  # noqa: E402
@@ -169,10 +168,11 @@ class ToolSiteResult:
 # Tool runners — imported from runners/ package
 # ---------------------------------------------------------------------------
 
-from runners import TOOLS, BROWSER_TOOLS, HTTP_TOOLS  # noqa: E402
-from runners import firecrawl_runner  # noqa: E402 — needed for .status attribute
-
-
+from runners import (  # noqa: E402
+    BROWSER_TOOLS,
+    HTTP_TOOLS,
+    TOOLS,  # noqa: E402 — needed for .status attribute
+)
 
 # (URL discovery removed — each tool now discovers its own pages from the seed URL)
 
@@ -918,11 +918,6 @@ def generate_comparison_report(
     ])
 
     total_sites = len(COMPARISON_SITES)
-    # Compute max possible pages across all sites
-    max_possible_pages = sum(
-        sum(r.pages_median for r in results.get(t, {}).values() if not r.error)
-        for t in available_tools
-    )
     # Find the tool with the most pages to use as reference
     tool_page_totals = {}
     for tool in available_tools:
@@ -1049,8 +1044,9 @@ def generate_comparison_report(
         f.write(report)
 
     # Post-generation validation: run lint checks on the generated report
-    from lint_reports import lint_file
     from pathlib import Path
+
+    from lint_reports import lint_file
     lint_warnings = lint_file(Path(output_path))
     if lint_warnings:
         logger.warning("Post-generation lint found %d issue(s):", len(lint_warnings))
@@ -1112,7 +1108,6 @@ def _regenerate_from_run(run_name: str, output_path: str):
         metadata = json.load(f)
 
     bench_results = metadata["phases"]["benchmarking"]["results"]
-    tools_meta = metadata.get("tools", {})
 
     # Reconstruct ToolSiteResult objects from saved data
     results: dict[str, dict[str, ToolSiteResult]] = {}
@@ -1251,7 +1246,8 @@ def main():
         sample_strategy = {"mode": "explicit", "sites": sorted(site_names)}
         sampled_site_names = sorted(site_names)
     elif args.per_category is not None:
-        from sites.pool import load_pool, sample as pool_sample
+        from sites.pool import load_pool
+        from sites.pool import sample as pool_sample
         _pool = load_pool()
         sampled = pool_sample(
             _pool, seed=args.seed, per_category=args.per_category,

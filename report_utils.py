@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Sequence, Tuple
+from typing import List, Sequence, Tuple
 
 
 def table_legend(columns: Sequence[Tuple[str, str]]) -> List[str]:

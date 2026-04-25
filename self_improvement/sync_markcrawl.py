@@ -173,13 +173,12 @@ def parse_costs(text: str) -> dict[str, dict]:
 
 def parse_chunks_per_page(text: str) -> dict[str, float]:
     """Parse chunks/page from COST_AT_SCALE.md query cost table."""
-    result = {}
-    for row in _parse_table(text, "Tokens/query"):
-        tool = row.get("Tool", "").strip("*").strip()
-        # The "Estimated K to match" column correlates with chunk density
-        # but chunks/page comes from the retrieval data — use that instead
-        pass
-    return result
+    # The "Estimated K to match" column in this table correlates with chunk
+    # density, but the authoritative chunks/page numbers live in the
+    # retrieval report. This stub is intentional -- callers should pull
+    # from parse_retrieval() instead.
+    _ = text  # signature kept for parity with sibling parsers
+    return {}
 
 
 # ---------------------------------------------------------------------------
@@ -298,8 +297,6 @@ def generate_benchmarks_md(data: dict) -> str:
     hit5_data = {t: v["hit5"] for t, v in retrieval.items() if v.get("hit5") is not None}
     hit5_rank = _rank(hit5_data, mc, higher_is_better=True)
     mc_hit5 = hit5_data.get(mc)
-    hit20_data = {t: v["hit20"] for t, v in retrieval.items() if v.get("hit20") is not None}
-    mc_hit20 = hit20_data.get(mc)
     if hit5_rank and hit5_rank > 1 and mc_hit5 is not None:
         best_hit5_tool = max(hit5_data, key=hit5_data.get)
         not_first.append(f"Retrieval Hit@5 is {_ordinal(hit5_rank)} ({mc_hit5}% vs {hit5_data[best_hit5_tool]}% for {best_hit5_tool})")
@@ -567,8 +564,6 @@ def generate_readme_details(data: dict) -> str:
         f"| {_bold_if(t, t)} | {_bold_if(cpp, t)} | {_bold_if(aq, t)} | {_bold_if(cost, t)} |"
         for t, cpp, aq, cost, _ in table_data
     )
-
-    base = "https://github.com/AIMLPM/llm-crawler-benchmarks/blob/main/reports"
 
     return f"""<details>
 <summary>How it compares to other crawlers</summary>

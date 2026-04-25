@@ -22,13 +22,12 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPORTS_DIR = SCRIPT_DIR / "reports"
 
 sys.path.insert(0, str(SCRIPT_DIR / "self_improvement"))
-from sync_markcrawl import (
+from sync_markcrawl import (  # noqa: E402  -- sys.path manipulated above
     _get_col,
     _parse_table,
     parse_answer_quality,
     parse_costs,
     parse_quality,
-    parse_retrieval,
     parse_speed,
 )
 
@@ -137,7 +136,6 @@ def generate_readme() -> str:
     speed = parse_speed(_read_report("SPEED_COMPARISON.md"))
     quality = parse_quality(quality_text)
     content_signal = _parse_content_signal(quality_text)
-    retrieval = parse_retrieval(retrieval_text)
     best_mrr = _parse_best_mrr(retrieval_text)
     answer = parse_answer_quality(_read_report("ANSWER_QUALITY.md"))
     costs = parse_costs(_read_report("COST_AT_SCALE.md"))
@@ -270,7 +268,6 @@ def generate_readme() -> str:
     # --- Bottom line narrative ---
     aq_vals = sorted(answer.values())
     aq_min, aq_max = aq_vals[0], aq_vals[-1]
-    aq_gap = (aq_max - aq_min) / aq_max * 100
 
     bottom_parts = []
 

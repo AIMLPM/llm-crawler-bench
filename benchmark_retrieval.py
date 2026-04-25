@@ -1071,8 +1071,8 @@ def _embed_sentence_transformer(texts: List[str], model_name: str) -> List[List[
     """
     global _st_model_cache
     if model_name not in _st_model_cache:
-        from sentence_transformers import SentenceTransformer
         import torch
+        from sentence_transformers import SentenceTransformer
         device = "mps" if torch.backends.mps.is_available() else ("cuda" if torch.cuda.is_available() else "cpu")
         logger.info(f"    Loading sentence-transformer {model_name!r} on {device}...")
         _st_model_cache[model_name] = SentenceTransformer(model_name, device=device)

@@ -70,3 +70,9 @@ jobs:
 
       - name: Check cross-report consistency
         run: python self_improvement/check_cross_report_consistency.py
+
+      - name: Check no site hardcoding
+        run: python self_improvement/check_no_site_hardcoding.py
+
+      - name: Sites pool smoke tests
+        run: python -m sites.test_pool

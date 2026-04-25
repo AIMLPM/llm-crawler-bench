@@ -35,6 +35,8 @@ BENCH_DIR = Path(__file__).parent
 REPO_ROOT = BENCH_DIR
 
 # Import shared config from retrieval benchmark
+from markcrawl.chunker import chunk_markdown  # noqa: E402
+
 from benchmark_retrieval import (  # noqa: E402
     CHUNK_MAX_WORDS,
     CHUNK_OVERLAP,
@@ -47,7 +49,6 @@ from benchmark_retrieval import (  # noqa: E402
     find_latest_run,
     load_pages,
 )
-from markcrawl.chunker import chunk_markdown  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -440,7 +441,6 @@ def generate_report(
         worst = sorted_tools[-1]
         mc = tool_summaries.get("markcrawl")
         mc_rank = next((i + 1 for i, s in enumerate(sorted_tools) if s.tool == "markcrawl"), None)
-        gap_pct = ((best.avg_overall - worst.avg_overall) / best.avg_overall * 100) if best.avg_overall else 0
         one_line = (
             f"All crawlers produce similar LLM answer quality "
             f"({worst.avg_overall:.2f}-{best.avg_overall:.2f} out of 5). "

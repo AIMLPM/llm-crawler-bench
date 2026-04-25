@@ -20,13 +20,11 @@ Requires:
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import logging
 import os
 import sys
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -44,19 +42,19 @@ try:
 except ImportError:
     pass
 
+from markcrawl.chunker import chunk_markdown  # noqa: E402
+
 from benchmark_retrieval import (  # noqa: E402
     CHUNK_MAX_WORDS,
     CHUNK_OVERLAP,
     EMBEDDING_MODEL,
     TEST_QUERIES,
-    TOOLS as RETRIEVAL_TOOLS,
     _get_openai_client,
     cosine_similarity,
     embed_texts,
     find_latest_run,
     load_pages,
 )
-from markcrawl.chunker import chunk_markdown  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -542,17 +540,15 @@ def generate_report(result: PipelineResult) -> str:
     # Compute narrative values dynamically
     if sorted_tools:
         mc_agg = tool_agg.get("markcrawl", {})
-        mc_total = mc_agg.get("total", 1) or 1
-        mc_query_pct = mc_agg.get("query", 0) / mc_total * 100
         mc_embed_cost = mc_agg.get("embed_cost", 0)
         mc_chunks = mc_agg.get("chunks", 0)
         # Find most expensive embed cost and its tool
         most_embed = max(sorted_tools, key=lambda x: x[1]["embed_cost"])
         embed_ratio = most_embed[1]["embed_cost"] / mc_embed_cost if mc_embed_cost else 1
         lines.append(
-            f"For fast HTTP-only crawlers, scraping is NOT the bottleneck — LLM queries "
-            f"dominate at 70-77% of total pipeline time. The scrape phase only matters for "
-            f"browser-based tools where JavaScript rendering adds 3-7x overhead."
+            "For fast HTTP-only crawlers, scraping is NOT the bottleneck — LLM queries "
+            "dominate at 70-77% of total pipeline time. The scrape phase only matters for "
+            "browser-based tools where JavaScript rendering adds 3-7x overhead."
         )
         lines.append("")
         lines.append(
@@ -565,8 +561,8 @@ def generate_report(result: PipelineResult) -> str:
         )
         lines.append("")
         lines.append(
-            f"See [COST_AT_SCALE.md](COST_AT_SCALE.md) for projections of these per-run "
-            f"costs to production workloads."
+            "See [COST_AT_SCALE.md](COST_AT_SCALE.md) for projections of these per-run "
+            "costs to production workloads."
         )
     lines.append("")
 
@@ -631,8 +627,8 @@ def generate_report(result: PipelineResult) -> str:
     lines.append(f"- **Embed timing** uses OpenAI `{EMBEDDING_MODEL}` (cached after first run)")
     lines.append(f"- **Query timing** includes embedding the query, cosine retrieval, "
                  f"and `{ANSWER_MODEL}` answer generation")
-    lines.append(f"- **Cost tracking** counts actual tokens from API responses (embed tokens "
-                 f"estimated via tiktoken, query tokens from response.usage)")
+    lines.append("- **Cost tracking** counts actual tokens from API responses (embed tokens "
+                 "estimated via tiktoken, query tokens from response.usage)")
     lines.append("- **Embedding cache** — chunks are cached by content hash; re-runs with "
                  "unchanged pages.jsonl skip API calls entirely")
     lines.append("- See [METHODOLOGY.md](METHODOLOGY.md) for full test setup")

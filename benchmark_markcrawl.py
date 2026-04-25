@@ -591,8 +591,9 @@ def generate_report(results: List[SiteResult], output_path: str) -> str:
         f.write(report)
 
     # Post-generation validation
-    from lint_reports import lint_file
     from pathlib import Path as _Path
+
+    from lint_reports import lint_file
     lint_warnings = lint_file(_Path(output_path))
     if lint_warnings:
         logger.warning("Post-generation lint found %d issue(s):", len(lint_warnings))

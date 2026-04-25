@@ -117,7 +117,6 @@ def main():
         print(f"Unknown site: {site_name}. Available: {', '.join(COMPARISON_SITES)}")
         sys.exit(1)
 
-    site_config = COMPARISON_SITES[site_name]
     tiers_to_run = [TIERS[args.tier - 1]] if args.tier else TIERS
 
     # Run tiers sequentially (discovery mode), stop on failure
@@ -142,7 +141,8 @@ def main():
               f"{r['time_s']:>6.1f}s  {r.get('peak_rss_mb', 0):>5.0f}MB")
 
     if all_passed:
-        print(f"\n  ALL TIERS PASSED — crawl4ai verified at {max_needed}-page scale")
+        max_pages_run = max((t["max_pages"] for t in tiers_to_run), default=0)
+        print(f"\n  ALL TIERS PASSED — crawl4ai verified at {max_pages_run}-page scale")
     else:
         print(f"\n  FAILED — check telemetry in {args.output_dir}/")
 

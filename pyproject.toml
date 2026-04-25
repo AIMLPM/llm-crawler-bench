@@ -26,11 +26,29 @@ dev = [
     "ruff",
 ]
 
+# Explicit package list. Without this, setuptools auto-discovery sees
+# `sites/`, `reports/`, `runners/`, `self_improvement/` at the repo root
+# and refuses to build (multiple top-level packages, flat-layout). Only
+# `sites` and `runners` are real Python packages -- the rest are scripts,
+# reports, or markdown.
+[tool.setuptools]
+packages = ["sites", "runners"]
+
 [tool.ruff]
 target-version = "py310"
+# Benchmark report strings, methodology blocks, and embedded prompts are
+# long by nature. 120 is a pragmatic middle ground -- still catches truly
+# unreadable lines but doesn't punish hand-formatted markdown emitters.
+line-length = 120
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
+# E501 line-length is configured (120) but not strictly enforced on this
+# repo: a lot of generators emit long markdown strings and tables, and
+# fighting them line-by-line gives no real readability gain. The other
+# E/F/W/I rules (unused imports, undefined names, sort imports, etc.)
+# stay strict.
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

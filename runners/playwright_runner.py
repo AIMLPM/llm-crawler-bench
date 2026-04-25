@@ -16,7 +16,7 @@ import logging
 import os
 from collections import deque
 from typing import List, Optional
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urljoin, urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,8 @@ def check() -> bool:
 
 def run(url: str, out_dir: str, max_pages: int, url_list: Optional[List[str]] = None, **kwargs) -> int:
     """Raw Playwright baseline — browser fetch + markdownify, no framework overhead."""
-    from playwright.sync_api import sync_playwright, Error as PlaywrightError
+    from playwright.sync_api import Error as PlaywrightError
+    from playwright.sync_api import sync_playwright
 
     os.makedirs(out_dir, exist_ok=True)
     pages_saved = 0
