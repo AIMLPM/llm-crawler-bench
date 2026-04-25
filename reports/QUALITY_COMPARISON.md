@@ -1,7 +1,24 @@
 # Extraction Quality Comparison
-<!-- style: v2, 2026-04-24 -->
+<!-- style: v2, 2026-04-25 -->
 
 markcrawl produces the cleanest Markdown for RAG: lowest preamble and highest content signal across all sites.
+
+
+**Run:** `run_20260424_235304` | **Started:** 2026-04-24T15:25:04Z | **Ended:** 2026-04-24T23:53:04Z | **Pool:** v1.2 (sha256:caa35)
+
+**Tool versions in this run:**
+
+| Tool | Version | Status |
+|---|---|---|
+| colly+md | go binary | available |
+| crawl4ai | 0.8.6 | available |
+| crawl4ai-raw | go binary | available |
+| crawlee | 1.6.2 | available |
+| firecrawl | — | skipped: FIRECRAWL_API_KEY not set |
+| markcrawl | 0.5.0 | available |
+| playwright | 1.58.0 | available |
+| scrapy+md | 2.15.0 | available |
+
 
 ## Methodology
 
@@ -72,53 +89,53 @@ chunk in the vector index, degrading retrieval for every query.
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawl4ai** injects 147 words of nav chrome before content begins. The word count gap (233 vs 1048 avg words) is largely explained by preamble: 147 words of nav chrome account for ~14% of crawl4ai's output on this site. markcrawl's lower recall (2% vs 52%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>huggingface.co/docs</code></summary>
+<summary>Sample output — first 40 lines of <code>huggingface.co/spaces</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-# Hugging Face - Documentation
+# Spaces - Hugging Face
 
-*We’re on a journey to advance and democratize artificial intelligence through open source and open science.*
+*Discover amazing ML apps made by the community*
 
 
-# Documentation
+[# Spaces](/spaces)
 
-## Hub & Client Libraries
+·
 
-[Hub
+The AI App Directory
 
-Host Git-based models, datasets, and Spaces on the HF Hub](/docs/hub)[Hub Python Library
+[New Space](/new-space)  [Get PRO](/pro)  [Learn more](/spaces/launch)
 
-Python client to interact with the Hugging Face Hub](/docs/huggingface_hub)[CLI
+Reachy
 
-Tools for agents and humans to interact with all the Hugging Face services](/docs/cli)[Huggingface.js
+new
 
-JavaScript libraries for Hugging Face with built-in TS types](/docs/huggingface.js)[Tasks
+Image Generation
 
-Explore demos, models, and datasets for any ML tasks](/tasks)[Dataset viewer
+Video Generation
 
-API for metadata, stats, and content of HF Hub datasets](/docs/dataset-viewer)
+Text Generation
 
-## Deployment & Inference
+Language Translation
 
-[Inference Providers
+Speech Synthesis
 
-Call 200k+ models hosted by our 10+ Inference partners](/docs/inference-providers)[Inference Endpoints (dedicated)
+3D Modeling
 
-Deploy models on dedicated & fully managed infrastructure on HF](/docs/inference-endpoints)[Deploying on AWS
+Object Detection
 
-Train/deploy models from Hugging Face to AWS with DLCs](/docs/sagemaker)[Text Generation Inference
+Text Analysis
 
-Serve language models with TGI optimized toolkit](/docs/text-generation-inference)[Text Embeddings Inference
+Image Editing
 
-Serve embeddings models with TEI optimized toolkit](/docs/text-embeddings-inference)[Microsoft Azure
+Code Generation
 
-Deploy Hugging Face models on Microsoft Azure](/docs/microsoft-azure)[Google Cloud
+Question Answering
 
-Train and Deploy Hugging Face models on Google Cloud](/docs/google-cloud)
+Data Visualization
 ````
 
 **crawl4ai**
@@ -136,30 +153,33 @@ Train and Deploy Hugging Face models on Google Cloud](/docs/google-cloud)
   * [Sign Up](https://huggingface.co/join)
 
 
-#  Documentation
-## Hub & Client Libraries
-[Hub Host Git-based models, datasets, and Spaces on the HF Hub](https://huggingface.co/docs/hub)[Hub Python Library Python client to interact with the Hugging Face Hub](https://huggingface.co/docs/huggingface_hub)[CLI Tools for agents and humans to interact with all the Hugging Face services](https://huggingface.co/docs/cli)[Huggingface.js JavaScript libraries for Hugging Face with built-in TS types](https://huggingface.co/docs/huggingface.js)[Tasks Explore demos, models, and datasets for any ML tasks](https://huggingface.co/tasks)[Dataset viewer API for metadata, stats, and content of HF Hub datasets](https://huggingface.co/docs/dataset-viewer)
-## Deployment & Inference
-[Inference Providers Call 200k+ models hosted by our 10+ Inference partners](https://huggingface.co/docs/inference-providers)[Inference Endpoints (dedicated) Deploy models on dedicated & fully managed infrastructure on HF](https://huggingface.co/docs/inference-endpoints)[Deploying on AWS Train/deploy models from Hugging Face to AWS with DLCs](https://huggingface.co/docs/sagemaker)[Text Generation Inference Serve language models with TGI optimized toolkit](https://huggingface.co/docs/text-generation-inference)[Text Embeddings Inference Serve embeddings models with TEI optimized toolkit](https://huggingface.co/docs/text-embeddings-inference)[Microsoft Azure Deploy Hugging Face models on Microsoft Azure](https://huggingface.co/docs/microsoft-azure)[Google Cloud Train and Deploy Hugging Face models on Google Cloud](https://huggingface.co/docs/google-cloud)
-## Core ML Libraries
-[Transformers State-of-the-art AI models for PyTorch](https://huggingface.co/docs/transformers)[Diffusers State-of-the-art Diffusion models in PyTorch](https://huggingface.co/docs/diffusers)[Datasets Access & share datasets for any ML tasks](https://huggingface.co/docs/datasets)[Transformers.js State-of-the-art ML running directly in your browser](https://huggingface.co/docs/transformers.js)[Tokenizers Fast tokenizers optimized for research & production](https://huggingface.co/docs/tokenizers)[Evaluate Evaluate and compare models performance](https://huggingface.co/docs/evaluate)[timm State-of-the-art vision models: layers, optimizers, and utilities](https://huggingface.co/docs/timm)[Sentence Transformers Embeddings, Retrieval, and Reranking](https://sbert.net/)[Kernels Load and run compute kernels from the Hugging Face Hub](https://huggingface.co/docs/kernels)
-## Training & Optimization
-[PEFT Parameter-efficient finetuning for large language models](https://huggingface.co/docs/peft)[Accelerate Train PyTorch models with multi-GPU, TPU, mixed precision](https://huggingface.co/docs/accelerate)[Optimum Optimize HF Transformers for faster training/inference](https://huggingface.co/docs/optimum)[AWS Trainium & Inferentia Train/deploy Transformers/Diffusers on AWS](https://huggingface.co/docs/optimum-neuron)[Google TPUs Train and Deploy models on Google TPUs via Optimum.](https://huggingface.co/docs/optimum-tpu)[TRL Train transformers LMs with reinforcement learning](https://huggingface.co/docs/trl)[Safetensors Safe way to store/distribute neural network weights](https://huggingface.co/docs/safetensors)[Bitsandbytes Optimize and quantize models with bitsandbytes](https://huggingface.co/docs/bitsandbytes)[Lighteval All-in-one toolkit to evaluate LLMs across multiple backends](https://huggingface.co/docs/lighteval)
-## Collaboration & Extras
-[Gradio Build ML demos and web apps with a few lines of Python](https://www.gradio.app/docs/)[Trackio A lightweight, local-first, and free experiment tracking Python library](https://huggingface.co/docs/trackio)[smolagents Smol library to build great agents in Python](https://huggingface.co/docs/smolagents)[LeRobot Making AI for Robotics more accessible with end-to-end learning](https://huggingface.co/docs/lerobot)[Reachy Mini Open-source expressive robot SDK for hackers and AI builders](https://huggingface.co/docs/reachy_mini)[AutoTrain AutoTrain API and UI for seamless model training](https://huggingface.co/docs/autotrain)[Chat UI Open source chat frontend powering HuggingChat](https://huggingface.co/docs/chat-ui)[Leaderboards Create custom Leaderboards on Hugging Face](https://huggingface.co/docs/leaderboards)[Argilla Collaboration tool for building high-quality datasets](https://argilla-io.github.io/argilla/)[Distilabel Framework for synthetic data generation and AI feedback](https://distilabel.argilla.io/)[Xet Xet Protocol Specification](https://huggingface.co/docs/xet)
-## Community
-  * [ Blog](https://huggingface.co/blog)
-  * [ Learn](https://huggingface.co/learn)
-  * [ Discord](https://huggingface.co/join/discord)
-  * [ Forum](https://discuss.huggingface.co/)
-  * [ GitHub](https://github.com/huggingface)
-
-
-System theme
-Company
-[TOS](https://huggingface.co/terms-of-service) [Privacy](https://huggingface.co/privacy) [About](https://huggingface.co/huggingface) [Careers](https://apply.workable.com/huggingface/) [](https://huggingface.co/)
-Website
-[Models](https://huggingface.co/models) [Datasets](https://huggingface.co/datasets) [Spaces](https://huggingface.co/spaces) [Pricing](https://huggingface.co/pricing) [Docs](https://huggingface.co/docs)
+# [Spaces](https://huggingface.co/spaces)
+·
+The AI App Directory
+[ New Space](https://huggingface.co/new-space) [ Get PRO](https://huggingface.co/pro) [ Learn more](https://huggingface.co/spaces/launch)
+Reachy 
+new
+Image Generation 
+Video Generation 
+Text Generation 
+Language Translation 
+Speech Synthesis 
+3D Modeling 
+Object Detection 
+Text Analysis 
+Image Editing 
+Code Generation 
+Question Answering 
+Data Visualization 
+Voice Cloning 
+Background Removal 
+Image Upscaling 
+OCR 
+Document Analysis 
+Visual QA 
+Image Captioning 
+Chatbots 
+Sentiment Analysis 
 ````
 
 **crawl4ai-raw**
@@ -177,30 +197,33 @@ Website
   * [Sign Up](https://huggingface.co/join)
 
 
-#  Documentation
-## Hub & Client Libraries
-[Hub Host Git-based models, datasets, and Spaces on the HF Hub](https://huggingface.co/docs/hub)[Hub Python Library Python client to interact with the Hugging Face Hub](https://huggingface.co/docs/huggingface_hub)[CLI Tools for agents and humans to interact with all the Hugging Face services](https://huggingface.co/docs/cli)[Huggingface.js JavaScript libraries for Hugging Face with built-in TS types](https://huggingface.co/docs/huggingface.js)[Tasks Explore demos, models, and datasets for any ML tasks](https://huggingface.co/tasks)[Dataset viewer API for metadata, stats, and content of HF Hub datasets](https://huggingface.co/docs/dataset-viewer)
-## Deployment & Inference
-[Inference Providers Call 200k+ models hosted by our 10+ Inference partners](https://huggingface.co/docs/inference-providers)[Inference Endpoints (dedicated) Deploy models on dedicated & fully managed infrastructure on HF](https://huggingface.co/docs/inference-endpoints)[Deploying on AWS Train/deploy models from Hugging Face to AWS with DLCs](https://huggingface.co/docs/sagemaker)[Text Generation Inference Serve language models with TGI optimized toolkit](https://huggingface.co/docs/text-generation-inference)[Text Embeddings Inference Serve embeddings models with TEI optimized toolkit](https://huggingface.co/docs/text-embeddings-inference)[Microsoft Azure Deploy Hugging Face models on Microsoft Azure](https://huggingface.co/docs/microsoft-azure)[Google Cloud Train and Deploy Hugging Face models on Google Cloud](https://huggingface.co/docs/google-cloud)
-## Core ML Libraries
-[Transformers State-of-the-art AI models for PyTorch](https://huggingface.co/docs/transformers)[Diffusers State-of-the-art Diffusion models in PyTorch](https://huggingface.co/docs/diffusers)[Datasets Access & share datasets for any ML tasks](https://huggingface.co/docs/datasets)[Transformers.js State-of-the-art ML running directly in your browser](https://huggingface.co/docs/transformers.js)[Tokenizers Fast tokenizers optimized for research & production](https://huggingface.co/docs/tokenizers)[Evaluate Evaluate and compare models performance](https://huggingface.co/docs/evaluate)[timm State-of-the-art vision models: layers, optimizers, and utilities](https://huggingface.co/docs/timm)[Sentence Transformers Embeddings, Retrieval, and Reranking](https://sbert.net/)[Kernels Load and run compute kernels from the Hugging Face Hub](https://huggingface.co/docs/kernels)
-## Training & Optimization
-[PEFT Parameter-efficient finetuning for large language models](https://huggingface.co/docs/peft)[Accelerate Train PyTorch models with multi-GPU, TPU, mixed precision](https://huggingface.co/docs/accelerate)[Optimum Optimize HF Transformers for faster training/inference](https://huggingface.co/docs/optimum)[AWS Trainium & Inferentia Train/deploy Transformers/Diffusers on AWS](https://huggingface.co/docs/optimum-neuron)[Google TPUs Train and Deploy models on Google TPUs via Optimum.](https://huggingface.co/docs/optimum-tpu)[TRL Train transformers LMs with reinforcement learning](https://huggingface.co/docs/trl)[Safetensors Safe way to store/distribute neural network weights](https://huggingface.co/docs/safetensors)[Bitsandbytes Optimize and quantize models with bitsandbytes](https://huggingface.co/docs/bitsandbytes)[Lighteval All-in-one toolkit to evaluate LLMs across multiple backends](https://huggingface.co/docs/lighteval)
-## Collaboration & Extras
-[Gradio Build ML demos and web apps with a few lines of Python](https://www.gradio.app/docs/)[Trackio A lightweight, local-first, and free experiment tracking Python library](https://huggingface.co/docs/trackio)[smolagents Smol library to build great agents in Python](https://huggingface.co/docs/smolagents)[LeRobot Making AI for Robotics more accessible with end-to-end learning](https://huggingface.co/docs/lerobot)[Reachy Mini Open-source expressive robot SDK for hackers and AI builders](https://huggingface.co/docs/reachy_mini)[AutoTrain AutoTrain API and UI for seamless model training](https://huggingface.co/docs/autotrain)[Chat UI Open source chat frontend powering HuggingChat](https://huggingface.co/docs/chat-ui)[Leaderboards Create custom Leaderboards on Hugging Face](https://huggingface.co/docs/leaderboards)[Argilla Collaboration tool for building high-quality datasets](https://argilla-io.github.io/argilla/)[Distilabel Framework for synthetic data generation and AI feedback](https://distilabel.argilla.io/)[Xet Xet Protocol Specification](https://huggingface.co/docs/xet)
-## Community
-  * [ Blog](https://huggingface.co/blog)
-  * [ Learn](https://huggingface.co/learn)
-  * [ Discord](https://huggingface.co/join/discord)
-  * [ Forum](https://discuss.huggingface.co/)
-  * [ GitHub](https://github.com/huggingface)
-
-
-System theme
-Company
-[TOS](https://huggingface.co/terms-of-service) [Privacy](https://huggingface.co/privacy) [About](https://huggingface.co/huggingface) [Careers](https://apply.workable.com/huggingface/) [](https://huggingface.co/)
-Website
-[Models](https://huggingface.co/models) [Datasets](https://huggingface.co/datasets) [Spaces](https://huggingface.co/spaces) [Pricing](https://huggingface.co/pricing) [Docs](https://huggingface.co/docs)
+# [Spaces](https://huggingface.co/spaces)
+·
+The AI App Directory
+[ New Space](https://huggingface.co/new-space) [ Get PRO](https://huggingface.co/pro) [ Learn more](https://huggingface.co/spaces/launch)
+Reachy 
+new
+Image Generation 
+Video Generation 
+Text Generation 
+Language Translation 
+Speech Synthesis 
+3D Modeling 
+Object Detection 
+Text Analysis 
+Image Editing 
+Code Generation 
+Question Answering 
+Data Visualization 
+Voice Cloning 
+Background Removal 
+Image Upscaling 
+OCR 
+Document Analysis 
+Visual QA 
+Image Captioning 
+Chatbots 
+Sentiment Analysis 
 ````
 
 **scrapy+md** — no output for this URL
@@ -234,7 +257,7 @@ endpoint: "/api/event",
 });
 
 window.hubConfig = {"features":{"signupDisabled":false},"sshGitUrl":"git@hf.co","moonHttpUrl":"https:\/\/huggingface.co","captchaApiKey":"bd5f2066-93dc-4bdd-a64b-a24646ca3859","datasetViewerPublicUrl":"https:\/\/datasets-server.huggingface.co","stripePublicKey":"pk\_live\_x2tdjFXBCvXo2FFmMybezpeM00J6gPCAAc","environment":"production","userAgent":"HuggingFace (production)","spacesIframeDomain":"hf.space","spacesApiUrl":"https:\/\/api.hf.space","logoDev":{"apiUrl":"https:\/\/img.logo.dev\/","apiKey":"pk\_UHS2HZOeRnaSOdDp7jbd5w"}};
-window.requestId = "Root=1-69ebf05f-3f88df965fd5b6a706063d25";
+window.requestId = "Root=1-69ebf05f-665efe8a0cf69aa54b1e8605";
 window.featureFlags = {"placeholder":false};
 
 
@@ -829,60 +852,60 @@ window.featureFlags = {"placeholder":false};
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawlee** injects 2365 words of nav chrome before content begins. The word count gap (1265 vs 6389 avg words) is largely explained by preamble: 2365 words of nav chrome account for ~37% of crawlee's output on this site. markcrawl's lower recall (19% vs 54%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>www.ikea.com/us/en/customer-service/cookie-policy</code></summary>
+<summary>Sample output — first 40 lines of <code>www.ikea.com/us/en/cat/chair-pads-20542</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-# Cookie Policy - IKEA
+# Chair Pads & Seat Cushions  - IKEA
 
-*Our ‘Cookie’ policy explains what cookies are and how IKEA uses them, so you can understand what type of cookies we use and the information being collected.*
+*Make your chair more comfortable with IKEA's chair pads. Find a variety of dining room, office, and kitchen chair cushions with at great prices!*
 
+[Skip to product list](#product-list-skip)
 
-# IKEA Cookie Policy
+# Chair pads & seat cushions
 
-Updated June 30, 2023
+You cook great food but comfortable seating is needed to enjoy it to the fullest in your kitchen or dining room. Our chair cushions and pads provide softness where it counts. We have a wide variety of looks and colors to suit your style, and many are machine-washable — or have a cover that is — in case something spills.
 
-We use cookies at IKEA to improve our service for you. Some cookies we use are essential for some services to work, and others are used to collect information of the use of the website (statistics) so that we can make the site more convenient and useful for you. Some cookies are temporary and will disappear when you close your browser, others are persistent and will stay on your computer for some time. We also use some local cookies that are tied to local campaigns and that will disappear when the campaign ends. We also use marketing cookies that are used to track visitors across websites. We use them with the intention to display ads that are relevant and engaging for the individual user.
+19 items
 
-You may change your cookie preferences at our **Privacy Preference Center** [here.](https://www.ikea.com/us/en/react-client/#cookieconsent-show-settings)
+[Skip to results](#product-list)
 
-Some of the cookies are strictly necessary for the functionality of the site while others are used to enhance the performance and your user experience or to show you advertisements and products that we think will be of interest to you.
+[[Image: A MALINDA chair cushion in beige, featuring thick padding and a square shape, with two identical sides for versatile use.][Image: MALINDA white chair pad: thick, soft, full-side cotton, square, fits most chairs.]](https://www.ikea.com/us/en/p/malinda-chair-pad-light-beige-90586983/)
 
-**Strictly necessary cookies are used to:**
+[### MALINDA Chair pad, light beige, 16/14x15x3 "
 
-* Make the website work properly
-* Remember what is in your shopping cart
-* Remember how far you are through an order
+Price $ 9.99
 
-**Functional cookies are used to:**
+Online min. order quantity: 2](https://www.ikea.com/us/en/p/malinda-chair-pad-light-beige-90586983/)
 
-* Remember your log-in details
-* Make sure you are secure when logged-in
-* Make sure that the website looks consistent
-* Offer live chat support
+Review: 4.4 out of 5 stars. Total reviews: (2441)
 
-**Performance cookies are used to:**
+You need to order at least 2 when buying online
 
-* Analyze, evaluate, and enhance the performance of the website
-* Enhance the user experience
+More options[[Image: A MALINDA grey chair pad with a thick, cushioned design. Made from recycled polyester and cotton, this square pad adds comfort to chairs.]](https://www.ikea.com/us/en/p/malinda-chair-pad-gray-30477977/)[[Image: Green MALINDA chair pad, thick cushioned seat, recycled polyester.]](https://www.ikea.com/us/en/p/malinda-chair-pad-green-50577315/)[[Image: MALINDA chair pad, white with grey stripes, thick cushioned, rectangular shape, machine washable.]](https://www.ikea.com/us/en/p/malinda-chair-pad-stripe-gray-20513301/)[[Image: MALINDA beige chair pad, soft & thick, square shape, ties for securing.]](https://www.ikea.com/us/en/p/malinda-chair-pad-beige-00571575/)[[Image: Red recycled polyester chair cushion, thick & padded, square with loop handles.]](https://www.ikea.com/us/en/p/malinda-chair-pad-dark-red-00572805/)
 
-**Targeting, advertising, or marketing cookies are used to:**
+[[Image: A JUSTINA light beige seat cushion with a tufted design, made of 100% cotton and polyurethane foam.][Image: Bright kitchen with white table, two chairs, beige rug, hanging plant, and cabinets. Modern decor includes art and a pendant lamp.]](https://www.ikea.com/us/en/p/justina-chair-pad-natural-30586981/)
 
-* Allow you to share and like
-* Send information to other websites to customize their advertisements
+[### JUSTINA Chair pad, natural, 17/14x16x2 "
 
-**Examples of use:**
+Price $ 7.99
+
+Online min. order quantity: 2](https://www.ikea.com/us/en/p/justina-chair-pad-natural-30586981/)
+
+Review: 4.6 out of 5 stars. Total reviews: (2737)
+
+You need to order at least 2 when buying online
 ````
 
 **crawl4ai**
 ````
-![](https://t.teads.tv/track?action=pageView&env=js-web&tag_version=8.5.0_d71d360&provider=tag&buyer_pixel_id=12899&referer=https%3A%2F%2Fwww.ikea.com%2Fus%2Fen%2Fcustomer-service%2Fcookie-policy%2F&user_session_id=aee50655-1270-4fae-943b-f04c64a1cd0a&hasConsent=true&cht=timeout) [ Skip to main content ](https://www.ikea.com/us/en/customer-service/cookie-policy/#hnf-content) [ Accessibility ](https://www.ikea.com/us/en/customer-service/accessibility/)
-[ EN USEnglish ](https://www.ikea.com/us/en/customer-service/cookie-policy/#)
-[ Enter ZIP code ](https://www.ikea.com/us/en/customer-service/cookie-policy/#)
-[ Select store ](https://www.ikea.com/us/en/customer-service/cookie-policy/#)
+![](https://t.teads.tv/track?action=pageView&env=js-web&tag_version=8.5.0_d71d360&provider=tag&buyer_pixel_id=12899&referer=https%3A%2F%2Fwww.ikea.com%2Fus%2Fen%2Fcat%2Fchair-pads-20542%2F&user_session_id=aee50655-1270-4fae-943b-f04c64a1cd0a&hasConsent=true&cht=timeout) [ Skip to main content ](https://www.ikea.com/us/en/cat/chair-pads-20542/#hnf-content) [ Accessibility ](https://www.ikea.com/us/en/customer-service/accessibility/)
+[ EN USEnglish ](https://www.ikea.com/us/en/cat/chair-pads-20542/#)
+[ Enter ZIP code ](https://www.ikea.com/us/en/cat/chair-pads-20542/#)
+[ Select store ](https://www.ikea.com/us/en/cat/chair-pads-20542/#)
 [ ![](https://www.ikea.com/global/assets/logos/brand/ikea.svg) ](https://www.ikea.com/us/en/)
 [Products](https://www.ikea.com/us/en/cat/products-products/)[Rooms](https://www.ikea.com/us/en/rooms/)[Deals](https://www.ikea.com/us/en/offers/)[Design & ideas](https://www.ikea.com/us/en/ideas/)[Services](https://www.ikea.com/us/en/customer-service/services/)
 Clear the search input field
@@ -891,42 +914,42 @@ Search
 [ Hej! Log in or sign up ](https://www.ikea.com/us/en/profile/login/) [ Hej! ](https://www.ikea.com/us/en/profile/login/) [ IK Hej {{firstName}}! ](https://www.ikea.com/us/en/profile/login/)
 [ Favorites ](https://www.ikea.com/us/en/favorites/)
 [ Shopping bag ](https://www.ikea.com/us/en/shoppingcart/)
-  1. [Customer service](https://www.ikea.com/us/en/customer-service/)
-  2. Cookie policy
+[Skip to product list](https://www.ikea.com/us/en/cat/chair-pads-20542/#product-list-skip)
+  1. [Products](https://www.ikea.com/us/en/cat/products-products/)
+  2. [Rugs & home textiles](https://www.ikea.com/us/en/cat/home-textiles-tl001/)
+  3. Chair pads & seat cushions
 
 
-# IKEA Cookie Policy
-Updated June 30, 2023
-We use cookies at IKEA to improve our service for you. Some cookies we use are essential for some services to work, and others are used to collect information of the use of the website (statistics) so that we can make the site more convenient and useful for you. Some cookies are temporary and will disappear when you close your browser, others are persistent and will stay on your computer for some time. We also use some local cookies that are tied to local campaigns and that will disappear when the campaign ends. We also use marketing cookies that are used to track visitors across websites. We use them with the intention to display ads that are relevant and engaging for the individual user.
-You may change your cookie preferences at our **Privacy Preference Center** [here.](https://www.ikea.com/us/en/react-client/#cookieconsent-show-settings)
-Some of the cookies are strictly necessary for the functionality of the site while others are used to enhance the performance and your user experience or to show you advertisements and products that we think will be of interest to you.
-**Strictly necessary cookies are used to:**
-  * Make the website work properly
-  * Remember what is in your shopping cart
-  * Remember how far you are through an order  
-  
-
-
-
-**Functional cookies are used to:**
-  * Remember your log-in details
-  * Make sure you are secure when logged-in
-  * Make sure that the website looks consistent
-  * Offer live chat support  
-  
-
-
-
-**Performance cookies are used to:**
-  * Analyze, evaluate, and enhance the performance of the website
+# Chair pads & seat cushions
+You cook great food but comfortable seating is needed to enjoy it to the fullest in your kitchen or dining room. Our chair cushions and pads provide softness where it counts. We have a wide variety of looks and colors to suit your style, and many are machine-washable — or have a cover that is — in case something spills. 
+19 items
+## Sort and Filter
+19 items
+Compare
+[Skip to results](https://www.ikea.com/us/en/cat/chair-pads-20542/#product-list)
+  * Sort
+Sort Best matchPrice: low to highPrice: high to lowCustomer ratingNameMost popularWidthDepthLength
+  * Size
+### Width
+Width 12 - 13 "5 products514 - 15 "4 products416 - 17 "3 products318+ "3 products3
+### Depth
+Depth 12 "1 products113 "1 products114 "5 products515+ "2 products2
+### Length
+Length 16 "1 products118 "1 products120 "1 products121 "1 products1
+### Diameter
+Diameter 12 "2 products213 "2 products214 "2 products2
+  * Color
+Color
+beige12
+gray11
 ````
 
 **crawl4ai-raw**
 ````
-[ Skip to main content ](https://www.ikea.com/us/en/customer-service/cookie-policy/#hnf-content) [ Accessibility ](https://www.ikea.com/us/en/customer-service/accessibility/)
-[ EN USEnglish ](https://www.ikea.com/us/en/customer-service/cookie-policy/#)
-[ Enter ZIP code ](https://www.ikea.com/us/en/customer-service/cookie-policy/#)
-[ Select store ](https://www.ikea.com/us/en/customer-service/cookie-policy/#)
+[ Skip to main content ](https://www.ikea.com/us/en/cat/chair-pads-20542/#hnf-content) [ Accessibility ](https://www.ikea.com/us/en/customer-service/accessibility/)
+[ EN USEnglish ](https://www.ikea.com/us/en/cat/chair-pads-20542/#)
+[ Enter ZIP code ](https://www.ikea.com/us/en/cat/chair-pads-20542/#)
+[ Select store ](https://www.ikea.com/us/en/cat/chair-pads-20542/#)
 [ ![](https://www.ikea.com/global/assets/logos/brand/ikea.svg) ](https://www.ikea.com/us/en/)
 [Products](https://www.ikea.com/us/en/cat/products-products/)[Rooms](https://www.ikea.com/us/en/rooms/)[Deals](https://www.ikea.com/us/en/offers/)[Design & ideas](https://www.ikea.com/us/en/ideas/)[Services](https://www.ikea.com/us/en/customer-service/services/)
 Clear the search input field
@@ -935,82 +958,82 @@ Search
 [ Hej! Log in or sign up ](https://www.ikea.com/us/en/profile/login/) [ Hej! ](https://www.ikea.com/us/en/profile/login/) [ IK Hej {{firstName}}! ](https://www.ikea.com/us/en/profile/login/)
 [ Favorites ](https://www.ikea.com/us/en/favorites/)
 [ Shopping bag ](https://www.ikea.com/us/en/shoppingcart/)
-  1. [Customer service](https://www.ikea.com/us/en/customer-service/)
-  2. Cookie policy
+[Skip to product list](https://www.ikea.com/us/en/cat/chair-pads-20542/#product-list-skip)
+  1. [Products](https://www.ikea.com/us/en/cat/products-products/)
+  2. [Rugs & home textiles](https://www.ikea.com/us/en/cat/home-textiles-tl001/)
+  3. Chair pads & seat cushions
 
 
-# IKEA Cookie Policy
-Updated June 30, 2023
-We use cookies at IKEA to improve our service for you. Some cookies we use are essential for some services to work, and others are used to collect information of the use of the website (statistics) so that we can make the site more convenient and useful for you. Some cookies are temporary and will disappear when you close your browser, others are persistent and will stay on your computer for some time. We also use some local cookies that are tied to local campaigns and that will disappear when the campaign ends. We also use marketing cookies that are used to track visitors across websites. We use them with the intention to display ads that are relevant and engaging for the individual user.
-You may change your cookie preferences at our **Privacy Preference Center** [here.](https://www.ikea.com/us/en/react-client/#cookieconsent-show-settings)
-Some of the cookies are strictly necessary for the functionality of the site while others are used to enhance the performance and your user experience or to show you advertisements and products that we think will be of interest to you.
-**Strictly necessary cookies are used to:**
-  * Make the website work properly
-  * Remember what is in your shopping cart
-  * Remember how far you are through an order  
-  
-
-
-
-**Functional cookies are used to:**
-  * Remember your log-in details
-  * Make sure you are secure when logged-in
-  * Make sure that the website looks consistent
-  * Offer live chat support  
-  
-
-
-
-**Performance cookies are used to:**
-  * Analyze, evaluate, and enhance the performance of the website
+# Chair pads & seat cushions
+You cook great food but comfortable seating is needed to enjoy it to the fullest in your kitchen or dining room. Our chair cushions and pads provide softness where it counts. We have a wide variety of looks and colors to suit your style, and many are machine-washable — or have a cover that is — in case something spills. 
+19 items
+## Sort and Filter
+19 items
+Compare
+[Skip to results](https://www.ikea.com/us/en/cat/chair-pads-20542/#product-list)
+  * Sort
+Sort Best matchPrice: low to highPrice: high to lowNewestCustomer ratingNameMost popularWidthDepthLength
+  * Size
+### Width
+Width 12 - 13 "5 products514 - 15 "4 products416 - 17 "3 products318+ "3 products3
+### Depth
+Depth 12 "1 products113 "1 products114 "5 products515+ "2 products2
+### Length
+Length 16 "1 products118 "1 products120 "1 products121 "1 products1
+### Diameter
+Diameter 12 "2 products213 "2 products214 "2 products2
+  * Color
+Color
+beige12
+gray11
 ````
 
 **scrapy+md**
 ````
-1. [Customer service](https://www.ikea.com/us/en/customer-service/)
-2. Cookie policy
+[Skip to product list](#product-list-skip)
 
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Customer service","item":"https://www.ikea.com/us/en/customer-service/"}]}
+1. [Products](https://www.ikea.com/us/en/cat/products-products/)
+2. [Rugs & home textiles](https://www.ikea.com/us/en/cat/home-textiles-tl001/)
+3. Chair pads & seat cushions
 
-# IKEA Cookie Policy
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Products","item":"https://www.ikea.com/us/en/cat/products-products/"},{"@type":"ListItem","position":2,"name":"Rugs & home textiles","item":"https://www.ikea.com/us/en/cat/home-textiles-tl001/"}]}
 
-Updated June 30, 2023
+# Chair pads & seat cushions
 
-We use cookies at IKEA to improve our service for you. Some cookies we use are essential for some services to work, and others are used to collect information of the use of the website (statistics) so that we can make the site more convenient and useful for you. Some cookies are temporary and will disappear when you close your browser, others are persistent and will stay on your computer for some time. We also use some local cookies that are tied to local campaigns and that will disappear when the campaign ends. We also use marketing cookies that are used to track visitors across websites. We use them with the intention to display ads that are relevant and engaging for the individual user.
+You cook great food but comfortable seating is needed to enjoy it to the fullest in your kitchen or dining room. Our chair cushions and pads provide softness where it counts. We have a wide variety of looks and colors to suit your style, and many are machine-washable — or have a cover that is — in case something spills.
 
-You may change your cookie preferences at our **Privacy Preference Center** [here.](https://www.ikea.com/us/en/react-client/#cookieconsent-show-settings)
+## Sort and Filter
 
-Some of the cookies are strictly necessary for the functionality of the site while others are used to enhance the performance and your user experience or to show you advertisements and products that we think will be of interest to you.
+19 items
 
-**Strictly necessary cookies are used to:**
+[Skip to results](#product-list)
 
-* Make the website work properly
-* Remember what is in your shopping cart
-* Remember how far you are through an order
+## Results list
 
-**Functional cookies are used to:**
+[### MALINDA Chair pad, light beige, 16/14x15x3 "
 
-* Remember your log-in details
-* Make sure you are secure when logged-in
-* Make sure that the website looks consistent
-* Offer live chat support
+$9.99Price $ 9.99
 
-**Performance cookies are used to:**
+Online min. order quantity: 2](https://www.ikea.com/us/en/p/malinda-chair-pad-light-beige-90586983/)
 
-* Analyze, evaluate, and enhance the performance of the website
-* Enhance the user experience
+Review: 4.4 out of 5 stars. Total reviews: (2441)
 
-**Targeting, advertising, or marketing cookies are used to:**
+You need to order at least 2 when buying online
 
-* Allow you to share and like
-* Send information to other websites to customize their advertisements
+More optionsMALINDA[Option: MALINDA, Chair pad, gray, 16/14x15x3 "](https://www.ikea.com/us/en/p/malinda-chair-pad-gray-30477977/)[Option: MALINDA, Chair pad, green, 16/14x15x3 "](https://www.ikea.com/us/en/p/malinda-chair-pad-green-50577315/)[Option: MALINDA, Chair pad, stripe gray, 16/14x15x3 "](https://www.ikea.com/us/en/p/malinda-chair-pad-stripe-gray-20513301/)[Option: MALINDA, Chair pad, beige, 16/14x15x3 "](https://www.ikea.com/us/en/p/malinda-chair-pad-beige-00571575/)[Option: MALINDA, Chair pad, dark red, 16/14x15x3 "](https://www.ikea.com/us/en/p/malinda-chair-pad-dark-red-00572805/)
 
-**Examples of use:**
+[### JUSTINA Chair pad, natural, 17/14x16x2 "
+
+$7.99Price $ 7.99
+
+Online min. order quantity: 2](https://www.ikea.com/us/en/p/justina-chair-pad-natural-30586981/)
+
+Review: 4.6 out of 5 stars. Total reviews: (2737)
 ````
 
 **crawlee**
 ````
-Cookie Policy - IKEA.product-missing { display: none; }
+Chair Pads & Seat Cushions - IKEA
 
 
 
@@ -1036,27 +1059,27 @@ Cookie Policy - IKEA.product-missing { display: none; }
 
 
 
-
-var utag\_data = {
-site\_platform: "m2",
-country: "us",
-language: "en",
-vertical\_version: "b4104d5e5284",
-vertical\_component: "editorial",
-page\_type: "customer-service",
-page\_name: "customer-service>cookie-policy",
-site\_level\_1: "customer-service",
-site\_level\_2: "cookie-policy"
-}
-#onetrust-banner-sdk .onetrust-vendors-list-handler{cursor:pointer;color:#1f96db;font-size:inherit;font-weight:bold;text-decoration:none;margin-left:5px}#onetrust-banner-sdk .onetrust-vendors-list-handler:hover{color:#1f96db}#onetrust-banner-sdk:focus{outline:2px solid #000;outline-offset:-2px}#onetrust-banner-sdk a:focus{outline:2px solid #000}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{outline-offset:1px}#onetrust-banner-sdk.ot-bnr-w-logo .ot-bnr-logo{height:64px;width:64px}#onetrust-banner-sdk .ot-tcf2-vendor-count.ot-text-bold{font-weight:bold}#onetrust-banner-sdk .ot-button-order-0{order:0}#onetrust-banner-sdk .ot-button-order-1{order:1}#onetrust-banner-sdk .ot-button-order-2{order:2}#onetrust-banner-sdk #onetrust-close-btn-container svg{height:10px;width:10px;pointer-events:none}#onetrust-banner-sdk .ot-close-icon,#onetrust-pc-sdk .ot-close-icon,#ot-sync-ntfy .ot-close-icon{background-size:contain;background-repeat:no-repeat;background-position:center;height:12px;width:12px}#onetrust-banner-sdk .powered-by-logo,#onetrust-banner-sdk .ot-pc-footer-logo a,#onetrust-pc-sdk .powered-by-logo,#onetrust-pc-sdk .ot-pc-footer-logo a,#ot-sync-ntfy .powered-by-logo,#ot-sync-ntfy .ot-pc-footer-logo a{background-size:contain;background-repeat:no-repeat;background-position:center;height:25px;width:152px;display:block;text-decoration:none;font-size:.75em}#onetrust-banner-sdk .powered-by-logo:hover,#onetrust-banner-sdk .ot-pc-footer-logo a:hover,#onetrust-pc-sdk .powered-by-logo:hover,#onetrust-pc-sdk .ot-pc-footer-logo a:hover,#ot-sync-ntfy .powered-by-logo:hover,#ot-sync-ntfy .ot-pc-footer-logo a:hover{color:#565656}#onetrust-banner-sdk h3 \*,#onetrust-banner-sdk h4 \*,#onetrust-banner-sdk h6 \*,#onetrust-banner-sdk button \*,#onetrust-banner-sdk a[data-parent-id] \*,#onetrust-banner-sdk p[role=heading] \*,#onetrust-pc-sdk h3 \*,#onetrust-pc-sdk h4 \*,#onetrust-pc-sdk h6 \*,#onetrust-pc-sdk button \*,#onetrust-pc-sdk a[data-parent-id] \*,#onetrust-pc-sdk p[role=heading] \*,#ot-sync-ntfy h3 \*,#ot-sync-ntfy h4 \*,#ot-sync-ntfy h6 \*,#ot-sync-ntfy button \*,#ot-sync-ntfy a[data-parent-id] \*,#ot-sync-ntfy p[role=heading] \*{font-size:inherit;font-weight:inherit;color:inherit}#onetrust-banner-sdk .ot-hide,#onetrust-pc-sdk .ot-hide,#ot-sync-ntfy .ot-hide{display:none !important}#onetrust-banner-sdk button.ot-link-btn:hover,#onetrust-pc-sdk button.ot-link-btn:hover,#ot-sync-ntfy button.ot-link-btn:hover{text-decoration:underline;opacity:1}#onetrust-pc-sdk .ot-sdk-row .ot-sdk-column{padding:0}#onetrust-pc-sdk .ot-sdk-container{padding-right:0}#onetrust-pc-sdk .ot-sdk-row{flex-direction:initial;width:100%}#onetrust-pc-sdk [type=checkbox]:checked,#onetrust-pc-sdk [type=checkbox]:not(:checked){pointer-events:initial}#onetrust-pc-sdk [type=checkbox]:disabled+label::before,#onetrust-pc-sdk [type=checkbox]:disabled+label:after,#onetrust-pc-sdk [type=checkbox]:disabled+label{pointer-events:none;opacity:.8}#onetrust-pc-sdk #vendor-list-content{transform:translate3d(0, 0, 0)}#onetrust-pc-sdk li input[type=checkbox]{z-index:1}#onetrust-pc-sdk li .ot-checkbox label{z-index:2}#onetrust-pc-sdk li .ot-checkbox input[type=checkbox]{height:auto;width:auto}#onetrust-pc-sdk li .host-title a,#onetrust-pc-sdk li .ot-host-name a,#onetrust-pc-sdk li .accordion-text,#onetrust-pc-sdk li .ot-acc-txt{z-index:2;position:relative}#onetrust-pc-sdk input{margin:3px .1ex}#onetrust-pc-sdk .pc-logo,#onetrust-pc-sdk .ot-pc-logo{height:60px;width:180px;background-position:center;background-size:contain;background-repeat:no-repeat;display:inline-flex;justify-content:center;align-items:center}#onetrust-pc-sdk .pc-logo img,#onetrust-pc-sdk .ot-pc-logo img{max-height:100%;max-width:100%}#onetrust-pc-sdk .pc-logo svg,#onetrust-pc-sdk .ot-pc-logo svg{height:60px;width:180px}#onetrust-pc-sdk #close-pc-btn-handler>svg{margin:auto;display:block;height:12px;width:12px}#onetrust-pc-sdk .screen-reader-only,#onetrust-pc-sdk .ot-scrn-rdr,.ot-sdk-cookie-policy .screen-reader-only,.ot-sdk-cookie-policy .ot-scrn-rdr{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}#onetrust-pc-sdk.ot-fade-in,.onetrust-pc-dark-filter.ot-fade-in,#onetrust-banner-sdk.ot-fade-in{animation-name:onetrust-fade-in;animation-duration:400ms;animation-timing-function:ease-in-out}#onetrust-pc-sdk.ot-hide{display:none !important}.onetrust-pc-dark-filter.ot-hide{display:none !important}#ot-sdk-btn.ot-sdk-show-settings,#ot-sdk-btn.optanon-show-settings{color:#fff;background-color:#468254;height:auto;white-space:normal;word-wrap:break-word;padding:.8em 2em;font-size:.8em;line-height:1.2;cursor:pointer;-moz-transition:.1s ease;-o-transition:.1s ease;-webkit-transition:1s ease;transition:.1s ease}#ot-sdk-btn.ot-sdk-show-settings:hover,#ot-sdk-btn.optanon-show-settings:hover{color:#fff;background-color:#2c6415}#ot-sdk-btn.ot-sdk-show-settings:active,#ot-sdk-btn.optanon-show-settings:active{color:#fff;background-color:#2c6415;border:1px solid rgba(162,192,169,.5)}.onetrust-pc-dark-filter{background:rgba(0,0,0,.5);z-index:2147483646;width:100%;height:100%;overflow:hidden;position:fixed;top:0;bottom:0;left:0}@keyframes onetrust-fade-in{0%{opacity:0}100%{opacity:1}}.ot-cookie-label{text-decoration:underline}@media only screen and (min-width: 426px)and (max-width: 896px)and (orientation: landscape){#onetrust-pc-sdk p{font-size:.75em}}#onetrust-banner-sdk .banner-option-input:focus+label{outline:1px solid #000;outline-style:auto}.category-vendors-list-handler+a:focus,.category-vendors-list-handler+a:focus-visible{outline:2px solid #000}#onetrust-pc-sdk .ot-userid-title{margin-top:10px}#onetrust-pc-sdk .ot-userid-title>span,#onetrust-pc-sdk .ot-userid-timestamp>span{font-weight:700}#onetrust-pc-sdk .ot-userid-desc{font-style:italic}#onetrust-pc-sdk .ot-host-desc a{pointer-events:initial}#onetrust-pc-sdk .ot-ven-hdr>p a{position:relative;z-index:2;pointer-events:initial}#onetrust-pc-sdk .ot-vnd-serv .ot-vnd-item .ot-vnd-info a,#onetrust-pc-sdk .ot-vs-list .ot-vnd-item .ot-vnd-info a{margin-right:auto}#onetrust-pc-sdk .ot-pc-footer-logo svg,#onetrust-pc-sdk .ot-pc-footer-logo img{width:136px;height:16px}#onetrust-pc-sdk .ot-pur-vdr-count{font-weight:400;font-size:.8em;padding-top:3px;display:block}#onetrust-pc-sdk p[role=heading] .ot-pur-vdr-count{font-weight:400 !important;font-size:.8em !important}#onetrust-banner-sdk .ot-optout-signal,#onetrust-pc-sdk .ot-optout-signal{border:1px solid #32ae88;border-radius:3px;padding:5px;margin-bottom:10px;background-color:#f9fffa;font-size:.85rem;line-height:2}#onetrust-banner-sdk .ot-optout-signal .ot-optout-icon,#onetrust-pc-sdk .ot-optout-signal .ot-optout-icon{display:inline;margin-right:5px}#onetrust-banner-sdk .ot-optout-signal svg,#onetrust-pc-sdk .ot-optout-signal svg{height:20px;width:30px}#onetrust-banner-sdk .ot-optout-signal svg.ot-source-sprite,#onetrust-pc-sdk .ot-optout-signal svg.ot-source-sprite{position:relative;bottom:-3px}#onetrust-banner-sdk .ot-optout-signal svg:not(.ot-source-sprite),#onetrust-pc-sdk .ot-optout-signal svg:not(.ot-source-sprite){transform:scale(0.5)}#onetrust-banner-sdk .ot-optout-signal svg:not(.ot-source-sprite) path,#onetrust-pc-sdk .ot-optout-signal svg:not(.ot-source-sprite) path{fill:#32ae88}#onetrust-consent-sdk .ot-general-modal{overflow:hidden;position:fixed;margin:0 auto;top:50%;left:50%;width:40%;padding:1.5rem;max-width:575px;min-width:575px;z-index:2147483647;border-radius:2.5px;transform:translate(-50%, -50%)}#onetrust-consent-sdk .ot-signature-health-group{margin-top:1rem;padding-left:1.25rem;padding-right:1.25rem;margin-bottom:.625rem;width:calc(100% - 2.5rem)}#onetrust-consent-sdk .ot-signature-health-group .ot-signature-health-form{gap:.5rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-health-form{width:70%;gap:.35rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-input{height:38px;padding:6px 10px;background-color:#fff;border:1px solid #d1d1d1;border-radius:4px;box-shadow:none;box-sizing:border-box}#onetrust-consent-sdk .ot-signature-health .ot-signature-subtitle{font-size:1.125rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-group-title{font-size:1.25rem;font-weight:bold}#onetrust-consent-sdk .ot-signature-health,#onetrust-consent-sdk .ot-signature-health-group{display:flex;flex-direction:column;gap:1rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-cont,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-cont{display:flex;flex-direction:column;gap:.25rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-paragraph,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-paragraph{margin:0;line-height:20px;font-size:max(14px,.875rem)}#onetrust-consent-sdk .ot-signature-health .ot-health-signature-error,#onetrust-consent-sdk .ot-signature-health-group .ot-health-signature-error{color:#4d4d4d;font-size:min(12px,.75rem)}#onetrust-consent-sdk .ot-signature-health .ot-signature-buttons-cont,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-buttons-cont{margin-top:max(.75rem,2%);gap:1rem;display:flex;justify-content:flex-end}#onetrust-consent-sdk .ot-signature-health .ot-signature-button,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-button{flex:1;height:auto;color:#fff;cursor:pointer;line-height:1.2;min-width:125px;font-weight:600;font-size:.813em;border-radius:2px;padding:12px 10px;white-space:normal;word-wrap:break-word;word-break:break-word;background-color:#68b631;border:2px solid #68b631}#onetrust-consent-sdk .ot-signature-health .ot-signature-button.reject,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-button.reject{background-color:#fff}#onetrust-consent-sdk .ot-input-field-cont{display:flex;flex-direction:column;gap:.5rem}#onetrust-consent-sdk .ot-input-field-cont .ot-signature-input{width:65%}#onetrust-consent-sdk .ot-signature-health-form{display:flex;flex-direction:column}#onetrust-consent-sdk .ot-signature-health-form .ot-signature-label{margin-bottom:0;line-height:20px;font-size:max(14px,.875rem)}#onetrust-consent-sdk #onetrust-sprite-svg{display:none}@media only screen and (max-width: 600px){#onetrust-consent-sdk .ot-general-modal{min-width:100%}#onetrust-consent-sdk .ot-signature-health .ot-signature-health-form{width:100%}#onetrust-consent-sdk .ot-input-field-cont .ot-signature-input{width:100%}}#onetrust-banner-sdk,#onetrust-pc-sdk,#ot-sdk-cookie-policy,#ot-sync-ntfy{font-size:16px}#onetrust-banner-sdk \*,#onetrust-banner-sdk ::after,#onetrust-banner-sdk ::before,#onetrust-pc-sdk \*,#onetrust-pc-sdk ::after,#onetrust-pc-sdk ::before,#ot-sdk-cookie-policy \*,#ot-sdk-cookie-policy ::after,#ot-sdk-cookie-policy ::before,#ot-sync-ntfy \*,#ot-sync-ntfy ::after,#ot-sync-ntfy ::before{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}#onetrust-banner-sdk div,#onetrust-banner-sdk span,#onetrust-banner-sdk h1,#onetrust-banner-sdk h2,#onetrust-banner-sdk h3,#onetrust-banner-sdk h4,#onetrust-banner-sdk h5,#onetrust-banner-sdk h6,#onetrust-banner-sdk p,#onetrust-banner-sdk img,#onetrust-banner-sdk svg,#onetrust-banner-sdk button,#onetrust-banner-sdk section,#onetrust-banner-sdk a,#onetrust-banner-sdk label,#onetrust-banner-sdk input,#onetrust-banner-sdk ul,#onetrust-banner-sdk li,#onetrust-banner-sdk nav,#onetrust-banner-sdk table,#onetrust-banner-sdk thead,#onetrust-banner-sdk tr,#onetrust-banner-sdk td,#onetrust-banner-sdk tbody,#onetrust-banner-sdk .ot-main-content,#onetrust-banner-sdk .ot-toggle,#onetrust-banner-sdk #ot-content,#onetrust-banner-sdk #ot-pc-content,#onetrust-banner-sdk .checkbox,#onetrust-pc-sdk div,#onetrust-pc-sdk span,#onetrust-pc-sdk h1,#onetrust-pc-sdk h2,#onetrust-pc-sdk h3,#onetrust-pc-sdk h4,#onetrust-pc-sdk h5,#onetrust-pc-sdk h6,#onetrust-pc-sdk p,#onetrust-pc-sdk img,#onetrust-pc-sdk svg,#onetrust-pc-sdk button,#onetrust-pc-sdk section,#onetrust-pc-sdk a,#onetrust-pc-sdk label,#onetrust-pc-sdk input,#onetrust-pc-sdk ul,#onetrust-pc-sdk li,#onetrust-pc-sdk nav,#onetrust-pc-sdk table,#onetrust-pc-sdk thead,#onetrust-pc-sdk tr,#onetrust-pc-sdk td,#onetrust-pc-sdk tbody,#onetrust-pc-sdk .ot-main-content,#onetrust-pc-sdk .ot-toggle,#onetrust-pc-sdk #ot-content,#onetrust-pc-sdk #ot-pc-content,#onetrust-pc-sdk .checkbox,#ot-sdk-cookie-policy div,#ot-sdk-cookie-policy span,#ot-sdk-cookie-policy h1,#ot-sdk-cookie-policy h2,#ot-sdk-cookie-policy h3,#ot-sdk-cookie-policy h4,#ot-sdk-cookie-policy h5,#ot-sdk-cookie-policy h6,#ot-sdk-cookie-policy p,#ot-sdk-cookie-policy img,#ot-sdk-cookie-policy svg,#ot-sdk-cookie-policy button,#ot-sdk-cookie-policy section,#ot-sdk-cookie-policy a,#ot-sdk-cookie-policy label,#ot-sdk-cookie-policy input,#ot-sdk-cookie-policy ul,#ot-sdk-cookie-policy li,#ot-sdk-cookie-policy nav,#ot-sdk-cookie-policy table,#ot-sdk-cookie-policy thead,#ot-sdk-cookie-policy tr,#ot-sdk-cookie-policy td,#ot-sdk-cookie-policy tbody,#ot-sdk-cookie-policy .ot-main-content,#ot-sdk-cookie-policy .ot-toggle,#ot-sdk-cookie-policy #ot-content,#ot-sdk-cookie-policy #ot-pc-content,#ot-sdk-cookie-policy .checkbox,#ot-sync-ntfy div,#ot-sync-ntfy span,#ot-sync-ntfy h1,#ot-sync-ntfy h2,#ot-sync-ntfy h3,#ot-sync-ntfy h4,#ot-sync-ntfy h5,#ot-sync-ntfy h6,#ot-sync-ntfy p,#ot-sync-ntfy img,#ot-sync-ntfy svg,#ot-sync-ntfy button,#ot-sync-ntfy section,#ot-sync-ntfy a,#ot-sync-ntfy label,#ot-sync-ntfy input,#ot-sync-ntfy ul,#ot-sync-ntfy li,#ot-sync-ntfy nav,#ot-sync-ntfy table,#ot-sync-ntfy thead,#ot-sync-ntfy tr,#ot-sync-ntfy td,#ot-sync-ntfy tbody,#ot-sync-ntfy .ot-main-content,#ot-sync-ntfy .ot-toggle,#ot-sync-ntfy #ot-content,#ot-sync-ntfy #ot-pc-content,#ot-sync-ntfy .checkbox{font-family:inherit;font-weight:normal;-webkit-font-smoothing:auto;letter-spacing:normal;line-height:normal;padding:0;margin:0;height:auto;min-height:0;max-height:none;width:auto;min-width:0;max-width:none;border-radius:0;border:none;clear:none;float:none;position:static;bottom:auto;left:auto;right:auto;top:auto;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;white-space:normal;background:none;overflow:visible;vertical-align:baseline;visibility:visible;z-index:auto;box-shadow:none}#onetrust-banner-sdk img,#onetrust-pc-sdk img,#ot-sdk-cookie-policy img,#ot-sync-ntfy img{overflow:hidden !important}#onetrust-banner-sdk label:before,#onetrust-banner-sdk label:after,#onetrust-banner-sdk .checkbox:after,#onetrust-banner-sdk .checkbox:before,#onetrust-pc-sdk label:before,#onetrust-pc-sdk label:after,#onetrust-pc-sdk .checkbox:after,#onetrust-pc-sdk .checkbox:before,#ot-sdk-cookie-policy label:before,#ot-sdk-cookie-policy label:after,#ot-sdk-cookie-policy .checkbox:after,#ot-sdk-cookie-policy .checkbox:before,#ot-sync-ntfy label:before,#ot-sync-ntfy label:after,#ot-sync-ntfy .checkbox:after,#ot-sync-ntfy .checkbox:before{content:"";content:none}#onetrust-banner-sdk .ot-sdk-container,#onetrust-pc-sdk .ot-sdk-container,#ot-sdk-cookie-policy .ot-sdk-container{position:relative;width:100%;max-width:100%;margin:0 auto;padding:0 20px;box-sizing:border-box}#onetrust-banner-sdk .ot-sdk-column,#onetrust-banner-sdk .ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-column,#onetrust-pc-sdk .ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-column,#ot-sdk-cookie-policy .ot-sdk-columns{width:100%;float:left;box-sizing:border-box;padding:0;display:initial}@media(min-width: 400px){#onetrust-banner-sdk .ot-sdk-container,#onetrust-pc-sdk .ot-sdk-container,#ot-sdk-cookie-policy .ot-sdk-container{width:90%;padding:0}}@media(min-width: 550px){#onetrust-banner-sdk .ot-sdk-container,#onetrust-pc-sdk .ot-sdk-container,#ot-sdk-cookie-policy .ot-sdk-container{width:100%}#onetrust-banner-sdk .ot-sdk-column,#onetrust-banner-sdk .ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-column,#onetrust-pc-sdk .ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-column,#ot-sdk-cookie-policy .ot-sdk-columns{margin-left:4%}#onetrust-banner-sdk .ot-sdk-column:first-child,#onetrust-banner-sdk .ot-sdk-columns:first-child,#onetrust-pc-sdk .ot-sdk-column:first-child,#onetrust-pc-sdk .ot-sdk-columns:first-child,#ot-sdk-cookie-policy .ot-sdk-column:first-child,#ot-sdk-cookie-policy .ot-sdk-columns:first-child{margin-left:0}#onetrust-banner-sdk .ot-sdk-two.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-two.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-two.ot-sdk-columns{width:13.3333333333%}#onetrust-banner-sdk .ot-sdk-three.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-three.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-three.ot-sdk-columns{width:22%}#onetrust-banner-sdk .ot-sdk-four.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-four.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-four.ot-sdk-columns{width:30.6666666667%}#onetrust-banner-sdk .ot-sdk-eight.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-eight.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-eight.ot-sdk-columns{width:65.3333333333%}#onetrust-banner-sdk .ot-sdk-nine.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-nine.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-nine.ot-sdk-columns{width:74%}#onetrust-banner-sdk .ot-sdk-ten.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-ten.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-ten.ot-sdk-columns{width:82.6666666667%}#onetrust-banner-sdk .ot-sdk-eleven.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-eleven.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-eleven.ot-sdk-columns{width:91.3333333333%}#onetrust-banner-sdk .ot-sdk-twelve.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-twelve.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-twelve.ot-sdk-columns{width:100%;margin-left:0}}#onetrust-banner-sdk h1,#onetrust-banner-sdk h2,#onetrust-banner-sdk h3,#onetrust-banner-sdk h4,#onetrust-banner-sdk h5,#onetrust-banner-sdk h6,#onetrust-banner-sdk p[role=heading],#onetrust-pc-sdk h1,#onetrust-pc-sdk h2,#onetrust-pc-sdk h3,#onetrust-pc-sdk h4,#onetrust-pc-sdk h5,#onetrust-pc-sdk h6,#onetrust-pc-sdk p[role=heading],#ot-sdk-cookie-policy h1,#ot-sdk-cookie-policy h2,#ot-sdk-cookie-policy h3,#ot-sdk-cookie-policy h4,#ot-sdk-cookie-policy h5,#ot-sdk-cookie-policy h6,#ot-sdk-cookie-policy p[role=heading]{margin-top:0;font-weight:600;font-family:inherit}#onetrust-banner-sdk h1,#onetrust-pc-sdk h1,#ot-sdk-cookie-policy h1{font-size:1.5rem;line-height:1.2}#onetrust-banner-sdk h2,#onetrust-pc-sdk h2,#ot-sdk-cookie-policy h2{font-size:1.5rem;line-height:1.25}#onetrust-banner-sdk h3,#onetrust-pc-sdk h3,#ot-sdk-cookie-policy h3{font-size:1.5rem;line-height:1.3}#onetrust-banner-sdk h4,#onetrust-pc-sdk h4,#ot-sdk-cookie-policy h4{font-size:1.5rem;line-height:1.35}#onetrust-banner-sdk h5,#onetrust-pc-sdk h5,#ot-sdk-cookie-policy h5{font-size:1.5rem;line-height:1.5}#onetrust-banner-sdk h6,#onetrust-pc-sdk h6,#ot-sdk-cookie-policy h6{font-size:1.5rem;line-height:1.6}@media(min-width: 550px){#onetrust-banner-sdk h1,#onetrust-pc-sdk h1,#ot-sdk-cookie-policy h1{font-size:1.5rem}#onetrust-banner-sdk h2,#onetrust-pc-sdk h2,#ot-sdk-cookie-policy h2{font-size:1.5rem}#onetrust-banner-sdk h3,#onetrust-pc-sdk h3,#ot-sdk-cookie-policy h3{font-size:1.5rem}#onetrust-banner-sdk h4,#onetrust-pc-sdk h4,#ot-sdk-cookie-policy h4{font-size:1.5rem}#onetrust-banner-sdk h5,#onetrust-pc-sdk h5,#ot-sdk-cookie-policy h5{font-size:1.5rem}#onetrust-banner-sdk h6,#onetrust-pc-sdk h6,#ot-sdk-cookie-policy h6{font-size:1.5rem}}#onetrust-banner-sdk p:not([role=heading]),#onetrust-pc-sdk p:not([role=heading]),#ot-sdk-cookie-policy p:not([role=heading]){margin:0 0 1em 0;font-family:inherit;line-height:normal}#onetrust-banner-sdk a,#onetrust-pc-sdk a,#ot-sdk-cookie-policy a{color:#565656;text-decoration:underline}#onetrust-banner-sdk a:hover,#onetrust-pc-sdk a:hover,#ot-sdk-cookie-policy a:hover{color:#565656;text-decoration:none}#onetrust-banner-sdk .ot-sdk-button,#onetrust-banner-sdk button,#onetrust-pc-sdk .ot-sdk-button,#onetrust-pc-sdk button,#ot-sdk-cookie-policy .ot-sdk-button,#ot-sdk-cookie-policy button{margin-bottom:1rem;font-family:inherit}#onetrust-banner-sdk .ot-sdk-button,#onetrust-banner-sdk button,#onetrust-pc-sdk .ot-sdk-button,#onetrust-pc-sdk button,#ot-sdk-cookie-policy .ot-sdk-button,#ot-sdk-cookie-policy button{display:inline-block;height:38px;padding:0 30px;color:#555;text-align:center;font-size:.9em;font-weight:400;line-height:38px;letter-spacing:.01em;text-decoration:none;white-space:nowrap;background-color:rgba(0,0,0,0);border-radius:2px;border:1px solid #bbb;cursor:pointer;box-sizing:border-box}#onetrust-banner-sdk .ot-sdk-button:hover,#onetrust-banner-sdk :not(.ot-leg-btn-container)>button:not(.ot-link-btn):hover,#onetrust-banner-sdk :not(.ot-leg-btn-container)>button:not(.ot-link-btn):focus,#onetrust-pc-sdk .ot-sdk-button:hover,#onetrust-pc-sdk :not(.ot-leg-btn-container)>button:not(.ot-link-btn):hover,#onetrust-pc-sdk :not(.ot-leg-btn-container)>button:not(.ot-link-btn):focus,#ot-sdk-cookie-policy .ot-sdk-button:hover,#ot-sdk-cookie-policy :not(.ot-leg-btn-container)>button:not(.ot-link-btn):hover,#ot-sdk-cookie-policy :not(.ot-leg-btn-container)>button:not(.ot-link-btn):focus{color:#333;border-color:#888;opacity:.9}#onetrust-banner-sdk .ot-sdk-button:focus,#onetrust-banner-sdk :not(.ot-leg-btn-container)>button:focus,#onetrust-pc-sdk .ot-sdk-button:focus,#onetrust-pc-sdk :not(.ot-leg-btn-container)>button:focus,#ot-sdk-cookie-policy .ot-sdk-button:focus,#ot-sdk-cookie-policy :not(.ot-leg-btn-container)>button:focus{outline:2px solid #000}#onetrust-banner-sdk .ot-sdk-button.ot-sdk-button-primary,#onetrust-banner-sdk button.ot-sdk-button-primary,#onetrust-banner-sdk input[type=submit].ot-sdk-button-primary,#onetrust-banner-sdk input[type=reset].ot-sdk-button-primary,#onetrust-banner-sdk input[type=button].ot-sdk-button-primary,#onetrust-pc-sdk .ot-sdk-button.ot-sdk-button-primary,#onetrust-pc-sdk button.ot-sdk-button-primary,#onetrust-pc-sdk input[type=submit].ot-sdk-button-primary,#onetrust-pc-sdk input[type=reset].ot-sdk-button-primary,#onetrust-pc-sdk input[type=button].ot-sdk-button-primary,#ot-sdk-cookie-policy .ot-sdk-button.ot-sdk-button-primary,#ot-sdk-cookie-policy button.ot-sdk-button-primary,#ot-sdk-cookie-policy input[type=submit].ot-sdk-button-primary,#ot-sdk-cookie-policy input[type=reset].ot-sdk-button-primary,#ot-sdk-cookie-policy input[type=button].ot-sdk-button-primary{color:#fff;background-color:#33c3f0;border-color:#33c3f0}#onetrust-banner-sdk .ot-sdk-button.ot-sdk-button-primary:hover,#onetrust-banner-sdk button.ot-sdk-button-primary:hover,#onetrust-banner-sdk input[type=submit].ot-sdk-button-primary:hover,#onetrust-banner-sdk input[type=reset].ot-sdk-button-primary:hover,#onetrust-banner-sdk input[type=button].ot-sdk-button-primary:hover,#onetrust-banner-sdk .ot-sdk-button.ot-sdk-button-primary:focus,#onetrust-banner-sdk button.ot-sdk-button-primary:focus,#onetrust-banner-sdk input[type=submit].ot-sdk-button-primary:focus,#onetrust-banner-sdk input[type=reset].ot-sdk-button-primary:focus,#onetrust-banner-sdk input[type=button].ot-sdk-button-primary:focus,#onetrust-pc-sdk .ot-sdk-button.ot-sdk-button-primary:hover,#onetrust-pc-sdk button.ot-sdk-button-primary:hover,#onetrust-pc-sdk input[type=submit].ot-sdk-button-primary:hover,#onetrust-pc-sdk input[type=reset].ot-sdk-button-primary:hover,#onetrust-pc-sdk input[type=button].ot-sdk-button-primary:hover,#onetrust-pc-sdk .ot-sdk-button.ot-sdk-button-primary:focus,#onetrust-pc-sdk button.ot-sdk-button-primary:focus,#onetrust-pc-sdk input[type=submit].ot-sdk-button-primary:focus,#onetrust-pc-sdk input[type=reset].ot-sdk-button-primary:focus,#onetrust-pc-sdk input[type=button].ot-sdk-button-primary:focus,#ot-sdk-cookie-policy .ot-sdk-button.ot-sdk-button-primary:hover,#ot-sdk-cookie-policy button.ot-sdk-button-primary:hover,#ot-sdk-cookie-policy input[type=submit].ot-sdk-button-primary:hover,#ot-sdk-cookie-policy input[type=reset].ot-sdk-button-primary:hover,#ot-sdk-cookie-policy input[type=button].ot-sdk-button-primary:hover,#ot-sdk-cookie-policy .ot-sdk-button.ot-sdk-button-primary:focus,#ot-sdk-cookie-policy button.ot-sdk-button-primary:focus,#ot-sdk-cookie-policy input[type=submit].ot-sdk-button-primary:focus,#ot-sdk-cookie-policy input[type=reset].ot-sdk-button-primary:focus,#ot-sdk-cookie-policy input[type=button].ot-sdk-button-primary:focus{color:#fff;background-color:#1eaedb;border-color:#1eaedb}#onetrust-banner-sdk input[type=text],#onetrust-pc-sdk input[type=text],#ot-sdk-cookie-policy input[type=text]{height:38px;padding:6px 10px;background-color:#fff;border:1px solid #d1d1d1;border-radius:4px;box-shadow:none;box-sizing:border-box}#onetrust-banner-sdk input[type=text],#onetrust-pc-sdk input[type=text],#ot-sdk-cookie-policy input[type=text]{-webkit-appearance:none;-moz-appearance:none;appearance:none}#onetrust-banner-sdk input[type=text]:focus,#onetrust-pc-sdk input[type=text]:focus,#ot-sdk-cookie-policy input[type=text]:focus{border:1px solid #000;outline:0}#onetrust-banner-sdk label,#onetrust-pc-sdk label,#ot-sdk-cookie-policy label{display:block;margin-bottom:.5rem;font-weight:600}#onetrust-banner-sdk input[type=checkbox],#onetrust-pc-sdk input[type=checkbox],#ot-sdk-cookie-policy input[type=checkbox]{display:inline}#onetrust-banner-sdk ul,#onetrust-pc-sdk ul,#ot-sdk-cookie-policy ul{list-style:circle inside}#onetrust-banner-sdk ul,#onetrust-pc-sdk ul,#ot-sdk-cookie-policy ul{padding-left:0;margin-top:0}#onetrust-banner-sdk ul ul,#onetrust-pc-sdk ul ul,#ot-sdk-cookie-policy ul ul{margin:1.5rem 0 1.5rem 3rem;font-size:90%}#onetrust-banner-sdk li,#onetrust-pc-sdk li,#ot-sdk-cookie-policy li{margin-bottom:1rem}#onetrust-banner-sdk th,#onetrust-banner-sdk td,#onetrust-pc-sdk th,#onetrust-pc-sdk td,#ot-sdk-cookie-policy th,#ot-sdk-cookie-policy td{padding:12px 15px;text-align:left;border-bottom:1px solid #e1e1e1}#onetrust-banner-sdk button,#onetrust-pc-sdk button,#ot-sdk-cookie-policy button{margin-bottom:1rem;font-family:inherit}#onetrust-banner-sdk .ot-sdk-container:after,#onetrust-banner-sdk .ot-sdk-row:after,#onetrust-pc-sdk .ot-sdk-container:after,#onetrust-pc-sdk .ot-sdk-row:after,#ot-sdk-cookie-policy .ot-sdk-container:after,#ot-sdk-cookie-policy .ot-sdk-row:after{content:"";display:table;clear:both}#onetrust-banner-sdk .ot-sdk-row,#onetrust-pc-sdk .ot-sdk-row,#ot-sdk-cookie-policy .ot-sdk-row{margin:0;max-width:none;display:block}#onetrust-banner-sdk{box-shadow:0 0 18px rgba(0,0,0,.2)}#onetrust-banner-sdk.otFlat{position:fixed;z-index:2147483645;bottom:0;right:0;left:0;background-color:#fff;max-height:90%;overflow-x:hidden;overflow-y:auto}#onetrust-banner-sdk.otFlat.top{top:0px;bottom:auto}#onetrust-banner-sdk.otRelFont{font-size:1rem}#onetrust-banner-sdk>.ot-sdk-container{overflow:hidden}#onetrust-banner-sdk::-webkit-scrollbar{width:11px}#onetrust-banner-sdk::-webkit-scrollbar-thumb{border-radius:10px;background:#c1c1c1}#onetrust-banner-sdk{scrollbar-arrow-color:#c1c1c1;scrollbar-darkshadow-color:#c1c1c1;scrollbar-face-color:#c1c1c1;scrollbar-shadow-color:#c1c1c1}#onetrust-banner-sdk #onetrust-policy{margin:1.25em 0 .625em 2em;overflow:hidden}#onetrust-banner-sdk #onetrust-policy .ot-gv-list-handler{float:left;font-size:.82em;padding:0;margin-bottom:0;border:0;line-height:normal;height:auto;width:auto}#onetrust-banner-sdk #onetrust-policy-title{font-size:1.2em;line-height:1.3;margin-bottom:10px}#onetrust-banner-sdk #onetrust-group-container{position:relative}#onetrust-banner-sdk #onetrust-policy-text{clear:both;text-align:left;font-size:.88em;line-height:1.4}#onetrust-banner-sdk #onetrust-policy-text \*{font-size:inherit;line-height:inherit}#onetrust-banner-sdk #onetrust-policy-text a{font-weight:bold}#onetrust-banner-sdk #onetrust-policy-title,#onetrust-banner-sdk #onetrust-policy-text{color:dimgray;float:left}#onetrust-banner-sdk #onetrust-button-group-parent{min-height:1px;text-align:center}#onetrust-banner-sdk #onetrust-button-group{display:inline-block}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{background-color:#68b631;color:#fff;border-color:#68b631;margin-right:1em;min-width:125px;height:auto;white-space:normal;word-break:break-word;word-wrap:break-word;padding:12px 10px;line-height:1.2;font-size:.813em;font-weight:600}#onetrust-banner-sdk #onetrust-pc-btn-handler.cookie-setting-link{background-color:#fff;border:none;color:#68b631;text-decoration:underline;padding-left:0;padding-right:0}#onetrust-banner-sdk .onetrust-close-btn-ui{width:44px;height:44px;background-size:12px;border:none;position:relative;margin:auto;padding:0}#onetrust-banner-sdk .banner\_logo{display:none}#onetrust-banner-sdk.ot-bnr-w-logo .ot-bnr-logo{position:absolute;top:50%;transform:translateY(-50%);left:0px;margin-right:5px}#onetrust-banner-sdk.ot-bnr-w-logo #onetrust-policy{margin-left:65px}#onetrust-banner-sdk .ot-b-addl-desc{clear:both;float:left;display:block}#onetrust-banner-sdk #banner-options{float:left;display:table;margin-right:0;margin-left:1em;width:calc(100% - 1em)}#onetrust-banner-sdk .banner-option-input{cursor:pointer;width:auto;height:auto;border:none;padding:0;padding-right:3px;margin:0 0 10px;font-size:.82em;line-height:1.4}#onetrust-banner-sdk .banner-option-input \*{pointer-events:none;font-size:inherit;line-height:inherit}#onetrust-banner-sdk .banner-option-input[aria-expanded=true]~.banner-option-details{display:block;height:auto}#onetrust-banner-sdk .banner-option-input[aria-expanded=true] .ot-arrow-container{transform:rotate(90deg)}#onetrust-banner-sdk .banner-option{margin-bottom:12px;margin-left:0;border:none;float:left;padding:0}#onetrust-banner-sdk .banner-option:first-child{padding-left:2px}#onetrust-banner-sdk .banner-option:not(:first-child){padding:0;border:none}#onetrust-banner-sdk .banner-option-header{cursor:pointer;display:inline-block}#onetrust-banner-sdk .banner-option-header :first-child{color:dimgray;font-weight:bold;float:left}#onetrust-banner-sdk .banner-option-header .ot-arrow-container{display:inline-block;border-top:6px solid rgba(0,0,0,0);border-bottom:6px solid rgba(0,0,0,0);border-left:6px solid dimgray;margin-left:10px;vertical-align:middle}#onetrust-banner-sdk .banner-option-details{display:none;font-size:.83em;line-height:1.5;padding:10px 0px 5px 10px;margin-right:10px;height:0px}#onetrust-banner-sdk .banner-option-details \*{font-size:inherit;line-height:inherit;color:dimgray}#onetrust-banner-sdk .ot-arrow-container,#onetrust-banner-sdk .banner-option-details{transition:all 300ms ease-in 0s;-webkit-transition:all 300ms ease-in 0s;-moz-transition:all 300ms ease-in 0s;-o-transition:all 300ms ease-in 0s}#onetrust-banner-sdk .ot-dpd-container{float:left}#onetrust-banner-sdk .ot-dpd-title{margin-bottom:10px}#onetrust-banner-sdk .ot-dpd-title,#onetrust-banner-sdk .ot-dpd-desc{font-size:.88em;line-height:1.4;color:dimgray}#onetrust-banner-sdk .ot-dpd-title \*,#onetrust-banner-sdk .ot-dpd-desc \*{font-size:inherit;line-height:inherit}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text \*{margin-bottom:0}#onetrust-banner-sdk.ot-iab-2 .onetrust-vendors-list-handler{display:block;margin-left:0;margin-top:5px;clear:both;margin-bottom:0;padding:0;border:0;height:auto;width:auto}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button{display:block}#onetrust-banner-sdk.ot-close-btn-link{padding-top:25px}#onetrust-banner-sdk.ot-close-btn-link #onetrust-close-btn-container{top:15px;transform:none;right:15px}#onetrust-banner-sdk.ot-close-btn-link #onetrust-close-btn-container button{padding:0;white-space:pre-wrap;border:none;height:auto;line-height:1.5;text-decoration:underline;font-size:.69em}#onetrust-banner-sdk #onetrust-policy-text,#onetrust-banner-sdk .ot-dpd-desc,#onetrust-banner-sdk .ot-b-addl-desc{font-size:.813em;line-height:1.5}#onetrust-banner-sdk .ot-dpd-desc{margin-bottom:10px}#onetrust-banner-sdk .ot-dpd-desc>.ot-b-addl-desc{margin-top:10px;margin-bottom:10px;font-size:1em}@media only screen and (max-width: 425px){#onetrust-banner-sdk #onetrust-close-btn-container{position:absolute;top:6px;right:2px}#onetrust-banner-sdk #onetrust-policy{margin-left:0;margin-top:3em}#onetrust-banner-sdk #onetrust-button-group{display:block}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{width:100%}#onetrust-banner-sdk .onetrust-close-btn-ui{top:auto;transform:none}#onetrust-banner-sdk #onetrust-policy-title{display:inline;float:none}#onetrust-banner-sdk #banner-options{margin:0;padding:0;width:100%}}@media only screen and (max-width: 550px){#onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{margin-right:0}#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{margin-right:0}}@media only screen and (min-width: 426px)and (max-width: 896px){#onetrust-banner-sdk #onetrust-close-btn-container{position:absolute;top:0;right:0}#onetrust-banner-sdk #onetrust-policy{margin-left:1em;margin-right:1em}#onetrust-banner-sdk .onetrust-close-btn-ui{top:10px;right:10px}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:95%}#onetrust-banner-sdk.ot-iab-2 #onetrust-group-container{width:100%}#onetrust-banner-sdk.ot-bnr-w-logo #onetrust-button-group-parent{padding-left:50px}#onetrust-banner-sdk #onetrust-button-group-parent{width:100%;position:relative;margin-left:0}#onetrust-banner-sdk #onetrust-button-group button{display:inline-block}#onetrust-banner-sdk #onetrust-button-group{margin-right:0;text-align:center}#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{width:auto}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container{display:inline-flex;flex-wrap:wrap}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler{float:none}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container \*[class\*=ot-button-order-]:nth-of-type(1){margin-right:auto !important}#onetrust-banner-sdk .has-reject-all-button #onetrust-pc-btn-handler{float:left}#onetrust-banner-sdk .has-reject-all-button #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-accept-btn-handler{float:right}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group{width:calc(100% - 2em);margin-right:0}#onetrust-banner-sdk .has-reject-all-button #onetrust-pc-btn-handler.cookie-setting-link{padding-left:0px;text-align:left}#onetrust-banner-sdk.ot-buttons-fw .ot-sdk-three button{width:100%;text-align:center}#onetrust-banner-sdk.ot-buttons-fw #onetrust-button-group-parent button{float:none}#onetrust-banner-sdk.ot-buttons-fw #onetrust-pc-btn-handler.cookie-setting-link{text-align:center}}@media only screen and (min-width: 550px){#onetrust-banner-sdk .banner-option:not(:first-child){border-left:1px solid #d8d8d8;padding-left:25px}}@media only screen and (min-width: 425px)and (max-width: 550px){#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group,#onetrust-banner-sdk.ot-iab-2 #onetrust-policy,#onetrust-banner-sdk.ot-iab-2 .banner-option{width:100%}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-accept-btn-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-reject-all-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-pc-btn-handler{width:100%}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-accept-btn-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-reject-all-handler{float:left}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group.ot-button-order-container{width:auto}}@media only screen and (min-width: 769px){#onetrust-banner-sdk #onetrust-button-group{margin-right:30%}#onetrust-banner-sdk #banner-options{margin-left:2em;margin-right:5em;margin-bottom:1.25em;width:calc(100% - 7em)}}@media only screen and (min-width: 897px)and (max-width: 1023px){#onetrust-banner-sdk.vertical-align-content #onetrust-button-group-parent{position:absolute;top:50%;left:80%;transform:translateY(-50%)}#onetrust-banner-sdk #onetrust-close-btn-container{top:50%;margin:auto;transform:translate(-50%, -50%);position:absolute;padding:0;right:0}#onetrust-banner-sdk #onetrust-close-btn-container button{position:relative;margin:0;right:-22px;top:2px}}@media only screen and (min-width: 1024px){#onetrust-banner-sdk #onetrust-close-btn-container{top:50%;margin:auto;transform:translate(-50%, -50%);position:absolute;right:0}#onetrust-banner-sdk #onetrust-close-btn-container button{right:-12px}#onetrust-banner-sdk #onetrust-policy{margin-left:2em}#onetrust-banner-sdk.vertical-align-content #onetrust-button-group-parent{position:absolute;top:50%;left:60%;transform:translateY(-50%)}#onetrust-banner-sdk .ot-optout-signal{width:50%}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-title{width:50%}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text,#onetrust-banner-sdk.ot-iab-2 :not(.ot-dpd-desc)>.ot-b-addl-desc{margin-bottom:1em;width:50%;border-right:1px solid #d8d8d8;padding-right:1rem}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text{margin-bottom:0;padding-bottom:1em}#onetrust-banner-sdk.ot-iab-2 :not(.ot-dpd-desc)>.ot-b-addl-desc{margin-bottom:0;padding-bottom:1em}#onetrust-banner-sdk.ot-iab-2 .ot-dpd-container{width:45%;padding-left:1rem;display:inline-block;float:none}#onetrust-banner-sdk.ot-iab-2 .ot-dpd-title{line-height:1.7}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group-parent{left:auto;right:4%;margin-left:0}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button{display:block}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-button-group-parent{margin:auto;width:30%}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:60%}#onetrust-banner-sdk #onetrust-button-group{margin-right:auto}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{margin-top:1em}}@media only screen and (min-width: 890px){#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group-parent{padding-left:3%;padding-right:4%;margin-left:0}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group{margin-right:0;margin-top:1.25em;width:100%}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group button{width:100%;margin-bottom:5px;margin-top:5px}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group button:last-of-type{margin-bottom:20px}}@media only screen and (min-width: 1280px){#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:55%}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-button-group-parent{width:44%;padding-left:2%;padding-right:2%}#onetrust-banner-sdk:not(.ot-iab-2).vertical-align-content #onetrust-button-group-parent{position:absolute;left:55%}}
+var utag\_data = {"site\_platform":"m2","visit\_country":"us","visit\_language":"en","page\_type":"product listing","site\_section":"product listing>20542","page\_name":"no\_page\_name","page\_category\_level":"chapter"}{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.ikea.com/us/en/#organization","name":"IKEA","url":"https://www.ikea.com/us/en/","areaServed":{"@type":"Country","name":"US"}},{"@type":"WebSite","@id":"https://www.ikea.com/us/en/#website","url":"https://www.ikea.com/us/en/","name":"IKEA","publisher":{"@id":"https://www.ikea.com/us/en/#organization"}},{"@type":"CollectionPage","@id":"https://www.ikea.com/us/en/cat/chair-pads-20542/#page","url":"https://www.ikea.com/us/en/cat/chair-pads-20542/","name":"Chair Pads & Seat Cushions ","description":"Make your chair more comfortable with IKEA's chair pads. Find a variety of dining room, office, and kitchen chair cushions with at great prices!","inLanguage":"en-US","isPartOf":{"@id":"https://www.ikea.com/us/en/#website"},"publisher":{"@id":"https://www.ikea.com/us/en/#organization"},"mainEntity":{"@type":"ItemList","itemListOrder":"ItemListUnordered","numberOfItems":19,"itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/malinda-chair-pad-light-beige-90586983/#product","name":"MALINDA, Chair pad, light beige, 16/14x15x3 \"","url":"https://www.ikea.com/us/en/p/malinda-chair-pad-light-beige-90586983/","image":"https://www.ikea.com/us/en/images/products/malinda-chair-pad-light-beige\_\_0143188\_pe302771\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":9.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":2441}}},{"@type":"ListItem","position":2,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/justina-chair-pad-natural-30586981/#product","name":"JUSTINA, Chair pad, natural, 17/14x16x2 \"","url":"https://www.ikea.com/us/en/p/justina-chair-pad-natural-30586981/","image":"https://www.ikea.com/us/en/images/products/justina-chair-pad-natural\_\_0110995\_pe261630\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":7.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":2737}}},{"@type":"ListItem","position":3,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/vippaert-chair-pad-beige-40599285/#product","name":"VIPPÄRT, Chair pad, beige, 15x15x3 \"","url":"https://www.ikea.com/us/en/p/vippaert-chair-pad-beige-40599285/","image":"https://www.ikea.com/us/en/images/products/vippaert-chair-pad-beige\_\_0668998\_pe714812\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":9.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":77}}},{"@type":"ListItem","position":4,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/akervindefly-chair-pad-gray-20554358/#product","name":"ÅKERVINDEFLY, Chair pad, gray, 15/14x15x2 \"","url":"https://www.ikea.com/us/en/p/akervindefly-chair-pad-gray-20554358/","image":"https://www.ikea.com/us/en/images/products/akervindefly-chair-pad-gray\_\_1159545\_pe888541\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":14.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":438}}},{"@type":"ListItem","position":5,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/gryttom-cushion-gransel-natural-50576679/#product","name":"GRYTTOM, Cushion, Gransel natural, 18x17 \"","url":"https://www.ikea.com/us/en/p/gryttom-cushion-gransel-natural-50576679/","image":"https://www.ikea.com/us/en/images/products/gryttom-cushion-gransel-natural\_\_1230236\_pe915710\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":10,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":18}}},{"@type":"ListItem","position":6,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/madonnalilja-chair-pad-beige-70559730/#product","name":"MADONNALILJA, Chair pad, beige, 12 5/8 \"","url":"https://www.ikea.com/us/en/p/madonnalilja-chair-pad-beige-70559730/","image":"https://www.ikea.com/us/en/images/products/madonnalilja-chair-pad-beige\_\_1159535\_pe888533\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":4.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":135}}},{"@type":"ListItem","position":7,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/aelvgraesmal-chair-pad-beige-20586986/#product","name":"ÄLVGRÄSMAL, Chair pad, beige, 13/12x13x1 \"","url":"https://www.ikea.com/us/en/p/aelvgraesmal-chair-pad-beige-20586986/","image":"https://www.ikea.com/us/en/images/products/aelvgraesmal-chair-pad-beige\_\_1121060\_pe874101\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":9.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.3,"reviewCount":294}}},{"@type":"ListItem","position":8,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/paerleternell-chair-pad-grann-black-80552101/#product","name":"PÄRLETERNELL, Chair pad, Grann black, 14 \"","url":"https://www.ikea.com/us/en/p/paerleternell-chair-pad-grann-black-80552101/","image":"https://www.ikea.com/us/en/images/products/paerleternell-chair-pad-grann-black\_\_1138176\_pe879872\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":24.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":17}}},{"@type":"ListItem","position":9,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/braemoen-chair-pad-gray-beige-indoor-outdoor-80484664/#product","name":"BRÄMÖN, Chair pad, gray-beige indoor/outdoor, 13 3/8x13x0 \"","url":"https://www.ikea.com/us/en/p/braemoen-chair-pad-gray-beige-indoor-outdoor-80484664/","image":"https://www.ikea.com/us/en/images/products/braemoen-chair-pad-gray-beige-indoor-outdoor\_\_0969559\_pe810833\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":2.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.1,"reviewCount":288}}},{"@type":"ListItem","position":10,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/dvaergdunoert-chair-pad-gray-white-80586974/#product","name":"DVÄRGDUNÖRT, Chair pad, gray/white, 17/14x17x1 5/8 \"","url":"https://www.ikea.com/us/en/p/dvaergdunoert-chair-pad-gray-white-80586974/","image":"https://www.ikea.com/us/en/images/products/dvaergdunoert-chair-pad-gray-white\_\_1139851\_pe880489\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":19.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":51}}},{"@type":"ListItem","position":11,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/staggstarr-chair-pad-light-gray-70508726/#product","name":"STAGGSTARR, Chair pad, light gray, 14x14x1 \"","url":"https://www.ikea.com/us/en/p/staggstarr-chair-pad-light-gray-70508726/","image":"https://www.ikea.com/us/en/images/products/staggstarr-chair-pad-light-gray\_\_1024067\_pe833404\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":7.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.5,"reviewCount":238}}},{"@type":"ListItem","position":12,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/fryksas-cushion-risane-natural-00579982/#product","name":"FRYKSÅS, Cushion, Risane natural, 20x19 \"","url":"https://www.ikea.com/us/en/p/fryksas-cushion-risane-natural-00579982/","image":"https://www.ikea.com/us/en/images/products/fryksas-cushion-risane-natural\_\_1288290\_pe934141\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":20,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4,"reviewCount":2}}},{"@type":"ListItem","position":13,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/aengsfraeken-chair-pad-blue-indoor-outdoor-90624763/#product","name":"ÄNGSFRÄKEN, Chair pad, blue/indoor/outdoor, 14 \"","url":"https://www.ikea.com/us/en/p/aengsfraeken-chair-pad-blue-indoor-outdoor-90624763/","image":"https://www.ikea.com/us/en/images/products/aengsfraeken-chair-pad-blue-indoor-outdoor\_\_1485173\_pe1001875\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":4.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.5,"reviewCount":79}}},{"@type":"ListItem","position":14,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/maloertsmott-chair-pad-gray-90553157/#product","name":"MALÖRTSMOTT, Chair pad, gray, 12 5/8 \"","url":"https://www.ikea.com/us/en/p/maloertsmott-chair-pad-gray-90553157/","image":"https://www.ikea.com/us/en/images/products/maloertsmott-chair-pad-gray\_\_1159540\_pe888537\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":4.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":214}}},{"@type":"ListItem","position":15,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/akervindefly-chair-pad-dark-gray-30607993/#product","name":"ÅKERVINDEFLY, Chair pad, dark gray, 15 \"","url":"https://www.ikea.com/us/en/p/akervindefly-chair-pad-dark-gray-30607993/","image":"https://www.ikea.com/us/en/images/products/akervindefly-chair-pad-dark-gray\_\_1396986\_pe967465\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":14.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":10}}},{"@type":"ListItem","position":16,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/vattenmott-chair-pad-gray-00573008/#product","name":"VATTENMOTT, Chair pad, gray, 16x15x2 \"","url":"https://www.ikea.com/us/en/p/vattenmott-chair-pad-gray-00573008/","image":"https://www.ikea.com/us/en/images/products/vattenmott-chair-pad-gray\_\_1237877\_pe918199\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":9.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.2,"reviewCount":59}}},{"@type":"ListItem","position":17,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/djupvik-cushion-blekinge-white-80300325/#product","name":"DJUPVIK, Cushion, Blekinge white, 21x21 \"","url":"https://www.ikea.com/us/en/p/djupvik-cushion-blekinge-white-80300325/","image":"https://www.ikea.com/us/en/images/products/djupvik-cushion-blekinge-white\_\_0731037\_pe737941\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":30,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":91}}},{"@type":"ListItem","position":18,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/pynten-seat-pad-dark-gray-90474990/#product","name":"PYNTEN, Seat pad, dark gray, 16 ¼x17 \"","url":"https://www.ikea.com/us/en/p/pynten-seat-pad-dark-gray-90474990/","image":"https://www.ikea.com/us/en/images/products/pynten-seat-pad-dark-gray\_\_0805853\_pe769702\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":10,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.2,"reviewCount":171}}},{"@type":"ListItem","position":19,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/bjoerktrast-childrens-armchair-cushion-white-black-80553290/#product","name":"BJÖRKTRAST, Children's armchair cushion, white/black","url":"https://www.ikea.com/us/en/p/bjoerktrast-childrens-armchair-cushion-white-black-80553290/","image":"https://www.ikea.com/us/en/images/products/bjoerktrast-childrens-armchair-cushion-white-black\_\_1201801\_pe905721\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":20,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":3,"reviewCount":2}}}]}}]}#onetrust-banner-sdk .onetrust-vendors-list-handler{cursor:pointer;color:#1f96db;font-size:inherit;font-weight:bold;text-decoration:none;margin-left:5px}#onetrust-banner-sdk .onetrust-vendors-list-handler:hover{color:#1f96db}#onetrust-banner-sdk:focus{outline:2px solid #000;outline-offset:-2px}#onetrust-banner-sdk a:focus{outline:2px solid #000}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{outline-offset:1px}#onetrust-banner-sdk.ot-bnr-w-logo .ot-bnr-logo{height:64px;width:64px}#onetrust-banner-sdk .ot-tcf2-vendor-count.ot-text-bold{font-weight:bold}#onetrust-banner-sdk .ot-button-order-0{order:0}#onetrust-banner-sdk .ot-button-order-1{order:1}#onetrust-banner-sdk .ot-button-order-2{order:2}#onetrust-banner-sdk #onetrust-close-btn-container svg{height:10px;width:10px;pointer-events:none}#onetrust-banner-sdk .ot-close-icon,#onetrust-pc-sdk .ot-close-icon,#ot-sync-ntfy .ot-close-icon{background-size:contain;background-repeat:no-repeat;background-position:center;height:12px;width:12px}#onetrust-banner-sdk .powered-by-logo,#onetrust-banner-sdk .ot-pc-footer-logo a,#onetrust-pc-sdk .powered-by-logo,#onetrust-pc-sdk .ot-pc-footer-logo a,#ot-sync-ntfy .powered-by-logo,#ot-sync-ntfy .ot-pc-footer-logo a{background-size:contain;background-repeat:no-repeat;background-position:center;height:25px;width:152px;display:block;text-decoration:none;font-size:.75em}#onetrust-banner-sdk .powered-by-logo:hover,#onetrust-banner-sdk .ot-pc-footer-logo a:hover,#onetrust-pc-sdk .powered-by-logo:hover,#onetrust-pc-sdk .ot-pc-footer-logo a:hover,#ot-sync-ntfy .powered-by-logo:hover,#ot-sync-ntfy .ot-pc-footer-logo a:hover{color:#565656}#onetrust-banner-sdk h3 \*,#onetrust-banner-sdk h4 \*,#onetrust-banner-sdk h6 \*,#onetrust-banner-sdk button \*,#onetrust-banner-sdk a[data-parent-id] \*,#onetrust-banner-sdk p[role=heading] \*,#onetrust-pc-sdk h3 \*,#onetrust-pc-sdk h4 \*,#onetrust-pc-sdk h6 \*,#onetrust-pc-sdk button \*,#onetrust-pc-sdk a[data-parent-id] \*,#onetrust-pc-sdk p[role=heading] \*,#ot-sync-ntfy h3 \*,#ot-sync-ntfy h4 \*,#ot-sync-ntfy h6 \*,#ot-sync-ntfy button \*,#ot-sync-ntfy a[data-parent-id] \*,#ot-sync-ntfy p[role=heading] \*{font-size:inherit;font-weight:inherit;color:inherit}#onetrust-banner-sdk .ot-hide,#onetrust-pc-sdk .ot-hide,#ot-sync-ntfy .ot-hide{display:none !important}#onetrust-banner-sdk button.ot-link-btn:hover,#onetrust-pc-sdk button.ot-link-btn:hover,#ot-sync-ntfy button.ot-link-btn:hover{text-decoration:underline;opacity:1}#onetrust-pc-sdk .ot-sdk-row .ot-sdk-column{padding:0}#onetrust-pc-sdk .ot-sdk-container{padding-right:0}#onetrust-pc-sdk .ot-sdk-row{flex-direction:initial;width:100%}#onetrust-pc-sdk [type=checkbox]:checked,#onetrust-pc-sdk [type=checkbox]:not(:checked){pointer-events:initial}#onetrust-pc-sdk [type=checkbox]:disabled+label::before,#onetrust-pc-sdk [type=checkbox]:disabled+label:after,#onetrust-pc-sdk [type=checkbox]:disabled+label{pointer-events:none;opacity:.8}#onetrust-pc-sdk #vendor-list-content{transform:translate3d(0, 0, 0)}#onetrust-pc-sdk li input[type=checkbox]{z-index:1}#onetrust-pc-sdk li .ot-checkbox label{z-index:2}#onetrust-pc-sdk li .ot-checkbox input[type=checkbox]{height:auto;width:auto}#onetrust-pc-sdk li .host-title a,#onetrust-pc-sdk li .ot-host-name a,#onetrust-pc-sdk li .accordion-text,#onetrust-pc-sdk li .ot-acc-txt{z-index:2;position:relative}#onetrust-pc-sdk input{margin:3px .1ex}#onetrust-pc-sdk .pc-logo,#onetrust-pc-sdk .ot-pc-logo{height:60px;width:180px;background-position:center;background-size:contain;background-repeat:no-repeat;display:inline-flex;justify-content:center;align-items:center}#onetrust-pc-sdk .pc-logo img,#onetrust-pc-sdk .ot-pc-logo img{max-height:100%;max-width:100%}#onetrust-pc-sdk .pc-logo svg,#onetrust-pc-sdk .ot-pc-logo svg{height:60px;width:180px}#onetrust-pc-sdk #close-pc-btn-handler>svg{margin:auto;display:block;height:12px;width:12px}#onetrust-pc-sdk .screen-reader-only,#onetrust-pc-sdk .ot-scrn-rdr,.ot-sdk-cookie-policy .screen-reader-only,.ot-sdk-cookie-policy .ot-scrn-rdr{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}#onetrust-pc-sdk.ot-fade-in,.onetrust-pc-dark-filter.ot-fade-in,#onetrust-banner-sdk.ot-fade-in{animation-name:onetrust-fade-in;animation-duration:400ms;animation-timing-function:ease-in-out}#onetrust-pc-sdk.ot-hide{display:none !important}.onetrust-pc-dark-filter.ot-hide{display:none !important}#ot-sdk-btn.ot-sdk-show-settings,#ot-sdk-btn.optanon-show-settings{color:#fff;background-color:#468254;height:auto;white-space:normal;word-wrap:break-word;padding:.8em 2em;font-size:.8em;line-height:1.2;cursor:pointer;-moz-transition:.1s ease;-o-transition:.1s ease;-webkit-transition:1s ease;transition:.1s ease}#ot-sdk-btn.ot-sdk-show-settings:hover,#ot-sdk-btn.optanon-show-settings:hover{color:#fff;background-color:#2c6415}#ot-sdk-btn.ot-sdk-show-settings:active,#ot-sdk-btn.optanon-show-settings:active{color:#fff;background-color:#2c6415;border:1px solid rgba(162,192,169,.5)}.onetrust-pc-dark-filter{background:rgba(0,0,0,.5);z-index:2147483646;width:100%;height:100%;overflow:hidden;position:fixed;top:0;bottom:0;left:0}@keyframes onetrust-fade-in{0%{opacity:0}100%{opacity:1}}.ot-cookie-label{text-decoration:underline}@media only screen and (min-width: 426px)and (max-width: 896px)and (orientation: landscape){#onetrust-pc-sdk p{font-size:.75em}}#onetrust-banner-sdk .banner-option-input:focus+label{outline:1px solid #000;outline-style:auto}.category-vendors-list-handler+a:focus,.category-vendors-list-handler+a:focus-visible{outline:2px solid #000}#onetrust-pc-sdk .ot-userid-title{margin-top:10px}#onetrust-pc-sdk .ot-userid-title>span,#onetrust-pc-sdk .ot-userid-timestamp>span{font-weight:700}#onetrust-pc-sdk .ot-userid-desc{font-style:italic}#onetrust-pc-sdk .ot-host-desc a{pointer-events:initial}#onetrust-pc-sdk .ot-ven-hdr>p a{position:relative;z-index:2;pointer-events:initial}#onetrust-pc-sdk .ot-vnd-serv .ot-vnd-item .ot-vnd-info a,#onetrust-pc-sdk .ot-vs-list .ot-vnd-item .ot-vnd-info a{margin-right:auto}#onetrust-pc-sdk .ot-pc-footer-logo svg,#onetrust-pc-sdk .ot-pc-footer-logo img{width:136px;height:16px}#onetrust-pc-sdk .ot-pur-vdr-count{font-weight:400;font-size:.8em;padding-top:3px;display:block}#onetrust-pc-sdk p[role=heading] .ot-pur-vdr-count{font-weight:400 !important;font-size:.8em !important}#onetrust-banner-sdk .ot-optout-signal,#onetrust-pc-sdk .ot-optout-signal{border:1px solid #32ae88;border-radius:3px;padding:5px;margin-bottom:10px;background-color:#f9fffa;font-size:.85rem;line-height:2}#onetrust-banner-sdk .ot-optout-signal .ot-optout-icon,#onetrust-pc-sdk .ot-optout-signal .ot-optout-icon{display:inline;margin-right:5px}#onetrust-banner-sdk .ot-optout-signal svg,#onetrust-pc-sdk .ot-optout-signal svg{height:20px;width:30px}#onetrust-banner-sdk .ot-optout-signal svg.ot-source-sprite,#onetrust-pc-sdk .ot-optout-signal svg.ot-source-sprite{position:relative;bottom:-3px}#onetrust-banner-sdk .ot-optout-signal svg:not(.ot-source-sprite),#onetrust-pc-sdk .ot-optout-signal svg:not(.ot-source-sprite){transform:scale(0.5)}#onetrust-banner-sdk .ot-optout-signal svg:not(.ot-source-sprite) path,#onetrust-pc-sdk .ot-optout-signal svg:not(.ot-source-sprite) path{fill:#32ae88}#onetrust-consent-sdk .ot-general-modal{overflow:hidden;position:fixed;margin:0 auto;top:50%;left:50%;width:40%;padding:1.5rem;max-width:575px;min-width:575px;z-index:2147483647;border-radius:2.5px;transform:translate(-50%, -50%)}#onetrust-consent-sdk .ot-signature-health-group{margin-top:1rem;padding-left:1.25rem;padding-right:1.25rem;margin-bottom:.625rem;width:calc(100% - 2.5rem)}#onetrust-consent-sdk .ot-signature-health-group .ot-signature-health-form{gap:.5rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-health-form{width:70%;gap:.35rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-input{height:38px;padding:6px 10px;background-color:#fff;border:1px solid #d1d1d1;border-radius:4px;box-shadow:none;box-sizing:border-box}#onetrust-consent-sdk .ot-signature-health .ot-signature-subtitle{font-size:1.125rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-group-title{font-size:1.25rem;font-weight:bold}#onetrust-consent-sdk .ot-signature-health,#onetrust-consent-sdk .ot-signature-health-group{display:flex;flex-direction:column;gap:1rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-cont,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-cont{display:flex;flex-direction:column;gap:.25rem}#onetrust-consent-sdk .ot-signature-health .ot-signature-paragraph,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-paragraph{margin:0;line-height:20px;font-size:max(14px,.875rem)}#onetrust-consent-sdk .ot-signature-health .ot-health-signature-error,#onetrust-consent-sdk .ot-signature-health-group .ot-health-signature-error{color:#4d4d4d;font-size:min(12px,.75rem)}#onetrust-consent-sdk .ot-signature-health .ot-signature-buttons-cont,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-buttons-cont{margin-top:max(.75rem,2%);gap:1rem;display:flex;justify-content:flex-end}#onetrust-consent-sdk .ot-signature-health .ot-signature-button,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-button{flex:1;height:auto;color:#fff;cursor:pointer;line-height:1.2;min-width:125px;font-weight:600;font-size:.813em;border-radius:2px;padding:12px 10px;white-space:normal;word-wrap:break-word;word-break:break-word;background-color:#68b631;border:2px solid #68b631}#onetrust-consent-sdk .ot-signature-health .ot-signature-button.reject,#onetrust-consent-sdk .ot-signature-health-group .ot-signature-button.reject{background-color:#fff}#onetrust-consent-sdk .ot-input-field-cont{display:flex;flex-direction:column;gap:.5rem}#onetrust-consent-sdk .ot-input-field-cont .ot-signature-input{width:65%}#onetrust-consent-sdk .ot-signature-health-form{display:flex;flex-direction:column}#onetrust-consent-sdk .ot-signature-health-form .ot-signature-label{margin-bottom:0;line-height:20px;font-size:max(14px,.875rem)}#onetrust-consent-sdk #onetrust-sprite-svg{display:none}@media only screen and (max-width: 600px){#onetrust-consent-sdk .ot-general-modal{min-width:100%}#onetrust-consent-sdk .ot-signature-health .ot-signature-health-form{width:100%}#onetrust-consent-sdk .ot-input-field-cont .ot-signature-input{width:100%}}#onetrust-banner-sdk,#onetrust-pc-sdk,#ot-sdk-cookie-policy,#ot-sync-ntfy{font-size:16px}#onetrust-banner-sdk \*,#onetrust-banner-sdk ::after,#onetrust-banner-sdk ::before,#onetrust-pc-sdk \*,#onetrust-pc-sdk ::after,#onetrust-pc-sdk ::before,#ot-sdk-cookie-policy \*,#ot-sdk-cookie-policy ::after,#ot-sdk-cookie-policy ::before,#ot-sync-ntfy \*,#ot-sync-ntfy ::after,#ot-sync-ntfy ::before{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}#onetrust-banner-sdk div,#onetrust-banner-sdk span,#onetrust-banner-sdk h1,#onetrust-banner-sdk h2,#onetrust-banner-sdk h3,#onetrust-banner-sdk h4,#onetrust-banner-sdk h5,#onetrust-banner-sdk h6,#onetrust-banner-sdk p,#onetrust-banner-sdk img,#onetrust-banner-sdk svg,#onetrust-banner-sdk button,#onetrust-banner-sdk section,#onetrust-banner-sdk a,#onetrust-banner-sdk label,#onetrust-banner-sdk input,#onetrust-banner-sdk ul,#onetrust-banner-sdk li,#onetrust-banner-sdk nav,#onetrust-banner-sdk table,#onetrust-banner-sdk thead,#onetrust-banner-sdk tr,#onetrust-banner-sdk td,#onetrust-banner-sdk tbody,#onetrust-banner-sdk .ot-main-content,#onetrust-banner-sdk .ot-toggle,#onetrust-banner-sdk #ot-content,#onetrust-banner-sdk #ot-pc-content,#onetrust-banner-sdk .checkbox,#onetrust-pc-sdk div,#onetrust-pc-sdk span,#onetrust-pc-sdk h1,#onetrust-pc-sdk h2,#onetrust-pc-sdk h3,#onetrust-pc-sdk h4,#onetrust-pc-sdk h5,#onetrust-pc-sdk h6,#onetrust-pc-sdk p,#onetrust-pc-sdk img,#onetrust-pc-sdk svg,#onetrust-pc-sdk button,#onetrust-pc-sdk section,#onetrust-pc-sdk a,#onetrust-pc-sdk label,#onetrust-pc-sdk input,#onetrust-pc-sdk ul,#onetrust-pc-sdk li,#onetrust-pc-sdk nav,#onetrust-pc-sdk table,#onetrust-pc-sdk thead,#onetrust-pc-sdk tr,#onetrust-pc-sdk td,#onetrust-pc-sdk tbody,#onetrust-pc-sdk .ot-main-content,#onetrust-pc-sdk .ot-toggle,#onetrust-pc-sdk #ot-content,#onetrust-pc-sdk #ot-pc-content,#onetrust-pc-sdk .checkbox,#ot-sdk-cookie-policy div,#ot-sdk-cookie-policy span,#ot-sdk-cookie-policy h1,#ot-sdk-cookie-policy h2,#ot-sdk-cookie-policy h3,#ot-sdk-cookie-policy h4,#ot-sdk-cookie-policy h5,#ot-sdk-cookie-policy h6,#ot-sdk-cookie-policy p,#ot-sdk-cookie-policy img,#ot-sdk-cookie-policy svg,#ot-sdk-cookie-policy button,#ot-sdk-cookie-policy section,#ot-sdk-cookie-policy a,#ot-sdk-cookie-policy label,#ot-sdk-cookie-policy input,#ot-sdk-cookie-policy ul,#ot-sdk-cookie-policy li,#ot-sdk-cookie-policy nav,#ot-sdk-cookie-policy table,#ot-sdk-cookie-policy thead,#ot-sdk-cookie-policy tr,#ot-sdk-cookie-policy td,#ot-sdk-cookie-policy tbody,#ot-sdk-cookie-policy .ot-main-content,#ot-sdk-cookie-policy .ot-toggle,#ot-sdk-cookie-policy #ot-content,#ot-sdk-cookie-policy #ot-pc-content,#ot-sdk-cookie-policy .checkbox,#ot-sync-ntfy div,#ot-sync-ntfy span,#ot-sync-ntfy h1,#ot-sync-ntfy h2,#ot-sync-ntfy h3,#ot-sync-ntfy h4,#ot-sync-ntfy h5,#ot-sync-ntfy h6,#ot-sync-ntfy p,#ot-sync-ntfy img,#ot-sync-ntfy svg,#ot-sync-ntfy button,#ot-sync-ntfy section,#ot-sync-ntfy a,#ot-sync-ntfy label,#ot-sync-ntfy input,#ot-sync-ntfy ul,#ot-sync-ntfy li,#ot-sync-ntfy nav,#ot-sync-ntfy table,#ot-sync-ntfy thead,#ot-sync-ntfy tr,#ot-sync-ntfy td,#ot-sync-ntfy tbody,#ot-sync-ntfy .ot-main-content,#ot-sync-ntfy .ot-toggle,#ot-sync-ntfy #ot-content,#ot-sync-ntfy #ot-pc-content,#ot-sync-ntfy .checkbox{font-family:inherit;font-weight:normal;-webkit-font-smoothing:auto;letter-spacing:normal;line-height:normal;padding:0;margin:0;height:auto;min-height:0;max-height:none;width:auto;min-width:0;max-width:none;border-radius:0;border:none;clear:none;float:none;position:static;bottom:auto;left:auto;right:auto;top:auto;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;white-space:normal;background:none;overflow:visible;vertical-align:baseline;visibility:visible;z-index:auto;box-shadow:none}#onetrust-banner-sdk img,#onetrust-pc-sdk img,#ot-sdk-cookie-policy img,#ot-sync-ntfy img{overflow:hidden !important}#onetrust-banner-sdk label:before,#onetrust-banner-sdk label:after,#onetrust-banner-sdk .checkbox:after,#onetrust-banner-sdk .checkbox:before,#onetrust-pc-sdk label:before,#onetrust-pc-sdk label:after,#onetrust-pc-sdk .checkbox:after,#onetrust-pc-sdk .checkbox:before,#ot-sdk-cookie-policy label:before,#ot-sdk-cookie-policy label:after,#ot-sdk-cookie-policy .checkbox:after,#ot-sdk-cookie-policy .checkbox:before,#ot-sync-ntfy label:before,#ot-sync-ntfy label:after,#ot-sync-ntfy .checkbox:after,#ot-sync-ntfy .checkbox:before{content:"";content:none}#onetrust-banner-sdk .ot-sdk-container,#onetrust-pc-sdk .ot-sdk-container,#ot-sdk-cookie-policy .ot-sdk-container{position:relative;width:100%;max-width:100%;margin:0 auto;padding:0 20px;box-sizing:border-box}#onetrust-banner-sdk .ot-sdk-column,#onetrust-banner-sdk .ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-column,#onetrust-pc-sdk .ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-column,#ot-sdk-cookie-policy .ot-sdk-columns{width:100%;float:left;box-sizing:border-box;padding:0;display:initial}@media(min-width: 400px){#onetrust-banner-sdk .ot-sdk-container,#onetrust-pc-sdk .ot-sdk-container,#ot-sdk-cookie-policy .ot-sdk-container{width:90%;padding:0}}@media(min-width: 550px){#onetrust-banner-sdk .ot-sdk-container,#onetrust-pc-sdk .ot-sdk-container,#ot-sdk-cookie-policy .ot-sdk-container{width:100%}#onetrust-banner-sdk .ot-sdk-column,#onetrust-banner-sdk .ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-column,#onetrust-pc-sdk .ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-column,#ot-sdk-cookie-policy .ot-sdk-columns{margin-left:4%}#onetrust-banner-sdk .ot-sdk-column:first-child,#onetrust-banner-sdk .ot-sdk-columns:first-child,#onetrust-pc-sdk .ot-sdk-column:first-child,#onetrust-pc-sdk .ot-sdk-columns:first-child,#ot-sdk-cookie-policy .ot-sdk-column:first-child,#ot-sdk-cookie-policy .ot-sdk-columns:first-child{margin-left:0}#onetrust-banner-sdk .ot-sdk-two.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-two.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-two.ot-sdk-columns{width:13.3333333333%}#onetrust-banner-sdk .ot-sdk-three.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-three.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-three.ot-sdk-columns{width:22%}#onetrust-banner-sdk .ot-sdk-four.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-four.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-four.ot-sdk-columns{width:30.6666666667%}#onetrust-banner-sdk .ot-sdk-eight.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-eight.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-eight.ot-sdk-columns{width:65.3333333333%}#onetrust-banner-sdk .ot-sdk-nine.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-nine.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-nine.ot-sdk-columns{width:74%}#onetrust-banner-sdk .ot-sdk-ten.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-ten.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-ten.ot-sdk-columns{width:82.6666666667%}#onetrust-banner-sdk .ot-sdk-eleven.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-eleven.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-eleven.ot-sdk-columns{width:91.3333333333%}#onetrust-banner-sdk .ot-sdk-twelve.ot-sdk-columns,#onetrust-pc-sdk .ot-sdk-twelve.ot-sdk-columns,#ot-sdk-cookie-policy .ot-sdk-twelve.ot-sdk-columns{width:100%;margin-left:0}}#onetrust-banner-sdk h1,#onetrust-banner-sdk h2,#onetrust-banner-sdk h3,#onetrust-banner-sdk h4,#onetrust-banner-sdk h5,#onetrust-banner-sdk h6,#onetrust-banner-sdk p[role=heading],#onetrust-pc-sdk h1,#onetrust-pc-sdk h2,#onetrust-pc-sdk h3,#onetrust-pc-sdk h4,#onetrust-pc-sdk h5,#onetrust-pc-sdk h6,#onetrust-pc-sdk p[role=heading],#ot-sdk-cookie-policy h1,#ot-sdk-cookie-policy h2,#ot-sdk-cookie-policy h3,#ot-sdk-cookie-policy h4,#ot-sdk-cookie-policy h5,#ot-sdk-cookie-policy h6,#ot-sdk-cookie-policy p[role=heading]{margin-top:0;font-weight:600;font-family:inherit}#onetrust-banner-sdk h1,#onetrust-pc-sdk h1,#ot-sdk-cookie-policy h1{font-size:1.5rem;line-height:1.2}#onetrust-banner-sdk h2,#onetrust-pc-sdk h2,#ot-sdk-cookie-policy h2{font-size:1.5rem;line-height:1.25}#onetrust-banner-sdk h3,#onetrust-pc-sdk h3,#ot-sdk-cookie-policy h3{font-size:1.5rem;line-height:1.3}#onetrust-banner-sdk h4,#onetrust-pc-sdk h4,#ot-sdk-cookie-policy h4{font-size:1.5rem;line-height:1.35}#onetrust-banner-sdk h5,#onetrust-pc-sdk h5,#ot-sdk-cookie-policy h5{font-size:1.5rem;line-height:1.5}#onetrust-banner-sdk h6,#onetrust-pc-sdk h6,#ot-sdk-cookie-policy h6{font-size:1.5rem;line-height:1.6}@media(min-width: 550px){#onetrust-banner-sdk h1,#onetrust-pc-sdk h1,#ot-sdk-cookie-policy h1{font-size:1.5rem}#onetrust-banner-sdk h2,#onetrust-pc-sdk h2,#ot-sdk-cookie-policy h2{font-size:1.5rem}#onetrust-banner-sdk h3,#onetrust-pc-sdk h3,#ot-sdk-cookie-policy h3{font-size:1.5rem}#onetrust-banner-sdk h4,#onetrust-pc-sdk h4,#ot-sdk-cookie-policy h4{font-size:1.5rem}#onetrust-banner-sdk h5,#onetrust-pc-sdk h5,#ot-sdk-cookie-policy h5{font-size:1.5rem}#onetrust-banner-sdk h6,#onetrust-pc-sdk h6,#ot-sdk-cookie-policy h6{font-size:1.5rem}}#onetrust-banner-sdk p:not([role=heading]),#onetrust-pc-sdk p:not([role=heading]),#ot-sdk-cookie-policy p:not([role=heading]){margin:0 0 1em 0;font-family:inherit;line-height:normal}#onetrust-banner-sdk a,#onetrust-pc-sdk a,#ot-sdk-cookie-policy a{color:#565656;text-decoration:underline}#onetrust-banner-sdk a:hover,#onetrust-pc-sdk a:hover,#ot-sdk-cookie-policy a:hover{color:#565656;text-decoration:none}#onetrust-banner-sdk .ot-sdk-button,#onetrust-banner-sdk button,#onetrust-pc-sdk .ot-sdk-button,#onetrust-pc-sdk button,#ot-sdk-cookie-policy .ot-sdk-button,#ot-sdk-cookie-policy button{margin-bottom:1rem;font-family:inherit}#onetrust-banner-sdk .ot-sdk-button,#onetrust-banner-sdk button,#onetrust-pc-sdk .ot-sdk-button,#onetrust-pc-sdk button,#ot-sdk-cookie-policy .ot-sdk-button,#ot-sdk-cookie-policy button{display:inline-block;height:38px;padding:0 30px;color:#555;text-align:center;font-size:.9em;font-weight:400;line-height:38px;letter-spacing:.01em;text-decoration:none;white-space:nowrap;background-color:rgba(0,0,0,0);border-radius:2px;border:1px solid #bbb;cursor:pointer;box-sizing:border-box}#onetrust-banner-sdk .ot-sdk-button:hover,#onetrust-banner-sdk :not(.ot-leg-btn-container)>button:not(.ot-link-btn):hover,#onetrust-banner-sdk :not(.ot-leg-btn-container)>button:not(.ot-link-btn):focus,#onetrust-pc-sdk .ot-sdk-button:hover,#onetrust-pc-sdk :not(.ot-leg-btn-container)>button:not(.ot-link-btn):hover,#onetrust-pc-sdk :not(.ot-leg-btn-container)>button:not(.ot-link-btn):focus,#ot-sdk-cookie-policy .ot-sdk-button:hover,#ot-sdk-cookie-policy :not(.ot-leg-btn-container)>button:not(.ot-link-btn):hover,#ot-sdk-cookie-policy :not(.ot-leg-btn-container)>button:not(.ot-link-btn):focus{color:#333;border-color:#888;opacity:.9}#onetrust-banner-sdk .ot-sdk-button:focus,#onetrust-banner-sdk :not(.ot-leg-btn-container)>button:focus,#onetrust-pc-sdk .ot-sdk-button:focus,#onetrust-pc-sdk :not(.ot-leg-btn-container)>button:focus,#ot-sdk-cookie-policy .ot-sdk-button:focus,#ot-sdk-cookie-policy :not(.ot-leg-btn-container)>button:focus{outline:2px solid #000}#onetrust-banner-sdk .ot-sdk-button.ot-sdk-button-primary,#onetrust-banner-sdk button.ot-sdk-button-primary,#onetrust-banner-sdk input[type=submit].ot-sdk-button-primary,#onetrust-banner-sdk input[type=reset].ot-sdk-button-primary,#onetrust-banner-sdk input[type=button].ot-sdk-button-primary,#onetrust-pc-sdk .ot-sdk-button.ot-sdk-button-primary,#onetrust-pc-sdk button.ot-sdk-button-primary,#onetrust-pc-sdk input[type=submit].ot-sdk-button-primary,#onetrust-pc-sdk input[type=reset].ot-sdk-button-primary,#onetrust-pc-sdk input[type=button].ot-sdk-button-primary,#ot-sdk-cookie-policy .ot-sdk-button.ot-sdk-button-primary,#ot-sdk-cookie-policy button.ot-sdk-button-primary,#ot-sdk-cookie-policy input[type=submit].ot-sdk-button-primary,#ot-sdk-cookie-policy input[type=reset].ot-sdk-button-primary,#ot-sdk-cookie-policy input[type=button].ot-sdk-button-primary{color:#fff;background-color:#33c3f0;border-color:#33c3f0}#onetrust-banner-sdk .ot-sdk-button.ot-sdk-button-primary:hover,#onetrust-banner-sdk button.ot-sdk-button-primary:hover,#onetrust-banner-sdk input[type=submit].ot-sdk-button-primary:hover,#onetrust-banner-sdk input[type=reset].ot-sdk-button-primary:hover,#onetrust-banner-sdk input[type=button].ot-sdk-button-primary:hover,#onetrust-banner-sdk .ot-sdk-button.ot-sdk-button-primary:focus,#onetrust-banner-sdk button.ot-sdk-button-primary:focus,#onetrust-banner-sdk input[type=submit].ot-sdk-button-primary:focus,#onetrust-banner-sdk input[type=reset].ot-sdk-button-primary:focus,#onetrust-banner-sdk input[type=button].ot-sdk-button-primary:focus,#onetrust-pc-sdk .ot-sdk-button.ot-sdk-button-primary:hover,#onetrust-pc-sdk button.ot-sdk-button-primary:hover,#onetrust-pc-sdk input[type=submit].ot-sdk-button-primary:hover,#onetrust-pc-sdk input[type=reset].ot-sdk-button-primary:hover,#onetrust-pc-sdk input[type=button].ot-sdk-button-primary:hover,#onetrust-pc-sdk .ot-sdk-button.ot-sdk-button-primary:focus,#onetrust-pc-sdk button.ot-sdk-button-primary:focus,#onetrust-pc-sdk input[type=submit].ot-sdk-button-primary:focus,#onetrust-pc-sdk input[type=reset].ot-sdk-button-primary:focus,#onetrust-pc-sdk input[type=button].ot-sdk-button-primary:focus,#ot-sdk-cookie-policy .ot-sdk-button.ot-sdk-button-primary:hover,#ot-sdk-cookie-policy button.ot-sdk-button-primary:hover,#ot-sdk-cookie-policy input[type=submit].ot-sdk-button-primary:hover,#ot-sdk-cookie-policy input[type=reset].ot-sdk-button-primary:hover,#ot-sdk-cookie-policy input[type=button].ot-sdk-button-primary:hover,#ot-sdk-cookie-policy .ot-sdk-button.ot-sdk-button-primary:focus,#ot-sdk-cookie-policy button.ot-sdk-button-primary:focus,#ot-sdk-cookie-policy input[type=submit].ot-sdk-button-primary:focus,#ot-sdk-cookie-policy input[type=reset].ot-sdk-button-primary:focus,#ot-sdk-cookie-policy input[type=button].ot-sdk-button-primary:focus{color:#fff;background-color:#1eaedb;border-color:#1eaedb}#onetrust-banner-sdk input[type=text],#onetrust-pc-sdk input[type=text],#ot-sdk-cookie-policy input[type=text]{height:38px;padding:6px 10px;background-color:#fff;border:1px solid #d1d1d1;border-radius:4px;box-shadow:none;box-sizing:border-box}#onetrust-banner-sdk input[type=text],#onetrust-pc-sdk input[type=text],#ot-sdk-cookie-policy input[type=text]{-webkit-appearance:none;-moz-appearance:none;appearance:none}#onetrust-banner-sdk input[type=text]:focus,#onetrust-pc-sdk input[type=text]:focus,#ot-sdk-cookie-policy input[type=text]:focus{border:1px solid #000;outline:0}#onetrust-banner-sdk label,#onetrust-pc-sdk label,#ot-sdk-cookie-policy label{display:block;margin-bottom:.5rem;font-weight:600}#onetrust-banner-sdk input[type=checkbox],#onetrust-pc-sdk input[type=checkbox],#ot-sdk-cookie-policy input[type=checkbox]{display:inline}#onetrust-banner-sdk ul,#onetrust-pc-sdk ul,#ot-sdk-cookie-policy ul{list-style:circle inside}#onetrust-banner-sdk ul,#onetrust-pc-sdk ul,#ot-sdk-cookie-policy ul{padding-left:0;margin-top:0}#onetrust-banner-sdk ul ul,#onetrust-pc-sdk ul ul,#ot-sdk-cookie-policy ul ul{margin:1.5rem 0 1.5rem 3rem;font-size:90%}#onetrust-banner-sdk li,#onetrust-pc-sdk li,#ot-sdk-cookie-policy li{margin-bottom:1rem}#onetrust-banner-sdk th,#onetrust-banner-sdk td,#onetrust-pc-sdk th,#onetrust-pc-sdk td,#ot-sdk-cookie-policy th,#ot-sdk-cookie-policy td{padding:12px 15px;text-align:left;border-bottom:1px solid #e1e1e1}#onetrust-banner-sdk button,#onetrust-pc-sdk button,#ot-sdk-cookie-policy button{margin-bottom:1rem;font-family:inherit}#onetrust-banner-sdk .ot-sdk-container:after,#onetrust-banner-sdk .ot-sdk-row:after,#onetrust-pc-sdk .ot-sdk-container:after,#onetrust-pc-sdk .ot-sdk-row:after,#ot-sdk-cookie-policy .ot-sdk-container:after,#ot-sdk-cookie-policy .ot-sdk-row:after{content:"";display:table;clear:both}#onetrust-banner-sdk .ot-sdk-row,#onetrust-pc-sdk .ot-sdk-row,#ot-sdk-cookie-policy .ot-sdk-row{margin:0;max-width:none;display:block}#onetrust-banner-sdk{box-shadow:0 0 18px rgba(0,0,0,.2)}#onetrust-banner-sdk.otFlat{position:fixed;z-index:2147483645;bottom:0;right:0;left:0;background-color:#fff;max-height:90%;overflow-x:hidden;overflow-y:auto}#onetrust-banner-sdk.otFlat.top{top:0px;bottom:auto}#onetrust-banner-sdk.otRelFont{font-size:1rem}#onetrust-banner-sdk>.ot-sdk-container{overflow:hidden}#onetrust-banner-sdk::-webkit-scrollbar{width:11px}#onetrust-banner-sdk::-webkit-scrollbar-thumb{border-radius:10px;background:#c1c1c1}#onetrust-banner-sdk{scrollbar-arrow-color:#c1c1c1;scrollbar-darkshadow-color:#c1c1c1;scrollbar-face-color:#c1c1c1;scrollbar-shadow-color:#c1c1c1}#onetrust-banner-sdk #onetrust-policy{margin:1.25em 0 .625em 2em;overflow:hidden}#onetrust-banner-sdk #onetrust-policy .ot-gv-list-handler{float:left;font-size:.82em;padding:0;margin-bottom:0;border:0;line-height:normal;height:auto;width:auto}#onetrust-banner-sdk #onetrust-policy-title{font-size:1.2em;line-height:1.3;margin-bottom:10px}#onetrust-banner-sdk #onetrust-group-container{position:relative}#onetrust-banner-sdk #onetrust-policy-text{clear:both;text-align:left;font-size:.88em;line-height:1.4}#onetrust-banner-sdk #onetrust-policy-text \*{font-size:inherit;line-height:inherit}#onetrust-banner-sdk #onetrust-policy-text a{font-weight:bold}#onetrust-banner-sdk #onetrust-policy-title,#onetrust-banner-sdk #onetrust-policy-text{color:dimgray;float:left}#onetrust-banner-sdk #onetrust-button-group-parent{min-height:1px;text-align:center}#onetrust-banner-sdk #onetrust-button-group{display:inline-block}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{background-color:#68b631;color:#fff;border-color:#68b631;margin-right:1em;min-width:125px;height:auto;white-space:normal;word-break:break-word;word-wrap:break-word;padding:12px 10px;line-height:1.2;font-size:.813em;font-weight:600}#onetrust-banner-sdk #onetrust-pc-btn-handler.cookie-setting-link{background-color:#fff;border:none;color:#68b631;text-decoration:underline;padding-left:0;padding-right:0}#onetrust-banner-sdk .onetrust-close-btn-ui{width:44px;height:44px;background-size:12px;border:none;position:relative;margin:auto;padding:0}#onetrust-banner-sdk .banner\_logo{display:none}#onetrust-banner-sdk.ot-bnr-w-logo .ot-bnr-logo{position:absolute;top:50%;transform:translateY(-50%);left:0px;margin-right:5px}#onetrust-banner-sdk.ot-bnr-w-logo #onetrust-policy{margin-left:65px}#onetrust-banner-sdk .ot-b-addl-desc{clear:both;float:left;display:block}#onetrust-banner-sdk #banner-options{float:left;display:table;margin-right:0;margin-left:1em;width:calc(100% - 1em)}#onetrust-banner-sdk .banner-option-input{cursor:pointer;width:auto;height:auto;border:none;padding:0;padding-right:3px;margin:0 0 10px;font-size:.82em;line-height:1.4}#onetrust-banner-sdk .banner-option-input \*{pointer-events:none;font-size:inherit;line-height:inherit}#onetrust-banner-sdk .banner-option-input[aria-expanded=true]~.banner-option-details{display:block;height:auto}#onetrust-banner-sdk .banner-option-input[aria-expanded=true] .ot-arrow-container{transform:rotate(90deg)}#onetrust-banner-sdk .banner-option{margin-bottom:12px;margin-left:0;border:none;float:left;padding:0}#onetrust-banner-sdk .banner-option:first-child{padding-left:2px}#onetrust-banner-sdk .banner-option:not(:first-child){padding:0;border:none}#onetrust-banner-sdk .banner-option-header{cursor:pointer;display:inline-block}#onetrust-banner-sdk .banner-option-header :first-child{color:dimgray;font-weight:bold;float:left}#onetrust-banner-sdk .banner-option-header .ot-arrow-container{display:inline-block;border-top:6px solid rgba(0,0,0,0);border-bottom:6px solid rgba(0,0,0,0);border-left:6px solid dimgray;margin-left:10px;vertical-align:middle}#onetrust-banner-sdk .banner-option-details{display:none;font-size:.83em;line-height:1.5;padding:10px 0px 5px 10px;margin-right:10px;height:0px}#onetrust-banner-sdk .banner-option-details \*{font-size:inherit;line-height:inherit;color:dimgray}#onetrust-banner-sdk .ot-arrow-container,#onetrust-banner-sdk .banner-option-details{transition:all 300ms ease-in 0s;-webkit-transition:all 300ms ease-in 0s;-moz-transition:all 300ms ease-in 0s;-o-transition:all 300ms ease-in 0s}#onetrust-banner-sdk .ot-dpd-container{float:left}#onetrust-banner-sdk .ot-dpd-title{margin-bottom:10px}#onetrust-banner-sdk .ot-dpd-title,#onetrust-banner-sdk .ot-dpd-desc{font-size:.88em;line-height:1.4;color:dimgray}#onetrust-banner-sdk .ot-dpd-title \*,#onetrust-banner-sdk .ot-dpd-desc \*{font-size:inherit;line-height:inherit}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text \*{margin-bottom:0}#onetrust-banner-sdk.ot-iab-2 .onetrust-vendors-list-handler{display:block;margin-left:0;margin-top:5px;clear:both;margin-bottom:0;padding:0;border:0;height:auto;width:auto}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button{display:block}#onetrust-banner-sdk.ot-close-btn-link{padding-top:25px}#onetrust-banner-sdk.ot-close-btn-link #onetrust-close-btn-container{top:15px;transform:none;right:15px}#onetrust-banner-sdk.ot-close-btn-link #onetrust-close-btn-container button{padding:0;white-space:pre-wrap;border:none;height:auto;line-height:1.5;text-decoration:underline;font-size:.69em}#onetrust-banner-sdk #onetrust-policy-text,#onetrust-banner-sdk .ot-dpd-desc,#onetrust-banner-sdk .ot-b-addl-desc{font-size:.813em;line-height:1.5}#onetrust-banner-sdk .ot-dpd-desc{margin-bottom:10px}#onetrust-banner-sdk .ot-dpd-desc>.ot-b-addl-desc{margin-top:10px;margin-bottom:10px;font-size:1em}@media only screen and (max-width: 425px){#onetrust-banner-sdk #onetrust-close-btn-container{position:absolute;top:6px;right:2px}#onetrust-banner-sdk #onetrust-policy{margin-left:0;margin-top:3em}#onetrust-banner-sdk #onetrust-button-group{display:block}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{width:100%}#onetrust-banner-sdk .onetrust-close-btn-ui{top:auto;transform:none}#onetrust-banner-sdk #onetrust-policy-title{display:inline;float:none}#onetrust-banner-sdk #banner-options{margin:0;padding:0;width:100%}}@media only screen and (max-width: 550px){#onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{margin-right:0}#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{margin-right:0}}@media only screen and (min-width: 426px)and (max-width: 896px){#onetrust-banner-sdk #onetrust-close-btn-container{position:absolute;top:0;right:0}#onetrust-banner-sdk #onetrust-policy{margin-left:1em;margin-right:1em}#onetrust-banner-sdk .onetrust-close-btn-ui{top:10px;right:10px}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:95%}#onetrust-banner-sdk.ot-iab-2 #onetrust-group-container{width:100%}#onetrust-banner-sdk.ot-bnr-w-logo #onetrust-button-group-parent{padding-left:50px}#onetrust-banner-sdk #onetrust-button-group-parent{width:100%;position:relative;margin-left:0}#onetrust-banner-sdk #onetrust-button-group button{display:inline-block}#onetrust-banner-sdk #onetrust-button-group{margin-right:0;text-align:center}#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{width:auto}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container{display:inline-flex;flex-wrap:wrap}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler{float:none}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container \*[class\*=ot-button-order-]:nth-of-type(1){margin-right:auto !important}#onetrust-banner-sdk .has-reject-all-button #onetrust-pc-btn-handler{float:left}#onetrust-banner-sdk .has-reject-all-button #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-accept-btn-handler{float:right}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group{width:calc(100% - 2em);margin-right:0}#onetrust-banner-sdk .has-reject-all-button #onetrust-pc-btn-handler.cookie-setting-link{padding-left:0px;text-align:left}#onetrust-banner-sdk.ot-buttons-fw .ot-sdk-three button{width:100%;text-align:center}#onetrust-banner-sdk.ot-buttons-fw #onetrust-button-group-parent button{float:none}#onetrust-banner-sdk.ot-buttons-fw #onetrust-pc-btn-handler.cookie-setting-link{text-align:center}}@media only screen and (min-width: 550px){#onetrust-banner-sdk .banner-option:not(:first-child){border-left:1px solid #d8d8d8;padding-left:25px}}@media only screen and (min-width: 425px)and (max-width: 550px){#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group,#onetrust-banner-sdk.ot-iab-2 #onetrust-policy,#onetrust-banner-sdk.ot-iab-2 .banner-option{width:100%}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-accept-btn-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-reject-all-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-pc-btn-handler{width:100%}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-accept-btn-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-reject-all-handler{float:left}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group.ot-button-order-container{width:auto}}@media only screen and (min-width: 769px){#onetrust-banner-sdk #onetrust-button-group{margin-right:30%}#onetrust-banner-sdk #banner-options{margin-left:2em;margin-right:5em;margin-bottom:1.25em;width:calc(100% - 7em)}}@media only screen and (min-width: 897px)and (max-width: 1023px){#onetrust-banner-sdk.vertical-align-content #onetrust-button-group-parent{position:absolute;top:50%;left:80%;transform:translateY(-50%)}#onetrust-banner-sdk #onetrust-close-btn-container{top:50%;margin:auto;transform:translate(-50%, -50%);position:absolute;padding:0;right:0}#onetrust-banner-sdk #onetrust-close-btn-container button{position:relative;margin:0;right:-22px;top:2px}}@media only screen and (min-width: 1024px){#onetrust-banner-sdk #onetrust-close-btn-container{top:50%;margin:auto;transform:translate(-50%, -50%);position:absolute;right:0}#onetrust-banner-sdk #onetrust-close-btn-container button{right:-12px}#onetrust-banner-sdk #onetrust-policy{margin-left:2em}#onetrust-banner-sdk.vertical-align-content #onetrust-button-group-parent{position:absolute;top:50%;left:60%;transform:translateY(-50%)}#onetrust-banner-sdk .ot-optout-signal{width:50%}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-title{width:50%}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text,#onetrust-banner-sdk.ot-iab-2 :not(.ot-dpd-desc)>.ot-b-addl-desc{margin-bottom:1em;width:50%;border-right:1px solid #d8d8d8;padding-right:1rem}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text{margin-bottom:0;padding-bottom:1em}#onetrust-banner-sdk.ot-iab-2 :not(.ot-dpd-desc)>.ot-b-addl-desc{margin-bottom:0;padding-bottom:1em}#onetrust-banner-sdk.ot-iab-2 .ot-dpd-container{width:45%;padding-left:1rem;display:inline-block;float:none}#onetrust-banner-sdk.ot-iab-2 .ot-dpd-title{line-height:1.7}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group-parent{left:auto;right:4%;margin-left:0}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button{display:block}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-button-group-parent{margin:auto;width:30%}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:60%}#onetrust-banner-sdk #onetrust-button-group{margin-right:auto}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{margin-top:1em}}@media only screen and (min-width: 890px){#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group-parent{padding-left:3%;padding-right:4%;margin-left:0}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group{margin-right:0;margin-top:1.25em;width:100%}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group button{width:100%;margin-bottom:5px;margin-top:5px}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group button:last-of-type{margin-bottom:20px}}@media only screen and (min-width: 1280px){#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:55%}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-button-group-parent{width:44%;padding-left:2%;padding-right:2%}#onetrust-banner-sdk:not(.ot-iab-2).vertical-align-content #onetrust-button-group-parent{position:absolute;left:55%}}
 #onetrust-consent-sdk #onetrust-banner-sdk {background-color: #FFFFFF;}
+#onetrust-consent-sdk #onetrust-policy-title,
+#onetrust-consent-sdk #onetrust-policy-text,
+#onetrust-consent-sdk .ot-b-addl-desc,
+#onetrust-consent-sdk .ot-dpd-desc,
+#onetrust-consent-sdk .ot-dpd-title,
+#onetrust-consent-sdk #onetrust-policy-text \*:not(.onetrust-vendors-list-handler),
+#onetrust-consent-sdk .ot-dpd-desc \*:not(.onetrust-vendors-list-handler),
+#onetrust-consent-sdk #onetrust-banner-sdk #banner-options \*,
+#onetrust-banner-sdk .ot-cat-header,
+#onetrust-banner-sdk .ot-optout-signal
+{
+color: #696969;
 ````
 
 **colly+md** — no output for this URL
 
 **playwright**
 ````
-Cookie Policy - IKEA.product-missing { display: none; }
+Chair Pads & Seat Cushions - IKEA
 
 
 
@@ -1082,20 +1105,20 @@ Cookie Policy - IKEA.product-missing { display: none; }
 
 
 
-
-var utag\_data = {
-site\_platform: "m2",
-country: "us",
-language: "en",
-vertical\_version: "b4104d5e5284",
-vertical\_component: "editorial",
-page\_type: "customer-service",
-page\_name: "customer-service>cookie-policy",
-site\_level\_1: "customer-service",
-site\_level\_2: "cookie-policy"
-}
-#onetrust-banner-sdk{box-shadow:0 0 18px rgba(0,0,0,.2)}#onetrust-banner-sdk.otFlat{position:fixed;z-index:2147483645;bottom:0;right:0;left:0;background-color:#fff;max-height:90%;overflow-x:hidden;overflow-y:auto}#onetrust-banner-sdk.otFlat.top{top:0px;bottom:auto}#onetrust-banner-sdk.otRelFont{font-size:1rem}#onetrust-banner-sdk>.ot-sdk-container{overflow:hidden}#onetrust-banner-sdk::-webkit-scrollbar{width:11px}#onetrust-banner-sdk::-webkit-scrollbar-thumb{border-radius:10px;background:#c1c1c1}#onetrust-banner-sdk{scrollbar-arrow-color:#c1c1c1;scrollbar-darkshadow-color:#c1c1c1;scrollbar-face-color:#c1c1c1;scrollbar-shadow-color:#c1c1c1}#onetrust-banner-sdk #onetrust-policy{margin:1.25em 0 .625em 2em;overflow:hidden}#onetrust-banner-sdk #onetrust-policy .ot-gv-list-handler{float:left;font-size:.82em;padding:0;margin-bottom:0;border:0;line-height:normal;height:auto;width:auto}#onetrust-banner-sdk #onetrust-policy-title{font-size:1.2em;line-height:1.3;margin-bottom:10px}#onetrust-banner-sdk #onetrust-group-container{position:relative}#onetrust-banner-sdk #onetrust-policy-text{clear:both;text-align:left;font-size:.88em;line-height:1.4}#onetrust-banner-sdk #onetrust-policy-text \*{font-size:inherit;line-height:inherit}#onetrust-banner-sdk #onetrust-policy-text a{font-weight:bold}#onetrust-banner-sdk #onetrust-policy-title,#onetrust-banner-sdk #onetrust-policy-text{color:dimgray;float:left}#onetrust-banner-sdk #onetrust-button-group-parent{min-height:1px;text-align:center}#onetrust-banner-sdk #onetrust-button-group{display:inline-block}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{background-color:#68b631;color:#fff;border-color:#68b631;margin-right:1em;min-width:125px;height:auto;white-space:normal;word-break:break-word;word-wrap:break-word;padding:12px 10px;line-height:1.2;font-size:.813em;font-weight:600}#onetrust-banner-sdk #onetrust-pc-btn-handler.cookie-setting-link{background-color:#fff;border:none;color:#68b631;text-decoration:underline;padding-left:0;padding-right:0}#onetrust-banner-sdk .onetrust-close-btn-ui{width:44px;height:44px;background-size:12px;border:none;position:relative;margin:auto;padding:0}#onetrust-banner-sdk .banner\_logo{display:none}#onetrust-banner-sdk.ot-bnr-w-logo .ot-bnr-logo{position:absolute;top:50%;transform:translateY(-50%);left:0px;margin-right:5px}#onetrust-banner-sdk.ot-bnr-w-logo #onetrust-policy{margin-left:65px}#onetrust-banner-sdk .ot-b-addl-desc{clear:both;float:left;display:block}#onetrust-banner-sdk #banner-options{float:left;display:table;margin-right:0;margin-left:1em;width:calc(100% - 1em)}#onetrust-banner-sdk .banner-option-input{cursor:pointer;width:auto;height:auto;border:none;padding:0;padding-right:3px;margin:0 0 10px;font-size:.82em;line-height:1.4}#onetrust-banner-sdk .banner-option-input \*{pointer-events:none;font-size:inherit;line-height:inherit}#onetrust-banner-sdk .banner-option-input[aria-expanded=true]~.banner-option-details{display:block;height:auto}#onetrust-banner-sdk .banner-option-input[aria-expanded=true] .ot-arrow-container{transform:rotate(90deg)}#onetrust-banner-sdk .banner-option{margin-bottom:12px;margin-left:0;border:none;float:left;padding:0}#onetrust-banner-sdk .banner-option:first-child{padding-left:2px}#onetrust-banner-sdk .banner-option:not(:first-child){padding:0;border:none}#onetrust-banner-sdk .banner-option-header{cursor:pointer;display:inline-block}#onetrust-banner-sdk .banner-option-header :first-child{color:dimgray;font-weight:bold;float:left}#onetrust-banner-sdk .banner-option-header .ot-arrow-container{display:inline-block;border-top:6px solid rgba(0,0,0,0);border-bottom:6px solid rgba(0,0,0,0);border-left:6px solid dimgray;margin-left:10px;vertical-align:middle}#onetrust-banner-sdk .banner-option-details{display:none;font-size:.83em;line-height:1.5;padding:10px 0px 5px 10px;margin-right:10px;height:0px}#onetrust-banner-sdk .banner-option-details \*{font-size:inherit;line-height:inherit;color:dimgray}#onetrust-banner-sdk .ot-arrow-container,#onetrust-banner-sdk .banner-option-details{transition:all 300ms ease-in 0s;-webkit-transition:all 300ms ease-in 0s;-moz-transition:all 300ms ease-in 0s;-o-transition:all 300ms ease-in 0s}#onetrust-banner-sdk .ot-dpd-container{float:left}#onetrust-banner-sdk .ot-dpd-title{margin-bottom:10px}#onetrust-banner-sdk .ot-dpd-title,#onetrust-banner-sdk .ot-dpd-desc{font-size:.88em;line-height:1.4;color:dimgray}#onetrust-banner-sdk .ot-dpd-title \*,#onetrust-banner-sdk .ot-dpd-desc \*{font-size:inherit;line-height:inherit}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text \*{margin-bottom:0}#onetrust-banner-sdk.ot-iab-2 .onetrust-vendors-list-handler{display:block;margin-left:0;margin-top:5px;clear:both;margin-bottom:0;padding:0;border:0;height:auto;width:auto}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button{display:block}#onetrust-banner-sdk.ot-close-btn-link{padding-top:25px}#onetrust-banner-sdk.ot-close-btn-link #onetrust-close-btn-container{top:15px;transform:none;right:15px}#onetrust-banner-sdk.ot-close-btn-link #onetrust-close-btn-container button{padding:0;white-space:pre-wrap;border:none;height:auto;line-height:1.5;text-decoration:underline;font-size:.69em}#onetrust-banner-sdk #onetrust-policy-text,#onetrust-banner-sdk .ot-dpd-desc,#onetrust-banner-sdk .ot-b-addl-desc{font-size:.813em;line-height:1.5}#onetrust-banner-sdk .ot-dpd-desc{margin-bottom:10px}#onetrust-banner-sdk .ot-dpd-desc>.ot-b-addl-desc{margin-top:10px;margin-bottom:10px;font-size:1em}@media only screen and (max-width: 425px){#onetrust-banner-sdk #onetrust-close-btn-container{position:absolute;top:6px;right:2px}#onetrust-banner-sdk #onetrust-policy{margin-left:0;margin-top:3em}#onetrust-banner-sdk #onetrust-button-group{display:block}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{width:100%}#onetrust-banner-sdk .onetrust-close-btn-ui{top:auto;transform:none}#onetrust-banner-sdk #onetrust-policy-title{display:inline;float:none}#onetrust-banner-sdk #banner-options{margin:0;padding:0;width:100%}}@media only screen and (max-width: 550px){#onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{margin-right:0}#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{margin-right:0}}@media only screen and (min-width: 426px)and (max-width: 896px){#onetrust-banner-sdk #onetrust-close-btn-container{position:absolute;top:0;right:0}#onetrust-banner-sdk #onetrust-policy{margin-left:1em;margin-right:1em}#onetrust-banner-sdk .onetrust-close-btn-ui{top:10px;right:10px}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:95%}#onetrust-banner-sdk.ot-iab-2 #onetrust-group-container{width:100%}#onetrust-banner-sdk.ot-bnr-w-logo #onetrust-button-group-parent{padding-left:50px}#onetrust-banner-sdk #onetrust-button-group-parent{width:100%;position:relative;margin-left:0}#onetrust-banner-sdk #onetrust-button-group button{display:inline-block}#onetrust-banner-sdk #onetrust-button-group{margin-right:0;text-align:center}#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{width:auto}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container{display:inline-flex;flex-wrap:wrap}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler{float:none}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container \*[class\*=ot-button-order-]:nth-of-type(1){margin-right:auto !important}#onetrust-banner-sdk .has-reject-all-button #onetrust-pc-btn-handler{float:left}#onetrust-banner-sdk .has-reject-all-button #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-accept-btn-handler{float:right}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group{width:calc(100% - 2em);margin-right:0}#onetrust-banner-sdk .has-reject-all-button #onetrust-pc-btn-handler.cookie-setting-link{padding-left:0px;text-align:left}#onetrust-banner-sdk.ot-buttons-fw .ot-sdk-three button{width:100%;text-align:center}#onetrust-banner-sdk.ot-buttons-fw #onetrust-button-group-parent button{float:none}#onetrust-banner-sdk.ot-buttons-fw #onetrust-pc-btn-handler.cookie-setting-link{text-align:center}}@media only screen and (min-width: 550px){#onetrust-banner-sdk .banner-option:not(:first-child){border-left:1px solid #d8d8d8;padding-left:25px}}@media only screen and (min-width: 425px)and (max-width: 550px){#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group,#onetrust-banner-sdk.ot-iab-2 #onetrust-policy,#onetrust-banner-sdk.ot-iab-2 .banner-option{width:100%}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-accept-btn-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-reject-all-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-pc-btn-handler{width:100%}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-accept-btn-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-reject-all-handler{float:left}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group.ot-button-order-container{width:auto}}@media only screen and (min-width: 769px){#onetrust-banner-sdk #onetrust-button-group{margin-right:30%}#onetrust-banner-sdk #banner-options{margin-left:2em;margin-right:5em;margin-bottom:1.25em;width:calc(100% - 7em)}}@media only screen and (min-width: 897px)and (max-width: 1023px){#onetrust-banner-sdk.vertical-align-content #onetrust-button-group-parent{position:absolute;top:50%;left:80%;transform:translateY(-50%)}#onetrust-banner-sdk #onetrust-close-btn-container{top:50%;margin:auto;transform:translate(-50%, -50%);position:absolute;padding:0;right:0}#onetrust-banner-sdk #onetrust-close-btn-container button{position:relative;margin:0;right:-22px;top:2px}}@media only screen and (min-width: 1024px){#onetrust-banner-sdk #onetrust-close-btn-container{top:50%;margin:auto;transform:translate(-50%, -50%);position:absolute;right:0}#onetrust-banner-sdk #onetrust-close-btn-container button{right:-12px}#onetrust-banner-sdk #onetrust-policy{margin-left:2em}#onetrust-banner-sdk.vertical-align-content #onetrust-button-group-parent{position:absolute;top:50%;left:60%;transform:translateY(-50%)}#onetrust-banner-sdk .ot-optout-signal{width:50%}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-title{width:50%}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text,#onetrust-banner-sdk.ot-iab-2 :not(.ot-dpd-desc)>.ot-b-addl-desc{margin-bottom:1em;width:50%;border-right:1px solid #d8d8d8;padding-right:1rem}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text{margin-bottom:0;padding-bottom:1em}#onetrust-banner-sdk.ot-iab-2 :not(.ot-dpd-desc)>.ot-b-addl-desc{margin-bottom:0;padding-bottom:1em}#onetrust-banner-sdk.ot-iab-2 .ot-dpd-container{width:45%;padding-left:1rem;display:inline-block;float:none}#onetrust-banner-sdk.ot-iab-2 .ot-dpd-title{line-height:1.7}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group-parent{left:auto;right:4%;margin-left:0}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button{display:block}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-button-group-parent{margin:auto;width:30%}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:60%}#onetrust-banner-sdk #onetrust-button-group{margin-right:auto}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{margin-top:1em}}@media only screen and (min-width: 890px){#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group-parent{padding-left:3%;padding-right:4%;margin-left:0}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group{margin-right:0;margin-top:1.25em;width:100%}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group button{width:100%;margin-bottom:5px;margin-top:5px}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group button:last-of-type{margin-bottom:20px}}@media only screen and (min-width: 1280px){#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:55%}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-button-group-parent{width:44%;padding-left:2%;padding-right:2%}#onetrust-banner-sdk:not(.ot-iab-2).vertical-align-content #onetrust-button-group-parent{position:absolute;left:55%}}
+var utag\_data = {"site\_platform":"m2","visit\_country":"us","visit\_language":"en","page\_type":"product listing","site\_section":"product listing>20542","page\_name":"no\_page\_name","page\_category\_level":"chapter"}{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.ikea.com/us/en/#organization","name":"IKEA","url":"https://www.ikea.com/us/en/","areaServed":{"@type":"Country","name":"US"}},{"@type":"WebSite","@id":"https://www.ikea.com/us/en/#website","url":"https://www.ikea.com/us/en/","name":"IKEA","publisher":{"@id":"https://www.ikea.com/us/en/#organization"}},{"@type":"CollectionPage","@id":"https://www.ikea.com/us/en/cat/chair-pads-20542/#page","url":"https://www.ikea.com/us/en/cat/chair-pads-20542/","name":"Chair Pads & Seat Cushions ","description":"Make your chair more comfortable with IKEA's chair pads. Find a variety of dining room, office, and kitchen chair cushions with at great prices!","inLanguage":"en-US","isPartOf":{"@id":"https://www.ikea.com/us/en/#website"},"publisher":{"@id":"https://www.ikea.com/us/en/#organization"},"mainEntity":{"@type":"ItemList","itemListOrder":"ItemListUnordered","numberOfItems":19,"itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/malinda-chair-pad-light-beige-90586983/#product","name":"MALINDA, Chair pad, light beige, 16/14x15x3 \"","url":"https://www.ikea.com/us/en/p/malinda-chair-pad-light-beige-90586983/","image":"https://www.ikea.com/us/en/images/products/malinda-chair-pad-light-beige\_\_0143188\_pe302771\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":9.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":2441}}},{"@type":"ListItem","position":2,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/justina-chair-pad-natural-30586981/#product","name":"JUSTINA, Chair pad, natural, 17/14x16x2 \"","url":"https://www.ikea.com/us/en/p/justina-chair-pad-natural-30586981/","image":"https://www.ikea.com/us/en/images/products/justina-chair-pad-natural\_\_0110995\_pe261630\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":7.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":2737}}},{"@type":"ListItem","position":3,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/vippaert-chair-pad-beige-40599285/#product","name":"VIPPÄRT, Chair pad, beige, 15x15x3 \"","url":"https://www.ikea.com/us/en/p/vippaert-chair-pad-beige-40599285/","image":"https://www.ikea.com/us/en/images/products/vippaert-chair-pad-beige\_\_0668998\_pe714812\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":9.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":77}}},{"@type":"ListItem","position":4,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/akervindefly-chair-pad-gray-20554358/#product","name":"ÅKERVINDEFLY, Chair pad, gray, 15/14x15x2 \"","url":"https://www.ikea.com/us/en/p/akervindefly-chair-pad-gray-20554358/","image":"https://www.ikea.com/us/en/images/products/akervindefly-chair-pad-gray\_\_1159545\_pe888541\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":14.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":438}}},{"@type":"ListItem","position":5,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/gryttom-cushion-gransel-natural-50576679/#product","name":"GRYTTOM, Cushion, Gransel natural, 18x17 \"","url":"https://www.ikea.com/us/en/p/gryttom-cushion-gransel-natural-50576679/","image":"https://www.ikea.com/us/en/images/products/gryttom-cushion-gransel-natural\_\_1230236\_pe915710\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":10,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":18}}},{"@type":"ListItem","position":6,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/madonnalilja-chair-pad-beige-70559730/#product","name":"MADONNALILJA, Chair pad, beige, 12 5/8 \"","url":"https://www.ikea.com/us/en/p/madonnalilja-chair-pad-beige-70559730/","image":"https://www.ikea.com/us/en/images/products/madonnalilja-chair-pad-beige\_\_1159535\_pe888533\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":4.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":135}}},{"@type":"ListItem","position":7,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/aelvgraesmal-chair-pad-beige-20586986/#product","name":"ÄLVGRÄSMAL, Chair pad, beige, 13/12x13x1 \"","url":"https://www.ikea.com/us/en/p/aelvgraesmal-chair-pad-beige-20586986/","image":"https://www.ikea.com/us/en/images/products/aelvgraesmal-chair-pad-beige\_\_1121060\_pe874101\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":9.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.3,"reviewCount":294}}},{"@type":"ListItem","position":8,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/paerleternell-chair-pad-grann-black-80552101/#product","name":"PÄRLETERNELL, Chair pad, Grann black, 14 \"","url":"https://www.ikea.com/us/en/p/paerleternell-chair-pad-grann-black-80552101/","image":"https://www.ikea.com/us/en/images/products/paerleternell-chair-pad-grann-black\_\_1138176\_pe879872\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":24.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":17}}},{"@type":"ListItem","position":9,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/braemoen-chair-pad-gray-beige-indoor-outdoor-80484664/#product","name":"BRÄMÖN, Chair pad, gray-beige indoor/outdoor, 13 3/8x13x0 \"","url":"https://www.ikea.com/us/en/p/braemoen-chair-pad-gray-beige-indoor-outdoor-80484664/","image":"https://www.ikea.com/us/en/images/products/braemoen-chair-pad-gray-beige-indoor-outdoor\_\_0969559\_pe810833\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":2.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.1,"reviewCount":288}}},{"@type":"ListItem","position":10,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/dvaergdunoert-chair-pad-gray-white-80586974/#product","name":"DVÄRGDUNÖRT, Chair pad, gray/white, 17/14x17x1 5/8 \"","url":"https://www.ikea.com/us/en/p/dvaergdunoert-chair-pad-gray-white-80586974/","image":"https://www.ikea.com/us/en/images/products/dvaergdunoert-chair-pad-gray-white\_\_1139851\_pe880489\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":19.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.6,"reviewCount":51}}},{"@type":"ListItem","position":11,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/staggstarr-chair-pad-light-gray-70508726/#product","name":"STAGGSTARR, Chair pad, light gray, 14x14x1 \"","url":"https://www.ikea.com/us/en/p/staggstarr-chair-pad-light-gray-70508726/","image":"https://www.ikea.com/us/en/images/products/staggstarr-chair-pad-light-gray\_\_1024067\_pe833404\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":7.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.5,"reviewCount":238}}},{"@type":"ListItem","position":12,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/fryksas-cushion-risane-natural-00579982/#product","name":"FRYKSÅS, Cushion, Risane natural, 20x19 \"","url":"https://www.ikea.com/us/en/p/fryksas-cushion-risane-natural-00579982/","image":"https://www.ikea.com/us/en/images/products/fryksas-cushion-risane-natural\_\_1288290\_pe934141\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":20,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4,"reviewCount":2}}},{"@type":"ListItem","position":13,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/aengsfraeken-chair-pad-blue-indoor-outdoor-90624763/#product","name":"ÄNGSFRÄKEN, Chair pad, blue/indoor/outdoor, 14 \"","url":"https://www.ikea.com/us/en/p/aengsfraeken-chair-pad-blue-indoor-outdoor-90624763/","image":"https://www.ikea.com/us/en/images/products/aengsfraeken-chair-pad-blue-indoor-outdoor\_\_1485173\_pe1001875\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":4.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.5,"reviewCount":79}}},{"@type":"ListItem","position":14,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/maloertsmott-chair-pad-gray-90553157/#product","name":"MALÖRTSMOTT, Chair pad, gray, 12 5/8 \"","url":"https://www.ikea.com/us/en/p/maloertsmott-chair-pad-gray-90553157/","image":"https://www.ikea.com/us/en/images/products/maloertsmott-chair-pad-gray\_\_1159540\_pe888537\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":4.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":214}}},{"@type":"ListItem","position":15,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/akervindefly-chair-pad-dark-gray-30607993/#product","name":"ÅKERVINDEFLY, Chair pad, dark gray, 15 \"","url":"https://www.ikea.com/us/en/p/akervindefly-chair-pad-dark-gray-30607993/","image":"https://www.ikea.com/us/en/images/products/akervindefly-chair-pad-dark-gray\_\_1396986\_pe967465\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":14.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":10}}},{"@type":"ListItem","position":16,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/vattenmott-chair-pad-gray-00573008/#product","name":"VATTENMOTT, Chair pad, gray, 16x15x2 \"","url":"https://www.ikea.com/us/en/p/vattenmott-chair-pad-gray-00573008/","image":"https://www.ikea.com/us/en/images/products/vattenmott-chair-pad-gray\_\_1237877\_pe918199\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":9.99,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.2,"reviewCount":59}}},{"@type":"ListItem","position":17,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/djupvik-cushion-blekinge-white-80300325/#product","name":"DJUPVIK, Cushion, Blekinge white, 21x21 \"","url":"https://www.ikea.com/us/en/p/djupvik-cushion-blekinge-white-80300325/","image":"https://www.ikea.com/us/en/images/products/djupvik-cushion-blekinge-white\_\_0731037\_pe737941\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":30,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.4,"reviewCount":91}}},{"@type":"ListItem","position":18,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/pynten-seat-pad-dark-gray-90474990/#product","name":"PYNTEN, Seat pad, dark gray, 16 ¼x17 \"","url":"https://www.ikea.com/us/en/p/pynten-seat-pad-dark-gray-90474990/","image":"https://www.ikea.com/us/en/images/products/pynten-seat-pad-dark-gray\_\_0805853\_pe769702\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":10,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":4.2,"reviewCount":171}}},{"@type":"ListItem","position":19,"item":{"@type":"Product","@id":"https://www.ikea.com/us/en/p/bjoerktrast-childrens-armchair-cushion-white-black-80553290/#product","name":"BJÖRKTRAST, Children's armchair cushion, white/black","url":"https://www.ikea.com/us/en/p/bjoerktrast-childrens-armchair-cushion-white-black-80553290/","image":"https://www.ikea.com/us/en/images/products/bjoerktrast-childrens-armchair-cushion-white-black\_\_1201801\_pe905721\_s5.jpg","offers":{"@type":"Offer","priceSpecification":[{"@type":"UnitPriceSpecification","price":20,"priceCurrency":"USD"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":3,"reviewCount":2}}}]}}]}#onetrust-banner-sdk{box-shadow:0 0 18px rgba(0,0,0,.2)}#onetrust-banner-sdk.otFlat{position:fixed;z-index:2147483645;bottom:0;right:0;left:0;background-color:#fff;max-height:90%;overflow-x:hidden;overflow-y:auto}#onetrust-banner-sdk.otFlat.top{top:0px;bottom:auto}#onetrust-banner-sdk.otRelFont{font-size:1rem}#onetrust-banner-sdk>.ot-sdk-container{overflow:hidden}#onetrust-banner-sdk::-webkit-scrollbar{width:11px}#onetrust-banner-sdk::-webkit-scrollbar-thumb{border-radius:10px;background:#c1c1c1}#onetrust-banner-sdk{scrollbar-arrow-color:#c1c1c1;scrollbar-darkshadow-color:#c1c1c1;scrollbar-face-color:#c1c1c1;scrollbar-shadow-color:#c1c1c1}#onetrust-banner-sdk #onetrust-policy{margin:1.25em 0 .625em 2em;overflow:hidden}#onetrust-banner-sdk #onetrust-policy .ot-gv-list-handler{float:left;font-size:.82em;padding:0;margin-bottom:0;border:0;line-height:normal;height:auto;width:auto}#onetrust-banner-sdk #onetrust-policy-title{font-size:1.2em;line-height:1.3;margin-bottom:10px}#onetrust-banner-sdk #onetrust-group-container{position:relative}#onetrust-banner-sdk #onetrust-policy-text{clear:both;text-align:left;font-size:.88em;line-height:1.4}#onetrust-banner-sdk #onetrust-policy-text \*{font-size:inherit;line-height:inherit}#onetrust-banner-sdk #onetrust-policy-text a{font-weight:bold}#onetrust-banner-sdk #onetrust-policy-title,#onetrust-banner-sdk #onetrust-policy-text{color:dimgray;float:left}#onetrust-banner-sdk #onetrust-button-group-parent{min-height:1px;text-align:center}#onetrust-banner-sdk #onetrust-button-group{display:inline-block}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{background-color:#68b631;color:#fff;border-color:#68b631;margin-right:1em;min-width:125px;height:auto;white-space:normal;word-break:break-word;word-wrap:break-word;padding:12px 10px;line-height:1.2;font-size:.813em;font-weight:600}#onetrust-banner-sdk #onetrust-pc-btn-handler.cookie-setting-link{background-color:#fff;border:none;color:#68b631;text-decoration:underline;padding-left:0;padding-right:0}#onetrust-banner-sdk .onetrust-close-btn-ui{width:44px;height:44px;background-size:12px;border:none;position:relative;margin:auto;padding:0}#onetrust-banner-sdk .banner\_logo{display:none}#onetrust-banner-sdk.ot-bnr-w-logo .ot-bnr-logo{position:absolute;top:50%;transform:translateY(-50%);left:0px;margin-right:5px}#onetrust-banner-sdk.ot-bnr-w-logo #onetrust-policy{margin-left:65px}#onetrust-banner-sdk .ot-b-addl-desc{clear:both;float:left;display:block}#onetrust-banner-sdk #banner-options{float:left;display:table;margin-right:0;margin-left:1em;width:calc(100% - 1em)}#onetrust-banner-sdk .banner-option-input{cursor:pointer;width:auto;height:auto;border:none;padding:0;padding-right:3px;margin:0 0 10px;font-size:.82em;line-height:1.4}#onetrust-banner-sdk .banner-option-input \*{pointer-events:none;font-size:inherit;line-height:inherit}#onetrust-banner-sdk .banner-option-input[aria-expanded=true]~.banner-option-details{display:block;height:auto}#onetrust-banner-sdk .banner-option-input[aria-expanded=true] .ot-arrow-container{transform:rotate(90deg)}#onetrust-banner-sdk .banner-option{margin-bottom:12px;margin-left:0;border:none;float:left;padding:0}#onetrust-banner-sdk .banner-option:first-child{padding-left:2px}#onetrust-banner-sdk .banner-option:not(:first-child){padding:0;border:none}#onetrust-banner-sdk .banner-option-header{cursor:pointer;display:inline-block}#onetrust-banner-sdk .banner-option-header :first-child{color:dimgray;font-weight:bold;float:left}#onetrust-banner-sdk .banner-option-header .ot-arrow-container{display:inline-block;border-top:6px solid rgba(0,0,0,0);border-bottom:6px solid rgba(0,0,0,0);border-left:6px solid dimgray;margin-left:10px;vertical-align:middle}#onetrust-banner-sdk .banner-option-details{display:none;font-size:.83em;line-height:1.5;padding:10px 0px 5px 10px;margin-right:10px;height:0px}#onetrust-banner-sdk .banner-option-details \*{font-size:inherit;line-height:inherit;color:dimgray}#onetrust-banner-sdk .ot-arrow-container,#onetrust-banner-sdk .banner-option-details{transition:all 300ms ease-in 0s;-webkit-transition:all 300ms ease-in 0s;-moz-transition:all 300ms ease-in 0s;-o-transition:all 300ms ease-in 0s}#onetrust-banner-sdk .ot-dpd-container{float:left}#onetrust-banner-sdk .ot-dpd-title{margin-bottom:10px}#onetrust-banner-sdk .ot-dpd-title,#onetrust-banner-sdk .ot-dpd-desc{font-size:.88em;line-height:1.4;color:dimgray}#onetrust-banner-sdk .ot-dpd-title \*,#onetrust-banner-sdk .ot-dpd-desc \*{font-size:inherit;line-height:inherit}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text \*{margin-bottom:0}#onetrust-banner-sdk.ot-iab-2 .onetrust-vendors-list-handler{display:block;margin-left:0;margin-top:5px;clear:both;margin-bottom:0;padding:0;border:0;height:auto;width:auto}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button{display:block}#onetrust-banner-sdk.ot-close-btn-link{padding-top:25px}#onetrust-banner-sdk.ot-close-btn-link #onetrust-close-btn-container{top:15px;transform:none;right:15px}#onetrust-banner-sdk.ot-close-btn-link #onetrust-close-btn-container button{padding:0;white-space:pre-wrap;border:none;height:auto;line-height:1.5;text-decoration:underline;font-size:.69em}#onetrust-banner-sdk #onetrust-policy-text,#onetrust-banner-sdk .ot-dpd-desc,#onetrust-banner-sdk .ot-b-addl-desc{font-size:.813em;line-height:1.5}#onetrust-banner-sdk .ot-dpd-desc{margin-bottom:10px}#onetrust-banner-sdk .ot-dpd-desc>.ot-b-addl-desc{margin-top:10px;margin-bottom:10px;font-size:1em}@media only screen and (max-width: 425px){#onetrust-banner-sdk #onetrust-close-btn-container{position:absolute;top:6px;right:2px}#onetrust-banner-sdk #onetrust-policy{margin-left:0;margin-top:3em}#onetrust-banner-sdk #onetrust-button-group{display:block}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{width:100%}#onetrust-banner-sdk .onetrust-close-btn-ui{top:auto;transform:none}#onetrust-banner-sdk #onetrust-policy-title{display:inline;float:none}#onetrust-banner-sdk #banner-options{margin:0;padding:0;width:100%}}@media only screen and (max-width: 550px){#onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{margin-right:0}#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button div#onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{margin-right:0}}@media only screen and (min-width: 426px)and (max-width: 896px){#onetrust-banner-sdk #onetrust-close-btn-container{position:absolute;top:0;right:0}#onetrust-banner-sdk #onetrust-policy{margin-left:1em;margin-right:1em}#onetrust-banner-sdk .onetrust-close-btn-ui{top:10px;right:10px}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:95%}#onetrust-banner-sdk.ot-iab-2 #onetrust-group-container{width:100%}#onetrust-banner-sdk.ot-bnr-w-logo #onetrust-button-group-parent{padding-left:50px}#onetrust-banner-sdk #onetrust-button-group-parent{width:100%;position:relative;margin-left:0}#onetrust-banner-sdk #onetrust-button-group button{display:inline-block}#onetrust-banner-sdk #onetrust-button-group{margin-right:0;text-align:center}#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler{width:auto}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container{display:inline-flex;flex-wrap:wrap}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-pc-btn-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container #onetrust-accept-btn-handler{float:none}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group.ot-button-order-container \*[class\*=ot-button-order-]:nth-of-type(1){margin-right:auto !important}#onetrust-banner-sdk .has-reject-all-button #onetrust-pc-btn-handler{float:left}#onetrust-banner-sdk .has-reject-all-button #onetrust-reject-all-handler,#onetrust-banner-sdk .has-reject-all-button #onetrust-accept-btn-handler{float:right}#onetrust-banner-sdk .has-reject-all-button #onetrust-button-group{width:calc(100% - 2em);margin-right:0}#onetrust-banner-sdk .has-reject-all-button #onetrust-pc-btn-handler.cookie-setting-link{padding-left:0px;text-align:left}#onetrust-banner-sdk.ot-buttons-fw .ot-sdk-three button{width:100%;text-align:center}#onetrust-banner-sdk.ot-buttons-fw #onetrust-button-group-parent button{float:none}#onetrust-banner-sdk.ot-buttons-fw #onetrust-pc-btn-handler.cookie-setting-link{text-align:center}}@media only screen and (min-width: 550px){#onetrust-banner-sdk .banner-option:not(:first-child){border-left:1px solid #d8d8d8;padding-left:25px}}@media only screen and (min-width: 425px)and (max-width: 550px){#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group,#onetrust-banner-sdk.ot-iab-2 #onetrust-policy,#onetrust-banner-sdk.ot-iab-2 .banner-option{width:100%}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-accept-btn-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-reject-all-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-pc-btn-handler{width:100%}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-accept-btn-handler,#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group #onetrust-reject-all-handler{float:left}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group.ot-button-order-container{width:auto}}@media only screen and (min-width: 769px){#onetrust-banner-sdk #onetrust-button-group{margin-right:30%}#onetrust-banner-sdk #banner-options{margin-left:2em;margin-right:5em;margin-bottom:1.25em;width:calc(100% - 7em)}}@media only screen and (min-width: 897px)and (max-width: 1023px){#onetrust-banner-sdk.vertical-align-content #onetrust-button-group-parent{position:absolute;top:50%;left:80%;transform:translateY(-50%)}#onetrust-banner-sdk #onetrust-close-btn-container{top:50%;margin:auto;transform:translate(-50%, -50%);position:absolute;padding:0;right:0}#onetrust-banner-sdk #onetrust-close-btn-container button{position:relative;margin:0;right:-22px;top:2px}}@media only screen and (min-width: 1024px){#onetrust-banner-sdk #onetrust-close-btn-container{top:50%;margin:auto;transform:translate(-50%, -50%);position:absolute;right:0}#onetrust-banner-sdk #onetrust-close-btn-container button{right:-12px}#onetrust-banner-sdk #onetrust-policy{margin-left:2em}#onetrust-banner-sdk.vertical-align-content #onetrust-button-group-parent{position:absolute;top:50%;left:60%;transform:translateY(-50%)}#onetrust-banner-sdk .ot-optout-signal{width:50%}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-title{width:50%}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text,#onetrust-banner-sdk.ot-iab-2 :not(.ot-dpd-desc)>.ot-b-addl-desc{margin-bottom:1em;width:50%;border-right:1px solid #d8d8d8;padding-right:1rem}#onetrust-banner-sdk.ot-iab-2 #onetrust-policy-text{margin-bottom:0;padding-bottom:1em}#onetrust-banner-sdk.ot-iab-2 :not(.ot-dpd-desc)>.ot-b-addl-desc{margin-bottom:0;padding-bottom:1em}#onetrust-banner-sdk.ot-iab-2 .ot-dpd-container{width:45%;padding-left:1rem;display:inline-block;float:none}#onetrust-banner-sdk.ot-iab-2 .ot-dpd-title{line-height:1.7}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group-parent{left:auto;right:4%;margin-left:0}#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button{display:block}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-button-group-parent{margin:auto;width:30%}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:60%}#onetrust-banner-sdk #onetrust-button-group{margin-right:auto}#onetrust-banner-sdk #onetrust-accept-btn-handler,#onetrust-banner-sdk #onetrust-reject-all-handler,#onetrust-banner-sdk #onetrust-pc-btn-handler{margin-top:1em}}@media only screen and (min-width: 890px){#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group-parent{padding-left:3%;padding-right:4%;margin-left:0}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group{margin-right:0;margin-top:1.25em;width:100%}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group button{width:100%;margin-bottom:5px;margin-top:5px}#onetrust-banner-sdk.ot-buttons-fw:not(.ot-iab-2) #onetrust-button-group button:last-of-type{margin-bottom:20px}}@media only screen and (min-width: 1280px){#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-group-container{width:55%}#onetrust-banner-sdk:not(.ot-iab-2) #onetrust-button-group-parent{width:44%;padding-left:2%;padding-right:2%}#onetrust-banner-sdk:not(.ot-iab-2).vertical-align-content #onetrust-button-group-parent{position:absolute;left:55%}}
 #onetrust-consent-sdk #onetrust-banner-sdk {background-color: #FFFFFF;}
+#onetrust-consent-sdk #onetrust-policy-title,
+#onetrust-consent-sdk #onetrust-policy-text,
+#onetrust-consent-sdk .ot-b-addl-desc,
+#onetrust-consent-sdk .ot-dpd-desc,
+#onetrust-consent-sdk .ot-dpd-title,
+#onetrust-consent-sdk #onetrust-policy-text \*:not(.onetrust-vendors-list-handler),
+#onetrust-consent-sdk .ot-dpd-desc \*:not(.onetrust-vendors-list-handler),
+#onetrust-consent-sdk #onetrust-banner-sdk #banner-options \*,
+#onetrust-banner-sdk .ot-cat-header,
+#onetrust-banner-sdk .ot-optout-signal
+{
+color: #696969;
 ````
 
 **firecrawl** — no output for this URL
@@ -1641,53 +1664,53 @@ site\_level\_2: "cookie-policy"
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawlee** injects 148 words of nav chrome before content begins. The word count gap (1712 vs 5443 avg words) is largely explained by preamble: 148 words of nav chrome account for ~3% of crawlee's output on this site. markcrawl's lower recall (16% vs 68%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling</code></summary>
+<summary>Sample output — first 40 lines of <code>kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-# Topology-Aware Workload Scheduling | Kubernetes
+# Kubernetes Scheduler | Kubernetes
 
-*FEATURE STATE: Kubernetes v1.36 [alpha](disabled by default) Topology-Aware Scheduling (TAS) is a placement scheduling algorithm that allows to find the optimal placement for the considered PodGroup, guaranteeing that all pods will be collocated within the same topology domain. Users can accomodate TAS to their specific needs by changing TAS plugins configuration.
-Scheduling framework: TAS plugins configuration The scheduler includes new and extended in-tree plugins that implement the TAS extension points:*
+*In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that Kubelet can run them.
+Scheduling overview A scheduler watches for newly created Pods that have no Node assigned. For every Pod that the scheduler discovers, the scheduler becomes responsible for finding the best Node for that Pod to run on. The scheduler reaches this placement decision taking into account the scheduling principles described below.*
 
 
-# Topology-Aware Workload Scheduling
+# Kubernetes Scheduler
 
-FEATURE STATE:
-`Kubernetes v1.36 [alpha]`(disabled by default)
+In Kubernetes, *scheduling* refers to making sure that [Pods](/docs/concepts/workloads/pods/ "A Pod represents a set of running containers in your cluster.")
+are matched to [Nodes](/docs/concepts/architecture/nodes/ "A node is a worker machine in Kubernetes.") so that
+[Kubelet](/docs/reference/command-line-tools-reference/kubelet "An agent that runs on each node in the cluster. It makes sure that containers are running in a pod.") can run them.
 
-*Topology-Aware Scheduling* (TAS) is a [placement scheduling algorithm](/docs/concepts/scheduling-eviction/podgroup-scheduling/#placement-scheduling-algorithm)
-that allows to find the optimal placement for the considered PodGroup, guaranteeing that all pods
-will be collocated within the same topology domain. Users can accomodate TAS to their specific
-needs by changing TAS plugins configuration.
+## Scheduling overview
 
-## Scheduling framework: TAS plugins configuration
+A scheduler watches for newly created Pods that have no Node assigned. For
+every Pod that the scheduler discovers, the scheduler becomes responsible
+for finding the best Node for that Pod to run on. The scheduler reaches
+this placement decision taking into account the scheduling principles
+described below.
 
-The scheduler includes new and extended in-tree plugins that implement the TAS extension points:
+If you want to understand why Pods are placed onto a particular Node,
+or if you're planning to implement a custom scheduler yourself, this
+page will help you learn about scheduling.
 
-* `TopologyPlacement`: Implements the `PlacementGeneratePlugin` interface. It generates candidate
-  placements by grouping nodes based on the distinct values of the requested topology `key` (defined
-  in the PodGroup).
-* `NodeResourcesFit`: Extended to implement the `PlacementScorePlugin` interface. Following
-  similar logic to standard pod bin-packing, it scores placements based on the allocation ratio
-  across all nodes within the placement. It uses the `MostAllocated` strategy to maximize resource
-  utilization within a placement, and it inherits resource weights from the standard pod-by-pod
-  plugin settings.
-* `PodGroupPodsCount`: Implements the `PlacementScorePlugin` interface. It scores candidate
-  placements based on the total number of pods in the PodGroup that you can successfully schedule.
+## kube-scheduler
 
-### Customizing plugin weights and bin-packing resource weights
+[kube-scheduler](/docs/reference/command-line-tools-reference/kube-scheduler/)
+is the default scheduler for Kubernetes and runs as part of the
+[control plane](/docs/reference/glossary/?all=true#term-control-plane "The container orchestration layer that exposes the API and interfaces to define, deploy, and manage the lifecycle of containers.").
+kube-scheduler is designed so that, if you want and need to, you can
+write your own scheduling component and use that instead.
 
-By default, the `NodeResourcesFit` and `PodGroupPodsCount` plugins are configured with equal
-weights (both default to 1) to maintain a good balance between bin-packing logic and scheduling as
-many pods as possible.
+Kube-scheduler selects an optimal node to run newly created or not yet
+scheduled (unscheduled) pods. Since containers in pods - and pods themselves -
+can have different requirements, the scheduler filters out any nodes that
+don't meet a Pod's specific scheduling needs. Alternatively, the API lets
+you specify a node for a Pod when you create it, but this is unusual
+and is only done in special cases.
 
-You can adjust these weights, or the resource weights in the bin-packing strategy in your
-KubeSchedulerConfiguration. Here is an example snippet showing how to change the weights for both
-plugins, and how to override the `NodeResourcesFit` resource weights. The latter change will apply
+In a cluster, Nodes that meet the scheduling requirements for a Pod
 ````
 
 **crawl4ai**
@@ -1699,14 +1722,14 @@ plugins, and how to override the `NodeResourcesFit` resource weights. The latter
   * [Careers](https://kubernetes.io/careers/)
   * [Partners](https://kubernetes.io/partners/)
   * [Community](https://kubernetes.io/community/)
-  * [Versions](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/#)
-[Release Information](https://kubernetes.io/releases) [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/) [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/) [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/) [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/) [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  * [English](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/#)
-বাংলা (Bengali) [](https://kubernetes.io/bn/) [বাংলা (Bengali) ](https://kubernetes.io/bn/) 中文 (Chinese) [](https://kubernetes.io/zh-cn/) [中文 (Chinese) ](https://kubernetes.io/zh-cn/) Français (French) [](https://kubernetes.io/fr/) [Français (French) ](https://kubernetes.io/fr/) Deutsch (German) [](https://kubernetes.io/de/) [Deutsch (German) ](https://kubernetes.io/de/) हिन्दी (Hindi) [](https://kubernetes.io/hi/) [हिन्दी (Hindi) ](https://kubernetes.io/hi/) Bahasa Indonesia (Indonesian) [](https://kubernetes.io/id/) [Bahasa Indonesia (Indonesian) ](https://kubernetes.io/id/) Italiano (Italian) [](https://kubernetes.io/it/) [Italiano (Italian) ](https://kubernetes.io/it/) 日本語 (Japanese) [](https://kubernetes.io/ja/) [日本語 (Japanese) ](https://kubernetes.io/ja/) 한국어 (Korean) [](https://kubernetes.io/ko/) [한국어 (Korean) ](https://kubernetes.io/ko/) Polski (Polish) [](https://kubernetes.io/pl/) [Polski (Polish) ](https://kubernetes.io/pl/) Português (Portuguese) [](https://kubernetes.io/pt-br/) [Português (Portuguese) ](https://kubernetes.io/pt-br/) Русский (Russian) [](https://kubernetes.io/ru/) [Русский (Russian) ](https://kubernetes.io/ru/) Español (Spanish) [](https://kubernetes.io/es/) [Español (Spanish) ](https://kubernetes.io/es/) Українська (Ukrainian) [](https://kubernetes.io/uk/) [Українська (Ukrainian) ](https://kubernetes.io/uk/) Tiếng Việt (Vietnamese) [](https://kubernetes.io/vi/) [Tiếng Việt (Vietnamese) ](https://kubernetes.io/vi/)
+  * [Versions](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/#)
+[Release Information](https://kubernetes.io/releases) [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/) [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/) [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/) [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/) [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  * [English](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/#)
+[中文 (Chinese)](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/kube-scheduler/) [Bahasa Indonesia (Indonesian)](https://kubernetes.io/id/docs/concepts/scheduling-eviction/kube-scheduler/) [日本語 (Japanese)](https://kubernetes.io/ja/docs/concepts/scheduling-eviction/kube-scheduler/) [한국어 (Korean)](https://kubernetes.io/ko/docs/concepts/scheduling-eviction/kube-scheduler/) [Português (Portuguese)](https://kubernetes.io/pt-br/docs/concepts/scheduling-eviction/kube-scheduler/) বাংলা (Bengali) [](https://kubernetes.io/bn/) [বাংলা (Bengali) ](https://kubernetes.io/bn/) Français (French) [](https://kubernetes.io/fr/) [Français (French) ](https://kubernetes.io/fr/) Deutsch (German) [](https://kubernetes.io/de/) [Deutsch (German) ](https://kubernetes.io/de/) हिन्दी (Hindi) [](https://kubernetes.io/hi/) [हिन्दी (Hindi) ](https://kubernetes.io/hi/) Italiano (Italian) [](https://kubernetes.io/it/) [Italiano (Italian) ](https://kubernetes.io/it/) Polski (Polish) [](https://kubernetes.io/pl/) [Polski (Polish) ](https://kubernetes.io/pl/) Русский (Russian) [](https://kubernetes.io/ru/) [Русский (Russian) ](https://kubernetes.io/ru/) Español (Spanish) [](https://kubernetes.io/es/) [Español (Spanish) ](https://kubernetes.io/es/) Українська (Ukrainian) [](https://kubernetes.io/uk/) [Українська (Ukrainian) ](https://kubernetes.io/uk/) Tiếng Việt (Vietnamese) [](https://kubernetes.io/vi/) [Tiếng Việt (Vietnamese) ](https://kubernetes.io/vi/)
 
 
-# Topology-Aware Workload Scheduling
-[English](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/#)
+# Kubernetes Scheduler
+[English](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/#)
 [বাংলা (Bengali)](https://kubernetes.io/bn/docs/concepts/architecture/) [中文 (Chinese)](https://kubernetes.io/zh-cn/docs/concepts/architecture/) [Français (French)](https://kubernetes.io/fr/docs/concepts/architecture/) [Deutsch (German)](https://kubernetes.io/de/docs/concepts/architecture/) [Bahasa Indonesia (Indonesian)](https://kubernetes.io/id/docs/concepts/architecture/) [Italiano (Italian)](https://kubernetes.io/it/docs/concepts/architecture/) [日本語 (Japanese)](https://kubernetes.io/ja/docs/concepts/architecture/) [한국어 (Korean)](https://kubernetes.io/ko/docs/concepts/architecture/) [Polski (Polish)](https://kubernetes.io/pl/docs/concepts/architecture/) [Português (Portuguese)](https://kubernetes.io/pt-br/docs/concepts/architecture/) [Русский (Russian)](https://kubernetes.io/ru/docs/concepts/architecture/) [Español (Spanish)](https://kubernetes.io/es/docs/concepts/architecture/) [Tiếng Việt (Vietnamese)](https://kubernetes.io/vi/docs/concepts/architecture/) हिन्दी (Hindi) [](https://kubernetes.io/hi/) [हिन्दी (Hindi) ](https://kubernetes.io/hi/) Українська (Ukrainian) [](https://kubernetes.io/uk/) [Українська (Ukrainian) ](https://kubernetes.io/uk/)
   * [Kubernetes Documentation](https://kubernetes.io/docs/ "Documentation")
     * [Documentation](https://kubernetes.io/docs/home/ "Kubernetes Documentation")
@@ -1743,14 +1766,14 @@ plugins, and how to override the `NodeResourcesFit` resource weights. The latter
   * [Careers](https://kubernetes.io/careers/)
   * [Partners](https://kubernetes.io/partners/)
   * [Community](https://kubernetes.io/community/)
-  * [Versions](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/#)
-[Release Information](https://kubernetes.io/releases) [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/) [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/) [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/) [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/) [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  * [English](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/#)
-বাংলা (Bengali) [](https://kubernetes.io/bn/) [বাংলা (Bengali) ](https://kubernetes.io/bn/) 中文 (Chinese) [](https://kubernetes.io/zh-cn/) [中文 (Chinese) ](https://kubernetes.io/zh-cn/) Français (French) [](https://kubernetes.io/fr/) [Français (French) ](https://kubernetes.io/fr/) Deutsch (German) [](https://kubernetes.io/de/) [Deutsch (German) ](https://kubernetes.io/de/) हिन्दी (Hindi) [](https://kubernetes.io/hi/) [हिन्दी (Hindi) ](https://kubernetes.io/hi/) Bahasa Indonesia (Indonesian) [](https://kubernetes.io/id/) [Bahasa Indonesia (Indonesian) ](https://kubernetes.io/id/) Italiano (Italian) [](https://kubernetes.io/it/) [Italiano (Italian) ](https://kubernetes.io/it/) 日本語 (Japanese) [](https://kubernetes.io/ja/) [日本語 (Japanese) ](https://kubernetes.io/ja/) 한국어 (Korean) [](https://kubernetes.io/ko/) [한국어 (Korean) ](https://kubernetes.io/ko/) Polski (Polish) [](https://kubernetes.io/pl/) [Polski (Polish) ](https://kubernetes.io/pl/) Português (Portuguese) [](https://kubernetes.io/pt-br/) [Português (Portuguese) ](https://kubernetes.io/pt-br/) Русский (Russian) [](https://kubernetes.io/ru/) [Русский (Russian) ](https://kubernetes.io/ru/) Español (Spanish) [](https://kubernetes.io/es/) [Español (Spanish) ](https://kubernetes.io/es/) Українська (Ukrainian) [](https://kubernetes.io/uk/) [Українська (Ukrainian) ](https://kubernetes.io/uk/) Tiếng Việt (Vietnamese) [](https://kubernetes.io/vi/) [Tiếng Việt (Vietnamese) ](https://kubernetes.io/vi/)
+  * [Versions](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/#)
+[Release Information](https://kubernetes.io/releases) [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/) [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/) [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/) [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/) [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  * [English](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/#)
+[中文 (Chinese)](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/kube-scheduler/) [Bahasa Indonesia (Indonesian)](https://kubernetes.io/id/docs/concepts/scheduling-eviction/kube-scheduler/) [日本語 (Japanese)](https://kubernetes.io/ja/docs/concepts/scheduling-eviction/kube-scheduler/) [한국어 (Korean)](https://kubernetes.io/ko/docs/concepts/scheduling-eviction/kube-scheduler/) [Português (Portuguese)](https://kubernetes.io/pt-br/docs/concepts/scheduling-eviction/kube-scheduler/) বাংলা (Bengali) [](https://kubernetes.io/bn/) [বাংলা (Bengali) ](https://kubernetes.io/bn/) Français (French) [](https://kubernetes.io/fr/) [Français (French) ](https://kubernetes.io/fr/) Deutsch (German) [](https://kubernetes.io/de/) [Deutsch (German) ](https://kubernetes.io/de/) हिन्दी (Hindi) [](https://kubernetes.io/hi/) [हिन्दी (Hindi) ](https://kubernetes.io/hi/) Italiano (Italian) [](https://kubernetes.io/it/) [Italiano (Italian) ](https://kubernetes.io/it/) Polski (Polish) [](https://kubernetes.io/pl/) [Polski (Polish) ](https://kubernetes.io/pl/) Русский (Russian) [](https://kubernetes.io/ru/) [Русский (Russian) ](https://kubernetes.io/ru/) Español (Spanish) [](https://kubernetes.io/es/) [Español (Spanish) ](https://kubernetes.io/es/) Українська (Ukrainian) [](https://kubernetes.io/uk/) [Українська (Ukrainian) ](https://kubernetes.io/uk/) Tiếng Việt (Vietnamese) [](https://kubernetes.io/vi/) [Tiếng Việt (Vietnamese) ](https://kubernetes.io/vi/)
 
 
-# Topology-Aware Workload Scheduling
-[English](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/#)
+# Kubernetes Scheduler
+[English](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/#)
 [中文 (Chinese)](https://kubernetes.io/zh-cn/docs/concepts/architecture/control-plane-node-communication/) [Français (French)](https://kubernetes.io/fr/docs/concepts/architecture/control-plane-node-communication/) [Deutsch (German)](https://kubernetes.io/de/docs/concepts/architecture/control-plane-node-communication/) [Bahasa Indonesia (Indonesian)](https://kubernetes.io/id/docs/concepts/architecture/control-plane-node-communication/) [Italiano (Italian)](https://kubernetes.io/it/docs/concepts/architecture/control-plane-node-communication/) [日本語 (Japanese)](https://kubernetes.io/ja/docs/concepts/architecture/control-plane-node-communication/) [한국어 (Korean)](https://kubernetes.io/ko/docs/concepts/architecture/control-plane-node-communication/) [Português (Portuguese)](https://kubernetes.io/pt-br/docs/concepts/architecture/control-plane-node-communication/) [Русский (Russian)](https://kubernetes.io/ru/docs/concepts/architecture/control-plane-node-communication/) [Español (Spanish)](https://kubernetes.io/es/docs/concepts/architecture/control-plane-node-communication/) বাংলা (Bengali) [](https://kubernetes.io/bn/) [বাংলা (Bengali) ](https://kubernetes.io/bn/) हिन्दी (Hindi) [](https://kubernetes.io/hi/) [हिन्दी (Hindi) ](https://kubernetes.io/hi/) Polski (Polish) [](https://kubernetes.io/pl/) [Polski (Polish) ](https://kubernetes.io/pl/) Українська (Ukrainian) [](https://kubernetes.io/uk/) [Українська (Ukrainian) ](https://kubernetes.io/uk/) Tiếng Việt (Vietnamese) [](https://kubernetes.io/vi/) [Tiếng Việt (Vietnamese) ](https://kubernetes.io/vi/)
   * [Kubernetes Documentation](https://kubernetes.io/docs/ "Documentation")
     * [Documentation](https://kubernetes.io/docs/home/ "Kubernetes Documentation")
@@ -1783,48 +1806,48 @@ plugins, and how to override the `NodeResourcesFit` resource weights. The latter
 1. [Kubernetes Documentation](https://kubernetes.io/docs/)
 2. [Concepts](https://kubernetes.io/docs/concepts/)
 3. [Scheduling, Preemption and Eviction](https://kubernetes.io/docs/concepts/scheduling-eviction/)
-4. [Topology-Aware Workload Scheduling](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
+4. [Kubernetes Scheduler](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
 
-# Topology-Aware Workload Scheduling
+# Kubernetes Scheduler
 
-FEATURE STATE:
-`Kubernetes v1.36 [alpha]`(disabled by default)
+In Kubernetes, *scheduling* refers to making sure that [Pods](/docs/concepts/workloads/pods/ "A Pod represents a set of running containers in your cluster.")
+are matched to [Nodes](/docs/concepts/architecture/nodes/ "A node is a worker machine in Kubernetes.") so that
+[Kubelet](/docs/reference/command-line-tools-reference/kubelet "An agent that runs on each node in the cluster. It makes sure that containers are running in a pod.") can run them.
 
-*Topology-Aware Scheduling* (TAS) is a [placement scheduling algorithm](/docs/concepts/scheduling-eviction/podgroup-scheduling/#placement-scheduling-algorithm)
-that allows to find the optimal placement for the considered PodGroup, guaranteeing that all pods
-will be collocated within the same topology domain. Users can accomodate TAS to their specific
-needs by changing TAS plugins configuration.
+## Scheduling overview
 
-## Scheduling framework: TAS plugins configuration
+A scheduler watches for newly created Pods that have no Node assigned. For
+every Pod that the scheduler discovers, the scheduler becomes responsible
+for finding the best Node for that Pod to run on. The scheduler reaches
+this placement decision taking into account the scheduling principles
+described below.
 
-The scheduler includes new and extended in-tree plugins that implement the TAS extension points:
+If you want to understand why Pods are placed onto a particular Node,
+or if you're planning to implement a custom scheduler yourself, this
+page will help you learn about scheduling.
 
-* `TopologyPlacement`: Implements the `PlacementGeneratePlugin` interface. It generates candidate
-  placements by grouping nodes based on the distinct values of the requested topology `key` (defined
-  in the PodGroup).
-* `NodeResourcesFit`: Extended to implement the `PlacementScorePlugin` interface. Following
-  similar logic to standard pod bin-packing, it scores placements based on the allocation ratio
-  across all nodes within the placement. It uses the `MostAllocated` strategy to maximize resource
-  utilization within a placement, and it inherits resource weights from the standard pod-by-pod
-  plugin settings.
-* `PodGroupPodsCount`: Implements the `PlacementScorePlugin` interface. It scores candidate
-  placements based on the total number of pods in the PodGroup that you can successfully schedule.
+## kube-scheduler
 
-### Customizing plugin weights and bin-packing resource weights
+[kube-scheduler](/docs/reference/command-line-tools-reference/kube-scheduler/)
+is the default scheduler for Kubernetes and runs as part of the
+[control plane](/docs/reference/glossary/?all=true#term-control-plane "The container orchestration layer that exposes the API and interfaces to define, deploy, and manage the lifecycle of containers.").
+kube-scheduler is designed so that, if you want and need to, you can
+write your own scheduling component and use that instead.
 
-By default, the `NodeResourcesFit` and `PodGroupPodsCount` plugins are configured with equal
-weights (both default to 1) to maintain a good balance between bin-packing logic and scheduling as
-many pods as possible.
+Kube-scheduler selects an optimal node to run newly created or not yet
+scheduled (unscheduled) pods. Since containers in pods - and pods themselves -
+can have different requirements, the scheduler filters out any nodes that
+don't meet a Pod's specific scheduling needs. Alternatively, the API lets
+you specify a node for a Pod when you create it, but this is unusual
+and is only done in special cases.
 
-You can adjust these weights, or the resource weights in the bin-packing strategy in your
-KubeSchedulerConfiguration. Here is an example snippet showing how to change the weights for both
-plugins, and how to override the `NodeResourcesFit` resource weights. The latter change will apply
-both to pod-by-pod and placement scoring algorithms:
+In a cluster, Nodes that meet the scheduling requirements for a Pod
+are called *feasible* nodes. If none of the nodes are suitable, the pod
 ````
 
 **crawlee**
 ````
-Topology-Aware Workload Scheduling | Kubernetes
+Kubernetes Scheduler | Kubernetes
 {"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png","potentialAction":{"@type":"SearchAction","target":"https://kubernetes.io/search/?q={search\_term\_string}","query-input":"required name=search\_term\_string"}}var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-JPP6RFM2BP")}.gsc-control-cse{font-family:arial, sans-serif}.gsc-control-cse .gsc-table-result{font-family:arial, sans-serif}.gsc-refinementsGradient{background:linear-gradient(to left,rgba(255,255,255,1),rgba(255,255,255,0))}.gsc-control-cse{border-color:#FFFFFF;background-color:#FFFFFF}.gsc-results-wrapper-overlay{background-color:#FFFFFF}input.gsc-input,.gsc-input-box,.gsc-input-box-hover,.gsc-input-box-focus{border-color:#D9D9D9}.gsc-search-button-v2,.gsc-search-button-v2:hover,.gsc-search-button-v2:focus{border-color:#666666;background-color:#CECECE;background-image:none;filter:none}.gsc-search-button-v2 svg{fill:#FFFFFF}.gsc-tabHeader.gsc-tabhActive,.gsc-refinementHeader.gsc-refinementhActive{color:#CCCCCC;border-color:#CCCCCC;background-color:#FFFFFF}.gsc-tabHeader.gsc-tabhInactive,.gsc-refinementHeader.gsc-refinementhInactive{color:#CCCCCC;border-color:#CCCCCC;background-color:#FFFFFF}.gsc-webResult.gsc-result,.gsc-results .gsc-imageResult{border-color:#FFFFFF;background-color:#FFFFFF}.gsc-webResult.gsc-result:hover{border-color:#FFFFFF;background-color:#FFFFFF}.gs-webResult.gs-result a.gs-title:link,.gs-webResult.gs-result a.gs-title:link b,.gs-imageResult a.gs-title:link,.gs-imageResult a.gs-title:link b{color:#0000CC}.gs-webResult.gs-result a.gs-title:visited,.gs-webResult.gs-result a.gs-title:visited b,.gs-imageResult a.gs-title:visited,.gs-imageResult a.gs-title:visited b{color:#0000CC}.gs-webResult.gs-result a.gs-title:hover,.gs-webResult.gs-result a.gs-title:hover b,.gs-imageResult a.gs-title:hover,.gs-imageResult a.gs-title:hover b{color:#0000CC}.gs-webResult.gs-result a.gs-title:active,.gs-webResult.gs-result a.gs-title:active b,.gs-imageResult a.gs-title:active,.gs-imageResult a.gs-title:active b{color:#0000CC}.gsc-cursor-page{color:#0000CC}a.gsc-trailing-more-results:link{color:#0000CC}.gs-webResult:not(.gs-no-results-result):not(.gs-error-result) .gs-snippet,.gs-fileFormatType{color:#000000}.gs-webResult div.gs-visibleUrl{color:#008000}.gs-webResult div.gs-visibleUrl-short{color:#008000}.gsc-cursor-box{border-color:#FFFFFF}.gsc-results .gsc-cursor-box .gsc-cursor-page{border-color:#CCCCCC;background-color:#FFFFFF;color:#CCCCCC}.gsc-results .gsc-cursor-box .gsc-cursor-current-page{border-color:#CCCCCC;background-color:#FFFFFF;color:#CCCCCC}.gsc-webResult.gsc-result.gsc-promotion{border-color:#336699;background-color:#FFFFFF}.gsc-completion-container{border-color:#D9D9D9}.gsc-completion-title{color:#0000CC}.gsc-completion-snippet{color:#000000}.gs-promotion a.gs-title:link,.gs-promotion a.gs-title:link \*,.gs-promotion .gs-snippet a:link{color:#0000CC}.gs-promotion a.gs-title:visited,.gs-promotion a.gs-title:visited \*,.gs-promotion .gs-snippet a:visited{color:#0000CC}.gs-promotion a.gs-title:hover,.gs-promotion a.gs-title:hover \*,.gs-promotion .gs-snippet a:hover{color:#0000CC}.gs-promotion a.gs-title:active,.gs-promotion a.gs-title:active \*,.gs-promotion .gs-snippet a:active{color:#0000CC}.gs-promotion .gs-snippet,.gs-promotion .gs-title .gs-promotion-title-right,.gs-promotion .gs-title .gs-promotion-title-right \*{color:#000000}.gs-promotion .gs-visibleUrl,.gs-promotion .gs-visibleUrl-short{color:#008000}.gcsc-find-more-on-google{color:#0000CC}.gcsc-find-more-on-google-magnifier{fill:#0000CC}[.cls-1{fill:#fff}.cls-2{fill:#326ce5}Kubernetes](/)
 
 * [Documentation](/docs/home/)
@@ -1836,39 +1859,39 @@ Topology-Aware Workload Scheduling | Kubernetes
 * [Versions](#)
 
   [Release Information](/releases)
-  [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
+  [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
 * [English](#)
 
+  [中文 (Chinese)](/zh-cn/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [Bahasa Indonesia (Indonesian)](/id/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [日本語 (Japanese)](/ja/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [한국어 (Korean)](/ko/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [Português (Portuguese)](/pt-br/docs/concepts/scheduling-eviction/kube-scheduler/)
   বাংলা (Bengali)
   [বাংলা (Bengali)](/bn/) 
-  中文 (Chinese)
-  [中文 (Chinese)](/zh-cn/) 
   Français (French)
   [Français (French)](/fr/) 
   Deutsch (German)
   [Deutsch (German)](/de/) 
   हिन्दी (Hindi)
   [हिन्दी (Hindi)](/hi/) 
-  Bahasa Indonesia (Indonesian)
-  [Bahasa Indonesia (Indonesian)](/id/) 
   Italiano (Italian)
   [Italiano (Italian)](/it/) 
-  日本語 (Japanese)
-  [日本語 (Japanese)](/ja/) 
-  한국어 (Korean)
-  [한국어 (Korean)](/ko/) 
   Polski (Polish)
   [Polski (Polish)](/pl/) 
-  Português (Portuguese)
+  Русский (Russian)
+  [Русский (Russian)](/ru/) 
+  Español (Spanish)
+  [Español (Spanish)](/es/) 
 ````
 
 **colly+md**
 ````
-Topology-Aware Workload Scheduling | Kubernetes
+Kubernetes Scheduler | Kubernetes
 {"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png","potentialAction":{"@type":"SearchAction","target":"https://kubernetes.io/search/?q={search\_term\_string}","query-input":"required name=search\_term\_string"}}var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-JPP6RFM2BP")}[.cls-1{fill:#fff}.cls-2{fill:#326ce5}Kubernetes](/)
 
 * [Documentation](/docs/home/)
@@ -1880,39 +1903,39 @@ Topology-Aware Workload Scheduling | Kubernetes
 * [Versions](#)
 
   [Release Information](/releases)
-  [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
+  [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
 * [English](#)
 
+  [中文 (Chinese)](/zh-cn/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [Bahasa Indonesia (Indonesian)](/id/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [日本語 (Japanese)](/ja/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [한국어 (Korean)](/ko/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [Português (Portuguese)](/pt-br/docs/concepts/scheduling-eviction/kube-scheduler/)
   বাংলা (Bengali)
   [বাংলা (Bengali)](/bn/) 
-  中文 (Chinese)
-  [中文 (Chinese)](/zh-cn/) 
   Français (French)
   [Français (French)](/fr/) 
   Deutsch (German)
   [Deutsch (German)](/de/) 
   हिन्दी (Hindi)
   [हिन्दी (Hindi)](/hi/) 
-  Bahasa Indonesia (Indonesian)
-  [Bahasa Indonesia (Indonesian)](/id/) 
   Italiano (Italian)
   [Italiano (Italian)](/it/) 
-  日本語 (Japanese)
-  [日本語 (Japanese)](/ja/) 
-  한국어 (Korean)
-  [한국어 (Korean)](/ko/) 
   Polski (Polish)
   [Polski (Polish)](/pl/) 
-  Português (Portuguese)
+  Русский (Russian)
+  [Русский (Russian)](/ru/) 
+  Español (Spanish)
+  [Español (Spanish)](/es/) 
 ````
 
 **playwright**
 ````
-Topology-Aware Workload Scheduling | Kubernetes
+Kubernetes Scheduler | Kubernetes
 {"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png","potentialAction":{"@type":"SearchAction","target":"https://kubernetes.io/search/?q={search\_term\_string}","query-input":"required name=search\_term\_string"}}var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-JPP6RFM2BP")}[.cls-1{fill:#fff}.cls-2{fill:#326ce5}Kubernetes](/)
 
 * [Documentation](/docs/home/)
@@ -1924,34 +1947,34 @@ Topology-Aware Workload Scheduling | Kubernetes
 * [Versions](#)
 
   [Release Information](/releases)
-  [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
-  [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/topology-aware-scheduling/)
+  [v1.36](https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.35](https://v1-35.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.34](https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.33](https://v1-33.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [v1.32](https://v1-32.docs.kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)
 * [English](#)
 
+  [中文 (Chinese)](/zh-cn/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [Bahasa Indonesia (Indonesian)](/id/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [日本語 (Japanese)](/ja/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [한국어 (Korean)](/ko/docs/concepts/scheduling-eviction/kube-scheduler/)
+  [Português (Portuguese)](/pt-br/docs/concepts/scheduling-eviction/kube-scheduler/)
   বাংলা (Bengali)
   [বাংলা (Bengali)](/bn/) 
-  中文 (Chinese)
-  [中文 (Chinese)](/zh-cn/) 
   Français (French)
   [Français (French)](/fr/) 
   Deutsch (German)
   [Deutsch (German)](/de/) 
   हिन्दी (Hindi)
   [हिन्दी (Hindi)](/hi/) 
-  Bahasa Indonesia (Indonesian)
-  [Bahasa Indonesia (Indonesian)](/id/) 
   Italiano (Italian)
   [Italiano (Italian)](/it/) 
-  日本語 (Japanese)
-  [日本語 (Japanese)](/ja/) 
-  한국어 (Korean)
-  [한국어 (Korean)](/ko/) 
   Polski (Polish)
   [Polski (Polish)](/pl/) 
-  Português (Portuguese)
+  Русский (Russian)
+  [Русский (Russian)](/ru/) 
+  Español (Spanish)
+  [Español (Spanish)](/es/) 
 ````
 
 **firecrawl** — no output for this URL
@@ -3098,17 +3121,58 @@ Topology-Aware Workload Scheduling | Kubernetes
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawlee** injects 445 words of nav chrome before content begins. The word count gap (575 vs 4452 avg words) is largely explained by preamble: 445 words of nav chrome account for ~10% of playwright's output on this site. markcrawl's lower recall (2% vs 75%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>developer.mozilla.org/en-US/docs/Web/CSS/Guides/Custom_highlight_API</code></summary>
+<summary>Sample output — first 40 lines of <code>developer.mozilla.org/en-US/curriculum</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
-**markcrawl** — no output for this URL
+**markcrawl**
+````
+# MDN Curriculum
+
+*The MDN Curriculum provides a structured guide to the essential skills and practices for being a successful front-end developer, along with recommended learning resources.*
+
+
+# MDN Curriculum
+
+## The essential skillset for new front-end developers
+
+The MDN Curriculum provides a structured summary of the essential skills and practices for being a successful front-end developer. The Learn web development [Core modules](/en-US/docs/Learn_web_development/Core) are based on this structure, as well as partner courses such as the [Scrimba Frontend developer career path](https://scrimba.com/learn/frontend?via=mdn)
+
+Last updated: October 2025
+
+## About the curriculum
+
+* Beginner's level
+* Self-paced
+* Free
+
+Defines the essential skills and knowledge every front-end developer needs for career success and industry relevance.
+
+Created by Mozilla and refined with insights from students, educators, and developers from the broader web community.
+
+Includes learning resource recommendations covering every curriculum topic, helping you become job-ready.
+
+[Learn more](/en-US/curriculum/about-curriculum/)
+
+Learn our curriculum with Scrimba's interactive
+[Frontend Developer Career Path](https://scrimba.com/learn/frontend?via=mdn)
+.
+
+## [Modules](#modules)
+
+1. Getting started
+
+
+   1. [1. Soft skills
+
+      Develop a great attitude towards learning, researching, and collaborating to enhance your chances of success.
+````
 
 **crawl4ai**
 ````
-  * [Skip to main content](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Custom_highlight_API#content)
-  * [Skip to search](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Custom_highlight_API#search)
+  * [Skip to main content](https://developer.mozilla.org/en-US/curriculum/#content)
+  * [Skip to search](https://developer.mozilla.org/en-US/curriculum/#search)
 
 
 [ MDN ](https://developer.mozilla.org/en-US/)
@@ -3151,8 +3215,8 @@ CSS reference
 
 **crawl4ai-raw**
 ````
-  * [Skip to main content](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Custom_highlight_API#content)
-  * [Skip to search](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Custom_highlight_API#search)
+  * [Skip to main content](https://developer.mozilla.org/en-US/curriculum/#content)
+  * [Skip to search](https://developer.mozilla.org/en-US/curriculum/#search)
 
 
 [ MDN ](https://developer.mozilla.org/en-US/)
@@ -3193,53 +3257,11 @@ CSS reference
   * [Selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors)
 ````
 
-**scrapy+md**
-````
-# CSS custom highlight API
-
-The **CSS custom highlight API** module provides a programmatic way to target specific ranges of text defined by range objects, without affecting the underlying DOM structure. The range objects can then be selected via `::highlight()` pseudo-elements, and have highlight styles added and removed. The features of this module can create highlight effects similar to how text editors highlight spelling or grammar errors, and code editors highlight syntax errors.
-
-The CSS Custom Highlight API extends the concept of other highlight pseudo-elements such as [`::selection`](/en-US/docs/Web/CSS/Reference/Selectors/::selection), [`::spelling-error`](/en-US/docs/Web/CSS/Reference/Selectors/::spelling-error), [`::grammar-error`](/en-US/docs/Web/CSS/Reference/Selectors/::grammar-error), and [`::target-text`](/en-US/docs/Web/CSS/Reference/Selectors/::target-text) by providing a way to create arbitrary text ranges (defined as [`Range`](/en-US/docs/Web/API/Range) objects in JavaScript) and style them via CSS, rather than being limited to browser-defined ranges.
-
-## In this article
-
-* [Custom highlight API in action](#custom_highlight_api_in_action)
-* [Reference](#reference)
-* [Guides](#guides)
-* [Related concepts](#related_concepts)
-* [Specifications](#specifications)
-* [See also](#see_also)
-
-## [Custom highlight API in action](#custom_highlight_api_in_action)
-
-To enable styling text ranges on a webpage using the CSS Custom Highlight API, you create a [`Range`](/en-US/docs/Web/API/Range) object, then a [`Highlight`](/en-US/docs/Web/API/Highlight) object for the range. After registering the highlight using the [`HighlightRegistry.set()`](/en-US/docs/Web/API/HighlightRegistry/set) method, you can then select the range using the [`::highlight()`](/en-US/docs/Web/CSS/Reference/Selectors/::highlight) pseudo-element. The name defined in the `set()` method is used as the parameter of the `::highlight()` pseudo-element selector to select that range.The range selected by the `::highlight()` pseudo-element can be styled using a [limited number of properties](/en-US/docs/Web/CSS/Reference/Selectors/::highlight#allowable_properties).
-
-'''
-<h1>Directions</h1>
-<h2>Lincoln Memorial to Martin Luther King, Jr. Memorial</h2>
-<ol><li>Head south on Lincoln Memorial Circle</li
-  ><li>Turn right toward Independence Ave</li
-  ><li>Turn left onto Independence Ave</li
-  ><li>Turn right onto West Basin Dr</li
-  ><li>Look up when you reach 64 Independence Ave!</li>
-</ol>
-<hr />
-<label
-  >Number of steps completed:
-  <input type="number" min="0" max="5" value="0" id="currentStep" />
-</label>
-'''
-
-This example uses the [`text-decoration`](/en-US/docs/Web/CSS/Reference/Properties/text-decoration) property to strike through the `steps` highlight range defined by our JavaScript:
-
-css
-
-'''
-````
+**scrapy+md** — no output for this URL
 
 **crawlee**
 ````
-CSS custom highlight API - CSS | MDN
+MDN Curriculum
 try {
 document.documentElement.dataset.theme =
 localStorage.getItem("theme") || "light dark";
@@ -3285,7 +3307,7 @@ Markup languages
 
 **playwright**
 ````
-CSS custom highlight API - CSS | MDN
+MDN Curriculum
 try {
 document.documentElement.dataset.theme =
 localStorage.getItem("theme") || "light dark";
@@ -4836,7 +4858,7 @@ Great price point for this CPU, outperformes Axx $700 CPU readily.
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawlee** injects 4200 words of nav chrome before content begins. The word count gap (288 vs 6498 avg words) is largely explained by preamble: 4200 words of nav chrome account for ~65% of crawlee's output on this site. markcrawl's lower recall (0% vs 74%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>www.npr.org/2026/04/24/g-s1-118594/up-first-newsletter-strait-of-hormuz-lebanon-israel-marijuana-reclassification-georgia-wildfires-polymarket</code></summary>
+<summary>Sample output — first 40 lines of <code>www.npr.org/transcripts/nx-s1-5795641</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
@@ -4846,7 +4868,7 @@ Nav boilerplate appears here before the real content starts.
 **crawl4ai**
 ````
 Accessibility links
-  * [Skip to main content](https://www.npr.org/2026/04/24/g-s1-118594/up-first-newsletter-strait-of-hormuz-lebanon-israel-marijuana-reclassification-georgia-wildfires-polymarket#mainContent)
+  * [Skip to main content](https://www.npr.org/transcripts/nx-s1-5795641#mainContent)
   * [Keyboard shortcuts for audio player](https://help.npr.org/contact/s/article?name=what-are-the-keyboard-shortcuts-for-using-the-npr-org-audio-player)
 
 
@@ -4890,7 +4912,7 @@ Close Navigation Menu
 **crawl4ai-raw**
 ````
 Accessibility links
-  * [Skip to main content](https://www.npr.org/2026/04/24/g-s1-118594/up-first-newsletter-strait-of-hormuz-lebanon-israel-marijuana-reclassification-georgia-wildfires-polymarket#mainContent)
+  * [Skip to main content](https://www.npr.org/transcripts/nx-s1-5795641#mainContent)
   * [Keyboard shortcuts for audio player](https://help.npr.org/contact/s/article?name=what-are-the-keyboard-shortcuts-for-using-the-npr-org-audio-player)
 
 
@@ -4974,7 +4996,7 @@ dataLayer = [];
 
 
 try {var \_sf\_startpt=(new Date()).getTime();} catch(e){}
-Up First briefing: Mines in Strait; Marijuana rules; Georgia wildfires : NPR
+Maryland could become the first state to ban 'surveillance pricing' for groceries : NPR
 ````
 
 **colly+md** — no output for this URL
@@ -5388,44 +5410,53 @@ e.q.push({functionName: o, arguments: n})
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **scrapy+md** injects 272 words of nav chrome before content begins. The word count gap (859 vs 1112 avg words) is largely explained by preamble: 272 words of nav chrome account for ~24% of scrapy+md's output on this site. markcrawl's lower recall (11% vs 79%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>www.postgresql.org/developer/core</code></summary>
+<summary>Sample output — first 40 lines of <code>www.postgresql.org/about/policies/conferences</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-# Core Team
+# Community Conference Recognition
 
-The PostgreSQL Global Development Group core team is composed of seven long-time community members
-with various specialisations. Their roles include:
+*Last updated: September 21, 2023. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/about/policies/conferences.html) change history. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/community/recognition.html) history before December 8, 2020.*
 
-* Coordinating release activities.
-* Acting as a conduit for confidential communication.
-* Making policy announcements.
-* Managing permissions for commits, infrastructure, etc.
-* Handling disciplinary issues.
-* Making difficult decisions when consensus is lacking.
+The Community Conference Recognition programme is a voluntary scheme under which submitters of events to the [PostgreSQL Website listings](/about/events/) may self-assess their entry against the criteria below, and if they comply may market their event as a PostgreSQL Community event.
 
-The core team avoids involvement in topics that are best dealt with in
-an open forum, like technical direction and advocacy. Core team members
-are appointed by existing core team members.
+Events that do not meet the criteria will still be welcomed (where appropriate under the [general listing policies](https://wiki.postgresql.org/wiki/NewsEventsApproval#Approving_Events_and_Event-Related_News_.28excluding_training.29)) - for example, events organised by a single company which may still be valuable for people to attend, but are not necessarily what we would consider fully "open."
 
-The core team members are listed on the
-[Contributor Profiles](/community/contributors/) page.
+Use of the terms "MUST", "MUST NOT", "SHOULD" and "SHOULD NOT" in the criteria below should be interpreted per [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## Activity Reports
+### General
 
-Starting in 2019, the Core Team are aiming to publish regular activity
-reports. These can be found below:
+* The event MUST be primarily focused on PostgreSQL and targeted at existing and/or potential developers and users of PostgreSQL.
+* The event MUST adopt and follow an appropriate Code of Conduct to ensure a safe and enjoyable environment for anyone who wishes to attend.
+* The event website, advertisements, notices, and any other related material MUST fully comply with the [PostgreSQL Trademark Policy](/about/policies/trademarks/) or receive permission from the [PostgreSQL Community Association](https://www.postgres.ca/).
+* The [PostgreSQL Core Team](/developer/core/) reserves the right to recognise, not recognise, or rescind a previous recognition for any event without justification.
+* Information that is required to be publicly disclosed MUST be available on the website of the event, or, if it is not possible to publish to the event’s website, MUST be made available in the [PostgreSQL Website events list](/about/events/).
+* Events are self-certified as complying with these criteria when [listed on the PostgreSQL Website](/about/events/). If an event is self-certified by the organisers and later found not to comply with the criteria, the [PostgreSQL Core Team](/developer/core/) reserves the right to rescind the recognition of the event as a community event and, where appropriate, take further action up to a permanent ban on future event listings from the organisers.
+* These criteria may be reviewed and potentially updated at any time.
 
-* [January 2022 - December 2022](/developer/corereports/january2022_december2022/)
-* [June 2019 - December 2021](/developer/corereports/june2019_december2021/)
-* [June 2018 - May 2019](/developer/corereports/june2018_may2019/)
+### Organisers
 
-## Contact
+* The organizing committee (also referred to as a steering committee) MUST be fully disclosed on the event website OR the PostgreSQL Website event listing.
+* The organizing committee SHOULD NOT consist of more than 50% members from a single company or group of companies under the same ultimate ownership or management.
+* Any benefits granted to the companies that employ the organisers MUST be considered sponsorship benefits.
+* The organizing committee MUST either:
+  * Establish a code of conduct committee. The code of conduct committee MUST include at least one person who is not on the organizing committee. The membership of the code of conduct committee MUST be published. OR
+  * Adopt the [PostgreSQL Code of Conduct](/about/policies/coc/) and refer code of conduct complaints to the [PostgreSQL Code of Conduct Committee](/about/policies/coc_committee/).
 
-You can contact the core team by emailing pgsql-core [at] postgresql [dot] org.
+### Talk Selection
+
+* The talk selection committee MUST be fully disclosed on the event website.
+* The talk selection committee MUST NOT consist of 50% or more members from a single company or group of companies under the same ultimate ownership or management.
+* All members of the talk committee MUST have an equal vote.
+* The Call For Papers MUST be open for anyone to submit.
+* Solicited or sponsor presentations may bypass the normal talk selection process, but MUST be approved by a majority of the talk selection committee.
+* The full talk selection process and voting system MUST be fully disclosed to all members of the talk selection committee.
+* Details of the talk selection process and how results were obtained MUST be provided to the [PostgreSQL Core Team](/developer/core/) on request.
+
+### Sponsorship
 ````
 
 **crawl4ai**
@@ -5444,32 +5475,32 @@ You can contact the core team by emailing pgsql-core [at] postgresql [dot] org.
 
 February 26, 2026: [ PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released! ](https://www.postgresql.org/about/news/postgresql-183-179-1613-1517-and-1422-released-3246/)
 ## Quick Links
-  * [Developers](https://www.postgresql.org/developer/)
-  * [Core Team](https://www.postgresql.org/developer/core/)
-  * [Committers](https://www.postgresql.org/developer/committers/)
-  * [Roadmap](https://www.postgresql.org/developer/roadmap/)
-  * [Coding](https://www.postgresql.org/developer/coding/)
-  * [CommitFests](https://commitfest.postgresql.org)
-  * [Testing](https://www.postgresql.org/developer/testing/)
-    * [Beta Information](https://www.postgresql.org/developer/beta/)
-  * [Mailing Lists](https://www.postgresql.org/list/)
-  * [Developer FAQ](https://wiki.postgresql.org/wiki/Developer_FAQ)
-  * [Related Projects](https://www.postgresql.org/developer/related-projects/)
+  * [About](https://www.postgresql.org/about/)
+  * [Governance](https://www.postgresql.org/about/governance/)
+  * [Policies](https://www.postgresql.org/about/policies/)
+  * [Feature Matrix](https://www.postgresql.org/about/featurematrix/)
+  * [Donate](https://www.postgresql.org/about/donate/)
+  * [History](https://www.postgresql.org/docs/current/history.html)
+  * [Sponsors](https://www.postgresql.org/about/sponsors/)
+    * [Contributing](https://www.postgresql.org/about/contributing/)
+    * [Financial](https://www.postgresql.org/about/financial/)
+    * [Servers](https://www.postgresql.org/about/servers/)
+  * [Latest News](https://www.postgresql.org/about/newsarchive/)
+  * [Upcoming Events](https://www.postgresql.org/about/events/)
+    * [Past events](https://www.postgresql.org/about/eventarchive/)
+  * [Press](https://www.postgresql.org/about/press/)
+  * [Licence](https://www.postgresql.org/about/licence/)
 
 
-# Core Team 
-The PostgreSQL Global Development Group core team is composed of seven long-time community members with various specialisations. Their roles include:
-  * Coordinating release activities.
-  * Acting as a conduit for confidential communication.
-  * Making policy announcements.
-  * Managing permissions for commits, infrastructure, etc.
-  * Handling disciplinary issues.
-  * Making difficult decisions when consensus is lacking.
-
-
-The core team avoids involvement in topics that are best dealt with in an open forum, like technical direction and advocacy. Core team members are appointed by existing core team members.
-The core team members are listed on the [Contributor Profiles](https://www.postgresql.org/community/contributors/) page.
-## Activity Reports
+# Community Conference Recognition 
+_Last updated: September 21, 2023.[View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/about/policies/conferences.html) change history. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/community/recognition.html) history before December 8, 2020._
+The Community Conference Recognition programme is a voluntary scheme under which submitters of events to the [PostgreSQL Website listings](https://www.postgresql.org/about/events/) may self-assess their entry against the criteria below, and if they comply may market their event as a PostgreSQL Community event.
+Events that do not meet the criteria will still be welcomed (where appropriate under the [general listing policies](https://wiki.postgresql.org/wiki/NewsEventsApproval#Approving_Events_and_Event-Related_News_.28excluding_training.29)) - for example, events organised by a single company which may still be valuable for people to attend, but are not necessarily what we would consider fully "open."
+Use of the terms "MUST", "MUST NOT", "SHOULD" and "SHOULD NOT" in the criteria below should be interpreted per [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
+### General
+  * The event MUST be primarily focused on PostgreSQL and targeted at existing and/or potential developers and users of PostgreSQL.
+  * The event MUST adopt and follow an appropriate Code of Conduct to ensure a safe and enjoyable environment for anyone who wishes to attend.
+  * The event website, advertisements, notices, and any other related material MUST fully comply with the [PostgreSQL Trademark Policy](https://www.postgresql.org/about/policies/trademarks/) or receive permission from the [PostgreSQL Community Association](https://www.postgres.ca/).
 ````
 
 **crawl4ai-raw**
@@ -5488,32 +5519,32 @@ The core team members are listed on the [Contributor Profiles](https://www.postg
 
 February 26, 2026: [ PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released! ](https://www.postgresql.org/about/news/postgresql-183-179-1613-1517-and-1422-released-3246/)
 ## Quick Links
-  * [Developers](https://www.postgresql.org/developer/)
-  * [Core Team](https://www.postgresql.org/developer/core/)
-  * [Committers](https://www.postgresql.org/developer/committers/)
-  * [Roadmap](https://www.postgresql.org/developer/roadmap/)
-  * [Coding](https://www.postgresql.org/developer/coding/)
-  * [CommitFests](https://commitfest.postgresql.org)
-  * [Testing](https://www.postgresql.org/developer/testing/)
-    * [Beta Information](https://www.postgresql.org/developer/beta/)
-  * [Mailing Lists](https://www.postgresql.org/list/)
-  * [Developer FAQ](https://wiki.postgresql.org/wiki/Developer_FAQ)
-  * [Related Projects](https://www.postgresql.org/developer/related-projects/)
+  * [About](https://www.postgresql.org/about/)
+  * [Governance](https://www.postgresql.org/about/governance/)
+  * [Policies](https://www.postgresql.org/about/policies/)
+  * [Feature Matrix](https://www.postgresql.org/about/featurematrix/)
+  * [Donate](https://www.postgresql.org/about/donate/)
+  * [History](https://www.postgresql.org/docs/current/history.html)
+  * [Sponsors](https://www.postgresql.org/about/sponsors/)
+    * [Contributing](https://www.postgresql.org/about/contributing/)
+    * [Financial](https://www.postgresql.org/about/financial/)
+    * [Servers](https://www.postgresql.org/about/servers/)
+  * [Latest News](https://www.postgresql.org/about/newsarchive/)
+  * [Upcoming Events](https://www.postgresql.org/about/events/)
+    * [Past events](https://www.postgresql.org/about/eventarchive/)
+  * [Press](https://www.postgresql.org/about/press/)
+  * [Licence](https://www.postgresql.org/about/licence/)
 
 
-# Core Team 
-The PostgreSQL Global Development Group core team is composed of seven long-time community members with various specialisations. Their roles include:
-  * Coordinating release activities.
-  * Acting as a conduit for confidential communication.
-  * Making policy announcements.
-  * Managing permissions for commits, infrastructure, etc.
-  * Handling disciplinary issues.
-  * Making difficult decisions when consensus is lacking.
-
-
-The core team avoids involvement in topics that are best dealt with in an open forum, like technical direction and advocacy. Core team members are appointed by existing core team members.
-The core team members are listed on the [Contributor Profiles](https://www.postgresql.org/community/contributors/) page.
-## Activity Reports
+# Community Conference Recognition 
+_Last updated: September 21, 2023.[View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/about/policies/conferences.html) change history. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/community/recognition.html) history before December 8, 2020._
+The Community Conference Recognition programme is a voluntary scheme under which submitters of events to the [PostgreSQL Website listings](https://www.postgresql.org/about/events/) may self-assess their entry against the criteria below, and if they comply may market their event as a PostgreSQL Community event.
+Events that do not meet the criteria will still be welcomed (where appropriate under the [general listing policies](https://wiki.postgresql.org/wiki/NewsEventsApproval#Approving_Events_and_Event-Related_News_.28excluding_training.29)) - for example, events organised by a single company which may still be valuable for people to attend, but are not necessarily what we would consider fully "open."
+Use of the terms "MUST", "MUST NOT", "SHOULD" and "SHOULD NOT" in the criteria below should be interpreted per [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
+### General
+  * The event MUST be primarily focused on PostgreSQL and targeted at existing and/or potential developers and users of PostgreSQL.
+  * The event MUST adopt and follow an appropriate Code of Conduct to ensure a safe and enjoyable environment for anyone who wishes to attend.
+  * The event website, advertisements, notices, and any other related material MUST fully comply with the [PostgreSQL Trademark Policy](https://www.postgresql.org/about/policies/trademarks/) or receive permission from the [PostgreSQL Community Association](https://www.postgres.ca/).
 ````
 
 **scrapy+md**
@@ -5532,37 +5563,36 @@ February 26, 2026: [PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released!](/a
 
 ## Quick Links
 
-* [Developers](/developer/)
-* [Core Team](/developer/core/)
-* [Committers](/developer/committers/)
-* [Roadmap](/developer/roadmap/)
-* [Coding](/developer/coding/)
-* [CommitFests](https://commitfest.postgresql.org)
-* [Testing](/developer/testing/)
-  + [Beta Information](/developer/beta/)
-* [Mailing Lists](/list/)
-* [Developer FAQ](https://wiki.postgresql.org/wiki/Developer_FAQ)
-* [Related Projects](/developer/related-projects/)
+* [About](/about/)
+* [Governance](/about/governance/)
+* [Policies](/about/policies/)
+* [Feature Matrix](/about/featurematrix/)
+* [Donate](/about/donate/)
+* [History](/docs/current/history.html)
+* [Sponsors](/about/sponsors/)
+  + [Contributing](/about/contributing/)
+  + [Financial](/about/financial/)
+  + [Servers](/about/servers/)
+* [Latest News](/about/newsarchive/)
+* [Upcoming Events](/about/events/)
+  + [Past events](/about/eventarchive/)
+* [Press](/about/press/)
+* [Licence](/about/licence/)
 
-# Core Team
+# Community Conference Recognition
 
-The PostgreSQL Global Development Group core team is composed of seven long-time community members
-with various specialisations. Their roles include:
+*Last updated: September 21, 2023. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/about/policies/conferences.html) change history. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/community/recognition.html) history before December 8, 2020.*
 
-* Coordinating release activities.
-* Acting as a conduit for confidential communication.
-* Making policy announcements.
-* Managing permissions for commits, infrastructure, etc.
-* Handling disciplinary issues.
-* Making difficult decisions when consensus is lacking.
+The Community Conference Recognition programme is a voluntary scheme under which submitters of events to the [PostgreSQL Website listings](/about/events/) may self-assess their entry against the criteria below, and if they comply may market their event as a PostgreSQL Community event.
 
-The core team avoids involvement in topics that are best dealt with in
-an open forum, like technical direction and advocacy. Core team members
+Events that do not meet the criteria will still be welcomed (where appropriate under the [general listing policies](https://wiki.postgresql.org/wiki/NewsEventsApproval#Approving_Events_and_Event-Related_News_.28excluding_training.29)) - for example, events organised by a single company which may still be valuable for people to attend, but are not necessarily what we would consider fully "open."
+
+Use of the terms "MUST", "MUST NOT", "SHOULD" and "SHOULD NOT" in the criteria below should be interpreted per [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 ````
 
 **crawlee**
 ````
-PostgreSQL: Core Team
+PostgreSQL: Community Conference Recognition
 
 
 
@@ -5580,33 +5610,32 @@ February 26, 2026: [PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released!](/a
 
 ## Quick Links
 
-* [Developers](/developer/)
-* [Core Team](/developer/core/)
-* [Committers](/developer/committers/)
-* [Roadmap](/developer/roadmap/)
-* [Coding](/developer/coding/)
-* [CommitFests](https://commitfest.postgresql.org)
-* [Testing](/developer/testing/)
-  + [Beta Information](/developer/beta/)
-* [Mailing Lists](/list/)
-* [Developer FAQ](https://wiki.postgresql.org/wiki/Developer_FAQ)
-* [Related Projects](/developer/related-projects/)
+* [About](/about/)
+* [Governance](/about/governance/)
+* [Policies](/about/policies/)
+* [Feature Matrix](/about/featurematrix/)
+* [Donate](/about/donate/)
+* [History](/docs/current/history.html)
+* [Sponsors](/about/sponsors/)
+  + [Contributing](/about/contributing/)
+  + [Financial](/about/financial/)
+  + [Servers](/about/servers/)
+* [Latest News](/about/newsarchive/)
+* [Upcoming Events](/about/events/)
+  + [Past events](/about/eventarchive/)
+* [Press](/about/press/)
+* [Licence](/about/licence/)
 
-# Core Team
+# Community Conference Recognition
 
-The PostgreSQL Global Development Group core team is composed of seven long-time community members
-with various specialisations. Their roles include:
+*Last updated: September 21, 2023. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/about/policies/conferences.html) change history. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/community/recognition.html) history before December 8, 2020.*
 
-* Coordinating release activities.
-* Acting as a conduit for confidential communication.
-* Making policy announcements.
-* Managing permissions for commits, infrastructure, etc.
-* Handling disciplinary issues.
+The Community Conference Recognition programme is a voluntary scheme under which submitters of events to the [PostgreSQL Website listings](/about/events/) may self-assess their entry against the criteria below, and if they comply may market their event as a PostgreSQL Community event.
 ````
 
 **colly+md**
 ````
-PostgreSQL: Core Team
+PostgreSQL: Community Conference Recognition
 
 
 
@@ -5624,33 +5653,32 @@ February 26, 2026: [PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released!](/a
 
 ## Quick Links
 
-* [Developers](/developer/)
-* [Core Team](/developer/core/)
-* [Committers](/developer/committers/)
-* [Roadmap](/developer/roadmap/)
-* [Coding](/developer/coding/)
-* [CommitFests](https://commitfest.postgresql.org)
-* [Testing](/developer/testing/)
-  + [Beta Information](/developer/beta/)
-* [Mailing Lists](/list/)
-* [Developer FAQ](https://wiki.postgresql.org/wiki/Developer_FAQ)
-* [Related Projects](/developer/related-projects/)
+* [About](/about/)
+* [Governance](/about/governance/)
+* [Policies](/about/policies/)
+* [Feature Matrix](/about/featurematrix/)
+* [Donate](/about/donate/)
+* [History](/docs/current/history.html)
+* [Sponsors](/about/sponsors/)
+  + [Contributing](/about/contributing/)
+  + [Financial](/about/financial/)
+  + [Servers](/about/servers/)
+* [Latest News](/about/newsarchive/)
+* [Upcoming Events](/about/events/)
+  + [Past events](/about/eventarchive/)
+* [Press](/about/press/)
+* [Licence](/about/licence/)
 
-# Core Team
+# Community Conference Recognition
 
-The PostgreSQL Global Development Group core team is composed of seven long-time community members
-with various specialisations. Their roles include:
+*Last updated: September 21, 2023. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/about/policies/conferences.html) change history. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/community/recognition.html) history before December 8, 2020.*
 
-* Coordinating release activities.
-* Acting as a conduit for confidential communication.
-* Making policy announcements.
-* Managing permissions for commits, infrastructure, etc.
-* Handling disciplinary issues.
+The Community Conference Recognition programme is a voluntary scheme under which submitters of events to the [PostgreSQL Website listings](/about/events/) may self-assess their entry against the criteria below, and if they comply may market their event as a PostgreSQL Community event.
 ````
 
 **playwright**
 ````
-PostgreSQL: Core Team
+PostgreSQL: Community Conference Recognition
 
 
 
@@ -5668,28 +5696,27 @@ February 26, 2026: [PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released!](/a
 
 ## Quick Links
 
-* [Developers](/developer/)
-* [Core Team](/developer/core/)
-* [Committers](/developer/committers/)
-* [Roadmap](/developer/roadmap/)
-* [Coding](/developer/coding/)
-* [CommitFests](https://commitfest.postgresql.org)
-* [Testing](/developer/testing/)
-  + [Beta Information](/developer/beta/)
-* [Mailing Lists](/list/)
-* [Developer FAQ](https://wiki.postgresql.org/wiki/Developer_FAQ)
-* [Related Projects](/developer/related-projects/)
+* [About](/about/)
+* [Governance](/about/governance/)
+* [Policies](/about/policies/)
+* [Feature Matrix](/about/featurematrix/)
+* [Donate](/about/donate/)
+* [History](/docs/current/history.html)
+* [Sponsors](/about/sponsors/)
+  + [Contributing](/about/contributing/)
+  + [Financial](/about/financial/)
+  + [Servers](/about/servers/)
+* [Latest News](/about/newsarchive/)
+* [Upcoming Events](/about/events/)
+  + [Past events](/about/eventarchive/)
+* [Press](/about/press/)
+* [Licence](/about/licence/)
 
-# Core Team
+# Community Conference Recognition
 
-The PostgreSQL Global Development Group core team is composed of seven long-time community members
-with various specialisations. Their roles include:
+*Last updated: September 21, 2023. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/about/policies/conferences.html) change history. [View](https://git.postgresql.org/gitweb/?p=pgweb.git;a=history;f=templates/pages/community/recognition.html) history before December 8, 2020.*
 
-* Coordinating release activities.
-* Acting as a conduit for confidential communication.
-* Making policy announcements.
-* Managing permissions for commits, infrastructure, etc.
-* Handling disciplinary issues.
+The Community Conference Recognition programme is a voluntary scheme under which submitters of events to the [PostgreSQL Website listings](/about/events/) may self-assess their entry against the criteria below, and if they comply may market their event as a PostgreSQL Community event.
 ````
 
 **firecrawl** — no output for this URL
@@ -6883,52 +6910,53 @@ with various specialisations. Their roles include:
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawlee** injects 367 words of nav chrome before content begins. The word count gap (1565 vs 5549 avg words) is largely explained by preamble: 280 words of nav chrome account for ~5% of colly+md's output on this site. markcrawl's lower recall (43% vs 98%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>react.dev/learn/managing-state</code></summary>
+<summary>Sample output — first 40 lines of <code>react.dev/learn/typescript</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-# Managing State – React
+# Using TypeScript – React
 
 *The library for web and native user interfaces*
 
 
 [Learn React](/learn)
 
+[Setup](/learn/setup)
+
 Copy pageCopy
 
-# Managing State
+# Using TypeScript
 
-Intermediate
+TypeScript is a popular way to add type definitions to JavaScript codebases. Out of the box, TypeScript [supports JSX](/learn/writing-markup-with-jsx) and you can get full React Web support by adding [`@types/react`](https://www.npmjs.com/package/@types/react) and [`@types/react-dom`](https://www.npmjs.com/package/@types/react-dom) to your project.
 
-As your application grows, it helps to be more intentional about how your state is organized and how the data flows between your components. Redundant or duplicate state is a common source of bugs. In this chapter, you’ll learn how to structure your state well, how to keep your state update logic maintainable, and how to share state between distant components.
+### You will learn
 
-### In this chapter
+* [TypeScript with React Components](/learn/typescript#typescript-with-react-components)
+* [Examples of typing with Hooks](/learn/typescript#example-hooks)
+* [Common types from `@types/react`](/learn/typescript#useful-types)
+* [Further learning locations](/learn/typescript#further-learning)
 
-* [How to think about UI changes as state changes](/learn/reacting-to-input-with-state)
-* [How to structure state well](/learn/choosing-the-state-structure)
-* [How to “lift state up” to share it between components](/learn/sharing-state-between-components)
-* [How to control whether the state gets preserved or reset](/learn/preserving-and-resetting-state)
-* [How to consolidate complex state logic in a function](/learn/extracting-state-logic-into-a-reducer)
-* [How to pass information without “prop drilling”](/learn/passing-data-deeply-with-context)
-* [How to scale state management as your app grows](/learn/scaling-up-with-reducer-and-context)
+## Installation
 
-## Reacting to input with state
+All [production-grade React frameworks](/learn/creating-a-react-app#full-stack-frameworks) offer support for using TypeScript. Follow the framework specific guide for installation:
 
-With React, you won’t modify the UI from code directly. For example, you won’t write commands like “disable the button”, “enable the button”, “show the success message”, etc. Instead, you will describe the UI you want to see for the different visual states of your component (“initial state”, “typing state”, “success state”), and then trigger the state changes in response to user input. This is similar to how designers think about UI.
+* [Next.js](https://nextjs.org/docs/app/building-your-application/configuring/typescript)
+* [Remix](https://remix.run/docs/en/1.19.2/guides/typescript)
+* [Gatsby](https://www.gatsbyjs.com/docs/how-to/custom-configuration/typescript/)
+* [Expo](https://docs.expo.dev/guides/typescript/)
 
-Here is a quiz form built using React. Note how it uses the `status` state variable to determine whether to enable or disable the submit button, and whether to show the success message instead.
+### Adding TypeScript to an existing React project
 
-App.js
+To install the latest version of React’s type definitions:
 
-App.js
+Terminal
 
-ReloadClear[Fork](https://codesandbox.io/api/v1/sandboxes/define?undefined&environment=create-react-app "Open in CodeSandbox")
+Copy
 
 '''
-import { useState } from 'react';
 ````
 
 **crawl4ai**
@@ -7023,43 +7051,43 @@ import { useState } from 'react';
 ````
 [Learn React](/learn)
 
+[Setup](/learn/setup)
+
  Copy pageCopy
 
-# Managing State
+# Using TypeScript
 
-Intermediate
+TypeScript is a popular way to add type definitions to JavaScript codebases. Out of the box, TypeScript [supports JSX](/learn/writing-markup-with-jsx) and you can get full React Web support by adding [`@types/react`](https://www.npmjs.com/package/@types/react) and [`@types/react-dom`](https://www.npmjs.com/package/@types/react-dom) to your project.
 
-As your application grows, it helps to be more intentional about how your state is organized and how the data flows between your components. Redundant or duplicate state is a common source of bugs. In this chapter, you’ll learn how to structure your state well, how to keep your state update logic maintainable, and how to share state between distant components.
+### You will learn
 
-### In this chapter
+* [TypeScript with React Components](/learn/typescript#typescript-with-react-components)
+* [Examples of typing with Hooks](/learn/typescript#example-hooks)
+* [Common types from `@types/react`](/learn/typescript#useful-types)
+* [Further learning locations](/learn/typescript#further-learning)
 
-* [How to think about UI changes as state changes](/learn/reacting-to-input-with-state)
-* [How to structure state well](/learn/choosing-the-state-structure)
-* [How to “lift state up” to share it between components](/learn/sharing-state-between-components)
-* [How to control whether the state gets preserved or reset](/learn/preserving-and-resetting-state)
-* [How to consolidate complex state logic in a function](/learn/extracting-state-logic-into-a-reducer)
-* [How to pass information without “prop drilling”](/learn/passing-data-deeply-with-context)
-* [How to scale state management as your app grows](/learn/scaling-up-with-reducer-and-context)
+## Installation
 
-## Reacting to input with state
+All [production-grade React frameworks](/learn/creating-a-react-app#full-stack-frameworks) offer support for using TypeScript. Follow the framework specific guide for installation:
 
-With React, you won’t modify the UI from code directly. For example, you won’t write commands like “disable the button”, “enable the button”, “show the success message”, etc. Instead, you will describe the UI you want to see for the different visual states of your component (“initial state”, “typing state”, “success state”), and then trigger the state changes in response to user input. This is similar to how designers think about UI.
+* [Next.js](https://nextjs.org/docs/app/building-your-application/configuring/typescript)
+* [Remix](https://remix.run/docs/en/1.19.2/guides/typescript)
+* [Gatsby](https://www.gatsbyjs.com/docs/how-to/custom-configuration/typescript/)
+* [Expo](https://docs.expo.dev/guides/typescript/)
 
-Here is a quiz form built using React. Note how it uses the `status` state variable to determine whether to enable or disable the submit button, and whether to show the success message instead.
+### Adding TypeScript to an existing React project
 
-App.js
+To install the latest version of React’s type definitions:
 
-App.js
+Terminal
 
-ReloadClear[Fork](https://codesandbox.io/api/v1/sandboxes/define?undefined&environment=create-react-app "Open in CodeSandbox")
+Copy
 
 '''
-import { useState } from 'react';
+npm install --save-dev @types/react @types/react-dom
+'''
 
-export default function Form() {
-  const [answer, setAnswer] = useState('');
-  const [error, setError] = useState(null);
-  const [status, setStatus] = useState('typing');
+The following compiler options need to be set in your `tsconfig.json`:
 ````
 
 **crawlee**
@@ -7108,7 +7136,7 @@ export default function Form() {
 
 **colly+md**
 ````
-Managing State – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
+Using TypeScript – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
 (function () {
 try {
 let logShown = false;
@@ -7152,7 +7180,7 @@ return localStorage.getItem('uwu') === 'true';
 
 **playwright**
 ````
-Managing State – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
+Using TypeScript – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
 (function () {
 try {
 let logShown = false;
@@ -7815,316 +7843,317 @@ return localStorage.getItem('uwu') === 'true';
 markcrawl's lower recall (22% vs 84%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>doc.rust-lang.org/std/vec/struct.Vec.html</code></summary>
+<summary>Sample output — first 40 lines of <code>doc.rust-lang.org/book/ch01-02-hello-world.html</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-# Vec in std::vec - Rust
+# Hello, World! - The Rust Programming Language
 
-*A contiguous growable array type, written as `Vec<T>`, short for ‘vector’.*
+## [Hello, World!](#hello-world)
 
+Now that you’ve installed Rust, it’s time to write your first Rust program.
+It’s traditional when learning a new language to write a little program that
+prints the text `Hello, world!` to the screen, so we’ll do the same here!
 
-[std](../index.html)::[vec](index.html)
+Note: This book assumes basic familiarity with the command line. Rust makes
+no specific demands about your editing or tooling or where your code lives, so
+if you prefer to use an IDE instead of the command line, feel free to use your
+favorite IDE. Many IDEs now have some degree of Rust support; check the IDE’s
+documentation for details. The Rust team has been focusing on enabling great
+IDE support via `rust-analyzer`. See [Appendix D](appendix-04-useful-development-tools.html)
+for more details.
 
-# Struct Vec Copy item path
+### [Project Directory Setup](#project-directory-setup)
 
-1.0.0 · [Source](../../src/alloc/vec/mod.rs.html#438)
+You’ll start by making a directory to store your Rust code. It doesn’t matter
+to Rust where your code lives, but for the exercises and projects in this book,
+we suggest making a *projects* directory in your home directory and keeping all
+your projects there.
 
-'''rust
-pub struct Vec<T, A = Global>
+Open a terminal and enter the following commands to make a *projects* directory
+and a directory for the “Hello, world!” project within the *projects* directory.
 
-where
-    A: Allocator,
+For Linux, macOS, and PowerShell on Windows, enter this:
 
-{ /* private fields */ }
+'''console
+$ mkdir ~/projects
+$ cd ~/projects
+$ mkdir hello_world
+$ cd hello_world
 '''
 
-Expand description
+For Windows CMD, enter this:
 
-A contiguous growable array type, written as `Vec<T>`, short for ‘vector’.
-
-## [§](#examples)Examples
-
-'''rust
-let mut vec = Vec::new();
-vec.push(1);
-vec.push(2);
-
-assert_eq!(vec.len(), 2);
-assert_eq!(vec[0], 1);
-
-assert_eq!(vec.pop(), Some(2));
-assert_eq!(vec.len(), 1);
-
-vec[0] = 7;
-assert_eq!(vec[0], 7);
+'''cmd
+> mkdir "%USERPROFILE%\projects"
+> cd /d "%USERPROFILE%\projects"
 ````
 
 **crawl4ai**
 ````
-[Skip to main content](https://doc.rust-lang.org/std/vec/struct.Vec.html#main-content)
-[Settings](https://doc.rust-lang.org/settings.html)
-[Help](https://doc.rust-lang.org/help.html)
-## [Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html#)
-[![logo](https://doc.rust-lang.org/static.files/rust-logo-9a9549ea.svg)](https://doc.rust-lang.org/std/index.html)
-##  [std](https://doc.rust-lang.org/std/index.html)1.95.0
-(59807616e 2026-04-14)
-## [Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html#)
-### [Sections](https://doc.rust-lang.org/std/vec/struct.Vec.html#)
-  * [Examples](https://doc.rust-lang.org/std/vec/struct.Vec.html#examples "Examples")
-  * [Indexing](https://doc.rust-lang.org/std/vec/struct.Vec.html#indexing "Indexing")
-  * [Slicing](https://doc.rust-lang.org/std/vec/struct.Vec.html#slicing "Slicing")
-  * [Capacity and reallocation](https://doc.rust-lang.org/std/vec/struct.Vec.html#capacity-and-reallocation "Capacity and reallocation")
-  * [Guarantees](https://doc.rust-lang.org/std/vec/struct.Vec.html#guarantees "Guarantees")
-
-
-### [Methods](https://doc.rust-lang.org/std/vec/struct.Vec.html#implementations)
-  * [allocator](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.allocator "allocator")
-  * [append](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.append "append")
-  * [as_mut_ptr](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_mut_ptr "as_mut_ptr")
-  * [as_mut_slice](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_mut_slice "as_mut_slice")
-  * [as_non_null](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_non_null "as_non_null")
-  * [as_ptr](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_ptr "as_ptr")
-  * [as_slice](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_slice "as_slice")
-  * [capacity](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.capacity "capacity")
-  * [clear](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear "clear")
-  * [const_make_global](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.const_make_global "const_make_global")
-  * [dedup](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.dedup "dedup")
-  * [dedup_by](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.dedup_by "dedup_by")
-  * [dedup_by_key](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.dedup_by_key "dedup_by_key")
-  * [drain](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.drain "drain")
-  * [extend_from_slice](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.extend_from_slice "extend_from_slice")
-  * [extend_from_within](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.extend_from_within "extend_from_within")
-  * [extract_if](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.extract_if "extract_if")
-  * [from_fn](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_fn "from_fn")
-  * [from_parts](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_parts "from_parts")
-  * [from_parts_in](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_parts_in "from_parts_in")
-  * [from_raw_parts](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_raw_parts "from_raw_parts")
-  * [from_raw_parts_in](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_raw_parts_in "from_raw_parts_in")
-  * [insert](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.insert "insert")
+## Keyboard shortcuts
+Press `←` or `→` to navigate between chapters
+Press `S` or `/` to search in the book
+Press `?` to show this help
+Press `Esc` to hide this help
+  1. [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
+  2. [Foreword](https://doc.rust-lang.org/book/foreword.html)
+  3. [Introduction](https://doc.rust-lang.org/book/ch00-00-introduction.html)
+  4. [**1.** Getting Started](https://doc.rust-lang.org/book/ch01-00-getting-started.html)
+    1. [**1.1.** Installation](https://doc.rust-lang.org/book/ch01-01-installation.html)
+    2. [**1.2.** Hello, World!](https://doc.rust-lang.org/book/ch01-02-hello-world.html)
+      1. [Hello, World!](https://doc.rust-lang.org/book/ch01-02-hello-world.html#hello-world)
+        1. [Project Directory Setup](https://doc.rust-lang.org/book/ch01-02-hello-world.html#project-directory-setup)
+        2. [Rust Program Basics](https://doc.rust-lang.org/book/ch01-02-hello-world.html#rust-program-basics)
+        3. [The Anatomy of a Rust Program](https://doc.rust-lang.org/book/ch01-02-hello-world.html#the-anatomy-of-a-rust-program)
+        4. [Compilation and Execution](https://doc.rust-lang.org/book/ch01-02-hello-world.html#compilation-and-execution)
+    3. [**1.3.** Hello, Cargo!](https://doc.rust-lang.org/book/ch01-03-hello-cargo.html)
+  5. [**2.** Programming a Guessing Game](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html)
+  6. [**3.** Common Programming Concepts](https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html)
+    1. [**3.1.** Variables and Mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html)
+    2. [**3.2.** Data Types](https://doc.rust-lang.org/book/ch03-02-data-types.html)
+    3. [**3.3.** Functions](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html)
+    4. [**3.4.** Comments](https://doc.rust-lang.org/book/ch03-04-comments.html)
+    5. [**3.5.** Control Flow](https://doc.rust-lang.org/book/ch03-05-control-flow.html)
+  7. [**4.** Understanding Ownership](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html)
+    1. [**4.1.** What is Ownership?](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+    2. [**4.2.** References and Borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
+    3. [**4.3.** The Slice Type](https://doc.rust-lang.org/book/ch04-03-slices.html)
+  8. [**5.** Using Structs to Structure Related Data](https://doc.rust-lang.org/book/ch05-00-structs.html)
+    1. [**5.1.** Defining and Instantiating Structs](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)
+    2. [**5.2.** An Example Program Using Structs](https://doc.rust-lang.org/book/ch05-02-example-structs.html)
+    3. [**5.3.** Methods](https://doc.rust-lang.org/book/ch05-03-method-syntax.html)
+  9. [**6.** Enums and Pattern Matching](https://doc.rust-lang.org/book/ch06-00-enums.html)
+    1. [**6.1.** Defining an Enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html)
+    2. [**6.2.** The match Control Flow Construct](https://doc.rust-lang.org/book/ch06-02-match.html)
+    3. [**6.3.** Concise Control Flow with if let and let...else](https://doc.rust-lang.org/book/ch06-03-if-let.html)
+  10. [**7.** Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
+    1. [**7.1.** Packages and Crates](https://doc.rust-lang.org/book/ch07-01-packages-and-crates.html)
+    2. [**7.2.** Control Scope and Privacy with Modules](https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html)
+    3. [**7.3.** Paths for Referring to an Item in the Module Tree](https://doc.rust-lang.org/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html)
 ````
 
 **crawl4ai-raw**
 ````
-[Skip to main content](https://doc.rust-lang.org/std/vec/struct.Vec.html#main-content)
-[Settings](https://doc.rust-lang.org/settings.html)
-[Help](https://doc.rust-lang.org/help.html)
-## [Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html#)
-[![logo](https://doc.rust-lang.org/static.files/rust-logo-9a9549ea.svg)](https://doc.rust-lang.org/std/index.html)
-##  [std](https://doc.rust-lang.org/std/index.html)1.95.0
-(59807616e 2026-04-14)
-## [Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html#)
-### [Sections](https://doc.rust-lang.org/std/vec/struct.Vec.html#)
-  * [Examples](https://doc.rust-lang.org/std/vec/struct.Vec.html#examples "Examples")
-  * [Indexing](https://doc.rust-lang.org/std/vec/struct.Vec.html#indexing "Indexing")
-  * [Slicing](https://doc.rust-lang.org/std/vec/struct.Vec.html#slicing "Slicing")
-  * [Capacity and reallocation](https://doc.rust-lang.org/std/vec/struct.Vec.html#capacity-and-reallocation "Capacity and reallocation")
-  * [Guarantees](https://doc.rust-lang.org/std/vec/struct.Vec.html#guarantees "Guarantees")
-
-
-### [Methods](https://doc.rust-lang.org/std/vec/struct.Vec.html#implementations)
-  * [allocator](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.allocator "allocator")
-  * [append](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.append "append")
-  * [as_mut_ptr](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_mut_ptr "as_mut_ptr")
-  * [as_mut_slice](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_mut_slice "as_mut_slice")
-  * [as_non_null](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_non_null "as_non_null")
-  * [as_ptr](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_ptr "as_ptr")
-  * [as_slice](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.as_slice "as_slice")
-  * [capacity](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.capacity "capacity")
-  * [clear](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear "clear")
-  * [const_make_global](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.const_make_global "const_make_global")
-  * [dedup](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.dedup "dedup")
-  * [dedup_by](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.dedup_by "dedup_by")
-  * [dedup_by_key](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.dedup_by_key "dedup_by_key")
-  * [drain](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.drain "drain")
-  * [extend_from_slice](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.extend_from_slice "extend_from_slice")
-  * [extend_from_within](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.extend_from_within "extend_from_within")
-  * [extract_if](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.extract_if "extract_if")
-  * [from_fn](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_fn "from_fn")
-  * [from_parts](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_parts "from_parts")
-  * [from_parts_in](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_parts_in "from_parts_in")
-  * [from_raw_parts](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_raw_parts "from_raw_parts")
-  * [from_raw_parts_in](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_raw_parts_in "from_raw_parts_in")
-  * [insert](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.insert "insert")
+## Keyboard shortcuts
+Press `←` or `→` to navigate between chapters
+Press `S` or `/` to search in the book
+Press `?` to show this help
+Press `Esc` to hide this help
+  1. [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
+  2. [Foreword](https://doc.rust-lang.org/book/foreword.html)
+  3. [Introduction](https://doc.rust-lang.org/book/ch00-00-introduction.html)
+  4. [**1.** Getting Started](https://doc.rust-lang.org/book/ch01-00-getting-started.html)
+    1. [**1.1.** Installation](https://doc.rust-lang.org/book/ch01-01-installation.html)
+    2. [**1.2.** Hello, World!](https://doc.rust-lang.org/book/ch01-02-hello-world.html)
+      1. [Hello, World!](https://doc.rust-lang.org/book/ch01-02-hello-world.html#hello-world)
+        1. [Project Directory Setup](https://doc.rust-lang.org/book/ch01-02-hello-world.html#project-directory-setup)
+        2. [Rust Program Basics](https://doc.rust-lang.org/book/ch01-02-hello-world.html#rust-program-basics)
+        3. [The Anatomy of a Rust Program](https://doc.rust-lang.org/book/ch01-02-hello-world.html#the-anatomy-of-a-rust-program)
+        4. [Compilation and Execution](https://doc.rust-lang.org/book/ch01-02-hello-world.html#compilation-and-execution)
+    3. [**1.3.** Hello, Cargo!](https://doc.rust-lang.org/book/ch01-03-hello-cargo.html)
+  5. [**2.** Programming a Guessing Game](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html)
+  6. [**3.** Common Programming Concepts](https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html)
+    1. [**3.1.** Variables and Mutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html)
+    2. [**3.2.** Data Types](https://doc.rust-lang.org/book/ch03-02-data-types.html)
+    3. [**3.3.** Functions](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html)
+    4. [**3.4.** Comments](https://doc.rust-lang.org/book/ch03-04-comments.html)
+    5. [**3.5.** Control Flow](https://doc.rust-lang.org/book/ch03-05-control-flow.html)
+  7. [**4.** Understanding Ownership](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html)
+    1. [**4.1.** What is Ownership?](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+    2. [**4.2.** References and Borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
+    3. [**4.3.** The Slice Type](https://doc.rust-lang.org/book/ch04-03-slices.html)
+  8. [**5.** Using Structs to Structure Related Data](https://doc.rust-lang.org/book/ch05-00-structs.html)
+    1. [**5.1.** Defining and Instantiating Structs](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)
+    2. [**5.2.** An Example Program Using Structs](https://doc.rust-lang.org/book/ch05-02-example-structs.html)
+    3. [**5.3.** Methods](https://doc.rust-lang.org/book/ch05-03-method-syntax.html)
+  9. [**6.** Enums and Pattern Matching](https://doc.rust-lang.org/book/ch06-00-enums.html)
+    1. [**6.1.** Defining an Enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html)
+    2. [**6.2.** The match Control Flow Construct](https://doc.rust-lang.org/book/ch06-02-match.html)
+    3. [**6.3.** Concise Control Flow with if let and let...else](https://doc.rust-lang.org/book/ch06-03-if-let.html)
+  10. [**7.** Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
+    1. [**7.1.** Packages and Crates](https://doc.rust-lang.org/book/ch07-01-packages-and-crates.html)
+    2. [**7.2.** Control Scope and Privacy with Modules](https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html)
+    3. [**7.3.** Paths for Referring to an Item in the Module Tree](https://doc.rust-lang.org/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html)
 ````
 
 **scrapy+md**
 ````
-[std](../index.html)::[vec](index.html)
+## [Hello, World!](#hello-world)
 
-# Struct Vec Copy item path
+Now that you’ve installed Rust, it’s time to write your first Rust program.
+It’s traditional when learning a new language to write a little program that
+prints the text `Hello, world!` to the screen, so we’ll do the same here!
 
-1.0.0 · [Source](../../src/alloc/vec/mod.rs.html#438)
+Note: This book assumes basic familiarity with the command line. Rust makes
+no specific demands about your editing or tooling or where your code lives, so
+if you prefer to use an IDE instead of the command line, feel free to use your
+favorite IDE. Many IDEs now have some degree of Rust support; check the IDE’s
+documentation for details. The Rust team has been focusing on enabling great
+IDE support via `rust-analyzer`. See [Appendix D](appendix-04-useful-development-tools.html)
+for more details.
+
+### [Project Directory Setup](#project-directory-setup)
+
+You’ll start by making a directory to store your Rust code. It doesn’t matter
+to Rust where your code lives, but for the exercises and projects in this book,
+we suggest making a *projects* directory in your home directory and keeping all
+your projects there.
+
+Open a terminal and enter the following commands to make a *projects* directory
+and a directory for the “Hello, world!” project within the *projects* directory.
+
+For Linux, macOS, and PowerShell on Windows, enter this:
 
 '''
-pub struct Vec<T, A = Global>
-
-where
-    A: Allocator,
-
-{ /* private fields */ }
+$ mkdir ~/projects
+$ cd ~/projects
+$ mkdir hello_world
+$ cd hello_world
 '''
 
-Expand description
-
-A contiguous growable array type, written as `Vec<T>`, short for ‘vector’.
-
-## [§](#examples)Examples
+For Windows CMD, enter this:
 
 '''
-let mut vec = Vec::new();
-vec.push(1);
-vec.push(2);
-
-assert_eq!(vec.len(), 2);
-assert_eq!(vec[0], 1);
-
-assert_eq!(vec.pop(), Some(2));
-assert_eq!(vec.len(), 1);
-
-vec[0] = 7;
-assert_eq!(vec[0], 7);
-
-vec.extend([1, 2, 3]);
-
-for x in &vec {
-    println!("{x}");
-}
+> mkdir "%USERPROFILE%\projects"
+> cd /d "%USERPROFILE%\projects"
+> mkdir hello_world
+> cd hello_world
 ````
 
 **crawlee**
 ````
-Vec in std::vec - Rustif(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))[Skip to main content](#main-content)
+Hello, World! - The Rust Programming Language
 
 
 
-[Settings](../../settings.html)
 
-[Help](../../help.html)
 
-## [Vec](#)
 
-## [std](../../std/index.html)1.95.0
 
-(59807616e 2026-04-14)
 
-## [Vec](#)
 
-### [Sections](#)
 
-* [Examples](#examples "Examples")
-* [Indexing](#indexing "Indexing")
-* [Slicing](#slicing "Slicing")
-* [Capacity and reallocation](#capacity-and-reallocation "Capacity and reallocation")
-* [Guarantees](#guarantees "Guarantees")
 
-### [Methods](#implementations)
 
-* [allocator](#method.allocator "allocator")
-* [append](#method.append "append")
-* [as\_mut\_ptr](#method.as_mut_ptr "as_mut_ptr")
-* [as\_mut\_slice](#method.as_mut_slice "as_mut_slice")
-* [as\_non\_null](#method.as_non_null "as_non_null")
-* [as\_ptr](#method.as_ptr "as_ptr")
-* [as\_slice](#method.as_slice "as_slice")
-* [capacity](#method.capacity "capacity")
-* [clear](#method.clear "clear")
-* [const\_make\_global](#method.const_make_global "const_make_global")
-* [dedup](#method.dedup "dedup")
-* [dedup\_by](#method.dedup_by "dedup_by")
-* [dedup\_by\_key](#method.dedup_by_key "dedup_by_key")
-* [drain](#method.drain "drain")
+
+
+
+
+
+
+
+
+
+
+
+const path\_to\_root = "";
+const default\_light\_theme = "light";
+const default\_dark\_theme = "navy";
+window.path\_to\_searchindex\_js = "searchindex-6a1da8cc.js";
+
+
+
+## Keyboard shortcuts
+
+Press `←` or `→` to navigate between chapters
+
+Press `S` or `/` to search in the book
+
+Press `?` to show this help
+
+Press `Esc` to hide this help
 ````
 
 **colly+md**
 ````
-Vec in std::vec - Rustif(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))[Skip to main content](#main-content)
+Hello, World! - The Rust Programming Language
 
-## [Vec](#)
 
-## [std](../../std/index.html)1.95.0
 
-(59807616e 2026-04-14)
 
-## [Vec](#)
 
-### [Sections](#)
 
-* [Examples](#examples "Examples")
-* [Indexing](#indexing "Indexing")
-* [Slicing](#slicing "Slicing")
-* [Capacity and reallocation](#capacity-and-reallocation "Capacity and reallocation")
-* [Guarantees](#guarantees "Guarantees")
 
-### [Methods](#implementations)
 
-* [allocator](#method.allocator "allocator")
-* [append](#method.append "append")
-* [as\_mut\_ptr](#method.as_mut_ptr "as_mut_ptr")
-* [as\_mut\_slice](#method.as_mut_slice "as_mut_slice")
-* [as\_non\_null](#method.as_non_null "as_non_null")
-* [as\_ptr](#method.as_ptr "as_ptr")
-* [as\_slice](#method.as_slice "as_slice")
-* [capacity](#method.capacity "capacity")
-* [clear](#method.clear "clear")
-* [const\_make\_global](#method.const_make_global "const_make_global")
-* [dedup](#method.dedup "dedup")
-* [dedup\_by](#method.dedup_by "dedup_by")
-* [dedup\_by\_key](#method.dedup_by_key "dedup_by_key")
-* [drain](#method.drain "drain")
-* [extend\_from\_slice](#method.extend_from_slice "extend_from_slice")
-* [extend\_from\_within](#method.extend_from_within "extend_from_within")
-* [extract\_if](#method.extract_if "extract_if")
-* [from\_fn](#method.from_fn "from_fn")
-* [from\_parts](#method.from_parts "from_parts")
-* [from\_parts\_in](#method.from_parts_in "from_parts_in")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const path\_to\_root = "";
+const default\_light\_theme = "light";
+const default\_dark\_theme = "navy";
+window.path\_to\_searchindex\_js = "searchindex-6a1da8cc.js";
+
+
+
+## Keyboard shortcuts
+
+Press `←` or `→` to navigate between chapters
+
+Press `S` or `/` to search in the book
+
+Press `?` to show this help
+
+Press `Esc` to hide this help
 ````
 
 **playwright**
 ````
-Vec in std::vec - Rustif(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))[Skip to main content](#main-content)
+Hello, World! - The Rust Programming Language
 
 
 
-[Settings](../../settings.html)
 
-[Help](../../help.html)
 
-## [Vec](#)
 
-## [std](../../std/index.html)1.95.0
 
-(59807616e 2026-04-14)
 
-## [Vec](#)
 
-### [Sections](#)
 
-* [Examples](#examples "Examples")
-* [Indexing](#indexing "Indexing")
-* [Slicing](#slicing "Slicing")
-* [Capacity and reallocation](#capacity-and-reallocation "Capacity and reallocation")
-* [Guarantees](#guarantees "Guarantees")
 
-### [Methods](#implementations)
 
-* [allocator](#method.allocator "allocator")
-* [append](#method.append "append")
-* [as\_mut\_ptr](#method.as_mut_ptr "as_mut_ptr")
-* [as\_mut\_slice](#method.as_mut_slice "as_mut_slice")
-* [as\_non\_null](#method.as_non_null "as_non_null")
-* [as\_ptr](#method.as_ptr "as_ptr")
-* [as\_slice](#method.as_slice "as_slice")
-* [capacity](#method.capacity "capacity")
-* [clear](#method.clear "clear")
-* [const\_make\_global](#method.const_make_global "const_make_global")
-* [dedup](#method.dedup "dedup")
-* [dedup\_by](#method.dedup_by "dedup_by")
-* [dedup\_by\_key](#method.dedup_by_key "dedup_by_key")
-* [drain](#method.drain "drain")
+
+
+
+
+
+
+
+
+
+
+
+const path\_to\_root = "";
+const default\_light\_theme = "light";
+const default\_dark\_theme = "navy";
+window.path\_to\_searchindex\_js = "searchindex-6a1da8cc.js";
+
+
+
+## Keyboard shortcuts
+
+Press `←` or `→` to navigate between chapters
+
+Press `S` or `/` to search in the book
+
+Press `?` to show this help
+
+Press `Esc` to hide this help
 ````
 
 **firecrawl** — no output for this URL
@@ -8675,68 +8704,144 @@ Vec in std::vec - Rustif(window.location.protocol!=="file:")document.head.insert
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawlee** injects 1199 words of nav chrome before content begins.
 
 <details>
-<summary>Sample output — first 40 lines of <code>smittenkitchen.com/recipes</code></summary>
+<summary>Sample output — first 40 lines of <code>smittenkitchen.com/travel/debs-new-york</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
-**markcrawl** — no output for this URL
+**markcrawl**
+````
+# deb’s new york favorites – smitten kitchen
+
+*An ever-evolving list of places I love in NYC, freshly updated. Forever Favorites | More Favorites | Bakeries and Sweets | NYC Food Essentials forever favorites Anton’s [West Village] Impossi…*
+
+
+# deb’s new york favorites
+
+An ever-evolving list of places I love in NYC, freshly updated.
+
+[Forever Favorites](#nyc-foreverfavorites) | [More Favorites](#nyc-morefavorites) | [Bakeries and Sweets](#nyc-bakeries) | [NYC Food Essentials](#nyc-essentials)
+
+### forever favorites
+
+**Anton’s** [West Village] Impossibly cozy, especially on a cold winter day, the food is always impeccable.
+
+**Baar Baar** [East Village] I never not order the dahi/pani puri, sweet potato chaat, avocado bhel, cauliflower, and I’m just going to keep reminiscing about the lamb ribs until they bring them back.
+
+**Cervo’s** [Chinatown] I will unfriend you if you don’t try the crispy shrimp heads, prawns a la plancha, and piri piri chicken, plus any seasonal salads or vegetable starters.
+
+**Yellow Rose** [East Village] I have an almost religious devotion to the bean and cheese taco, but don’t sleep on the appetizers and mains. They’re so much more than a taco restaurant.
+
+**Superiority Burger** [East Village] Punk, vegetarian, back and better than ever in the old Odessa space.
+
+**M. Shanghai** [Williamsburg] I’ve been going here for over 20 years and have not had a better soup dumpling anywhere in the city; other favorites: vegetable wontons in spicy peanut sauce, beef in “awesome” sauce and simply-cooked string beans.
+
+**Via Carota** [West Village] Every single dish on the changing verdure menu, chicken liver toasts, and cacio e pepe. They make a perfect negroni.
+
+### more favorites
+
+**Bonnie’s** [Williamsburg]
+
+**Cafe Spaghetti** [Carroll Gardens]
+
+**Dosa Man** [Washington Square Park] Yes, the line is long but it’s because the dosas are perfect and a classic lunch experience.
+
+**Diner** [South Williamsburg] I can’t believe it’s 22 years old. We were back recently and it’s as good as the day it opened.
+
+**Faiccos** [Greenwich Village] For Alex’s favorite Italian sub
+
+**Hawksmoor** [Gramercy] We’ve now been to the Sunday roast at one of their locations in London and NYC but I’d say my favorite experience has been to sit in the bar area and order from the menu a la carte there.
+````
 
 **crawl4ai**
 ````
-# Checking your browser
-This will only take a few seconds...
+[Skip to content](https://smittenkitchen.com/travel/debs-new-york/#content)
+[](https://smittenkitchen.com/) [ ](https://smittenkitchen.com/)
+[smitten kitchen](https://smittenkitchen.com/)
+Menu
+[Surprise!](https://smittenkitchen.com/?random&timestamp=1777050460156)
+  * [Surprise me!](https://smittenkitchen.com/?random&timestamp=1777050460156)
+  * [Recipes](https://smittenkitchen.com/recipes)
+  * [Books](https://smittenkitchen.com/book/)
+  * [Newsletter](https://smittenkitchen.com/subscribe/)
+  * [videos](https://smittenkitchen.com/videos/)
+  * [shop](https://smittenkitchen.com/shop/)
+  * [More](https://smittenkitchen.com/travel/debs-new-york/#)
+    * [events](https://smittenkitchen.com/events/)
+    * [About](https://smittenkitchen.com/about/)
+      * [FAQ](https://smittenkitchen.com/about/faq/)
+    * [Contact](https://smittenkitchen.com/contact/)
+    * [Good Reads](https://smittenkitchen.com/reading/)
+      * [cookbook index](https://smittenkitchen.com/reading/cookbook-index/)
+    * [Cooking Conversions](https://smittenkitchen.com/cooking-conversions/)
+    * [Travel](https://smittenkitchen.com/travel/)
+      * [Deb’s New York Favorites](https://smittenkitchen.com/travel/debs-new-york/)
+      * [a few trips to paris](https://smittenkitchen.com/travel/a-few-trips-to-paris/)
+      * [two weeks in italy](https://smittenkitchen.com/travel/two-weeks-in-italy/)
+      * [nine days in scotland](https://smittenkitchen.com/travel/nine-days-in-scotland/)
+      * [six days in iceland](https://smittenkitchen.com/travel/six-days-in-iceland/)
+      * [five days in london](https://smittenkitchen.com/travel/five-days-in-london/)
+      * [ten days in ireland](https://smittenkitchen.com/travel/ten-days-in-ireland/)
+      * [a few favorites from spain](https://smittenkitchen.com/travel/a-few-favorites-from-spain/)
+      * [48 hours in new orleans](https://smittenkitchen.com/travel/48-hours-in-new-orleans/)
+      * [notes from a weekend in mexico city](https://smittenkitchen.com/travel/notes-from-a-weekend-in-mexico-city/)
+      * [notes and tips from rome](https://smittenkitchen.com/travel/notes-and-tips-from-rome/)
+
+
+Search for:
+# deb’s new york favorites
+An ever-evolving list of places I love in NYC, freshly updated.
+[Forever Favorites](https://smittenkitchen.com/travel/debs-new-york/#nyc-foreverfavorites) | [More Favorites](https://smittenkitchen.com/travel/debs-new-york/#nyc-morefavorites) | [Bakeries and Sweets](https://smittenkitchen.com/travel/debs-new-york/#nyc-bakeries) | [NYC Food Essentials](https://smittenkitchen.com/travel/debs-new-york/#nyc-essentials)
+### forever favorites
+**Anton’s** [West Village] Impossibly cozy, especially on a cold winter day, the food is always impeccable.
+**Baar Baar** [East Village] I never not order the dahi/pani puri, sweet potato chaat, avocado bhel, cauliflower, and I’m just going to keep reminiscing about the lamb ribs until they bring them back.
 ````
 
 **crawl4ai-raw**
 ````
-# Checking your browser
-This will only take a few seconds...
+[Skip to content](https://smittenkitchen.com/travel/debs-new-york/#content)
+[](https://smittenkitchen.com/) [ ](https://smittenkitchen.com/)
+[smitten kitchen](https://smittenkitchen.com/)
+Menu
+[Surprise!](https://smittenkitchen.com/?random&timestamp=1777060087587)
+  * [Surprise me!](https://smittenkitchen.com/?random&timestamp=1777060087587)
+  * [Recipes](https://smittenkitchen.com/recipes)
+  * [Books](https://smittenkitchen.com/book/)
+  * [Newsletter](https://smittenkitchen.com/subscribe/)
+  * [videos](https://smittenkitchen.com/videos/)
+  * [shop](https://smittenkitchen.com/shop/)
+  * [More](https://smittenkitchen.com/travel/debs-new-york/#)
+    * [events](https://smittenkitchen.com/events/)
+    * [About](https://smittenkitchen.com/about/)
+      * [FAQ](https://smittenkitchen.com/about/faq/)
+    * [Contact](https://smittenkitchen.com/contact/)
+    * [Good Reads](https://smittenkitchen.com/reading/)
+      * [cookbook index](https://smittenkitchen.com/reading/cookbook-index/)
+    * [Cooking Conversions](https://smittenkitchen.com/cooking-conversions/)
+    * [Travel](https://smittenkitchen.com/travel/)
+      * [Deb’s New York Favorites](https://smittenkitchen.com/travel/debs-new-york/)
+      * [a few trips to paris](https://smittenkitchen.com/travel/a-few-trips-to-paris/)
+      * [two weeks in italy](https://smittenkitchen.com/travel/two-weeks-in-italy/)
+      * [nine days in scotland](https://smittenkitchen.com/travel/nine-days-in-scotland/)
+      * [six days in iceland](https://smittenkitchen.com/travel/six-days-in-iceland/)
+      * [five days in london](https://smittenkitchen.com/travel/five-days-in-london/)
+      * [ten days in ireland](https://smittenkitchen.com/travel/ten-days-in-ireland/)
+      * [a few favorites from spain](https://smittenkitchen.com/travel/a-few-favorites-from-spain/)
+      * [48 hours in new orleans](https://smittenkitchen.com/travel/48-hours-in-new-orleans/)
+      * [notes from a weekend in mexico city](https://smittenkitchen.com/travel/notes-from-a-weekend-in-mexico-city/)
+      * [notes and tips from rome](https://smittenkitchen.com/travel/notes-and-tips-from-rome/)
+
+
+Search for:
+# deb’s new york favorites
+An ever-evolving list of places I love in NYC, freshly updated.
+[Forever Favorites](https://smittenkitchen.com/travel/debs-new-york/#nyc-foreverfavorites) | [More Favorites](https://smittenkitchen.com/travel/debs-new-york/#nyc-morefavorites) | [Bakeries and Sweets](https://smittenkitchen.com/travel/debs-new-york/#nyc-bakeries) | [NYC Food Essentials](https://smittenkitchen.com/travel/debs-new-york/#nyc-essentials)
+### forever favorites
+**Anton’s** [West Village] Impossibly cozy, especially on a cold winter day, the food is always impeccable.
+**Baar Baar** [East Village] I never not order the dahi/pani puri, sweet potato chaat, avocado bhel, cauliflower, and I’m just going to keep reminiscing about the lamb ribs until they bring them back.
 ````
 
-**scrapy+md**
-````
-# CategoryRecipe
-
-* [5 Ingredients or Fewer72](https://smittenkitchen.com/./recipes/5-ingredients-or-fewer/?format=photo)
-* [Best of Smitten Kitchen140](https://smittenkitchen.com/./recipes/best-of-smitten-kitchen/?format=photo)
-* [Budget94](https://smittenkitchen.com/./recipes/budget/?format=photo)
-* [Disasters8](https://smittenkitchen.com/./recipes/disasters/?format=photo)
-* [Kid Favorites67](https://smittenkitchen.com/./recipes/kid-favorites/?format=photo)
-* [Quick102](https://smittenkitchen.com/./recipes/quick/?format=photo)
-* [Savory Projects48](https://smittenkitchen.com/./recipes/savory-projects/?format=photo)
-* [Weeknight Favorite134](https://smittenkitchen.com/./recipes/weeknight-favorite/?format=photo)
-
-## Cuisine or Region
-
-* [Austrian3](https://smittenkitchen.com/./recipes/cuisine/austrian/?format=photo)
-* [Brazilian1](https://smittenkitchen.com/./recipes/cuisine/brazilian/?format=photo)
-* [British5](https://smittenkitchen.com/./recipes/cuisine/british/?format=photo)
-* [Chinese10](https://smittenkitchen.com/./recipes/cuisine/chinese/?format=photo)
-* [French28](https://smittenkitchen.com/./recipes/cuisine/french/?format=photo)
-* [German4](https://smittenkitchen.com/./recipes/cuisine/german/?format=photo)
-* [Greek7](https://smittenkitchen.com/./recipes/cuisine/greek/?format=photo)
-* [Indian12](https://smittenkitchen.com/./recipes/cuisine/indian/?format=photo)
-* [Irish4](https://smittenkitchen.com/./recipes/cuisine/irish/?format=photo)
-* [Israeli4](https://smittenkitchen.com/./recipes/cuisine/israeli/?format=photo)
-* [Italian75](https://smittenkitchen.com/./recipes/cuisine/italian/?format=photo)
-* [Japanese3](https://smittenkitchen.com/./recipes/cuisine/japanese/?format=photo)
-* [Jewish36](https://smittenkitchen.com/./recipes/cuisine/jewish/?format=photo)
-* [Middle Eastern8](https://smittenkitchen.com/./recipes/cuisine/middle-eastern/?format=photo)
-* [North African8](https://smittenkitchen.com/./recipes/cuisine/north-african/?format=photo)
-* [Portuguese2](https://smittenkitchen.com/./recipes/cuisine/portuguese/?format=photo)
-* [Russian11](https://smittenkitchen.com/./recipes/cuisine/russian/?format=photo)
-* [Spanish13](https://smittenkitchen.com/./recipes/cuisine/spanish/?format=photo)
-* [Tex-Mex40](https://smittenkitchen.com/./recipes/cuisine/tex-mex/?format=photo)
-* [Thai8](https://smittenkitchen.com/./recipes/cuisine/thai/?format=photo)
-* [Travel19](https://smittenkitchen.com/./recipes/cuisine/travel/?format=photo)
-* [Vietnamese4](https://smittenkitchen.com/./recipes/cuisine/vietnamese/?format=photo)
-
-## Diet
-
-* [Baby Food9](https://smittenkitchen.com/./recipes/diet/baby/?format=photo)
-* [Dairy-Free37](https://smittenkitchen.com/./recipes/diet/dairy-free/?format=photo)
-````
+**scrapy+md** — no output for this URL
 
 **crawlee**
 ````
@@ -8748,7 +8853,8 @@ gtag('config', 'UA-1185356-1');
 
 
 
-Recipe – smitten kitchen
+deb’s new york favorites – smitten kitchen
+
 
 
 
@@ -8793,7 +8899,8 @@ gtag('config', 'UA-1185356-1');
 
 
 
-Recipe – smitten kitchen
+deb’s new york favorites – smitten kitchen
+
 
 
 
@@ -9615,55 +9722,63 @@ padding: 0 !important;
 **markcrawl** produces the cleanest output with 0 word of preamble per page, while **crawlee** injects 9188 words of nav chrome before content begins. The word count gap (730 vs 21254 avg words) is largely explained by preamble: 9188 words of nav chrome account for ~43% of crawlee's output on this site. markcrawl's lower recall (7% vs 90%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>docs.stripe.com/products-prices/pricing-models</code></summary>
+<summary>Sample output — first 40 lines of <code>docs.stripe.com/customer-management</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-# Recurring pricing models | Stripe Documentation
+# Provide a customer portal to your customers | Stripe Documentation
 
-*Configure flat rate, per-seat, usage-based, tiered, package, volume, and variable pricing models for subscriptions with multiple currencies.*
+*Set up a Stripe-hosted customer portal to provide your customers access to account management tools. The customer portal allows customers to update payment methods, manage subscriptions, download invoices, and update billing information without requiring support intervention. Configure the portal entirely through the Dashboard with no code, or use the API for advanced customization including multiple configurations and connected accounts.*
 
 
-# Recurring pricing models
+# Provide a customer portal to your customers
 
-## Learn about the pricing models you can use with subscriptions.
+## Allow your customers to manage their own accounts and subscriptions.
 
-Ask about this page
+Give your customers the ability to manage their accounts by setting up a customer portal. Configure the portal in the Dashboard, or use the API to implement advanced features, such as setting up unique configurations for different customers or for [connected accounts](/connect).
 
-Copy for LLMView as Markdown
+Automate many of your customer interactions by combining a customer portal with customer communications controlled by [Stripe Billing automations](/billing/automations). Building custom, automated workflows can help streamline your business processes, enhance customer communication, and improve revenue recovery efforts.
 
-Install skills
+[Explore demo](https://billing.stripe.com/customer-portal-demo)
 
-### Use the Accounts v2 API to represent customers
+Create a customer portal
 
-If your integration uses [customer-configured Accounts](/api/v2/core/accounts/create#v2_create_accounts-configuration-customer), replace `Customer` and event references in the code examples with the equivalent Accounts v2 API references. For more information, see [Represent customers with Account objects](/connect/use-accounts-as-customers).
+Create a customer portal to enable your customers to manage their account such as updating their billing information, payment methods, and subscription status.
 
-Pricing models are patterns that represent your business on Stripe and consists of the products or services you sell, how much they cost, what currency you accept for payments, and the service period for subscriptions. To build the pricing model, you use [products](/api/products) (what you sell) and [prices](/api/prices) (how much and how often to charge for your products).
+[Get started](/customer-management/activate-no-code-customer-portal)
 
-| Pricing model | Description |
-| --- | --- |
-|  | Customers choose a service tier (for example, Basic, Starter, or Enterprise) and pay a flat rate for it. |
-|  | Each pricing unit represents one user. For example, a business purchases software for its employees and each employee requires a license to access the software. |
-|  | The unit cost changes with quantity (volume-based pricing) or usage (graduated pricing). |
-|  | Charge customers based on their usage of your product or service. The models for this kind of pricing include fixed fee and overage, pay as you go, and credit burndown. |
+## Get started
 
-## See also
+[Activate the customer portal
 
-* [Prebuilt subscriptions page with Stripe Checkout](/billing/quickstart)
-* [Build a subscriptions integration](/billing/subscriptions/build-subscriptions)
+Use the Dashboard to activate the customer portal and optionally customize branding and prefill customer email addresses.](/customer-management/activate-no-code-customer-portal "Activate the customer portal")
+
+[Configure the customer portal
+
+Configure settings for the customer portal in the Dashboard.](/customer-management/configure-portal "Configure the customer portal")
+
+[Integrate the customer portal
+
+Customize and integrate a customer portal into your application using the Stripe API.](/customer-management/integrate-customer-portal "Integrate the customer portal")
+
+[Create deep links to the customer portal
+
+Set up custom links to specific actions by coding customer portal flows.](/customer-management/portal-deep-links "Create deep links to the customer portal")
+
+[Add a cancellation page
 ````
 
 **crawl4ai**
 ````
-[Skip to content](https://docs.stripe.com/products-prices/pricing-models#main-content)
-Recurring pricing models
-[Create account](https://dashboard.stripe.com/register/billing) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fproducts-prices%2Fpricing-models)
+[Skip to content](https://docs.stripe.com/customer-management#main-content)
+Overview
+[Create account](https://dashboard.stripe.com/register/payment_links) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fcustomer-management)
 [The Stripe Docs logo](https://docs.stripe.com/)
 Search `/`Ask AI
-[Create account](https://dashboard.stripe.com/register/billing)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fproducts-prices%2Fpricing-models)
+[Create account](https://dashboard.stripe.com/register/payment_links)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fcustomer-management)
 [Get started ](https://docs.stripe.com/get-started)
 [Payments ](https://docs.stripe.com/payments)
 [Revenue ](https://docs.stripe.com/revenue)
@@ -9674,40 +9789,40 @@ APIs & SDKsHelp
 Billing
 [Overview](https://docs.stripe.com/billing)[About the Billing APIs](https://docs.stripe.com/billing/billing-apis)
 Subscriptions
-[Overview](https://docs.stripe.com/subscriptions)
-[How subscriptions work](https://docs.stripe.com/billing/subscriptions/overview)
-Get started
-[Quickstart](https://docs.stripe.com/billing/quickstart)
-[Design an integration](https://docs.stripe.com/billing/subscriptions/design-an-integration)
-[Build an integration](https://docs.stripe.com/billing/subscriptions/build-subscriptions)
-Recurring pricing models
-[Set up flat rate pricing](https://docs.stripe.com/subscriptions/pricing-models/flat-rate-pricing)
-[Set up per-seat pricing](https://docs.stripe.com/subscriptions/pricing-models/per-seat-pricing)
-[Set up usage-based pricing](https://docs.stripe.com/subscriptions/pricing-models/usage-based-pricing)
-[Set up tiered pricing](https://docs.stripe.com/subscriptions/pricing-models/tiered-pricing)
-[Embed a pricing table](https://docs.stripe.com/payments/checkout/pricing-table)
-[Defer subscription payments](https://docs.stripe.com/billing/subscriptions/deferred-payment)
-[Migrate subscriptions to Stripe](https://docs.stripe.com/billing/subscriptions/migrate-subscriptions)
-[Configure subscription events](https://docs.stripe.com/billing/subscriptions/webhooks)
-Manage subscriptions
-[Set billing cycles](https://docs.stripe.com/billing/subscriptions/billing-cycle)
-[Configure trial offers](https://docs.stripe.com/billing/subscriptions/trials)
-[Enable billing mode](https://docs.stripe.com/billing/subscriptions/billing-mode)
-[Use mixed interval subscriptions](https://docs.stripe.com/billing/subscriptions/mixed-interval)
-[Apply coupons](https://docs.stripe.com/billing/subscriptions/coupons)
-[Entitlements](https://docs.stripe.com/billing/entitlements)
-[Modify subscriptions](https://docs.stripe.com/billing/subscriptions/change)
-[Cancel subscriptions](https://docs.stripe.com/billing/subscriptions/cancel)
+Invoicing
+Usage-based billing
+Advanced usage-based billing
+Quotes
+Customer management
+[Customers](https://docs.stripe.com/billing/customer)
+[Customer invoice balance](https://docs.stripe.com/billing/customer/balance)
+Customer portal
+Overview
+[Set up the no-code customer portal](https://docs.stripe.com/customer-management/activate-no-code-customer-portal)
+[Set up the customer portal with the API](https://docs.stripe.com/customer-management/integrate-customer-portal)
+[Configure the customer portal](https://docs.stripe.com/customer-management/configure-portal)
+[Deep links and flows in the customer portal](https://docs.stripe.com/customer-management/portal-deep-links)
+[Add a cancellation page to the customer portal](https://docs.stripe.com/customer-management/cancellation-page)
+
+
+Billing with other products
+Revenue recovery
+Automations
+Scripts
+Test your integration
+Tax
+[Overview](https://docs.stripe.com/tax)
+Use Stripe Tax
 ````
 
 **crawl4ai-raw**
 ````
-[Skip to content](https://docs.stripe.com/products-prices/pricing-models#main-content)
-Recurring pricing models
-[Create account](https://dashboard.stripe.com/register/billing) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fproducts-prices%2Fpricing-models)
+[Skip to content](https://docs.stripe.com/customer-management#main-content)
+Overview
+[Create account](https://dashboard.stripe.com/register/payment_links) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fcustomer-management)
 [The Stripe Docs logo](https://docs.stripe.com/)
 Search `/`Ask AI
-[Create account](https://dashboard.stripe.com/register/billing)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fproducts-prices%2Fpricing-models)
+[Create account](https://dashboard.stripe.com/register/payment_links)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fcustomer-management)
 [Get started ](https://docs.stripe.com/get-started)
 [Payments ](https://docs.stripe.com/payments)
 [Revenue ](https://docs.stripe.com/revenue)
@@ -9718,39 +9833,39 @@ APIs & SDKsHelp
 Billing
 [Overview](https://docs.stripe.com/billing)[About the Billing APIs](https://docs.stripe.com/billing/billing-apis)
 Subscriptions
-[Overview](https://docs.stripe.com/subscriptions)
-[How subscriptions work](https://docs.stripe.com/billing/subscriptions/overview)
-Get started
-[Quickstart](https://docs.stripe.com/billing/quickstart)
-[Design an integration](https://docs.stripe.com/billing/subscriptions/design-an-integration)
-[Build an integration](https://docs.stripe.com/billing/subscriptions/build-subscriptions)
-Recurring pricing models
-[Set up flat rate pricing](https://docs.stripe.com/subscriptions/pricing-models/flat-rate-pricing)
-[Set up per-seat pricing](https://docs.stripe.com/subscriptions/pricing-models/per-seat-pricing)
-[Set up usage-based pricing](https://docs.stripe.com/subscriptions/pricing-models/usage-based-pricing)
-[Set up tiered pricing](https://docs.stripe.com/subscriptions/pricing-models/tiered-pricing)
-[Embed a pricing table](https://docs.stripe.com/payments/checkout/pricing-table)
-[Defer subscription payments](https://docs.stripe.com/billing/subscriptions/deferred-payment)
-[Migrate subscriptions to Stripe](https://docs.stripe.com/billing/subscriptions/migrate-subscriptions)
-[Configure subscription events](https://docs.stripe.com/billing/subscriptions/webhooks)
-Manage subscriptions
-[Set billing cycles](https://docs.stripe.com/billing/subscriptions/billing-cycle)
-[Configure trial offers](https://docs.stripe.com/billing/subscriptions/trials)
-[Enable billing mode](https://docs.stripe.com/billing/subscriptions/billing-mode)
-[Use mixed interval subscriptions](https://docs.stripe.com/billing/subscriptions/mixed-interval)
-[Apply coupons](https://docs.stripe.com/billing/subscriptions/coupons)
-[Entitlements](https://docs.stripe.com/billing/entitlements)
-[Modify subscriptions](https://docs.stripe.com/billing/subscriptions/change)
-[Cancel subscriptions](https://docs.stripe.com/billing/subscriptions/cancel)
+Invoicing
+Usage-based billing
+Advanced usage-based billing
+Quotes
+Customer management
+[Customers](https://docs.stripe.com/billing/customer)
+[Customer invoice balance](https://docs.stripe.com/billing/customer/balance)
+Customer portal
+Overview
+[Set up the no-code customer portal](https://docs.stripe.com/customer-management/activate-no-code-customer-portal)
+[Set up the customer portal with the API](https://docs.stripe.com/customer-management/integrate-customer-portal)
+[Configure the customer portal](https://docs.stripe.com/customer-management/configure-portal)
+[Deep links and flows in the customer portal](https://docs.stripe.com/customer-management/portal-deep-links)
+[Add a cancellation page to the customer portal](https://docs.stripe.com/customer-management/cancellation-page)
+
+
+Billing with other products
+Revenue recovery
+Automations
+Scripts
+Test your integration
+Tax
+[Overview](https://docs.stripe.com/tax)
+Use Stripe Tax
 ````
 
 **scrapy+md**
 ````
 [Skip to content](#main-content)
 
-Recurring pricing models
+Overview
 
-[Create account](https://dashboard.stripe.com/register/billing) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fproducts-prices%2Fpricing-models)
+[Create account](https://dashboard.stripe.com/register/payment_links) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fcustomer-management)
 
 [The Stripe Docs logo](/)
 
@@ -9758,7 +9873,7 @@ Search
 
 `/`Ask AI
 
-[Create account](https://dashboard.stripe.com/register/billing)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fproducts-prices%2Fpricing-models)
+[Create account](https://dashboard.stripe.com/register/payment_links)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fcustomer-management)
 
 [Get started](/get-started)
 
@@ -9782,14 +9897,14 @@ Billing
 
 Subscriptions
 
-[Overview](/subscriptions)
+Invoicing
 
-[How subscriptions work](/billing/subscriptions/overview)
+Usage-based billing
 ````
 
 **crawlee**
 ````
-Recurring pricing models | Stripe Documentation
+Provide a customer portal to your customers | Stripe Documentation
 
 
 
@@ -9833,7 +9948,7 @@ isolation: isolate;
 
 **colly+md**
 ````
-Recurring pricing models | Stripe Documentation
+Provide a customer portal to your customers | Stripe Documentation
 
 
 
@@ -9877,7 +9992,7 @@ isolation: isolate;
 
 **playwright**
 ````
-Recurring pricing models | Stripe Documentation
+Provide a customer portal to your customers | Stripe Documentation
 
 
 

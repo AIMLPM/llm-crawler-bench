@@ -1,7 +1,23 @@
 # Retrieval Quality Comparison
-<!-- style: v2, 2026-04-24 -->
+<!-- style: v2, 2026-04-25 -->
 
 Crawler choice barely matters for retrieval — retrieval mode matters more.
+
+**Run:** `run_20260424_235304` | **Started:** 2026-04-24T15:25:04Z | **Ended:** 2026-04-24T23:53:04Z | **Pool:** v1.2 (sha256:caa35)
+
+**Tool versions in this run:**
+
+| Tool | Version | Status |
+|---|---|---|
+| colly+md | go binary | available |
+| crawl4ai | 0.8.6 | available |
+| crawl4ai-raw | go binary | available |
+| crawlee | 1.6.2 | available |
+| firecrawl | — | skipped: FIRECRAWL_API_KEY not set |
+| markcrawl | 0.5.0 | available |
+| playwright | 1.58.0 | available |
+| scrapy+md | 2.15.0 | available |
+
 
 Does each tool's output produce embeddings that answer real questions?
 This benchmark chunks each tool's crawl output, embeds it with

@@ -1,7 +1,23 @@
 # End-to-End RAG Answer Quality
-<!-- style: v2, 2026-04-24 -->
+<!-- style: v2, 2026-04-25 -->
 
 All crawlers produce similar LLM answer quality (3.88-4.33 out of 5). colly+md leads slightly at 4.33; markcrawl ranks 5th at 3.97 — a 8.5% gap from the best. The gaps are small but consistent.
+
+**Run:** `run_20260424_235304` | **Started:** 2026-04-24T15:25:04Z | **Ended:** 2026-04-24T23:53:04Z | **Pool:** v1.2 (sha256:caa35)
+
+**Tool versions in this run:**
+
+| Tool | Version | Status |
+|---|---|---|
+| colly+md | go binary | available |
+| crawl4ai | 0.8.6 | available |
+| crawl4ai-raw | go binary | available |
+| crawlee | 1.6.2 | available |
+| firecrawl | — | skipped: FIRECRAWL_API_KEY not set |
+| markcrawl | 0.5.0 | available |
+| playwright | 1.58.0 | available |
+| scrapy+md | 2.15.0 | available |
+
 
 Each tool's crawled content is chunked, embedded, retrieved (top-10),
 and sent to `gpt-4o-mini` to generate an answer. Answers are scored by

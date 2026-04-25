@@ -3,7 +3,23 @@
 
 markcrawl completes the full RAG pipeline (scrape + chunk + embed + query) in 1191.0s — 2.4x faster than the median tool. For HTTP-only crawlers, the LLM query phase dominates at 16-27% of total time, not scraping.
 
-**Run:** `run_20260424_235304` | **Sites:** huggingface-transformers, ikea, kubernetes-docs, mdn-css, newegg, npr-news, postgres-docs, react-dev, rust-book, smittenkitchen, stripe-docs | **Embedding model:** text-embedding-3-small | **Answer model:** gpt-4o-mini
+**Sites:** huggingface-transformers, ikea, kubernetes-docs, mdn-css, newegg, npr-news, postgres-docs, react-dev, rust-book, smittenkitchen, stripe-docs | **Embedding model:** text-embedding-3-small | **Answer model:** gpt-4o-mini
+
+**Run:** `run_20260424_235304` | **Started:** 2026-04-24T15:25:04Z | **Ended:** 2026-04-24T23:53:04Z | **Pool:** v1.2 (sha256:caa35)
+
+**Tool versions in this run:**
+
+| Tool | Version | Status |
+|---|---|---|
+| colly+md | go binary | available |
+| crawl4ai | 0.8.6 | available |
+| crawl4ai-raw | go binary | available |
+| crawlee | 1.6.2 | available |
+| firecrawl | — | skipped: FIRECRAWL_API_KEY not set |
+| markcrawl | 0.5.0 | available |
+| playwright | 1.58.0 | available |
+| scrapy+md | 2.15.0 | available |
+
 
 ## What these phases mean
 
