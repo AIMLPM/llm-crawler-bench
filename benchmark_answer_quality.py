@@ -374,16 +374,28 @@ def _ordinal_suffix(n: int) -> str:
 def generate_report(
     all_results: Dict[str, Dict[str, List[AnswerResult]]],
     tool_names: List[str],
+    run_dir: Optional[Path] = None,
 ) -> str:
     """Generate ANSWER_QUALITY.md report."""
     import datetime
     today = datetime.date.today().isoformat()
+    provenance = ""
+    if run_dir is not None:
+        try:
+            from sites.pool import format_run_provenance_md
+            provenance = format_run_provenance_md(run_dir)
+        except Exception:
+            provenance = ""
     lines = [
         "# End-to-End RAG Answer Quality",
         f"<!-- style: v2, {today} -->",
         "",
         "",  # placeholder — one-line answer inserted after aggregation
         "",
+    ]
+    if provenance:
+        lines.extend([provenance, ""])
+    lines.extend([
         f"Each tool's crawled content is chunked, embedded, retrieved (top-{TOP_K_FOR_ANSWER}),",
         f"and sent to `{ANSWER_MODEL}` to generate an answer. Answers are scored by",
         f"`{JUDGE_MODEL}` on correctness, relevance, completeness, and usefulness (1-5 each).",
@@ -392,7 +404,7 @@ def generate_report(
         "3 = acceptable, 4 = good, 5 = excellent/complete. Scores are averaged across "
         "all queries per tool. An overall score above 4.0 indicates consistently good answers.",
         "",
-    ]
+    ])
 
     # Aggregate per tool
     tool_summaries: Dict[str, ToolAnswerSummary] = {}
@@ -794,7 +806,7 @@ def main():
             all_results[site] = site_results
 
     # Generate report
-    report = generate_report(all_results, available_tools)
+    report = generate_report(all_results, available_tools, run_dir=run_dir)
     with open(args.output, "w") as f:
         f.write(report)
     logger.info(f"\nReport written to: {args.output}")

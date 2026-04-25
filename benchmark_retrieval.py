@@ -1866,8 +1866,16 @@ def generate_retrieval_report(
     results: Dict[str, Dict[str, ToolSiteRetrievalResult]],
     tool_names: List[str],
     chunk_sensitivity_results: Optional[Dict] = None,
+    run_dir: Optional[Path] = None,
 ) -> str:
     """Generate the RETRIEVAL_COMPARISON.md report."""
+    provenance = ""
+    if run_dir is not None:
+        try:
+            from sites.pool import format_run_provenance_md
+            provenance = format_run_provenance_md(run_dir)
+        except Exception:
+            provenance = ""
     total_queries_count = sum(
         len(TEST_QUERIES.get(site, []))
         for site in results.keys()
@@ -1893,6 +1901,10 @@ def generate_retrieval_report(
         "",
         "Crawler choice barely matters for retrieval — retrieval mode matters more.",
         "",
+    ]
+    if provenance:
+        lines.extend([provenance, ""])
+    lines.extend([
         "Does each tool's output produce embeddings that answer real questions?",
         "This benchmark chunks each tool's crawl output, embeds it with",
         f"`{EMBEDDING_MODEL}`, and measures retrieval across four modes:",
@@ -1904,7 +1916,7 @@ def generate_retrieval_report(
         "",
         f"**{total_queries_count} queries** across {len(results)} sites.",
         "Hit rate = correct source page in top-K results. Higher is better.",
-    ]
+    ])
     if has_partial_tools:
         missing_sites = all_sites - common_sites
         lines.append(
@@ -2893,7 +2905,7 @@ def main():
                     )
 
     # Generate report
-    report = generate_retrieval_report(all_results, available_tools, chunk_sensitivity_results)
+    report = generate_retrieval_report(all_results, available_tools, chunk_sensitivity_results, run_dir=run_dir)
     output_path = args.output
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:

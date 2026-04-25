@@ -282,6 +282,55 @@ def read_manifest(run_dir: Path) -> Optional[dict]:
         raise ValueError(f"{p}: corrupt manifest: {e}") from e
 
 
+def format_run_provenance_md(run_dir: Path) -> str:
+    """Render a markdown block with the run's date, tool versions, and pool
+    version — for inclusion in benchmark reports so readers know exactly
+    which builds produced the numbers.
+
+    Looks for run_metadata.json (written by benchmark_all_tools.py); falls
+    back to a minimal block if absent. Safe to call from any report
+    generator.
+    """
+    meta_path = run_dir / "run_metadata.json"
+    manifest = read_manifest(run_dir)
+    pool_version = (manifest or {}).get("pool_version", "unknown")
+    pool_hash = (manifest or {}).get("pool_hash", "")[:12]
+
+    if not meta_path.exists():
+        return (
+            f"**Run:** `{run_dir.name}` | **Pool:** v{pool_version} "
+            f"({pool_hash}) | tool versions unavailable (no run_metadata.json)\n"
+        )
+
+    try:
+        meta = json.loads(meta_path.read_text())
+    except json.JSONDecodeError:
+        return f"**Run:** `{run_dir.name}` | run_metadata.json corrupt\n"
+
+    start = meta.get("run_start_iso", "?")
+    end = meta.get("run_end_iso", "?")
+    tools = meta.get("tools", {})
+
+    lines = [
+        f"**Run:** `{run_dir.name}` | **Started:** {start} | **Ended:** {end} | **Pool:** {pool_version} ({pool_hash})",
+        "",
+        "**Tool versions in this run:**",
+        "",
+        "| Tool | Version | Status |",
+        "|---|---|---|",
+    ]
+    for name in sorted(tools.keys()):
+        info = tools[name] or {}
+        version = info.get("version") or "—"
+        if info.get("available"):
+            status = "available"
+        else:
+            reason = info.get("skip_reason") or "unavailable"
+            status = f"skipped: {reason}"
+        lines.append(f"| {name} | {version} | {status} |")
+    return "\n".join(lines) + "\n"
+
+
 def sites_for_run(run_dir: Path, pool: Pool) -> List[Site]:
     """Return the Site list for an existing run.
 

@@ -407,9 +407,21 @@ def generate_report(result: PipelineResult) -> str:
             f"not scraping."
         )
     lines.append("")
-    lines.append(f"**Run:** `{result.run_id}` | **Sites:** {', '.join(result.sites)} | "
+    lines.append(f"**Sites:** {', '.join(result.sites)} | "
                  f"**Embedding model:** {EMBEDDING_MODEL} | **Answer model:** {ANSWER_MODEL}")
     lines.append("")
+    # Run identity + tool versions, read from run_metadata.json. Replaces the
+    # earlier short "**Run:** <id>" line; the provenance block already contains
+    # the run id plus start/end timestamps and per-tool versions.
+    try:
+        from sites.pool import format_run_provenance_md
+        run_dir_path = BENCH_DIR / "runs" / result.run_id
+        provenance = format_run_provenance_md(run_dir_path)
+        if provenance:
+            lines.append(provenance)
+            lines.append("")
+    except Exception:
+        pass
 
     # --- Context: What these phases mean ---
     lines.append("## What these phases mean")

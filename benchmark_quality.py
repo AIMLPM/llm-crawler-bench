@@ -223,7 +223,7 @@ def main() -> None:
     logger.info(f"Scoring quality from run: {run_dir.name}")
     quality_results = score_run(run_dir)
 
-    report = generate_quality_report(quality_results, TOOLS)
+    report = generate_quality_report(quality_results, TOOLS, run_dir=run_dir)
     Path(args.output).write_text(report, encoding="utf-8")
     logger.info(f"\nQuality report written to: {args.output}")
 

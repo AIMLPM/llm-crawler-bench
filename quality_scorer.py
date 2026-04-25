@@ -21,6 +21,7 @@ from __future__ import annotations
 import re
 from collections import Counter
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Dict, List, Optional
 
 # ---------------------------------------------------------------------------
@@ -394,6 +395,7 @@ def generate_quality_report(
     results: Dict[str, Dict[str, List[PageQuality]]],
     tool_names: List[str],
     sample_outputs: Optional[Dict[str, Dict[str, str]]] = None,
+    run_dir: Optional[Path] = None,
 ) -> str:
     """Generate a Markdown quality comparison report.
 
@@ -403,9 +405,22 @@ def generate_quality_report(
         sample_outputs: optional {site_name: {tool_name: first_500_chars}} for
             the sample output section. Populated automatically from PageQuality.raw_text
             if not supplied.
+        run_dir: optional path to the run directory. When provided, a
+            "Tool versions in this run" block is rendered from the run's
+            run_metadata.json so readers know exactly which tool builds
+            produced these numbers.
     """
     import datetime
     today = datetime.date.today().isoformat()
+
+    provenance = ""
+    if run_dir is not None:
+        try:
+            from sites.pool import format_run_provenance_md
+            provenance = format_run_provenance_md(run_dir)
+        except Exception:
+            provenance = ""
+
     lines = [
         "# Extraction Quality Comparison",
         f"<!-- style: v2, {today} -->",
@@ -413,6 +428,10 @@ def generate_quality_report(
         "markcrawl produces the cleanest Markdown for RAG: lowest preamble and "
         "highest content signal across all sites.",
         "",
+    ]
+    if provenance:
+        lines.extend(["", provenance, ""])
+    lines.extend([
         "## Methodology",
         "",
         "Four automated quality metrics — no LLM or human review needed:",
@@ -432,7 +451,7 @@ def generate_quality_report(
         "> irrelevant tokens that dilute semantic similarity, and (2) the same nav sentences",
         "> match queries on every page, flooding results with false positives.",
         "",
-    ]
+    ])
 
     # -----------------------------------------------------------------------
     # Cross-site summary table — RAG readiness at a glance

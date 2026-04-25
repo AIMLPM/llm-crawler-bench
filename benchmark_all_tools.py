@@ -741,6 +741,15 @@ def generate_comparison_report(
     runner_up_pps = tool_avg_pps.get(runner_up_name, 0)
 
     today = datetime.date.today().isoformat()
+    generated_at = time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime())
+
+    # Tool versions used in this run -- so readers know exactly which build
+    # produced the numbers. Source of truth: the same _get_tool_version()
+    # that gets written into run_metadata.json.
+    versions_table = ["**Tool versions in this run:**", "", "| Tool | Version |", "|---|---|"]
+    for t in sorted(available_tools):
+        versions_table.append(f"| {t} | {_get_tool_version(t)} |")
+
     lines = [
         "# Speed Comparison",
         f"<!-- style: v2, {today} -->",
@@ -748,7 +757,9 @@ def generate_comparison_report(
         f"{fastest_tool} is the fastest crawler at {fastest_pps:.1f} pages/sec overall, "
         f"followed by {runner_up_name} ({runner_up_pps:.1f} p/s).",
         "",
-        f"Generated: {time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime())}",
+        f"Generated: {generated_at}",
+        "",
+        *versions_table,
         "",
         "## Methodology",
         "",
