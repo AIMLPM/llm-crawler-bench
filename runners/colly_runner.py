@@ -87,7 +87,7 @@ def run(url: str, out_dir: str, max_pages: int, url_list: Optional[List[str]] = 
         colly_result = subprocess.run(cmd, capture_output=True, text=True, timeout=600, check=False)
         if colly_result.stderr:
             logger.warning(f"[colly] stderr: {colly_result.stderr[:2000]}")
-    except subprocess.TimeoutExpired as e:
+    except subprocess.TimeoutExpired:
         logger.warning(f"[colly] subprocess timed out at 600s; salvaging {sum(1 for _ in Path(html_dir).glob('*.html'))} html files")
 
     from markdownify import markdownify as md

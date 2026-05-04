@@ -19,7 +19,6 @@ import subprocess
 import sys
 from typing import List, Optional
 
-
 # Browser-like UA + headers, kept identical across HTTP-only crawlers
 # (colly+md, scrapy+md) so the apples-to-apples comparison reflects crawler
 # behavior, not header-tuning advantage. See METHODOLOGY.md "Crawler tuning".
