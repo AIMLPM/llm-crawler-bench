@@ -119,7 +119,7 @@ run_docker() {
     # Run preflight smoke test first
     echo "Running pre-flight smoke test in Docker..."
     docker run --rm \
-        "${ENV_ARGS[@]}" \
+        ${ENV_ARGS[@]+"${ENV_ARGS[@]}"} \
         -v "$REPO_ROOT/reports:/app/reports" \
         -v "$REPO_ROOT/runs:/app/runs" \
         --entrypoint python \
@@ -129,11 +129,11 @@ run_docker() {
     echo ""
     echo "Running benchmarks in Docker..."
     docker run --rm \
-        "${ENV_ARGS[@]}" \
+        ${ENV_ARGS[@]+"${ENV_ARGS[@]}"} \
         -v "$REPO_ROOT/reports:/app/reports" \
         -v "$REPO_ROOT/runs:/app/runs" \
         "$IMAGE_NAME" \
-        "${BENCH_ARGS[@]}"
+        ${BENCH_ARGS[@]+"${BENCH_ARGS[@]}"}
 }
 
 # ---------------------------------------------------------------------------
@@ -160,7 +160,9 @@ run_standalone() {
 
     echo ""
     echo "Running benchmarks (standalone)..."
-    "$PYTHON" benchmark_all_tools.py "${BENCH_ARGS[@]}"
+    # Empty-array expansion under `set -u` errors in some bash versions;
+    # ${arr[@]+"${arr[@]}"} expands to nothing when unset/empty, args otherwise.
+    "$PYTHON" benchmark_all_tools.py ${BENCH_ARGS[@]+"${BENCH_ARGS[@]}"}
 }
 
 # ---------------------------------------------------------------------------

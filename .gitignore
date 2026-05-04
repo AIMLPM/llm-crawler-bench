@@ -47,3 +47,6 @@ tools/firecrawl/firecrawl-src/
 
 # Private docs (competitive research, internal notes)
 private/
+
+# Pre-run report snapshots used for v1.x → v1.y diffs (regenerated each cycle)
+.baseline-pre-*/

@@ -190,10 +190,13 @@ from runners import (  # noqa: E402
 # Graduated smoke test — catch scale-dependent failures early
 # ---------------------------------------------------------------------------
 
+# Smoke tier sites must be in COMPARISON_SITES (current pool). All static
+# (no JS) so smoke stays a stable canary; JS-rendering paths get exercised
+# in the real benchmark, not here.
 SMOKE_TIERS = [
     {
         "name": "sanity",
-        "site": "quotes-toscrape",
+        "site": "rust-book",
         "max_pages": 5,
         "timeout": 60,
         "description": "Basic functionality (5 pages)",
@@ -201,7 +204,7 @@ SMOKE_TIERS = [
     },
     {
         "name": "small",
-        "site": "books-toscrape",
+        "site": "smittenkitchen",
         "max_pages": 30,
         "timeout": 90,
         "description": "Small scale stability (30 pages)",
@@ -209,7 +212,7 @@ SMOKE_TIERS = [
     },
     {
         "name": "medium",
-        "site": "python-docs",
+        "site": "postgres-docs",
         "max_pages": 100,
         "timeout": 180,
         "description": "Medium scale / memory pressure (100 pages)",
