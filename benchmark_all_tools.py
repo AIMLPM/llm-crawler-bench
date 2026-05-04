@@ -513,7 +513,7 @@ class _Heartbeat:
 
     def __init__(self, tool_name: str, site_name: str, out_dir: str,
                  max_pages: int, interval: float = 30.0,
-                 zero_stall_s: float = 120.0, stall_s: float = 180.0):
+                 zero_stall_s: float = 120.0, stall_s: float = 600.0):
         self.tool_name = tool_name
         self.site_name = site_name
         self.out_dir = out_dir
@@ -544,7 +544,12 @@ class _Heartbeat:
             if not self._running:
                 break
             try:
+                # Count .md (most tools) AND .html (colly writes html to _html/ subdir
+                # first, converts to .md after its subprocess exits — without this we'd
+                # kill colly at 120s on every site large enough that its html-fetch
+                # phase exceeds 120s).
                 count = sum(1 for f in Path(self.out_dir).glob("*.md") if f.stat().st_size > 0)
+                count += sum(1 for f in Path(self.out_dir).rglob("*.html") if f.stat().st_size > 0)
             except OSError:
                 count = self._last_count
             now = time.time()
@@ -583,7 +588,11 @@ class _Heartbeat:
 # (500 pages) get more time than small ones (15 pages).
 # Formula: base + per_page * max_pages.  e.g. 500 pages → 60 + 2*500 = 1060s ≈ 18 min.
 _RUN_TIMEOUT_BASE_S = 60
-_RUN_TIMEOUT_PER_PAGE_S = 2
+# Bumped from 2 to 3 sec/page after observing browser tools (crawlee, crawl4ai)
+# regularly time out 5-10 pages short on JS-heavy sites (ikea, stripe-docs).
+# Cost: at most 50% more wall-clock budget per tool/site; well under the
+# heartbeat-stall watchdog so runs that genuinely hang still get caught.
+_RUN_TIMEOUT_PER_PAGE_S = 3
 
 
 def run_single(
@@ -1790,15 +1799,20 @@ def _save_run_data(base_dir: str) -> Optional[str]:
     # Clean up temp dir
     shutil.rmtree(base_dir, ignore_errors=True)
 
-    # Keep only the last 10 runs
-    existing_runs = sorted(
-        [d for d in os.listdir(runs_dir) if d.startswith("run_") and os.path.isdir(os.path.join(runs_dir, d))],
-    )
-    while len(existing_runs) > 10:
-        oldest = existing_runs.pop(0)
-        oldest_path = os.path.join(runs_dir, oldest)
-        shutil.rmtree(oldest_path, ignore_errors=True)
-        logger.info(f"Removed old run: {oldest}")
+    # Keep the last N runs. Default 100 (was 10, but that caused data loss
+    # during the v1.3 cycle when we did 15+ targeted re-run passes — the main
+    # run got evicted before downstream phases could consume it). Override via
+    # KEEP_RUNS env var. Set to 0 to disable cleanup entirely.
+    keep_runs = int(os.environ.get("KEEP_RUNS", "100"))
+    if keep_runs > 0:
+        existing_runs = sorted(
+            [d for d in os.listdir(runs_dir) if d.startswith("run_") and os.path.isdir(os.path.join(runs_dir, d))],
+        )
+        while len(existing_runs) > keep_runs:
+            oldest = existing_runs.pop(0)
+            oldest_path = os.path.join(runs_dir, oldest)
+            shutil.rmtree(oldest_path, ignore_errors=True)
+            logger.info(f"Removed old run: {oldest}")
 
     return run_dest
 

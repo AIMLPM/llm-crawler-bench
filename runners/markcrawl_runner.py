@@ -134,10 +134,18 @@ print(json.dumps({{"pages_saved": result.pages_saved}}))
             timeout=60 + 2 * max_pages,
             check=False,
         )
+        # Capture stderr unconditionally — markcrawl 0.10.3+ emits the 0-page
+        # diagnostic ("Crawl saved 0 pages; first HTTP 403 → likely anti-bot
+        # block") via Python's logging.WARNING channel which goes to stderr.
+        # Previously this was gated on returncode != 0, so successful runs that
+        # returned zero pages dropped the warning silently. The diagnostic is
+        # often the only signal a user gets that anti-bot or scope is the cause.
+        import logging as _logging
+        _log = _logging.getLogger(__name__)
+        if proc.stderr:
+            _log.warning("[markcrawl stderr] %s", proc.stderr.decode()[:2000])
         if proc.returncode != 0:
-            import logging
-            logging.getLogger(__name__).warning(
-                "markcrawl crawl subprocess failed: %s", proc.stderr.decode()[:200])
+            _log.warning("markcrawl crawl subprocess failed (returncode=%d)", proc.returncode)
             return 0
         # Parse pages_saved from the last JSON line on stdout
         for line in reversed(proc.stdout.decode().strip().splitlines()):

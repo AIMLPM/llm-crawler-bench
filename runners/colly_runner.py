@@ -79,9 +79,16 @@ def run(url: str, out_dir: str, max_pages: int, url_list: Optional[List[str]] = 
             f.write("\n".join(url_list))
         cmd.extend(["-urls", urls_file])
 
-    colly_result = subprocess.run(cmd, capture_output=True, text=True, timeout=300, check=False)
-    if colly_result.stderr:
-        logger.warning(f"[colly] stderr: {colly_result.stderr[:2000]}")
+    # Subprocess timeout was 300s — too tight for sites with max_pages 400 (postgres,
+    # kubernetes) where the colly subprocess legitimately needs 200-450s. 600s aligns
+    # with the wrapper's heartbeat-stall budget. Even if subprocess.run times out,
+    # we still markdownify whatever .html files made it to disk so the work isn't lost.
+    try:
+        colly_result = subprocess.run(cmd, capture_output=True, text=True, timeout=600, check=False)
+        if colly_result.stderr:
+            logger.warning(f"[colly] stderr: {colly_result.stderr[:2000]}")
+    except subprocess.TimeoutExpired as e:
+        logger.warning(f"[colly] subprocess timed out at 600s; salvaging {sum(1 for _ in Path(html_dir).glob('*.html'))} html files")
 
     from markdownify import markdownify as md
 

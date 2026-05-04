@@ -196,6 +196,43 @@ app = FirecrawlApp(api_key=KEY)
 result = app.crawl(url, limit=N, scrape_formats=["markdown"])
 ```
 
+### Crawler tuning — equal effort across the board
+
+Each crawler ships with default settings that are not necessarily what a user
+would deploy in production. To keep the benchmark fair, we apply the same
+*class* of tuning to every tool: realistic browser fingerprinting for HTTP
+crawlers, common stealth flags for browser-based crawlers, and matched
+timeouts. The intent is that any remaining performance gap reflects
+**crawler design**, not missing config that a real user would have set.
+
+Per-tool tuning applied (v1.3 cycle, 2026-05-04):
+
+| Tool | Tuning applied | Rationale |
+|---|---|---|
+| **markcrawl** | upgraded to v0.10.3 (chunker defaults flip + sitemap-discovery deadline + idle-timeout exhaustion detection + partial-write recovery + 0-page diagnostic) | Three fixes between 0.5.0 → 0.10.3 affect benchmark numbers; idle-timeout prevents discovery-stall on sites where reachable pages < `max_pages` (e.g. HF) |
+| **scrapy+md** | browser-like UA (Chrome/130 macOS) + full Sec-Ch-Ua / Accept / Sec-Fetch-* headers via `USER_AGENT` and `DEFAULT_REQUEST_HEADERS`; subprocess timeout 300s → 600s with TimeoutExpired caught | Same WAF-bypass fix that landed for colly+md (commit `06501ac`); without it, scrapy is rejected by sites that gate on default-UA fingerprint (newegg, npr.org) |
+| **crawl4ai** | default Patchright (stealth fork of Playwright). Two variants kept side-by-side: crawl4ai (Patchright) and crawl4ai-raw (raw Chromium) so we can measure when "stealth" helps and when it backfires (HF: raw wins 300/0; ikea: both work) | Patchright stealth tweaks paradoxically trigger MORE bot detection on some sites (Vercel/HF). Two-variant approach is the honest comparison |
+| **crawl4ai-raw** | raw Chromium baseline, no stealth tweaks | Reference point for "what does an off-the-shelf browser see?" |
+| **crawlee** | `--disable-blink-features=AutomationControlled` chromium flag (removes the most-detected automation signal: `navigator.webdriver=true`); browser-like UA + viewport 1920×1080 + en-US locale + `Sec-Ch-Ua` / `Accept-Language` extra HTTP headers via `browser_new_context_options` | Crawlee's defaults present a clearly-automated fingerprint; the flag + headers raise the floor without claiming full stealth (newegg may still block) |
+| **playwright** (raw) | default Chromium, no stealth tweaks | Reference point similar to crawl4ai-raw — what does vanilla playwright see? |
+| **colly+md** | browser-like UA (Chrome/130 macOS) + full Sec-Ch-Ua / Accept / Sec-Fetch-* headers (commit `06501ac`); 100ms delay, parallelism=5, retry-on-429 with backoff up to 3 retries; salvage logic in runner that markdownifies whatever HTML landed before subprocess timeout, so partial crawls produce partial output | Default colly UA (`colly - https://github.com/...`) is blocked by every modern WAF; without the headers colly returns 0 pages on 6+ sites |
+
+**Cross-cutting wrapper changes** (apply equally to every tool):
+
+| Change | Old | New | Why |
+|---|---|---|---|
+| `_RUN_TIMEOUT_PER_PAGE_S` (`benchmark_all_tools.py`) | 2 sec/page | 3 sec/page | Browser tools (crawl4ai, crawlee) regularly time out 5-10 pages short of completion on JS-heavy sites at 2 sec/page; 3 sec/page gives comfortable margin without inflating wall-clock for fast tools (which finish well under cap regardless) |
+| `_Heartbeat` stall watchdog | 180s of no progress | 600s of no progress | colly writes HTML to a `_html/` subdir and only converts to `.md` after subprocess exits; previous 180s budget killed colly mid-crawl on big sites. 600s aligns with subprocess timeouts |
+| `_Heartbeat` file-counting glob | `*.md` only | `*.md` + recursive `*.html` | colly's intermediate HTML files now register as progress, so the watchdog doesn't see "0 files" during colly's fetch phase |
+
+**Where tuning hits its limit** (honest gaps remaining):
+
+- **HTTP-only crawlers on JS-rendered SPAs** (scrapy+md/HF, colly+md/HF): no header tuning can render JavaScript. These zeros are *the benchmark working as intended* — they measure the cost of the HTTP-only design choice on sites that require a browser.
+- **Aggressive anti-bot sites** (newegg, partly HF): even with full stealth + browser-like everything, sites that fingerprint TLS/JA3, browser audio context, GPU rendering, or canvas-fingerprint can detect automation. We don't pursue defeating these — that's a different benchmark (anti-bot bypass), not "RAG crawler quality."
+- **markcrawl/HF specifically**: v0.10.3's idle-timeout fix lets the crawl exit cleanly with whatever it finds (~200 pages), so this gap closes in v1.3. Newegg still returns 0 (anti-bot) but now logs the HTTP status code so users can debug.
+
+The intent is reproducibility: anyone can read the runner code (`runners/scrapy_runner.py`, `crawlee_worker.py`, `tools/colly_crawler/main.go`, `runners/markcrawl_runner.py`) and verify the tuning was actually applied — no hidden advantages.
+
 ### Concurrency model comparison
 
 Each tool handles concurrency differently. This affects how throughput scales and what limits apply.
