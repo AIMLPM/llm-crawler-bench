@@ -54,4 +54,4 @@ The v1.3 main run died mid-flight from macOS jetsam pressure; the recovery used 
 
 > Cell format: `pps (pages/time_s)`. Em-dash = no pages crawled (anti-bot, JS-on-SPA limit, etc.).
 
-Per-site retrieval+quality detail in [RETRIEVAL_COMPARISON.md](RETRIEVAL_COMPARISON.md) and [QUALITY_COMPARISON.md](QUALITY_COMPARISON.md).
+Per-site retrieval+quality detail in [RETRIEVAL_COMPARISON.md](RETRIEVAL_COMPARISON.md) and [QUALITY_COMPARISON.md](QUALITY_COMPARISON.md). Annual-cost projections at scale: [COST_AT_SCALE.md](COST_AT_SCALE.md).
