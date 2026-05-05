@@ -135,11 +135,17 @@ sites:
     description: "Smitten Kitchen recipe blog -- WordPress long-form, recipe microdata"
     has_queries: true
 
-  - name: npr-news
-    url: https://www.npr.org/sections/news/
+  # NPR removed in v1.3 cycle (2026-05-05) — their robots.txt explicitly
+  # disallows 15 AI bots (GPTBot, ClaudeBot, anthropic-ai, PerplexityBot, etc.).
+  # Even though `User-agent: *` allows our crawl, this benchmark is FOR AI/RAG
+  # use cases — respecting the spirit of their published policy. Replaced with
+  # ProPublica (similar long-form journalism, AI-permissive, no bot blocks).
+  # New-site additions must pass `self_improvement/check_robots_ai.py`.
+  - name: propublica
+    url: https://www.propublica.org/
     category: news
     difficulty: [static, paginated]
     max_pages: 150
     render_js: false
-    description: "NPR news section -- wire-style articles, deep linking, stable URLs"
+    description: "ProPublica investigative journalism -- /article/<slug> long-form pieces, /topics/* topic hubs"
     has_queries: true

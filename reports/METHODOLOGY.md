@@ -233,6 +233,53 @@ Per-tool tuning applied (v1.3 cycle, 2026-05-04):
 
 The intent is reproducibility: anyone can read the runner code (`runners/scrapy_runner.py`, `crawlee_worker.py`, `tools/colly_crawler/main.go`, `runners/markcrawl_runner.py`) and verify the tuning was actually applied — no hidden advantages.
 
+### Site pool ethics — robots.txt and AI-bot policies
+
+The benchmark is for AI/RAG use cases. Even when `User-agent: *` allows our
+crawl, sites that explicitly disallow AI-specific bots (GPTBot, ClaudeBot,
+anthropic-ai, PerplexityBot, etc.) are signaling they don't want their
+content used by AI systems. The pool respects that signal — sites with broad
+AI-bot blocks are removed even if technically crawlable.
+
+**v1.3 cycle change:** `npr-news` removed, `propublica` added. NPR's
+robots.txt explicitly disallows 15 AI bots. ProPublica is the only major
+investigative-journalism outlet we audited that has no AI-bot blocks
+(BBC News, Reuters, AP News, The Verge, Ars Technica, TechCrunch, Wired,
+CNBC all block AI bots).
+
+Future pool additions must pass `self_improvement/check_robots_ai.py`
+before going into `sites/pool_v1.yaml`. The script audits any URL or the
+entire current pool against the 19 known AI bots.
+
+### Chunker dependency — markcrawl version delta
+
+Every tool in this benchmark is chunked through markcrawl's
+`chunk_markdown()` — see `benchmark_pipeline.py:45` and
+`benchmark_retrieval.py:43`. MarkCrawl was upgraded from 0.5.0 (the PyPI
+default at the time of the April v1.2 run) to 0.10.5 for this v1.3 cycle.
+The version range spans 5+ minor releases; documented changes that affect
+benchmark numbers include:
+
+- **Chunker default flip** (multi-trial validated at +14% MRR on
+  `all-MiniLM-L6-v2`, +15% on OpenAI 3-small per markcrawl's
+  [v0.10 release report](https://github.com/AIMLPM/markcrawl/blob/main/bench/local_replica/v010_release_report.md))
+- **DS-3.5 parallel sitemap discovery**, M6 dispatch cascade,
+  scope-detection refinements, tenacity-backed retry layer
+- **v0.10.2** sitemap-discovery deadline (60s wallclock cap on recursive
+  sitemap-index parsing — fixes ikea's 2,113-shard index from exceeding
+  the crawl-start budget)
+- **v0.10.3** partial-write recovery (line-buffered `pages.jsonl`),
+  discovery-exhaustion idle-timeout, 0-page diagnostic logging
+- **v0.10.5** adaptive scope broadening (when narrow auto-scope exhausts
+  with budget remaining and the leftmost path segment is a docs-hub marker
+  like `docs`/`book`/`learn`, broaden once and replay filtered URLs —
+  capped at 2 broadenings per crawl, never to whole-host).
+
+Other tools were not upgraded between runs. Because `benchmark_pipeline.py`
+chunks every tool's output through `markcrawl.chunker.chunk_markdown`, the
+chunker change in particular affects all 7 tools' MRR and cost numbers,
+not just markcrawl's row.
+
 ### Concurrency model comparison
 
 Each tool handles concurrency differently. This affects how throughput scales and what limits apply.

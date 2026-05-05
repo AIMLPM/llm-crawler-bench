@@ -224,7 +224,10 @@ def _count_tokens(texts: List[str]) -> int:
     try:
         import tiktoken
         enc = tiktoken.encoding_for_model("text-embedding-3-small")
-        return sum(len(enc.encode(t)) for t in texts)
+        # disallowed_special=() avoids ValueError when chunks contain literal
+        # '<|endoftext|>' strings (e.g. crawled HF docs). We are counting
+        # length, not generating, so encode them as normal text.
+        return sum(len(enc.encode(t, disallowed_special=())) for t in texts)
     except ImportError:
         # Rough estimate: ~0.75 tokens per word
         return sum(int(len(t.split()) * 0.75) for t in texts)

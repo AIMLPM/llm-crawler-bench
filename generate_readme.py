@@ -196,9 +196,14 @@ def generate_readme() -> str:
     # Speed
     sw, sv = _winner(speed, True)
     sr, srv = _runner_up(speed, True)
+    # Guard against missing data (e.g. partial-coverage runs where some
+    # tools have no SPEED_COMPARISON entry yet) — render em-dashes rather
+    # than crashing the entire README regen on a single None value.
+    sv_s = f"{sv:.1f} pages/sec" if sv is not None else "—"
+    runner = f"{sr} ({srv:.1f} p/s)" if sr is not None and srv is not None else "—"
     rows.append(
-        f"| [Speed](reports/SPEED_COMPARISON.md) | {_bold_if_mc(sw, sw)} "
-        f"| {sv:.1f} pages/sec | {sr} ({srv:.1f} p/s) |"
+        f"| [Speed](reports/SPEED_COMPARISON.md) | {_bold_if_mc(sw, sw) if sw else '—'} "
+        f"| {sv_s} | {runner} |"
     )
 
     # Extraction quality

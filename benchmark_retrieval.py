@@ -40,6 +40,15 @@ from typing import Dict, List, Optional, Tuple
 BENCH_DIR = Path(__file__).parent
 REPO_ROOT = BENCH_DIR
 
+# Load .env (OPENAI_API_KEY etc) — same pattern as benchmark_all_tools.py.
+# Without this, direct invocation of this script (vs via run_benchmarks.sh)
+# fails with "OPENAI_API_KEY environment variable not set".
+try:
+    from dotenv import load_dotenv  # noqa: E402
+    load_dotenv(BENCH_DIR / ".env")
+except ImportError:
+    pass
+
 from markcrawl.chunker import chunk_markdown  # noqa: E402
 
 logger = logging.getLogger(__name__)
@@ -817,48 +826,48 @@ TEST_QUERIES: Dict[str, List[Dict]] = {
             "description": "Find Electronics store category",
         },
     ],
-    "npr-news": [
+    "propublica": [
         {
-            "query": "What are the latest NPR politics stories?",
-            "url_match": "sections/politics",
-            "page_match": "politics",
+            "query": "What ProPublica investigations cover criminal justice?",
+            "url_match": "criminal-justice",
+            "page_match": "criminal-justice",
             "category": "cross-page",
-            "description": "Find NPR politics section",
+            "description": "Find ProPublica criminal-justice topic + related articles",
         },
         {
-            "query": "What world news is NPR covering?",
-            "url_match": "sections/world",
-            "page_match": "world",
-            "category": "cross-page",
-            "description": "Find NPR world section",
-        },
-        {
-            "query": "Where can I find NPR business coverage?",
-            "url_match": "sections/business",
-            "page_match": "business",
-            "category": "cross-page",
-            "description": "Find NPR business section",
-        },
-        {
-            "query": "What health stories is NPR reporting on?",
-            "url_match": "sections/health",
+            "query": "What is ProPublica reporting about healthcare?",
+            "url_match": "health",
             "page_match": "health",
             "category": "cross-page",
-            "description": "Find NPR health section",
+            "description": "Find ProPublica healthcare coverage",
         },
         {
-            "query": "What science news does NPR have?",
-            "url_match": "sections/science",
-            "page_match": "science",
+            "query": "What ProPublica articles discuss politics and government accountability?",
+            "url_match": "politics",
+            "page_match": "politics",
             "category": "cross-page",
-            "description": "Find NPR science section",
+            "description": "Find ProPublica politics topic + government accountability stories",
         },
         {
-            "query": "What are the main news headlines from NPR?",
-            "url_match": "sections/news",
-            "page_match": "sections/news",
+            "query": "What environmental or climate investigations does ProPublica have?",
+            "url_match": "climate",
+            "page_match": "climate",
             "category": "cross-page",
-            "description": "Find NPR main news section (seed URL)",
+            "description": "Find ProPublica climate / environment articles",
+        },
+        {
+            "query": "What ProPublica stories cover immigration?",
+            "url_match": "immigration",
+            "page_match": "immigration",
+            "category": "cross-page",
+            "description": "Find ProPublica immigration reporting",
+        },
+        {
+            "query": "What is the main ProPublica homepage with featured stories?",
+            "url_match": "propublica.org/",
+            "page_match": "propublica.org/",
+            "category": "cross-page",
+            "description": "Find ProPublica homepage / seed URL",
         },
     ],
 }
@@ -958,7 +967,11 @@ def _get_tokenizer():
 def _truncate_to_tokens(text: str, max_tokens: int = MAX_EMBED_TOKENS) -> str:
     """Truncate text to stay under token limit using tiktoken for accuracy."""
     enc = _get_tokenizer()
-    tokens = enc.encode(text)
+    # disallowed_special=() prevents ValueError when the input contains literal
+    # special-token strings like '<|endoftext|>' (which appear as content in model
+    # documentation, e.g. crawled HF transformers pages). Encode them as normal
+    # text — we are not generating, we are measuring length.
+    tokens = enc.encode(text, disallowed_special=())
     if len(tokens) <= max_tokens:
         return text
     return enc.decode(tokens[:max_tokens])
@@ -1124,7 +1137,7 @@ def embed_texts(client, texts: List[str], model: str = EMBEDDING_MODEL) -> List[
     current_start = 0
     current_tokens = 0
     for i, text in enumerate(processed):
-        text_tokens = len(tokenizer.encode(text))
+        text_tokens = len(tokenizer.encode(text, disallowed_special=()))
         if current_batch and (current_tokens + text_tokens > max_tokens_per_request or len(current_batch) >= 100):
             batches.append((current_start, current_batch))
             current_batch = []
