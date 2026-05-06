@@ -47,7 +47,7 @@ chunk in the vector index, degrading retrieval for every query.
 
 | Tool | Content signal [1] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|
-| markcrawl | 98% | 54 ⚠ | 0% | 0.6 | 38% | 22% |
+| markcrawl | 99% | 53 ⚠ | 0% | 0.6 | 38% | 22% |
 | scrapy+md | 92% | 500 ⚠ | 0% | 0.8 | 20% | 11% |
 | crawl4ai-raw | 83% | 507 ⚠ | 1% | 1.6 | 90% | 51% |
 | crawl4ai | 82% | 545 ⚠ | 1% | 1.7 | 99% | 56% |
@@ -64,7 +64,7 @@ chunk in the vector index, degrading retrieval for every query.
 > **[5] Precision/Recall** = cross-tool consensus: precision measures how much output is agreed-upon content; recall measures how much agreed content was captured.
 
 
-**Key takeaway:** markcrawl achieves 98% content signal with only 54 words of preamble per page — compared to 2424 for colly+md. Its recall is lower (22% vs 70%) because it strips nav, footer, and sponsor content that other tools include. For RAG use cases, this trade-off typically favors cleaner output: fewer junk tokens per chunk means better embedding quality and retrieval precision.
+**Key takeaway:** markcrawl achieves 99% content signal with only 53 words of preamble per page — compared to 2424 for colly+md. Its recall is lower (22% vs 70%) because it strips nav, footer, and sponsor content that other tools include. For RAG use cases, this trade-off typically favors cleaner output: fewer junk tokens per chunk means better embedding quality and retrieval precision.
 
 
 ## react-dev
@@ -89,7 +89,7 @@ chunk in the vector index, degrading retrieval for every query.
 **scrapy+md** produces the cleanest output with 6 words of preamble per page, while **crawlee** injects 329 words of nav chrome before content begins. The word count gap (1623 vs 5535 avg words) is largely explained by preamble: 280 words of nav chrome account for ~5% of colly+md's output on this site. scrapy+md's lower recall (40% vs 89%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>react.dev/learn/tutorial-tic-tac-toe</code></summary>
+<summary>Sample output — first 40 lines of <code>react.dev/learn/state-as-a-snapshot</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
@@ -101,30 +101,26 @@ Nav boilerplate appears here before the real content starts.
 
 [Learn React](/learn)
 
-[Quick Start](/learn)
+[Adding Interactivity](/learn/adding-interactivity)
 
 Copy pageCopy
 
-# Tutorial: Tic-Tac-Toe
+# State as a Snapshot
 
-You will build a small tic-tac-toe game during this tutorial. This tutorial does not assume any existing React knowledge. The techniques you’ll learn in the tutorial are fundamental to building any React app, and fully understanding it will give you a deep understanding of React.
+State variables might look like regular JavaScript variables that you can read and write to. However, state behaves more like a snapshot. Setting it does not change the state variable you already have, but instead triggers a re-render.
 
-### Note
+### You will learn
 
-This tutorial is designed for people who prefer to **learn by doing** and want to quickly try making something tangible. If you prefer learning each concept step by step, start with [Describing the UI.](/learn/describing-the-ui)
+* How setting state triggers re-renders
+* When and how state updates
+* Why state does not update immediately after you set it
+* How event handlers access a “snapshot” of the state
 
-The tutorial is divided into several sections:
+## Setting state triggers renders
 
-* [Setup for the tutorial](#setup-for-the-tutorial) will give you **a starting point** to follow the tutorial.
-* [Overview](#overview) will teach you **the fundamentals** of React: components, props, and state.
-* [Completing the game](#completing-the-game) will teach you **the most common techniques** in React development.
-* [Adding time travel](#adding-time-travel) will give you **a deeper insight** into the unique strengths of React.
+You might think of your user interface as changing directly in response to the user event like a click. In React, it works a little differently from this mental model. On the previous page, you saw that [setting state requests a re-render](/learn/render-and-commit#step-1-trigger-a-render) from React. This means that for an interface to react to the event, you need to *update the state*.
 
-### What are you building?
-
-In this tutorial, you’ll build an interactive tic-tac-toe game with React.
-
-You can see what it will look like when you’re finished here:
+In this example, when you press “send”, `setIsSent(true)` tells React to re-render the UI:
 
 App.js
 
@@ -135,7 +131,11 @@ ReloadClear[Fork](https://codesandbox.io/api/v1/sandboxes/define?undefined&envir
 '''
 import { useState } from 'react';
 
-function Square({ value, onSquareClick }) {
+export default function Form() {
+  const [isSent, setIsSent] = useState(false);
+  const [message, setMessage] = useState('Hi!');
+  if (isSent) {
+    return <h1>Your message is on its way!</h1>
 ````
 
 **crawl4ai**
@@ -230,30 +230,26 @@ function Square({ value, onSquareClick }) {
 ````
 [Learn React](/learn)
 
-[Quick Start](/learn)
+[Adding Interactivity](/learn/adding-interactivity)
 
  Copy pageCopy
 
-# Tutorial: Tic-Tac-Toe
+# State as a Snapshot
 
-You will build a small tic-tac-toe game during this tutorial. This tutorial does not assume any existing React knowledge. The techniques you’ll learn in the tutorial are fundamental to building any React app, and fully understanding it will give you a deep understanding of React.
+State variables might look like regular JavaScript variables that you can read and write to. However, state behaves more like a snapshot. Setting it does not change the state variable you already have, but instead triggers a re-render.
 
-### Note
+### You will learn
 
-This tutorial is designed for people who prefer to **learn by doing** and want to quickly try making something tangible. If you prefer learning each concept step by step, start with [Describing the UI.](/learn/describing-the-ui)
+* How setting state triggers re-renders
+* When and how state updates
+* Why state does not update immediately after you set it
+* How event handlers access a “snapshot” of the state
 
-The tutorial is divided into several sections:
+## Setting state triggers renders
 
-* [Setup for the tutorial](#setup-for-the-tutorial) will give you **a starting point** to follow the tutorial.
-* [Overview](#overview) will teach you **the fundamentals** of React: components, props, and state.
-* [Completing the game](#completing-the-game) will teach you **the most common techniques** in React development.
-* [Adding time travel](#adding-time-travel) will give you **a deeper insight** into the unique strengths of React.
+You might think of your user interface as changing directly in response to the user event like a click. In React, it works a little differently from this mental model. On the previous page, you saw that [setting state requests a re-render](/learn/render-and-commit#step-1-trigger-a-render) from React. This means that for an interface to react to the event, you need to *update the state*.
 
-### What are you building?
-
-In this tutorial, you’ll build an interactive tic-tac-toe game with React.
-
-You can see what it will look like when you’re finished here:
+In this example, when you press “send”, `setIsSent(true)` tells React to re-render the UI:
 
 App.js
 
@@ -264,10 +260,14 @@ ReloadClear[Fork](https://codesandbox.io/api/v1/sandboxes/define?undefined&envir
 '''
 import { useState } from 'react';
 
-function Square({ value, onSquareClick }) {
+export default function Form() {
+  const [isSent, setIsSent] = useState(false);
+  const [message, setMessage] = useState('Hi!');
+  if (isSent) {
+    return <h1>Your message is on its way!</h1>
+  }
   return (
-    <button className="square" onClick={onSquareClick}>
-      {value}
+    <form onSubmit={(e) => {
 ````
 
 **crawlee**
@@ -316,7 +316,7 @@ function Square({ value, onSquareClick }) {
 
 **colly+md**
 ````
-Tutorial: Tic-Tac-Toe – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
+State as a Snapshot – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
 (function () {
 try {
 let logShown = false;
@@ -360,7 +360,7 @@ return localStorage.getItem('uwu') === 'true';
 
 **playwright**
 ````
-Tutorial: Tic-Tac-Toe – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
+State as a Snapshot – Reactwindow.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-B1E83PJ3RT');
 (function () {
 try {
 let logShown = false;
@@ -1018,150 +1018,147 @@ return localStorage.getItem('uwu') === 'true';
 **markcrawl** produces the cleanest output with 14 words of preamble per page, while **colly+md** injects 9575 words of nav chrome before content begins. The word count gap (1012 vs 21288 avg words) is largely explained by preamble: 9575 words of nav chrome account for ~45% of colly+md's output on this site. markcrawl's lower recall (19% vs 90%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
-<summary>Sample output — first 40 lines of <code>docs.stripe.com/payments</code></summary>
+<summary>Sample output — first 40 lines of <code>docs.stripe.com/payments/place-a-hold-on-a-payment-method</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-*Use Stripe to start accepting payments.*
+*Use manual capture to temporarily reserve funds without immediately charging the payment method.*
 
 
-# Payments
+# Place a hold on a payment method
 
-## Use Stripe to start accepting payments.
+## Separate payment authorization and capture to create a charge now, but capture funds later.
 
-Get started
+Ask about this page
 
-Integrate a Stripe product to start accepting payments online and in person, embed financial services, power custom revenue models, and more.
+Copy for LLMView as Markdown
 
-## Payment options
+Install skills
 
-Most popular
+When you create a payment, you can place a hold on an eligible payment method to reserve funds that you can capture later. For example, hotels often authorize a payment in full before a guest arrives, then capture the money when the guest checks out. This is sometimes referred to as manual capture.
 
-Online
+Authorizing a payment guarantees the amount by holding it on the customer’s payment method. If you’re using the API, the [payment_method_details.card.capture_before](/api/charges/object#charge_object-payment_method_details-card-capture_before) attribute on the charge indicates when the authorization expires.
 
-In-person
+You need to capture the funds before the authorization expires. If the authorization expires before you capture the funds, the funds are released and the payment status changes to `canceled`. Learn more about [statuses for asynchronous payments](/payments/paymentintents/lifecycle).
 
-Subscriptions
+## Authorization validity windows
 
-Invoicing
+The following tables outline validity windows for authorizing different transaction types.
 
-[Accept online payments
+### Card-not-present transactions
 
-Build a payment form or use a prebuilt payment page to accept online payments.](/checkout/quickstart "Accept online payments")
+| Card brand | [Merchant-Initiated Transaction](/payments/cits-and-mits) authorization validity window | [Customer-Initiated Transaction](/payments/cits-and-mits) authorization validity window |
+| --- | --- | --- |
+| **Visa** | 5 days* | 7 days |
+| **Mastercard** | 7 days | 7 days |
+| **American Express** | 7 days | 7 days |
+| **Discover** | 7 days | 7 days |
 
-[Create a subscription
+* The exact authorization window is 4 days and 18 hours, to allow time for clearing processes.
 
-Set up recurring billing for your SaaS or e-commerce business.](/billing/quickstart "Create a subscription")
+#### Note
 
-## Payment methods
+Stripe and the card network classify transactions as MIT or CIT based on signals of cardholder participation, not solely on API parameters like [off_session](/api/payment_intents/create#create_payment_intent-off_session). For example, a payment with `off_session: true` might still be classified as a CIT if a CVC is present, resulting in the CIT authorization window instead.
 
-[Add a payment method
-
-Learn about the types of payment methods that your Stripe integration can support.](/payments/payment-methods/overview "Add a payment method")
-
-[Dynamic payment methods
-
-Dynamically order and display payment methods.
+### Card-present transactions (in-person payments)
 ````
 
 **crawl4ai**
 ````
-[Skip to content](https://docs.stripe.com/payments#main-content)
-Payments
-[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments)
+[Skip to content](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method#main-content)
+Authorize and capture a payment separately
+[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments%2Fplace-a-hold-on-a-payment-method)
 [The Stripe Docs logo](https://docs.stripe.com/)
 Search `/`Ask AI
-[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments)
+[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments%2Fplace-a-hold-on-a-payment-method)
 [Get started ](https://docs.stripe.com/get-started)
 [Payments ](https://docs.stripe.com/payments)
 [Revenue ](https://docs.stripe.com/revenue)
 [Platforms and marketplaces ](https://docs.stripe.com/connect)
 [Money management ](https://docs.stripe.com/money-management)
 APIs & SDKsHelp
-Overview[Accept a payment](https://docs.stripe.com/payments/accept-a-payment)[Upgrade your integration](https://docs.stripe.com/payments/upgrades)
+[Overview](https://docs.stripe.com/payments)[Accept a payment](https://docs.stripe.com/payments/accept-a-payment)[Upgrade your integration](https://docs.stripe.com/payments/upgrades)
 Online payments
 [Overview](https://docs.stripe.com/payments/online-payments)[Find your use case](https://docs.stripe.com/payments/use-cases/get-started)
 Use Payment Links
 Build a payments page
 Build a custom integration with Elements
-Build an in-app integration
-Use Managed Payments
-Use Checkout studio
-[Recurring payments](https://docs.stripe.com/recurring-payments)
-In-person payments
-Terminal
-Payment methods
-Add payment methods
-Manage payment methods
-Faster checkout with Link
-Payment operations
-Analytics
-[Balances and settlement time](https://docs.stripe.com/payments/balances)
-Compliance and security
-Currencies
-Declines
-Disputes
-Radar fraud protection
-Payouts
-[Receipts](https://docs.stripe.com/receipts)[Refunds and cancellations](https://docs.stripe.com/refunds)
-Advanced integrations
-Custom payment flows
+[Overview](https://docs.stripe.com/payments/advanced)
+Quickstart guides
+[Stripe Elements](https://docs.stripe.com/payments/elements)
+[Compare Checkout Sessions and PaymentIntents](https://docs.stripe.com/payments/checkout-sessions-and-payment-intents-comparison)
+[Design an advanced integration](https://docs.stripe.com/payments/payment-element/design-an-integration)
+[Customize look and feel](https://docs.stripe.com/elements/appearance-api)
+[Manage payment methods](https://docs.stripe.com/payments/advanced/payment-methods/manage)
+[Collect additional information](https://docs.stripe.com/payments/advanced/collect-additional-info)
+[Build a subscriptions integration](https://docs.stripe.com/payments/advanced/build-subscriptions)
+[Dynamic updates](https://docs.stripe.com/payments/advanced/dynamic-updates)
+[Add discounts](https://docs.stripe.com/payments/advanced/discounts)
+[Collect taxes on your payments](https://docs.stripe.com/payments/advanced/tax)
+[Collect surcharges](https://docs.stripe.com/payments/advanced/surcharge)
+[Redeem credits](https://docs.stripe.com/payments/advanced/credits)
+[Let customers pay in their local currency](https://docs.stripe.com/payments/custom/localize-prices)
+[Save and retrieve customer payment methods](https://docs.stripe.com/payments/save-customer-payment-methods)
+[Send receipts and paid invoices](https://docs.stripe.com/payments/advanced/receipts)
+[Manually approve payments on your server](https://docs.stripe.com/payments/custom/manual-approval)
+Authorize and capture a payment separately
+[Elements with Checkout Sessions API beta changelog](https://docs.stripe.com/checkout/elements-with-checkout-sessions-api/changelog)
+
 ````
 
 **crawl4ai-raw**
 ````
-[Skip to content](https://docs.stripe.com/payments#main-content)
-Payments
-[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments)
+[Skip to content](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method#main-content)
+Authorize and capture a payment separately
+[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments%2Fplace-a-hold-on-a-payment-method)
 [The Stripe Docs logo](https://docs.stripe.com/)
 Search `/`Ask AI
-[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments)
+[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments%2Fplace-a-hold-on-a-payment-method)
 [Get started ](https://docs.stripe.com/get-started)
 [Payments ](https://docs.stripe.com/payments)
 [Revenue ](https://docs.stripe.com/revenue)
 [Platforms and marketplaces ](https://docs.stripe.com/connect)
 [Money management ](https://docs.stripe.com/money-management)
 APIs & SDKsHelp
-Overview[Accept a payment](https://docs.stripe.com/payments/accept-a-payment)[Upgrade your integration](https://docs.stripe.com/payments/upgrades)
+[Overview](https://docs.stripe.com/payments)[Accept a payment](https://docs.stripe.com/payments/accept-a-payment)[Upgrade your integration](https://docs.stripe.com/payments/upgrades)
 Online payments
 [Overview](https://docs.stripe.com/payments/online-payments)[Find your use case](https://docs.stripe.com/payments/use-cases/get-started)
 Use Payment Links
 Build a payments page
 Build a custom integration with Elements
-Build an in-app integration
-Use Managed Payments
-Use Checkout studio
-[Recurring payments](https://docs.stripe.com/recurring-payments)
-In-person payments
-Terminal
-Payment methods
-Add payment methods
-Manage payment methods
-Faster checkout with Link
-Payment operations
-Analytics
-[Balances and settlement time](https://docs.stripe.com/payments/balances)
-Compliance and security
-Currencies
-Declines
-Disputes
-Radar fraud protection
-Payouts
-[Receipts](https://docs.stripe.com/receipts)[Refunds and cancellations](https://docs.stripe.com/refunds)
-Advanced integrations
-Custom payment flows
+[Overview](https://docs.stripe.com/payments/advanced)
+Quickstart guides
+[Stripe Elements](https://docs.stripe.com/payments/elements)
+[Compare Checkout Sessions and PaymentIntents](https://docs.stripe.com/payments/checkout-sessions-and-payment-intents-comparison)
+[Design an advanced integration](https://docs.stripe.com/payments/payment-element/design-an-integration)
+[Customize look and feel](https://docs.stripe.com/elements/appearance-api)
+[Manage payment methods](https://docs.stripe.com/payments/advanced/payment-methods/manage)
+[Collect additional information](https://docs.stripe.com/payments/advanced/collect-additional-info)
+[Build a subscriptions integration](https://docs.stripe.com/payments/advanced/build-subscriptions)
+[Dynamic updates](https://docs.stripe.com/payments/advanced/dynamic-updates)
+[Add discounts](https://docs.stripe.com/payments/advanced/discounts)
+[Collect taxes on your payments](https://docs.stripe.com/payments/advanced/tax)
+[Collect surcharges](https://docs.stripe.com/payments/advanced/surcharge)
+[Redeem credits](https://docs.stripe.com/payments/advanced/credits)
+[Let customers pay in their local currency](https://docs.stripe.com/payments/custom/localize-prices)
+[Save and retrieve customer payment methods](https://docs.stripe.com/payments/save-customer-payment-methods)
+[Send receipts and paid invoices](https://docs.stripe.com/payments/advanced/receipts)
+[Manually approve payments on your server](https://docs.stripe.com/payments/custom/manual-approval)
+Authorize and capture a payment separately
+[Elements with Checkout Sessions API beta changelog](https://docs.stripe.com/checkout/elements-with-checkout-sessions-api/changelog)
+
 ````
 
 **scrapy+md**
 ````
 [Skip to content](#main-content)
 
-Payments
+Authorize and capture a payment separately
 
-[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments)
+[Create account](https://dashboard.stripe.com/register) or [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments%2Fplace-a-hold-on-a-payment-method)
 
 [The Stripe Docs logo](/)
 
@@ -1169,7 +1166,7 @@ Search
 
 `/`Ask AI
 
-[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments)
+[Create account](https://dashboard.stripe.com/register)[Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Fpayments%2Fplace-a-hold-on-a-payment-method)
 
 [Get started](/get-started)
 
@@ -1185,7 +1182,7 @@ Search
 
 APIs & SDKsHelp
 
-Overview[Accept a payment](/payments/accept-a-payment)[Upgrade your integration](/payments/upgrades)
+[Overview](/payments)[Accept a payment](/payments/accept-a-payment)[Upgrade your integration](/payments/upgrades)
 
 Online payments
 
@@ -1200,7 +1197,7 @@ Build a custom integration with Elements
 
 **crawlee**
 ````
-Payments | Stripe Documentation
+Place a hold on a payment method | Stripe Documentation
 
 
 
@@ -1226,6 +1223,9 @@ box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width
 #​#​ .sail-table-row:hover .row-actions-trigger {
 box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
 }
+#​#​ .rs-9[aria-disabled="true"] {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
 #​#​ .rs-5:hover:not(:active):not([aria-disabled="true"]) {
 box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
 }
@@ -1236,15 +1236,12 @@ box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width
 #​#​ .sn-d7kp2a > \* { --align-self-x: initial; --align-self-y: initial; --flex-x: 1 1 auto; --flex-y: 1 1 auto; }
 #​#​ .sn-1fnc4mz { --row-gap: normal; --column-gap: normal; gap: var(--row-gap) var(--column-gap); }
 #​#​ .sn-1c37ise { --padding-top: 0; --padding-right: 0; --padding-bottom: 0; --padding-left: 0; padding: var(--padding-top) var(--padding-right) var(--padding-bottom) var(--padding-left); }
-.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
-isolation: isolate;
-}
-#​#​#​#​#​#​#​:root, :host #​#​#​#​#​#​#​, #​#​#​#​#​#​#​ .sn-token-provider {
+.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya,\_gyuk9p'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
 ````
 
 **colly+md**
 ````
-Payments | Stripe Documentation
+Place a hold on a payment method | Stripe Documentation
 
 
 
@@ -1270,6 +1267,9 @@ box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width
 #​#​ .sail-table-row:hover .row-actions-trigger {
 box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
 }
+#​#​ .rs-9[aria-disabled="true"] {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
 #​#​ .rs-5:hover:not(:active):not([aria-disabled="true"]) {
 box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
 }
@@ -1280,15 +1280,12 @@ box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width
 #​#​ .sn-d7kp2a > \* { --align-self-x: initial; --align-self-y: initial; --flex-x: 1 1 auto; --flex-y: 1 1 auto; }
 #​#​ .sn-1fnc4mz { --row-gap: normal; --column-gap: normal; gap: var(--row-gap) var(--column-gap); }
 #​#​ .sn-1c37ise { --padding-top: 0; --padding-right: 0; --padding-bottom: 0; --padding-left: 0; padding: var(--padding-top) var(--padding-right) var(--padding-bottom) var(--padding-left); }
-.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
-isolation: isolate;
-}
-#​#​#​#​#​#​#​:root, :host #​#​#​#​#​#​#​, #​#​#​#​#​#​#​ .sn-token-provider {
+.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya,\_gyuk9p'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
 ````
 
 **playwright**
 ````
-Payments | Stripe Documentation
+Place a hold on a payment method | Stripe Documentation
 
 
 
@@ -1314,6 +1311,9 @@ box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width
 #​#​ .sail-table-row:hover .row-actions-trigger {
 box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
 }
+#​#​ .rs-9[aria-disabled="true"] {
+box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
+}
 #​#​ .rs-5:hover:not(:active):not([aria-disabled="true"]) {
 box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width), var(--s--focus-ring), var(--s--box-shadow);
 }
@@ -1324,10 +1324,7 @@ box-shadow: var(--s--top-shadow), var(--s--keyline) 0 0 0 var(--s--keyline-width
 #​#​ .sn-d7kp2a > \* { --align-self-x: initial; --align-self-y: initial; --flex-x: 1 1 auto; --flex-y: 1 1 auto; }
 #​#​ .sn-1fnc4mz { --row-gap: normal; --column-gap: normal; gap: var(--row-gap) var(--column-gap); }
 #​#​ .sn-1c37ise { --padding-top: 0; --padding-right: 0; --padding-bottom: 0; --padding-left: 0; padding: var(--padding-top) var(--padding-right) var(--padding-bottom) var(--padding-left); }
-.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
-isolation: isolate;
-}
-#​#​#​#​#​#​#​:root, :host #​#​#​#​#​#​#​, #​#​#​#​#​#​#​ .sn-token-provider {
+.\_\_sn-sheet-order { --order: '\_1rkm1cp,\_88mn99,\_5olop,\_16pds2j,\_1wna6e6,\_kskd3k,\_5vzub4,\_lzay40,\_1d9aqya,\_gyuk9p'; }#​#​#​#​#​ .sn-182o7r0 { font-family: var(--jybopzu-typeface-ui); color: var(--jybopzu-textColor-primary); fill: var(--jybopzu-iconColor-primary); -webkit-font-smoothing: antialiased; }#​#​#​#​#​#​#​ .tooltip-trigger-isolate {
 ````
 
 **firecrawl** — no output for this URL
@@ -2754,11 +2751,11 @@ isolation: isolate;
 
 | Tool | Avg words [6] | Preamble [2] | Repeat rate [3] | Junk/page [4] | Headings [7] | Code blocks [8] | Precision [5] | Recall [5] |
 |---|---|---|---|---|---|---|---|---|
-| markcrawl | 4757 | 19 | 0% | 1.0 | 24.2 | 6.4 | 5% | 5% |
+| markcrawl | 4450 | 19 | 0% | 1.0 | 21.3 | 6.9 | 3% | 3% |
 | playwright | 257 | 113 ⚠ | 1% | 1.0 | 1.4 | 0.2 | 63% | 45% |
 | crawl4ai-raw | 919 | 125 ⚠ | 0% | 0.8 | 6.5 | 3.0 | 2% | 2% |
 | crawlee | 1083 | 444 ⚠ | 1% | 0.9 | 9.0 | 2.7 | 100% | 63% |
-| scrapy+md | 9492 | 4573 ⚠ | 0% | 0.4 | 5.5 | 6.2 | 5% | 5% |
+| scrapy+md | 9492 | 4573 ⚠ | 0% | 0.4 | 5.5 | 6.2 | 4% | 4% |
 | crawl4ai | — | — | — | — | — | — | — | — |
 | colly+md | — | — | — | — | — | — | — | — |
 | firecrawl | — | — | — | — | — | — | — | — |
@@ -2769,7 +2766,7 @@ isolation: isolate;
 > **[5] Precision/Recall** = cross-tool consensus (pages with <2 sentences excluded). **⚠** = likely nav/boilerplate problem (preamble >50 or repeat rate >20%).
 
 **Reading the numbers:**
-**markcrawl** produces the cleanest output with 19 words of preamble per page, while **scrapy+md** injects 4573 words of nav chrome before content begins. The word count gap (257 vs 9492 avg words) is largely explained by preamble: 4573 words of nav chrome account for ~48% of scrapy+md's output on this site. markcrawl's lower recall (5% vs 63%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
+**markcrawl** produces the cleanest output with 19 words of preamble per page, while **scrapy+md** injects 4573 words of nav chrome before content begins. The word count gap (257 vs 9492 avg words) is largely explained by preamble: 4573 words of nav chrome account for ~48% of scrapy+md's output on this site. markcrawl's lower recall (3% vs 63%) reflects stricter content filtering — the "missed" sentences are predominantly navigation, sponsor links, and footer text that other tools include as content. For RAG, this is typically a net positive: fewer junk tokens per chunk tends to improve embedding quality and retrieval precision.
 
 <details>
 <summary>Sample output — first 40 lines of <code>huggingface.co/docs/transformers/index</code></summary>
@@ -2792,7 +2789,7 @@ Transformers
 
 Search documentation
 
-mainv5.7.0v5.6.2v5.5.4v5.4.0v5.3.0v5.2.0v5.1.0v5.0.0v4.57.6v4.56.2v4.55.4v4.53.3v4.52.3v4.51.3v4.50.0v4.49.0v4.48.2v4.47.1v4.46.3v4.45.2v4.44.2v4.43.4v4.42.4v4.41.2v4.40.2v4.39.3v4.38.2v4.37.2v4.36.1v4.35.2v4.34.1v4.33.3v4.32.1v4.31.0v4.30.0v4.29.1v4.28.1v4.27.2v4.26.1v4.25.1v4.24.0v4.23.1v4.22.2v4.21.3v4.20.1v4.19.4v4.18.0v4.17.0v4.16.2v4.15.0v4.14.1v4.13.0v4.12.5v4.11.3v4.10.1v4.9.2v4.8.2v4.7.0v4.6.0v4.5.1v4.4.2v4.3.3v4.2.2v4.1.1v4.0.1v3.5.1v3.4.0v3.3.1v3.2.0v3.1.0v3.0.2v2.11.0v2.10.0v2.9.1v2.8.0v2.7.0v2.6.0v2.5.1v2.4.1v2.3.0v2.2.2v2.1.1v2.0.0v1.2.0v1.1.0v1.0.0doc-builder-html ARDEENESFRHIITJAKOPTTRZH
+mainv5.8.0v5.7.0v5.6.2v5.5.4v5.4.0v5.3.0v5.2.0v5.1.0v5.0.0v4.57.6v4.56.2v4.55.4v4.53.3v4.52.3v4.51.3v4.50.0v4.49.0v4.48.2v4.47.1v4.46.3v4.45.2v4.44.2v4.43.4v4.42.4v4.41.2v4.40.2v4.39.3v4.38.2v4.37.2v4.36.1v4.35.2v4.34.1v4.33.3v4.32.1v4.31.0v4.30.0v4.29.1v4.28.1v4.27.2v4.26.1v4.25.1v4.24.0v4.23.1v4.22.2v4.21.3v4.20.1v4.19.4v4.18.0v4.17.0v4.16.2v4.15.0v4.14.1v4.13.0v4.12.5v4.11.3v4.10.1v4.9.2v4.8.2v4.7.0v4.6.0v4.5.1v4.4.2v4.3.3v4.2.2v4.1.1v4.0.1v3.5.1v3.4.0v3.3.1v3.2.0v3.1.0v3.0.2v2.11.0v2.10.0v2.9.1v2.8.0v2.7.0v2.6.0v2.5.1v2.4.1v2.3.0v2.2.2v2.1.1v2.0.0v1.2.0v1.1.0v1.0.0doc-builder-html ARDEENESFRHIITJAKOPTTRZH
 
 [Image: Hugging Face's logo]
 
@@ -3544,230 +3541,313 @@ window.featureFlags = {"placeholder":false};
 | huggingface.co/docs/trackio | — | — | — | — | — | — | 205 / 92 | — |
 | huggingface.co/docs/transformers | — | — | — | — | — | — | 205 / 92 | — |
 | huggingface.co/docs/transformers.js | — | — | — | — | — | — | 205 / 92 | — |
-| huggingface.co/docs/transformers/add_new_pipeline | 1254 / 22 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/chat_templating | 1430 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/en/kv_cache | 2126 / 20 | — | — | — | — | — | — | — |
 | huggingface.co/docs/transformers/index | 533 / 19 | — | 738 / 45 | 581 / 3 | 726 / 164 | — | 696 / 95 | — |
 | huggingface.co/docs/transformers/installation | 813 / 19 | — | 1021 / 45 | — | 953 / 95 | — | 992 / 95 | — |
 | huggingface.co/docs/transformers/llm_tutorial | 1577 / 20 | — | — | 1637 / 4 | — | — | 205 / 92 | — |
-| huggingface.co/docs/transformers/main/en/serving | 3025 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/main_classes/trainer | 20253 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/big_models | 1124 / 22 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/cache_explanat | 1095 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/chat_templatin | 1452 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/debugging | 2011 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/index | 555 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/kv_cache | 2148 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/aper | 3295 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/bart | 8837 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/bert | 3514 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/blen | 6036 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/blt | 2561 / 22 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/came | 8671 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/cani | 6496 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/cohe | 2945 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/cpma | 2521 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/ctrl | 4575 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/debe | 6540 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/debe | 7330 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/deep | 5568 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/dial | 468 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/dots | 2950 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/dpr | 6067 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/exao | 4930 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/falc | 6279 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/flan | 289 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/gemm | 4760 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/glm4 | 4318 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/glm4 | 3532 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/glm_ | 6503 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/gpt- | 871 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/gptj | 5516 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/gran | 3392 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/heli | 4604 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/jais | 2709 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/jina | 5244 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/led | 12426 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/llam | 860 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/long | 4874 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/m2m_ | 4935 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/mamb | 2947 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/mini | 4867 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/mixt | 10591 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/mt5 | 8096 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/olmo | 3533 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/olmo | 3155 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/opt | 4774 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/pega | 5582 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/pers | 4224 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/qwen | 5103 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/qwen | 7105 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/qwen | 5352 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/refo | 7723 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/roc_ | 10014 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/rwkv | 3140 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/seed | 4840 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/sque | 7208 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/star | 3949 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/swit | 4485 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/t5 | 8757 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/vaul | 2943 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/xlne | 14871 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/xmod | 8101 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/model_doc/yout | 3471 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/perf_hardware | 455 / 22 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/perf_infer_cpu | 317 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/perf_infer_gpu | 1609 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/perf_infer_gpu | 1273 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/perf_torch_com | 465 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/perf_train_cpu | 1024 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/perf_train_tpu | 2185 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/performance | 606 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/main/en/quicktour | 1289 / 19 | — | — | — | — | — | — | — |
 | huggingface.co/docs/transformers/model_doc/bart | — | — | — | 8973 / 3 | — | — | — | — |
+| huggingface.co/docs/transformers/model_doc/gpt2 | 9142 / 19 | — | — | — | — | — | — | — |
 | huggingface.co/docs/transformers/model_doc/marian | — | — | — | 5435 / 3 | — | — | — | — |
 | huggingface.co/docs/transformers/model_doc/mbart | — | — | — | 8975 / 3 | — | — | — | — |
 | huggingface.co/docs/transformers/model_doc/t5 | — | — | — | 8928 / 3 | — | — | — | — |
-| huggingface.co/docs/transformers/models | 1360 / 20 | — | — | — | — | — | — | — |
 | huggingface.co/docs/transformers/models_timeline | 166 / 20 | — | — | — | — | — | 344 / 97 | — |
 | huggingface.co/docs/transformers/peft | 1126 / 20 | — | — | — | 1346 / 166 | — | 1315 / 97 | — |
 | huggingface.co/docs/transformers/philosophy | 740 / 19 | — | — | 810 / 3 | — | — | 205 / 92 | — |
-| huggingface.co/docs/transformers/pipeline_gradio | 255 / 21 | — | — | — | — | — | — | — |
 | huggingface.co/docs/transformers/pipeline_tutorial | 1779 / 19 | — | — | 1845 / 3 | — | — | 205 / 92 | — |
-| huggingface.co/docs/transformers/pipeline_webserver | 961 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/quantization/bitsandby | 1438 / 19 | — | — | — | — | — | — | — |
 | huggingface.co/docs/transformers/quicktour | 1267 / 19 | — | — | — | 1460 / 164 | — | 1430 / 95 | — |
 | huggingface.co/docs/transformers/trainer | 229 / 19 | — | — | 285 / 3 | — | — | 205 / 92 | — |
-| huggingface.co/docs/transformers/v5.7.0/en/accelerate | 681 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/accelerator_ | 453 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/debugging | 1989 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/deepspeed | 1021 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/deepspeed_al | 794 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/fsdp | 894 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/internal/gen | 19505 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/internal/imp | 750 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/internal/tok | 7806 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 795 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 3769 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 1597 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 2541 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 318 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 611 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 2448 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 3047 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 393 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 927 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 5548 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 3100 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 1448 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 21661 / 19 | — | — | 21997 / 3 | — | — | 205 / 92 | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 4761 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 6151 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 6780 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 18169 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 20253 / 19 | — | — | 20447 / 3 | — | — | 205 / 92 | — |
-| huggingface.co/docs/transformers/v5.7.0/en/main_classes | 3169 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/af | 3416 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ap | 3276 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/au | 4273 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ay | 4466 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ba | 3358 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ba | 1091 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ba | 1194 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/be | 562 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/bi | 3124 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/bl | 6021 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/bl | 7433 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/bl | 8658 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/bl | 2541 / 22 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ch | 5472 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/cl | 7100 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/cl | 5669 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/co | 1972 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/co | 3852 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/co | 2402 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/co | 5879 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/cp | 1068 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ct | 4553 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/db | 3047 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/de | 6520 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/de | 7311 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/de | 1863 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/de | 3925 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/de | 10345 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/di | 446 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/di | 4832 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/do | 2931 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/dp | 5556 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ed | 4451 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/em | 7779 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/en | 2727 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/er | 2721 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/er | 9197 / 22 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/es | 6088 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ex | 4908 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/fa | 292 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/fa | 2847 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/fa | 2709 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/fl | 272 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/fl | 11439 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/fl | 5192 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/fn | 8020 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/fu | 4453 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ge | 9034 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ge | 8290 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ge | 11085 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gl | 4382 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gl | 4296 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gl | 6597 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gl | 3510 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gl | 2993 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gl | 6693 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gl | 3040 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gl | 6706 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gp | 854 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gp | 8920 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gp | 5758 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gp | 6384 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gp | 7433 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gp | 3337 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gp | 5552 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gr | 2978 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gr | 3372 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/gr | 5529 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/he | 4590 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/hu | 3482 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/hy | 3047 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/id | 5492 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/in | 5591 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ja | 5983 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/je | 3447 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ji | 5223 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ko | 4885 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ko | 5227 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/la | 10000 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/la | 6161 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/lf | 2901 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/lo | 12716 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/m2 | 4940 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ma | 372 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ma | 2931 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ma | 10742 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ma | 594 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.7.0/en/main_classes | — | — | — | 21997 / 3 | — | — | 205 / 92 | — |
+| huggingface.co/docs/transformers/v5.7.0/en/main_classes | — | — | — | 20447 / 3 | — | — | 205 / 92 | — |
 | huggingface.co/docs/transformers/v5.7.0/en/model_doc/mb | — | — | — | 8975 / 3 | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mi | 6400 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mi | 3098 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mi | 9498 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mi | 8466 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mi | 3363 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mi | 10619 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ml | 8302 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mm | 3918 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mo | 8102 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mo | 5569 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mo | 3837 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mp | 5917 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mr | 5902 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mt | 8081 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/mu | 3008 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/my | 891 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/nl | 1336 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/nl | 4958 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/no | 4724 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ny | 6228 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ol | 3518 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ol | 2330 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/om | 3887 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/on | 7789 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/op | 2429 / 21 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ow | 6891 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pe | 1531 / 24 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pe | 5567 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pe | 3972 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ph | 5084 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ph | 5023 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ph | 984 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pi | 6814 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pp | 865 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pp | 4292 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pp | 1006 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pp | 974 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pp | 1739 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pp | 1592 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/pr | 10010 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/qw | 5088 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/qw | 14154 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/qw | 7091 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/qw | 9616 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/qw | 4815 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/qw | 8225 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/qw | 5496 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/re | 7701 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ro | 8882 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ro | 7569 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ro | 9995 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ro | 7960 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/rw | 3118 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/sa | 3896 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/sa | 3881 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/se | 4821 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/si | 6223 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/sl | 1249 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/sl | 1288 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/sm | 6260 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/so | 2919 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/sp | 2918 / 22 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/sp | 4179 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/st | 4242 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/st | 3934 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/t5 | 8741 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ta | 10175 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/tr | 3131 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/tv | 4213 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/ud | 9152 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/um | 8084 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/vi | 7279 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/vo | 3891 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/xc | 5326 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/xl | 13407 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/xm | 8078 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/yo | 6355 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/za | 4168 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/model_doc/za | 4366 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/perf_train_g | 1253 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/quantization | 948 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/quantization | 948 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/tasks/sequen | 1363 / 20 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/tasks/summar | 2430 / 19 | — | — | — | — | — | — | — |
-| huggingface.co/docs/transformers/v5.7.0/en/tensor_paral | 408 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/%60~generati | 25 / 25 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/add_new_mode | 5353 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/backbones | 617 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/chat_content | 804 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/chat_extras | 1260 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/chat_respons | 2010 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/chat_templat | 1430 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/chat_templat | 1130 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/chat_templat | 1937 / 22 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/community | 1704 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/conversation | 945 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/custom_token | 735 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/data_collato | 537 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/examples | 25 / 25 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/fast_tokeniz | 1231 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/feature_extr | 940 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/glossary | 3854 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/grad_accumul | 420 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/image_proces | 1224 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/index | 533 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/installation | 813 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/internal/fil | 387 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/internal/gen | 19511 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/internal/tok | 7806 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 795 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 3769 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 2740 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 1598 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 2541 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 318 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 611 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 2448 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 3047 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 393 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 927 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 5548 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 3100 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 8469 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 1448 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 21661 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 4761 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 6242 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 6809 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 18169 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 20252 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/main_classes | 3169 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/migration | 25 / 25 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/af | 3413 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/al | 3110 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/au | 2817 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/au | 65725 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ba | 3353 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ba | 8815 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ba | 1088 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ba | 1191 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/be | 10773 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/be | 548 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/bi | 9634 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/bl | 6014 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/bl | 5364 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/bl | 5905 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/by | 989 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ca | 8649 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ca | 6474 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/cl | 7097 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/co | 1969 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/co | 2923 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ct | 4553 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/db | 3038 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/de | 6518 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/de | 5546 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/de | 11334 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/di | 4832 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/di | 5116 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/do | 3978 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/dp | 6045 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/el | 9210 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/en | 2705 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/er | 2718 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/er | 4168 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/es | 6088 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/eu | 3778 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ex | 4908 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ex | 3646 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fa | 6257 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fa | 2848 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fa | 2702 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fl | 267 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fl | 405 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fl | 3293 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fn | 8020 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fs | 4668 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/fu | 8976 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gl | 4296 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gl | 3510 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gl | 2990 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gl | 6481 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gp | 5731 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gp | 6379 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gp | 3332 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gp | 4345 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gr | 2971 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gr | 3370 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/gr | 3549 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/he | 4582 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/hu | 3479 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/hy | 3047 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ja | 2687 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ja | 4263 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/la | 3221 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/lf | 3097 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ll | 6082 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ll | 4902 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ll | 838 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/lo | 15304 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/lo | 4852 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/lu | 13832 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ma | 2799 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ma | 5307 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ma | 10687 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ma | 7970 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mb | 8815 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/me | 9872 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/me | 593 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mi | 5780 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mi | 4845 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mi | 3098 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mi | 9461 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mi | 10569 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mo | 5565 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mo | 4044 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/mt | 8074 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/my | 891 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/na | 2739 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ne | 5033 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/nl | 4942 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/no | 4080 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ny | 6228 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ol | 3700 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ol | 2329 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/pa | 4015 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/pe | 3986 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/pe | 4202 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ph | 5023 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ph | 976 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/pr | 11770 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/qw | 5081 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/qw | 5330 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/qw | 4812 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/qw | 5392 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/qw | 8225 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/qw | 5271 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ra | 10363 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/re | 2748 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/re | 7701 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/re | 9227 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ro | 8879 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ro | 7569 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ro | 7957 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/rw | 3118 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/se | 4818 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/si | 6219 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/so | 2916 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/sp | 4179 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/sq | 7186 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/st | 4200 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/sw | 4463 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/t5 | 8735 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/t5 | 6652 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/t5 | 355 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/ul | 469 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/um | 8076 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/va | 2921 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/wa | 14130 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/xg | 3731 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/xl | 10334 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/xl | 8392 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/xl | 7415 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/xl | 402 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/xl | 14849 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/yo | 3449 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/za | 4165 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/model_doc/za | 4363 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/models | 1347 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/models_timel | 166 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/notebooks | 1760 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/peft | 1126 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/perf_train_g | 25 / 25 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/performance | 25 / 25 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/philosophy | 740 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/pipeline_tut | 1779 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/processors | 551 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/quantization | 948 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/quantization | 1438 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/quantization | 948 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/quantization | 2137 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/quicktour | 1267 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/run_scripts | 896 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/serve-cli/se | 3003 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/task_summary | 25 / 25 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/tasks/langua | 1908 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/tasks/masked | 1867 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/tasks/multip | 1220 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/tasks/questi | 1477 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/tasks/sequen | 1363 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/tasks/summar | 2430 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/tasks/token_ | 1739 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/tokenizer_su | 1257 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/trainer | 229 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/trainer_call | 694 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/trainer_cust | 606 / 21 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/trainer_reci | 1066 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/training | 679 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/troubleshoot | 1062 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/video_proces | 458 / 20 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/en/~PreTrainedT | 25 / 25 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/model_doc/t5 | 8735 / 19 | — | — | — | — | — | — | — |
+| huggingface.co/docs/transformers/v5.8.0/perf_infer_gpu_ | 1587 / 20 | — | — | — | — | — | — | — |
 | huggingface.co/docs/trl | — | — | — | — | — | — | 205 / 92 | — |
 | huggingface.co/docs/xet | — | — | — | — | — | — | 205 / 92 | — |
 | huggingface.co/doordash | — | — | — | — | — | — | 205 / 92 | — |
@@ -5341,52 +5421,52 @@ $(function(){$("#td-section-nav a").removeClass("active"),$("#td-section-nav #m-
 The word count gap (888 vs 1702 avg words) is largely explained by preamble: 143 words of nav chrome account for ~8% of markcrawl's output on this site.
 
 <details>
-<summary>Sample output — first 40 lines of <code>www.postgresql.org/docs/current/reference-server.html</code></summary>
+<summary>Sample output — first 40 lines of <code>www.postgresql.org/docs/current/plpgsql.html</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
 
 **markcrawl**
 ````
-*PostgreSQL Server Applications This part contains reference information for PostgreSQL server applications and support utilities. These commands can only be …*
+*Chapter&nbsp;41.&nbsp;PL/pgSQL — SQL Procedural Language Table of Contents 41.1. Overview 41.1.1. Advantages of Using PL/pgSQL 41.1.2. Supported Argument and Result …*
 
 
 Supported Versions:
-[Current](/docs/current/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications")
-([18](/docs/18/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications"))
+[Current](/docs/current/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language")
+([18](/docs/18/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language"))
 /
-[17](/docs/17/reference-server.html "PostgreSQL 17 - PostgreSQL Server Applications")
+[17](/docs/17/plpgsql.html "PostgreSQL 17 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[16](/docs/16/reference-server.html "PostgreSQL 16 - PostgreSQL Server Applications")
+[16](/docs/16/plpgsql.html "PostgreSQL 16 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[15](/docs/15/reference-server.html "PostgreSQL 15 - PostgreSQL Server Applications")
+[15](/docs/15/plpgsql.html "PostgreSQL 15 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[14](/docs/14/reference-server.html "PostgreSQL 14 - PostgreSQL Server Applications")
+[14](/docs/14/plpgsql.html "PostgreSQL 14 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 
 Development Versions:
-[devel](/docs/devel/reference-server.html "PostgreSQL devel - PostgreSQL Server Applications")
+[devel](/docs/devel/plpgsql.html "PostgreSQL devel - Chapter 41. PL/pgSQL — SQL Procedural Language")
 
-| PostgreSQL Server Applications | | | | |
+| Chapter 41. PL/pgSQL — SQL Procedural Language | | | | |
 | --- | --- | --- | --- | --- |
-| [Prev](app-vacuumdb.html "vacuumdb") | [Up](reference.html "Part VI. Reference") | Part VI. Reference | [Home](index.html "PostgreSQL 18.3 Documentation") | [Next](app-initdb.html "initdb") |
+| [Prev](xplang-install.html "40.1. Installing Procedural Languages") | [Up](server-programming.html "Part V. Server Programming") | Part V. Server Programming | [Home](index.html "PostgreSQL 18.3 Documentation") | [Next](plpgsql-overview.html "41.1. Overview") |
 
 ---
 
-# PostgreSQL Server Applications
-
----
-
-This part contains reference information for PostgreSQL server applications and support utilities. These commands can only be run usefully on the host where the database server resides. Other utility programs are listed in [PostgreSQL Client Applications](reference-client.html "PostgreSQL Client Applications").
+## Chapter 41. PL/pgSQL — SQL Procedural Language
 
 **Table of Contents**
 
-[initdb](app-initdb.html) — create a new PostgreSQL database cluster
+[41.1. Overview](plpgsql-overview.html)
+:   [41.1.1. Advantages of Using PL/pgSQL](plpgsql-overview.html#PLPGSQL-ADVANTAGES)
 
-[pg_archivecleanup](pgarchivecleanup.html) — clean up PostgreSQL WAL archive files
+    [41.1.2. Supported Argument and Result Data Types](plpgsql-overview.html#PLPGSQL-ARGS-RESULTS)
 
-[pg_checksums](app-pgchecksums.html) — enable, disable or check data checksums in a PostgreSQL database cluster
+[41.2. Structure of PL/pgSQL](plpgsql-structure.html)
 
-[pg_controldata](app-pgcontroldata.html) — display control information of a PostgreSQL database cluster
+[41.3. Declarations](plpgsql-declarations.html)
+:   [41.3.1. Declaring Function Parameters](plpgsql-declarations.html#PLPGSQL-DECLARATION-PARAMETERS)
+
+    [41.3.2. `ALIAS`](plpgsql-declarations.html#PLPGSQL-DECLARATION-ALIAS)
 ````
 
 **crawl4ai**
@@ -5405,31 +5485,32 @@ This part contains reference information for PostgreSQL server applications and 
 
 February 26, 2026: [ PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released! ](https://www.postgresql.org/about/news/postgresql-183-179-1613-1517-and-1422-released-3246/)
 [Documentation](https://www.postgresql.org/docs/ "Documentation") → [PostgreSQL 18](https://www.postgresql.org/docs/18/index.html)
-Supported Versions: [Current](https://www.postgresql.org/docs/current/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications") ([18](https://www.postgresql.org/docs/18/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications")) / [17](https://www.postgresql.org/docs/17/reference-server.html "PostgreSQL 17 - PostgreSQL Server Applications") / [16](https://www.postgresql.org/docs/16/reference-server.html "PostgreSQL 16 - PostgreSQL Server Applications") / [15](https://www.postgresql.org/docs/15/reference-server.html "PostgreSQL 15 - PostgreSQL Server Applications") / [14](https://www.postgresql.org/docs/14/reference-server.html "PostgreSQL 14 - PostgreSQL Server Applications")
-Development Versions: [devel](https://www.postgresql.org/docs/devel/reference-server.html "PostgreSQL devel - PostgreSQL Server Applications")
-Unsupported versions: [13](https://www.postgresql.org/docs/13/reference-server.html "PostgreSQL 13 - PostgreSQL Server Applications") / [12](https://www.postgresql.org/docs/12/reference-server.html "PostgreSQL 12 - PostgreSQL Server Applications") / [11](https://www.postgresql.org/docs/11/reference-server.html "PostgreSQL 11 - PostgreSQL Server Applications") / [10](https://www.postgresql.org/docs/10/reference-server.html "PostgreSQL 10 - PostgreSQL Server Applications") / [9.6](https://www.postgresql.org/docs/9.6/reference-server.html "PostgreSQL 9.6 - PostgreSQL Server Applications") / [9.5](https://www.postgresql.org/docs/9.5/reference-server.html "PostgreSQL 9.5 - PostgreSQL Server Applications") / [9.4](https://www.postgresql.org/docs/9.4/reference-server.html "PostgreSQL 9.4 - PostgreSQL Server Applications") / [9.3](https://www.postgresql.org/docs/9.3/reference-server.html "PostgreSQL 9.3 - PostgreSQL Server Applications") / [9.2](https://www.postgresql.org/docs/9.2/reference-server.html "PostgreSQL 9.2 - PostgreSQL Server Applications") / [9.1](https://www.postgresql.org/docs/9.1/reference-server.html "PostgreSQL 9.1 - PostgreSQL Server Applications") / [9.0](https://www.postgresql.org/docs/9.0/reference-server.html "PostgreSQL 9.0 - PostgreSQL Server Applications") / [8.4](https://www.postgresql.org/docs/8.4/reference-server.html "PostgreSQL 8.4 - PostgreSQL Server Applications") / [8.3](https://www.postgresql.org/docs/8.3/reference-server.html "PostgreSQL 8.3 - PostgreSQL Server Applications") / [8.2](https://www.postgresql.org/docs/8.2/reference-server.html "PostgreSQL 8.2 - PostgreSQL Server Applications") / [8.1](https://www.postgresql.org/docs/8.1/reference-server.html "PostgreSQL 8.1 - PostgreSQL Server Applications") / [8.0](https://www.postgresql.org/docs/8.0/reference-server.html "PostgreSQL 8.0 - PostgreSQL Server Applications") / [7.4](https://www.postgresql.org/docs/7.4/reference-server.html "PostgreSQL 7.4 - PostgreSQL Server Applications") / [7.3](https://www.postgresql.org/docs/7.3/reference-server.html "PostgreSQL 7.3 - PostgreSQL Server Applications") / [7.2](https://www.postgresql.org/docs/7.2/reference-server.html "PostgreSQL 7.2 - PostgreSQL Server Applications") / [7.1](https://www.postgresql.org/docs/7.1/reference-server.html "PostgreSQL 7.1 - PostgreSQL Server Applications")  
-| PostgreSQL Server Applications  |  
+Supported Versions: [Current](https://www.postgresql.org/docs/current/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language") ([18](https://www.postgresql.org/docs/18/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language")) / [17](https://www.postgresql.org/docs/17/plpgsql.html "PostgreSQL 17 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [16](https://www.postgresql.org/docs/16/plpgsql.html "PostgreSQL 16 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [15](https://www.postgresql.org/docs/15/plpgsql.html "PostgreSQL 15 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [14](https://www.postgresql.org/docs/14/plpgsql.html "PostgreSQL 14 - Chapter 41. PL/pgSQL — SQL Procedural Language")
+Development Versions: [devel](https://www.postgresql.org/docs/devel/plpgsql.html "PostgreSQL devel - Chapter 41. PL/pgSQL — SQL Procedural Language")
+Unsupported versions: [13](https://www.postgresql.org/docs/13/plpgsql.html "PostgreSQL 13 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [12](https://www.postgresql.org/docs/12/plpgsql.html "PostgreSQL 12 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [11](https://www.postgresql.org/docs/11/plpgsql.html "PostgreSQL 11 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [10](https://www.postgresql.org/docs/10/plpgsql.html "PostgreSQL 10 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.6](https://www.postgresql.org/docs/9.6/plpgsql.html "PostgreSQL 9.6 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.5](https://www.postgresql.org/docs/9.5/plpgsql.html "PostgreSQL 9.5 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.4](https://www.postgresql.org/docs/9.4/plpgsql.html "PostgreSQL 9.4 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.3](https://www.postgresql.org/docs/9.3/plpgsql.html "PostgreSQL 9.3 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.2](https://www.postgresql.org/docs/9.2/plpgsql.html "PostgreSQL 9.2 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.1](https://www.postgresql.org/docs/9.1/plpgsql.html "PostgreSQL 9.1 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.0](https://www.postgresql.org/docs/9.0/plpgsql.html "PostgreSQL 9.0 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.4](https://www.postgresql.org/docs/8.4/plpgsql.html "PostgreSQL 8.4 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.3](https://www.postgresql.org/docs/8.3/plpgsql.html "PostgreSQL 8.3 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.2](https://www.postgresql.org/docs/8.2/plpgsql.html "PostgreSQL 8.2 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.1](https://www.postgresql.org/docs/8.1/plpgsql.html "PostgreSQL 8.1 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.0](https://www.postgresql.org/docs/8.0/plpgsql.html "PostgreSQL 8.0 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [7.4](https://www.postgresql.org/docs/7.4/plpgsql.html "PostgreSQL 7.4 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [7.3](https://www.postgresql.org/docs/7.3/plpgsql.html "PostgreSQL 7.3 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [7.2](https://www.postgresql.org/docs/7.2/plpgsql.html "PostgreSQL 7.2 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [7.1](https://www.postgresql.org/docs/7.1/plpgsql.html "PostgreSQL 7.1 - Chapter 41. PL/pgSQL — SQL Procedural Language")  
+| Chapter 41. PL/pgSQL — SQL Procedural Language  |  
 | --- |  
-|  [Prev](https://www.postgresql.org/docs/current/app-vacuumdb.html "vacuumdb")  | [Up](https://www.postgresql.org/docs/current/reference.html "Part VI. Reference")  | Part VI. Reference  | [Home](https://www.postgresql.org/docs/current/index.html "PostgreSQL 18.3 Documentation")  |  [Next](https://www.postgresql.org/docs/current/app-initdb.html "initdb")  |  
+|  [Prev](https://www.postgresql.org/docs/current/xplang-install.html "40.1. Installing Procedural Languages")  | [Up](https://www.postgresql.org/docs/current/server-programming.html "Part V. Server Programming")  | Part V. Server Programming  | [Home](https://www.postgresql.org/docs/current/index.html "PostgreSQL 18.3 Documentation")  |  [Next](https://www.postgresql.org/docs/current/plpgsql-overview.html "41.1. Overview")  |  
 * * *
-# PostgreSQL Server Applications
-* * *
-This part contains reference information for PostgreSQL server applications and support utilities. These commands can only be run usefully on the host where the database server resides. Other utility programs are listed in [PostgreSQL Client Applications](https://www.postgresql.org/docs/current/reference-client.html "PostgreSQL Client Applications").
+## Chapter 41. PL/pgSQL — SQL Procedural Language
 **Table of Contents** 
 
-[initdb](https://www.postgresql.org/docs/current/app-initdb.html) — create a new PostgreSQL database cluster 
+[41.1. Overview](https://www.postgresql.org/docs/current/plpgsql-overview.html)
+     
+
+[41.1.1. Advantages of Using PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql-overview.html#PLPGSQL-ADVANTAGES)
 
 
-[pg_archivecleanup](https://www.postgresql.org/docs/current/pgarchivecleanup.html) — clean up PostgreSQL WAL archive files 
+[41.1.2. Supported Argument and Result Data Types](https://www.postgresql.org/docs/current/plpgsql-overview.html#PLPGSQL-ARGS-RESULTS)
 
 
-[pg_checksums](https://www.postgresql.org/docs/current/app-pgchecksums.html) — enable, disable or check data checksums in a PostgreSQL database cluster 
+[41.2. Structure of PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql-structure.html)
 
 
-[pg_controldata](https://www.postgresql.org/docs/current/app-pgcontroldata.html) — display control information of a PostgreSQL database cluster 
+[41.3. Declarations](https://www.postgresql.org/docs/current/plpgsql-declarations.html)
+     
 
-
-[pg_createsubscriber](https://www.postgresql.org/docs/current/app-pgcreatesubscriber.html) — convert a physical replica into a new logical replica 
+[41.3.1. Declaring Function Parameters](https://www.postgresql.org/docs/current/plpgsql-declarations.html#PLPGSQL-DECLARATION-PARAMETERS)
 ````
 
 **crawl4ai-raw**
@@ -5448,38 +5529,39 @@ This part contains reference information for PostgreSQL server applications and 
 
 February 26, 2026: [ PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released! ](https://www.postgresql.org/about/news/postgresql-183-179-1613-1517-and-1422-released-3246/)
 [Documentation](https://www.postgresql.org/docs/ "Documentation") → [PostgreSQL 18](https://www.postgresql.org/docs/18/index.html)
-Supported Versions: [Current](https://www.postgresql.org/docs/current/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications") ([18](https://www.postgresql.org/docs/18/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications")) / [17](https://www.postgresql.org/docs/17/reference-server.html "PostgreSQL 17 - PostgreSQL Server Applications") / [16](https://www.postgresql.org/docs/16/reference-server.html "PostgreSQL 16 - PostgreSQL Server Applications") / [15](https://www.postgresql.org/docs/15/reference-server.html "PostgreSQL 15 - PostgreSQL Server Applications") / [14](https://www.postgresql.org/docs/14/reference-server.html "PostgreSQL 14 - PostgreSQL Server Applications")
-Development Versions: [devel](https://www.postgresql.org/docs/devel/reference-server.html "PostgreSQL devel - PostgreSQL Server Applications")
-Unsupported versions: [13](https://www.postgresql.org/docs/13/reference-server.html "PostgreSQL 13 - PostgreSQL Server Applications") / [12](https://www.postgresql.org/docs/12/reference-server.html "PostgreSQL 12 - PostgreSQL Server Applications") / [11](https://www.postgresql.org/docs/11/reference-server.html "PostgreSQL 11 - PostgreSQL Server Applications") / [10](https://www.postgresql.org/docs/10/reference-server.html "PostgreSQL 10 - PostgreSQL Server Applications") / [9.6](https://www.postgresql.org/docs/9.6/reference-server.html "PostgreSQL 9.6 - PostgreSQL Server Applications") / [9.5](https://www.postgresql.org/docs/9.5/reference-server.html "PostgreSQL 9.5 - PostgreSQL Server Applications") / [9.4](https://www.postgresql.org/docs/9.4/reference-server.html "PostgreSQL 9.4 - PostgreSQL Server Applications") / [9.3](https://www.postgresql.org/docs/9.3/reference-server.html "PostgreSQL 9.3 - PostgreSQL Server Applications") / [9.2](https://www.postgresql.org/docs/9.2/reference-server.html "PostgreSQL 9.2 - PostgreSQL Server Applications") / [9.1](https://www.postgresql.org/docs/9.1/reference-server.html "PostgreSQL 9.1 - PostgreSQL Server Applications") / [9.0](https://www.postgresql.org/docs/9.0/reference-server.html "PostgreSQL 9.0 - PostgreSQL Server Applications") / [8.4](https://www.postgresql.org/docs/8.4/reference-server.html "PostgreSQL 8.4 - PostgreSQL Server Applications") / [8.3](https://www.postgresql.org/docs/8.3/reference-server.html "PostgreSQL 8.3 - PostgreSQL Server Applications") / [8.2](https://www.postgresql.org/docs/8.2/reference-server.html "PostgreSQL 8.2 - PostgreSQL Server Applications") / [8.1](https://www.postgresql.org/docs/8.1/reference-server.html "PostgreSQL 8.1 - PostgreSQL Server Applications") / [8.0](https://www.postgresql.org/docs/8.0/reference-server.html "PostgreSQL 8.0 - PostgreSQL Server Applications") / [7.4](https://www.postgresql.org/docs/7.4/reference-server.html "PostgreSQL 7.4 - PostgreSQL Server Applications") / [7.3](https://www.postgresql.org/docs/7.3/reference-server.html "PostgreSQL 7.3 - PostgreSQL Server Applications") / [7.2](https://www.postgresql.org/docs/7.2/reference-server.html "PostgreSQL 7.2 - PostgreSQL Server Applications") / [7.1](https://www.postgresql.org/docs/7.1/reference-server.html "PostgreSQL 7.1 - PostgreSQL Server Applications")  
-| PostgreSQL Server Applications  |  
+Supported Versions: [Current](https://www.postgresql.org/docs/current/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language") ([18](https://www.postgresql.org/docs/18/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language")) / [17](https://www.postgresql.org/docs/17/plpgsql.html "PostgreSQL 17 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [16](https://www.postgresql.org/docs/16/plpgsql.html "PostgreSQL 16 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [15](https://www.postgresql.org/docs/15/plpgsql.html "PostgreSQL 15 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [14](https://www.postgresql.org/docs/14/plpgsql.html "PostgreSQL 14 - Chapter 41. PL/pgSQL — SQL Procedural Language")
+Development Versions: [devel](https://www.postgresql.org/docs/devel/plpgsql.html "PostgreSQL devel - Chapter 41. PL/pgSQL — SQL Procedural Language")
+Unsupported versions: [13](https://www.postgresql.org/docs/13/plpgsql.html "PostgreSQL 13 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [12](https://www.postgresql.org/docs/12/plpgsql.html "PostgreSQL 12 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [11](https://www.postgresql.org/docs/11/plpgsql.html "PostgreSQL 11 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [10](https://www.postgresql.org/docs/10/plpgsql.html "PostgreSQL 10 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.6](https://www.postgresql.org/docs/9.6/plpgsql.html "PostgreSQL 9.6 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.5](https://www.postgresql.org/docs/9.5/plpgsql.html "PostgreSQL 9.5 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.4](https://www.postgresql.org/docs/9.4/plpgsql.html "PostgreSQL 9.4 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.3](https://www.postgresql.org/docs/9.3/plpgsql.html "PostgreSQL 9.3 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.2](https://www.postgresql.org/docs/9.2/plpgsql.html "PostgreSQL 9.2 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.1](https://www.postgresql.org/docs/9.1/plpgsql.html "PostgreSQL 9.1 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [9.0](https://www.postgresql.org/docs/9.0/plpgsql.html "PostgreSQL 9.0 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.4](https://www.postgresql.org/docs/8.4/plpgsql.html "PostgreSQL 8.4 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.3](https://www.postgresql.org/docs/8.3/plpgsql.html "PostgreSQL 8.3 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.2](https://www.postgresql.org/docs/8.2/plpgsql.html "PostgreSQL 8.2 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.1](https://www.postgresql.org/docs/8.1/plpgsql.html "PostgreSQL 8.1 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [8.0](https://www.postgresql.org/docs/8.0/plpgsql.html "PostgreSQL 8.0 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [7.4](https://www.postgresql.org/docs/7.4/plpgsql.html "PostgreSQL 7.4 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [7.3](https://www.postgresql.org/docs/7.3/plpgsql.html "PostgreSQL 7.3 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [7.2](https://www.postgresql.org/docs/7.2/plpgsql.html "PostgreSQL 7.2 - Chapter 41. PL/pgSQL — SQL Procedural Language") / [7.1](https://www.postgresql.org/docs/7.1/plpgsql.html "PostgreSQL 7.1 - Chapter 41. PL/pgSQL — SQL Procedural Language")  
+| Chapter 41. PL/pgSQL — SQL Procedural Language  |  
 | --- |  
-|  [Prev](https://www.postgresql.org/docs/current/app-vacuumdb.html "vacuumdb")  | [Up](https://www.postgresql.org/docs/current/reference.html "Part VI. Reference")  | Part VI. Reference  | [Home](https://www.postgresql.org/docs/current/index.html "PostgreSQL 18.3 Documentation")  |  [Next](https://www.postgresql.org/docs/current/app-initdb.html "initdb")  |  
+|  [Prev](https://www.postgresql.org/docs/current/xplang-install.html "40.1. Installing Procedural Languages")  | [Up](https://www.postgresql.org/docs/current/server-programming.html "Part V. Server Programming")  | Part V. Server Programming  | [Home](https://www.postgresql.org/docs/current/index.html "PostgreSQL 18.3 Documentation")  |  [Next](https://www.postgresql.org/docs/current/plpgsql-overview.html "41.1. Overview")  |  
 * * *
-# PostgreSQL Server Applications
-* * *
-This part contains reference information for PostgreSQL server applications and support utilities. These commands can only be run usefully on the host where the database server resides. Other utility programs are listed in [PostgreSQL Client Applications](https://www.postgresql.org/docs/current/reference-client.html "PostgreSQL Client Applications").
+## Chapter 41. PL/pgSQL — SQL Procedural Language
 **Table of Contents** 
 
-[initdb](https://www.postgresql.org/docs/current/app-initdb.html) — create a new PostgreSQL database cluster 
+[41.1. Overview](https://www.postgresql.org/docs/current/plpgsql-overview.html)
+     
+
+[41.1.1. Advantages of Using PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql-overview.html#PLPGSQL-ADVANTAGES)
 
 
-[pg_archivecleanup](https://www.postgresql.org/docs/current/pgarchivecleanup.html) — clean up PostgreSQL WAL archive files 
+[41.1.2. Supported Argument and Result Data Types](https://www.postgresql.org/docs/current/plpgsql-overview.html#PLPGSQL-ARGS-RESULTS)
 
 
-[pg_checksums](https://www.postgresql.org/docs/current/app-pgchecksums.html) — enable, disable or check data checksums in a PostgreSQL database cluster 
+[41.2. Structure of PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql-structure.html)
 
 
-[pg_controldata](https://www.postgresql.org/docs/current/app-pgcontroldata.html) — display control information of a PostgreSQL database cluster 
+[41.3. Declarations](https://www.postgresql.org/docs/current/plpgsql-declarations.html)
+     
 
-
-[pg_createsubscriber](https://www.postgresql.org/docs/current/app-pgcreatesubscriber.html) — convert a physical replica into a new logical replica 
+[41.3.1. Declaring Function Parameters](https://www.postgresql.org/docs/current/plpgsql-declarations.html#PLPGSQL-DECLARATION-PARAMETERS)
 ````
 
 **scrapy+md** — no output for this URL
 
 **crawlee**
 ````
-PostgreSQL: Documentation: 18: PostgreSQL Server Applications
+PostgreSQL: Documentation: 18: Chapter 41. PL/pgSQL — SQL Procedural Language
 
 
 
@@ -5498,32 +5580,32 @@ February 26, 2026: [PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released!](/a
 [Documentation](/docs/ "Documentation") → [PostgreSQL 18](/docs/18/index.html)
 
 Supported Versions:
-[Current](/docs/current/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications")
-([18](/docs/18/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications"))
+[Current](/docs/current/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language")
+([18](/docs/18/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language"))
 /
-[17](/docs/17/reference-server.html "PostgreSQL 17 - PostgreSQL Server Applications")
+[17](/docs/17/plpgsql.html "PostgreSQL 17 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[16](/docs/16/reference-server.html "PostgreSQL 16 - PostgreSQL Server Applications")
+[16](/docs/16/plpgsql.html "PostgreSQL 16 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[15](/docs/15/reference-server.html "PostgreSQL 15 - PostgreSQL Server Applications")
+[15](/docs/15/plpgsql.html "PostgreSQL 15 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[14](/docs/14/reference-server.html "PostgreSQL 14 - PostgreSQL Server Applications")
+[14](/docs/14/plpgsql.html "PostgreSQL 14 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 
 Development Versions:
-[devel](/docs/devel/reference-server.html "PostgreSQL devel - PostgreSQL Server Applications")
+[devel](/docs/devel/plpgsql.html "PostgreSQL devel - Chapter 41. PL/pgSQL — SQL Procedural Language")
 
 Unsupported versions:
-[13](/docs/13/reference-server.html "PostgreSQL 13 - PostgreSQL Server Applications")
+[13](/docs/13/plpgsql.html "PostgreSQL 13 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[12](/docs/12/reference-server.html "PostgreSQL 12 - PostgreSQL Server Applications")
+[12](/docs/12/plpgsql.html "PostgreSQL 12 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[11](/docs/11/reference-server.html "PostgreSQL 11 - PostgreSQL Server Applications")
+[11](/docs/11/plpgsql.html "PostgreSQL 11 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
 ````
 
 **colly+md**
 ````
-PostgreSQL: Documentation: 18: PostgreSQL Server Applications
+PostgreSQL: Documentation: 18: Chapter 41. PL/pgSQL — SQL Procedural Language
 
 
 
@@ -5542,32 +5624,32 @@ February 26, 2026: [PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released!](/a
 [Documentation](/docs/ "Documentation") → [PostgreSQL 18](/docs/18/index.html)
 
 Supported Versions:
-[Current](/docs/current/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications")
-([18](/docs/18/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications"))
+[Current](/docs/current/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language")
+([18](/docs/18/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language"))
 /
-[17](/docs/17/reference-server.html "PostgreSQL 17 - PostgreSQL Server Applications")
+[17](/docs/17/plpgsql.html "PostgreSQL 17 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[16](/docs/16/reference-server.html "PostgreSQL 16 - PostgreSQL Server Applications")
+[16](/docs/16/plpgsql.html "PostgreSQL 16 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[15](/docs/15/reference-server.html "PostgreSQL 15 - PostgreSQL Server Applications")
+[15](/docs/15/plpgsql.html "PostgreSQL 15 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[14](/docs/14/reference-server.html "PostgreSQL 14 - PostgreSQL Server Applications")
+[14](/docs/14/plpgsql.html "PostgreSQL 14 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 
 Development Versions:
-[devel](/docs/devel/reference-server.html "PostgreSQL devel - PostgreSQL Server Applications")
+[devel](/docs/devel/plpgsql.html "PostgreSQL devel - Chapter 41. PL/pgSQL — SQL Procedural Language")
 
 Unsupported versions:
-[13](/docs/13/reference-server.html "PostgreSQL 13 - PostgreSQL Server Applications")
+[13](/docs/13/plpgsql.html "PostgreSQL 13 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[12](/docs/12/reference-server.html "PostgreSQL 12 - PostgreSQL Server Applications")
+[12](/docs/12/plpgsql.html "PostgreSQL 12 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[11](/docs/11/reference-server.html "PostgreSQL 11 - PostgreSQL Server Applications")
+[11](/docs/11/plpgsql.html "PostgreSQL 11 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
 ````
 
 **playwright**
 ````
-PostgreSQL: Documentation: 18: PostgreSQL Server Applications
+PostgreSQL: Documentation: 18: Chapter 41. PL/pgSQL — SQL Procedural Language
 
 
 
@@ -5586,26 +5668,26 @@ February 26, 2026: [PostgreSQL 18.3, 17.9, 16.13, 15.17, and 14.22 Released!](/a
 [Documentation](/docs/ "Documentation") → [PostgreSQL 18](/docs/18/index.html)
 
 Supported Versions:
-[Current](/docs/current/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications")
-([18](/docs/18/reference-server.html "PostgreSQL 18 - PostgreSQL Server Applications"))
+[Current](/docs/current/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language")
+([18](/docs/18/plpgsql.html "PostgreSQL 18 - Chapter 41. PL/pgSQL — SQL Procedural Language"))
 /
-[17](/docs/17/reference-server.html "PostgreSQL 17 - PostgreSQL Server Applications")
+[17](/docs/17/plpgsql.html "PostgreSQL 17 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[16](/docs/16/reference-server.html "PostgreSQL 16 - PostgreSQL Server Applications")
+[16](/docs/16/plpgsql.html "PostgreSQL 16 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[15](/docs/15/reference-server.html "PostgreSQL 15 - PostgreSQL Server Applications")
+[15](/docs/15/plpgsql.html "PostgreSQL 15 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[14](/docs/14/reference-server.html "PostgreSQL 14 - PostgreSQL Server Applications")
+[14](/docs/14/plpgsql.html "PostgreSQL 14 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 
 Development Versions:
-[devel](/docs/devel/reference-server.html "PostgreSQL devel - PostgreSQL Server Applications")
+[devel](/docs/devel/plpgsql.html "PostgreSQL devel - Chapter 41. PL/pgSQL — SQL Procedural Language")
 
 Unsupported versions:
-[13](/docs/13/reference-server.html "PostgreSQL 13 - PostgreSQL Server Applications")
+[13](/docs/13/plpgsql.html "PostgreSQL 13 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[12](/docs/12/reference-server.html "PostgreSQL 12 - PostgreSQL Server Applications")
+[12](/docs/12/plpgsql.html "PostgreSQL 12 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
-[11](/docs/11/reference-server.html "PostgreSQL 11 - PostgreSQL Server Applications")
+[11](/docs/11/plpgsql.html "PostgreSQL 11 - Chapter 41. PL/pgSQL — SQL Procedural Language")
 /
 ````
 
@@ -8917,7 +8999,7 @@ Press `Esc` to hide this help
 The word count gap (1631 vs 13334 avg words) is largely explained by preamble: 3469 words of nav chrome account for ~26% of colly+md's output on this site.
 
 <details>
-<summary>Sample output — first 40 lines of <code>www.newegg.com/Computer-Systems/Store/ID-3</code></summary>
+<summary>Sample output — first 40 lines of <code>www.newegg.com/insider</code></summary>
 
 This shows what each tool outputs at the *top* of the same page.
 Nav boilerplate appears here before the real content starts.
@@ -8930,42 +9012,42 @@ Opens in a new window Opens an external website Opens an external website in a n
 <!---->Close this dialog<!----> 
 This website utilizes technologies such as cookies to enable essential site functionality, as well as for analytics, personalization, and targeted advertising. To learn more, view the following link:  [Privacy Policy](https://kb.newegg.com/knowledge-base/privacy-policy-newegg/)
 <!---->Close Cookie Preferences<!----> 
-[![Newegg](https://c1.neweggimages.com/WebResource/Themes/Nest/logos/Newegg_full_color_logo_RGB.SVG)](https://www.newegg.com/ "Newegg.com - Computer Parts, Laptops, Electronics, HDTVs, Digital Cameras and More!")
-[Hello Select address ](https://www.newegg.com/Computer-Systems/Store/ID-3# "Select address ")
-[gaming pc](https://www.newegg.com/p/pl?d=gaming+pc "gaming pc")[ipad case](https://www.newegg.com/p/pl?d=ipad+case "ipad case")[gaming laptop](https://www.newegg.com/p/pl?d=gaming+laptop "gaming laptop")[ipad](https://www.newegg.com/p/pl?d=ipad "ipad")[egpu](https://www.newegg.com/p/pl?d=egpu "egpu")
-Search
-Change Country
-Countries & Regions
-**Seems like you are coming from Canada!**
-Do you want to visit Newegg website in your country / region?
-I'd like to keep it, don't remind me again.
-Go to CanadaStay at United States
-Or you can select a country / region you want to shop from all sites.
-Select Other country / region
-☾☀
-Switch to Dark Mode
-[Welcome Sign In / Register](https://secure.newegg.com/login/signin?nextpage=https%3A%2F%2Fwww.newegg.com%2FComputer-Systems%2FStore%2FID-3 "My Account")
-[Returns & Orders](https://secure.newegg.com/orders/list "Orders")
-[](https://secure.newegg.com/shop/cart "Shopping Cart")
-Menu 
-  * [](https://www.newegg.com/Shell-Shocker/EventSaleStore/ID-10381?cm_sp=todaysdeal_alldeals_entrance-_-RolloverMenu "Shell Shocker")
-  * [](https://promotions.newegg.com/neemail/latest/index-landing.html?cm_sp=emaildeals_entrance-_-RolloverMenu "Email Deals")
-  * [](https://www.newegg.com/ClearanceStore/EventSaleStore/ID-697?cm_sp=Clearance_entrance-_-RolloverMenu "Clearance Deals")
-  * [](https://www.newegg.com/promotions/nepro/23-1322/index.html?cm_sp=Tradein_entrance-_-RolloverMenu "Trade In")
-  * [](https://www.newegg.com/promotions/nepro/18-1881/index.html?cm_sp=neweggstorecreditcard_entrance-_-RolloverMenu "Newegg Store Credit Card")
+[Skip to main content](https://www.newegg.com/insider/#ajax-content-wrap)
+Hit enter to search or ESC to close
+[Close Search ](https://www.newegg.com/insider/#)
+[ ![Newegg Insider](https://www.newegg.com/insider/wp-content/uploads/2017/09/logo_newegg_glow.png) ](https://www.newegg.com/insider)
+[ Menu](https://www.newegg.com/insider/#sidewidgetarea)
+  * [Shop at Newegg](https://www.newegg.com/?utm_source=insider&utm_medium=content)
+  * [How-To](https://www.newegg.com/insider/category/how-to/)
+  * [Tech News](https://www.newegg.com/insider/category/news/)
+  * [Buying Guides](https://www.newegg.com/insider/category/buying-guides/)
+  * [Featured Articles](https://www.newegg.com/insider/category/featured-articles/)
+  * [Product Overviews](https://www.newegg.com/insider/category/product-overviews/)
+  * [PC Building Forum](https://www.newegg.com/gamer/community/c/pc-building/34)
 
 
-Shopping Tools
-  * [PC Builder](https://www.newegg.com/tools/custom-pc-builder?cm_sp=hamburger-_-shopping-tools-_-PC-Builder "PC Builder")
-  * [Gaming PC Finder](https://www.newegg.com/tools/gaming-pc-finder/ "Gaming PC Finder")
-  * [PC Upgrader](https://www.newegg.com/tools/pc-upgrader?cm_sp=shopping-tools-_-pc-upgrader "PC Upgrader")
-  * [Laptop Finder](https://www.newegg.com/tools/laptop-finder?cm_sp=hamburger-_-shopping-tools-_-laptop-finder "Laptop Finder")
-  * [Memory Finder](https://www.newegg.com/tools/memory-finder?cm_sp=hamburger-_-shopping-tools-_-memory-finder "Memory Finder")
-  * [Network Builder](https://www.newegg.com/tools/networking-builder?cm_sp=hamburger-_-shopping-tools-_-network-builder "Network Builder")
-  * [NAS Builder](https://www.newegg.com/tools/nas-builder?cm_sp=hamburger-_-shopping-tools-_-nas-buidler "NAS Builder")
-  * [Server Builder](https://www.newegg.com/server-system-configurator/ "Server Builder")
-  * [ASUS NUC Configurator](https://www.newegg.com/asus-nuc-configurator?cm_sp=hamburger-_-shopping-tools-_-asus-nuc-config "ASUS NUC Configurator")
-  * [Game Room Builder](https://www.newegg.com/tools/game-room-builder?cm_sp=hamburger-_-shopping-tools-_-game-room-builder "Game Room Builder")
+[Buying Guides](https://www.newegg.com/insider/category/buying-guides/)
+## [ Gaming Monitor Resolution and Refresh Rate Guide: Choosing Between 1080p, 1440p, and 4K in 2026 ](https://www.newegg.com/insider/gaming-monitor-resolution-and-refresh-rate-guide-choosing-between-1080p-1440p-and-4k-in-2026/)
+[Buying Guides](https://www.newegg.com/insider/category/buying-guides/)
+## [ Chromebook vs Windows Laptop 2026: Understanding the Fundamental Differences ](https://www.newegg.com/insider/chromebook-vs-windows-laptop-2026-understanding-the-fundamental-differences/)
+[Featured Articles](https://www.newegg.com/insider/category/featured-articles/)
+## [ Gaming Monitor Panel Technology Deep Dive: IPS, VA, TN, and OLED Compared in 2026 ](https://www.newegg.com/insider/gaming-monitor-panel-technology-deep-dive-ips-va-tn-and-oled-compared-in-2026/)
+[Buying Guides](https://www.newegg.com/insider/category/buying-guides/)
+## [ Touchscreen vs Non-Touch Laptops in 2026: Making the Right Choice for Your Needs ](https://www.newegg.com/insider/touchscreen-vs-non-touch-laptops-in-2026-making-the-right-choice-for-your-needs/)
+[Featured Articles](https://www.newegg.com/insider/category/featured-articles/)
+## [ How to Set Up a New Laptop After Unboxing: A Step-by-Step Guide ](https://www.newegg.com/insider/how-to-set-up-a-new-laptop-after-unboxing-a-step-by-step-guide/)
+[Buying Guides](https://www.newegg.com/insider/category/buying-guides/)[Featured Articles](https://www.newegg.com/insider/category/featured-articles/)
+## [ How to Enable G-Sync or FreeSync on Your Monitor: A Complete Setup Guide ](https://www.newegg.com/insider/how-to-enable-g-sync-or-freesync-on-your-monitor-a-complete-setup-guide/)
+## Newegg News
+![](https://s.w.org/images/core/emoji/14.0.0/svg/1f50d.svg)
+## Featured Categories
+## [How-To](https://www.newegg.com/insider/category/how-to/)
+![](https://www.newegg.com/insider/wp-content/uploads/2025/12/How-to.jpg)
+## Buying Guides
+[ ![](https://www.newegg.com/insider/wp-content/uploads/2025/12/Buying-Guides-boost.jpg) ](https://www.newegg.com/insider/category/buying-guides/)
+## Product Overviews
+[ ![](https://www.newegg.com/insider/wp-content/uploads/2025/12/Product-Overviews-boost-1.jpg) ](https://www.newegg.com/insider/category/product-overviews/)
+## Recent Posts
 ````
 
 **crawl4ai-raw**
@@ -8974,42 +9056,42 @@ Opens in a new window Opens an external website Opens an external website in a n
 <!---->Close this dialog<!----> 
 This website utilizes technologies such as cookies to enable essential site functionality, as well as for analytics, personalization, and targeted advertising. To learn more, view the following link:  [Privacy Policy](https://kb.newegg.com/knowledge-base/privacy-policy-newegg/)
 <!---->Close Cookie Preferences<!----> 
-[![Newegg](https://c1.neweggimages.com/WebResource/Themes/Nest/logos/Newegg_full_color_logo_RGB.SVG)](https://www.newegg.com/ "Newegg.com - Computer Parts, Laptops, Electronics, HDTVs, Digital Cameras and More!")
-[Hello Select address ](https://www.newegg.com/Computer-Systems/Store/ID-3# "Select address ")
-[gaming pc](https://www.newegg.com/p/pl?d=gaming+pc "gaming pc")[ipad case](https://www.newegg.com/p/pl?d=ipad+case "ipad case")[gaming laptop](https://www.newegg.com/p/pl?d=gaming+laptop "gaming laptop")[ipad](https://www.newegg.com/p/pl?d=ipad "ipad")[egpu](https://www.newegg.com/p/pl?d=egpu "egpu")
-Search
-Change Country
-Countries & Regions
-**Seems like you are coming from Canada!**
-Do you want to visit Newegg website in your country / region?
-I'd like to keep it, don't remind me again.
-Go to CanadaStay at United States
-Or you can select a country / region you want to shop from all sites.
-Select Other country / region
-☾☀
-Switch to Dark Mode
-[Welcome Sign In / Register](https://secure.newegg.com/login/signin?nextpage=https%3A%2F%2Fwww.newegg.com%2FComputer-Systems%2FStore%2FID-3 "My Account")
-[Returns & Orders](https://secure.newegg.com/orders/list "Orders")
-[](https://secure.newegg.com/shop/cart "Shopping Cart")
-Menu 
-  * [](https://www.newegg.com/Shell-Shocker/EventSaleStore/ID-10381?cm_sp=todaysdeal_alldeals_entrance-_-RolloverMenu "Shell Shocker")
-  * [](https://promotions.newegg.com/neemail/latest/index-landing.html?cm_sp=emaildeals_entrance-_-RolloverMenu "Email Deals")
-  * [](https://www.newegg.com/ClearanceStore/EventSaleStore/ID-697?cm_sp=Clearance_entrance-_-RolloverMenu "Clearance Deals")
-  * [](https://www.newegg.com/promotions/nepro/23-1322/index.html?cm_sp=Tradein_entrance-_-RolloverMenu "Trade In")
-  * [](https://www.newegg.com/promotions/nepro/18-1881/index.html?cm_sp=neweggstorecreditcard_entrance-_-RolloverMenu "Newegg Store Credit Card")
+[Skip to main content](https://www.newegg.com/insider/#ajax-content-wrap)
+Hit enter to search or ESC to close
+[Close Search ](https://www.newegg.com/insider/#)
+[ ![Newegg Insider](https://www.newegg.com/insider/wp-content/uploads/2017/09/logo_newegg_glow.png) ](https://www.newegg.com/insider)
+[ Menu](https://www.newegg.com/insider/#sidewidgetarea)
+  * [Shop at Newegg](https://www.newegg.com/?utm_source=insider&utm_medium=content)
+  * [How-To](https://www.newegg.com/insider/category/how-to/)
+  * [Tech News](https://www.newegg.com/insider/category/news/)
+  * [Buying Guides](https://www.newegg.com/insider/category/buying-guides/)
+  * [Featured Articles](https://www.newegg.com/insider/category/featured-articles/)
+  * [Product Overviews](https://www.newegg.com/insider/category/product-overviews/)
+  * [PC Building Forum](https://www.newegg.com/gamer/community/c/pc-building/34)
 
 
-Shopping Tools
-  * [PC Builder](https://www.newegg.com/tools/custom-pc-builder?cm_sp=hamburger-_-shopping-tools-_-PC-Builder "PC Builder")
-  * [Gaming PC Finder](https://www.newegg.com/tools/gaming-pc-finder/ "Gaming PC Finder")
-  * [PC Upgrader](https://www.newegg.com/tools/pc-upgrader?cm_sp=shopping-tools-_-pc-upgrader "PC Upgrader")
-  * [Laptop Finder](https://www.newegg.com/tools/laptop-finder?cm_sp=hamburger-_-shopping-tools-_-laptop-finder "Laptop Finder")
-  * [Memory Finder](https://www.newegg.com/tools/memory-finder?cm_sp=hamburger-_-shopping-tools-_-memory-finder "Memory Finder")
-  * [Network Builder](https://www.newegg.com/tools/networking-builder?cm_sp=hamburger-_-shopping-tools-_-network-builder "Network Builder")
-  * [NAS Builder](https://www.newegg.com/tools/nas-builder?cm_sp=hamburger-_-shopping-tools-_-nas-buidler "NAS Builder")
-  * [Server Builder](https://www.newegg.com/server-system-configurator/ "Server Builder")
-  * [ASUS NUC Configurator](https://www.newegg.com/asus-nuc-configurator?cm_sp=hamburger-_-shopping-tools-_-asus-nuc-config "ASUS NUC Configurator")
-  * [Game Room Builder](https://www.newegg.com/tools/game-room-builder?cm_sp=hamburger-_-shopping-tools-_-game-room-builder "Game Room Builder")
+[Buying Guides](https://www.newegg.com/insider/category/buying-guides/)
+## [ Gaming Monitor Resolution and Refresh Rate Guide: Choosing Between 1080p, 1440p, and 4K in 2026 ](https://www.newegg.com/insider/gaming-monitor-resolution-and-refresh-rate-guide-choosing-between-1080p-1440p-and-4k-in-2026/)
+[Buying Guides](https://www.newegg.com/insider/category/buying-guides/)
+## [ Chromebook vs Windows Laptop 2026: Understanding the Fundamental Differences ](https://www.newegg.com/insider/chromebook-vs-windows-laptop-2026-understanding-the-fundamental-differences/)
+[Featured Articles](https://www.newegg.com/insider/category/featured-articles/)
+## [ Gaming Monitor Panel Technology Deep Dive: IPS, VA, TN, and OLED Compared in 2026 ](https://www.newegg.com/insider/gaming-monitor-panel-technology-deep-dive-ips-va-tn-and-oled-compared-in-2026/)
+[Buying Guides](https://www.newegg.com/insider/category/buying-guides/)
+## [ Touchscreen vs Non-Touch Laptops in 2026: Making the Right Choice for Your Needs ](https://www.newegg.com/insider/touchscreen-vs-non-touch-laptops-in-2026-making-the-right-choice-for-your-needs/)
+[Featured Articles](https://www.newegg.com/insider/category/featured-articles/)
+## [ How to Set Up a New Laptop After Unboxing: A Step-by-Step Guide ](https://www.newegg.com/insider/how-to-set-up-a-new-laptop-after-unboxing-a-step-by-step-guide/)
+[Buying Guides](https://www.newegg.com/insider/category/buying-guides/)[Featured Articles](https://www.newegg.com/insider/category/featured-articles/)
+## [ How to Enable G-Sync or FreeSync on Your Monitor: A Complete Setup Guide ](https://www.newegg.com/insider/how-to-enable-g-sync-or-freesync-on-your-monitor-a-complete-setup-guide/)
+## Newegg News
+![](https://s.w.org/images/core/emoji/14.0.0/svg/1f50d.svg)
+## Featured Categories
+## [How-To](https://www.newegg.com/insider/category/how-to/)
+![](https://www.newegg.com/insider/wp-content/uploads/2025/12/How-to.jpg)
+## Buying Guides
+[ ![](https://www.newegg.com/insider/wp-content/uploads/2025/12/Buying-Guides-boost.jpg) ](https://www.newegg.com/insider/category/buying-guides/)
+## Product Overviews
+[ ![](https://www.newegg.com/insider/wp-content/uploads/2025/12/Product-Overviews-boost-1.jpg) ](https://www.newegg.com/insider/category/product-overviews/)
+## Recent Posts
 ````
 
 **scrapy+md** — no output for this URL
@@ -9018,46 +9100,46 @@ Shopping Tools
 
 **colly+md**
 ````
-Computer Systems: PCs, Laptops & Gaming Desktops| Newegg(function () {if (navigator.userAgent.match(/Newegg.+App/ig)||navigator.userAgent.match(/bot/ig)) return;;(function(w,o,d){w[o]=w[o]||function(){w[o][d].push(arguments)};w[o][d]=w[o][d]||[]})(window,'Osano','data');function getCookie(name) {const cookies = document.cookie.split('; ');for (let cookie of cookies) {const [cookieName, cookieValue] = cookie.split('=');if (decodeURIComponent(cookieName) === name) {return decodeURIComponent(cookieValue);}}return null;}var nv = getCookie('NVTC');var cn = nv.split('.').slice(0, 4).join('.');var cl = getCookie('CustomerLogin');if (cl) {cl = JSON.parse(cl);if (cl.LoginId) cn = cl.LoginId;}window.Osano('userData', cn);var self = document.currentScript;var o = document.createElement('script');o.src ='https://cmp.osano.com/AzydZ7TEEX0GW2hin/3c115a66-ecfb-4dbf-929a-5d9c71025132/osano.js?v=0.2';o.async = false;try {self.parentElement.replaceChild(o, self);} catch (error) {console.log(error);}})();.osano-cm-dialog--type\_bar{display:none;}.osano-cm-widget{display: none;} function showOsanoBar() { if (window.Osano && window.Osano.cm) { const consent = window.Osano.cm.getConsent(); console.log('Consent status:', consent);if (consent === 'accepted') { console.log('Consent already given. Banner will not be shown.'); return; }window.Osano.cm.addEventListener('osano-cm-initialized', function() { console.log('Osano initialized'); if (window.Osano.cm.countryCode !== 'us') { const banner = document.querySelector('.osano-cm-dialog--type\_bar'); if (banner) { banner.setAttribute('style', 'display:flex;'); console.log('Banner displayed'); } else { console.log('Banner element not found');} } });const otBtnSpan = document.querySelector('#otBtnSpan'); if (otBtnSpan) { otBtnSpan.setAttribute('style', 'display:inline;'); console.log('Cookie preferences button shown'); }const otSdkBtn = document.querySelector('#ot-sdk-btn'); if (otSdkBtn) { otSdkBtn.innerHTML = 'Your Privacy Choices <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="enable-background:new 0 0 30 14;width: 30px;vertical-align: middle;" viewBox="0 0 30 14" class="h-full w-8"><path d="M7.4 12.8h6.8l3.1-11.6H7.4C4.2 1.2 1.6 3.8 1.6 7s2.6 5.8 5.8 5.8z" style="fill-rule:evenodd;clip-rule:evenodd;fill:#fff"></path><path d="M22.6 0H7.4c-3.9 0-7 3.1-7 7s3.1 7 7 7h15.2c3.9 0 7-3.1 7-7s-3.2-7-7-7zm-21 7c0-3.2 2.6-5.8 5.8-5.8h9.9l-3.1 11.6H7.4c-3.2 0-5.8-2.6-5.8-5.8z" style="fill-rule:evenodd;clip-rule:evenodd;fill:#06f"></path><path d="M24.6 4c.2.2.2.6 0 .8L22.5 7l2.2 2.2c.2.2.2.6 0 .8-.2.2-.6.2-.8 0l-2.2-2.2-2.2 2.2c-.2.2-.6.2-.8 0-.2-.2-.2-.6 0-.8L20.8 7l-2.2-2.2c-.2-.2-.2-.6 0-.8.2-.2.6-.2.8 0l2.2 2.2L23.8 4c.2-.2.6-.2.8 0z" style="fill:#fff"></path><path d="M12.7 4.1c.2.2.3.6.1.8L8.6 9.8c-.1.1-.2.2-.3.2-.2.1-.5.1-.7-.1L5.4 7.7c-.2-.2-.2-.6 0-.8.2-.2.6-.2.8 0L8 8.6l3.8-4.5c.2-.2.6-.2.9 0z" style="fill:#06f"></path></svg>'; otSdkBtn.href = 'https://kb.newegg.com/knowledge-base/cookies-policy/?cm\_sp=footer-\_-privacy-policy#your-choices-and-controls'; otSdkBtn.target = '\_blank'; } } else { console.log('Osano not initialized yet'); } } window.addEventListener('load', showOsanoBar);!function(){try{if(!navigator.userAgent.match(/Newegg.+App/ig))return;var e=document.createElement("style");e.innerText="html.sticky-header-top body{padding-top: 0px!important;}header{display: none;}footer{display: none;}",document.querySelector("head").append(e)}catch(t){console.log(t)}}();window.\_\_PolyfillScripts\_\_={"core-js":"https://c1.neweggimages.com/WebResource/Scripts/WWW/core-js.polyfill.min.js","intersection-observer":"https://c1.neweggimages.com/WebResource/Scripts/WWW/intersection-observer.polyfill.min.js"}[{"type":"setCookie","payload":{"cookie":"CountryRegion","value":"USA"}},{"type":"setCookie","payload":{"cookie":"LanguageCode","value":"en"}},{"type":"setSubCookie","payload":{"cookie":"CountryConfiguration","subCookieKey":"CurrencyCode","subCookieValue":"USD"}}]
+Newegg Insider – How-To Tips,Tech News & Buying Guides
 
-;;;(function(){var e=document.querySelector('meta[name="viewport"]'),t=document.createElement("meta");t.name="viewport",t.content="width=device-width",e||document.head.appendChild(t)})();
 
-var nebs=nebs||{};nebs.errors=[];window.onerror=function(){nebs.errors.push(arguments);return true;}
 
-var \_\_neg\_lazyLoad = {\_lazyload\_callbacks:{},\_lazyload\_data:{},saveData:function(key,data){this.\_lazyload\_data[key]=this.\_lazyload\_data[key]||[];this.\_lazyload\_data[key].push(data);},registerCallback:function(key,callback){this.\_lazyload\_callbacks[key]=this.\_lazyload\_callbacks[key]||[];this.\_lazyload\_callbacks[key].push(callback);if(this.\_lazyload\_data[key]){try {this.callCallbacks(key);} catch (error) {console.log(error);}}},callCallbacks: function (key) {function callbackForAllData(callback, lazyload\_data) {var queue = lazyload\_data && lazyload\_data.length ? lazyload\_data.slice() : [];while (queue.length > 0) {var data = queue.shift();try {if (typeof callback === "function") {callback(data);}} catch (error) {console.log(error);}}}var list = this.\_lazyload\_callbacks[key];var bucket = this.\_lazyload\_data[key];if (!list || !list.length || !bucket || !bucket.length) {return;}var snapshot = bucket.slice();list.forEach(function (callback) {try {if (typeof callback === "function") {callbackForAllData(callback, snapshot);}} catch (error) {console.log(error);}});this.\_lazyload\_data[key] = [];}};window.\_lazyload\_data\_callback = function(key,data){\_\_neg\_lazyLoad.saveData(key,data);\_\_neg\_lazyLoad.callCallbacks(key)};
 
-!function(){var style = document.createElement('style');style.type = 'text/css';style.innerHTML=document.getElementById('NewTemplate')?'div.grid-col.radius-m.bg-white.our-apps > div.line-horizontal.bg-line.width-auto > span{color:#4D4D4D}.sticky-header-top body{padding-top:120px;height:auto;min-height:calc(100% - 120px);} .sticky-header-top .page-content{padding-top:0;min-height:0;}':'@import url(https://c1.neweggimages.com/webresource/themes/darkmode-min.28.css);.dark-mode #ot-sdk-btn.ot-sdk-show-settings, .dark-mode #ot-sdk-btn.optanon-show-settings{ color: #e3e3e3 !important }.dark-mode #ot-sdk-btn.ot-sdk-show-settings:hover, .dark-mode #ot-sdk-btn.optanon-show-settings:hover{color: #ea9d28 !important;};.footer2021-disclaimer-link:hover {color: #e3e3e3!important;} div.grid-col.radius-m.bg-white.our-apps > div.line-horizontal.bg-line.width-auto > span{color:#4D4D4D}.dark-mode .item-img{opacity: 1 !important;} '; document.getElementsByTagName('head').item(0).appendChild(style); }()
 
-;;(function () {
-var darkv = document.cookie.match('(^|;) ?NV\_Theme=([^;]\*)(;|$)');
-var dark = darkv ? darkv[2] : "false";
-if (dark == "true") {
-if (!document.getElementById('NewTemplate')) { jQuery('html').addClass('dark-mode'); }
-else { document.documentElement.classList.add("dark-mode") }
-}
-var style = document.createElement("style");
-var darkCss = '#Dark\_Mode{display:none;}.header2021-toggle{z-index:5}.header2021-nav ~ .header2021-nav.header2021-toggle{margin-left:20px}.header2021-toggle:hover{transform:scale(1)}.header2021-toggle:hover .bg-lightgray{background-color:rgba(235,235,235,1)}.header2021-toggle .toggle-body{border:1px solid #212121;border-radius:30px}.header2021-toggle .toggle-body-inner:after{border-radius:30px;width:30px;top:0;bottom:0;margin-left:-1px;box-shadow:0 1px 6px 0 rgb(0 0 0 / 16%)}.header2021-toggle .toggle-handle{font-size:20px;color:#474747}.header2021-toggle .dark-mode-tooltip{padding:5px 15px;white-space:nowrap}.header2021-toggle.menu.at-bottom .menu-body{left:auto;right:0;margin-top:12px;text-align:left}.header2021-toggle.at-bottom>.menu-arrow{left:auto;right:20px;text-align:left}.header2021-toggle.at-bottom>.menu-body>.menu-arrow{left:auto!important;right:20px}.dark-mode .header2021-toggle .toggle-handle.take-on{padding-left:8px}.dark-mode .header2021-toggle:hover .bg-lightgray{background-color:#ea7421}.dark-mode .header2021-toggle .toggle-body{border:1px solid #835b38}.dark-mode .header2021-toggle .bg-lightgray{background-color:#e05d00}.dark-mode .header2021-toggle input[type="checkbox"]:checked ~ .toggle-body .toggle-body-inner:after{margin-right:0;margin-left:0;top:0}.dark-mode .header2021-toggle .toggle-body-inner:after{box-shadow:0 6px 6px 0 rgb(0 0 0 / 16%)}@media(max-width:599px){.header2021-inner{padding:15px 2px}.header2021-logo{width:60px}.header2021-country.header2021-nav:not(:first-child){margin-left:15px}.header2021-toggle .bg-lightgray{background:#fff}.header2021-nav ~ .header2021-nav.header2021-toggle{margin-left:15px}.header2021-toggle .toggle-body{min-width:30px;height:30px;border-radius:50%}.header2021-toggle .toggle-body-inner{width:100%;height:100%;transform:translateX(0);justify-content:center;align-items:center}.header2021-toggle .toggle-handle{height:100%;line-height:1.1;padding:0;font-size:22px;justify-content:center;z-index:2}.header2021-toggle .toggle-body-inner:after{content:none}.header2021-toggle .toggle-handle.take-off{padding:0}.header2021-toggle .toggle-handle.take-on,.header2021-toggle.menu.at-bottom .menu-body{display:none}.dark-mode .header2021-toggle .toggle-handle.take-on{display:flex;padding:0}.dark-mode .header2021-toggle .toggle-handle.take-off{display:none}.section-right>.line-vertical-new{margin:0 0 0 10px}}@media(max-width:350px){.header2021-nav-inner,.header2021-nav.menu .header2021-nav-inner{padding-left:26px;height:26px;min-height:26px}.header2021-country-flag{width:26px;height:26px}.header2021-nav-icon{width:26px;height:26px;line-height:26px;font-size:24px;top:2px}.header2021-nav ~ .header2021-nav{margin-left:5px}.header2021-nav ~ .header2021-nav.header2021-toggle{margin-left:10px}.header2021-toggle .toggle-body{min-width:24px;height:24px}.header2021-toggle .toggle-handle{font-size:16px}}';
+
+
+
+
+
+
+
+
+
+
+
+
+
+var s=s||{}; s.t=function(a,b){}; s.tl=function(a,b,c){};
+function send\_adobe\_sendToPacketBeat(){
+var pageViewData = {
+"page\_name": "insider:home",
+"page\_type": "insider",
+"source": "Newegg Insider",
+"insider\_title": "Newegg Insider Home",
+"insider\_tags": "",
+"insider\_author": "Jessica Chen",
+"insider\_category": "",
+"insider\_created": "07/09/2019" }
+window.commonData=pageViewData
 try {
-style.appendChild(document.createTextNode(darkCss));
-} catch (ex) {
-style.styleSheet.cssText = darkCss;
+new GA4LPHandler().sendPageView(pageViewData);
+} catch (e) {}
 }
-var head = document.getElementsByTagName("head")[0];
-head.appendChild(style);
-var darkbut = jQuery('<div class="header2021-nav header2021-toggle toggle toggle-m menu at-bottom"><label id="darkLabel"><input type="checkbox" id="checkdarkmode"><span class="toggle-body bg-lightgray font-l"><span class="toggle-body-inner"><span class="toggle-handle take-on">&#9790;</span><span class="toggle-handle take-off ">&#9728;</span></span></span></label><div id="darkModal" class="menu-body bg-white radius-s shadow-level-1"><i class="menu-arrow"></i><p class="dark-mode-tooltip">Switch to Dark Mode</p></div></div>');
-jQuery(document).ready(function () {
-jQuery('.header2021-country').after(darkbut);
-let timeout = null;
-jQuery('#darkLabel').on('touchend', function () {
-if (timeout) { clearTimeout(timeout) }
-jQuery('#darkModal').css('display', 'block')
-timeout = setTimeout(function () { jQuery('#darkModal').css('display', 'none'); }, 2000);
-});
-if (dark == "true") {
-jQuery('#checkdarkmode')[0].checked = true;
-jQuery('.dark-mode-tooltip').text("Switch to Light Mode");
-}
-jQuery('#checkdarkmode').change(function () {
+send\_adobe\_sendToPacketBeat();
+
+window.\_wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.newegg.com\/insider\/wp-includes\/js\/wp-emoji-release.min.js"}};
+/\*! This file is auto-generated \*/
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode,e=(p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0),i.toDataURL());return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(p&&p.fillText)switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([129777,127995,8205,129778,127999],[129777,127995,8203,129778,127999])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(e=t.source||{}).concatemoji?c(e.concatemoji):e.wpemoji&&e.twemoji&&(c(e.twemoji),c(e.wpemoji)))}(window,document,window.\_wpemojiSettings);
 ````
 
 **playwright**
@@ -9082,9 +9164,9 @@ Our system have detected unusual traffic from this device, please check our [Pol
 
 Enable JavaScript and cookies to continue
 
-(function(){window.\_cf\_chl\_opt = {cFPWv: 'g',cH: 'HkqC1L628pioRn5yKdkETVvDyfJv6PQa0Mqp3We4ASY-1777949277-1.2.1.1-LncsKE\_YsE15IoH0ivHU0XRLKcWHCxWl\_vh3zzx6WAye3wsVjiJ1RmAQeoiGiGvl',cITimeS: '1777949277',cRay: '9f6c6c6a3b8dc73a',cTplB: '0',cTplC:1,cTplO:0,cTplV:5,cType: 'managed',cUPMDTk:"/Computer-Systems/Store/ID-3?\_\_cf\_chl\_tk=nhrvZUYB59KGDbZSPYuWw8jilWw0KinsisB4328Le94-1777949277-1.0.1.1-Ypy6ebFxdnTbygI70ZP5NdrBg2RwTGEQQa.yD3AjtWA",cvId: '3',cZone: 'www.newegg.com',fa:"/Computer-Systems/Store/ID-3?\_\_cf\_chl\_f\_tk=nhrvZUYB59KGDbZSPYuWw8jilWw0KinsisB4328Le94-1777949277-1.0.1.1-Ypy6ebFxdnTbygI70ZP5NdrBg2RwTGEQQa.yD3AjtWA",md: 'xC2wUuNOQY3svf7UNb32gDZAXNoM11tc6Pb2ns18vPk-1777949277-1.2.1.1-mlCLGIGMg0bP.Qr0Ma7mP\_fI7CP5VvSlty43HTdIukwhrCmAHLQtI3MPsPxhkfl608ZTZO2NPsEKpPPvB3JDMX3NYOvTUqPKWkgls3WQ.UEm8l.Q15ajKeiiabN76sopJouldTCLBp82hMMGSDuyv1cT9mnZIgI9jv129qi5qjXj6Rh0swzA0U65ocAYiiYAzeMjhcz.za2\_melbCAvM0P5HRvBayIVHPtUCkOTXSrySixsolCV2l8WxCEwYEreyhM7aPRc.qLryiwWAnbuo2nPeD.qazUx\_TZlw0wHfhFkTqxxkinyxLqLfJ3T11v7tDAoMXYVmLBc7m1GrlEqfcVG1OtBwsDZNzqsiFpxSY7AtVvxZMPQxF5mqd7dmDKjKeCqqrkyO65yaS3WRTjfRpkvTGU3FU6.VNHXyEeayQ0ePeMSuU.6cfOsXUGN85MIszcbBOGQLXhnyeE0C7LS4QPVQfylBqay0k3MQXZjzkbjkl3zRbRwJGTYg1ExAV2ckoz0PqkJRjFi43EGVN5EBsB9cSE0oqhhymBEadmzKpbE25CJOmZzuqsLToHp1h.cLu7L7OcPrJFwWIkGbF5zmuE57DK5ZYottsrH4O\_dXMGQFW3rchgztX\_GDZ7RcqNaFAXPgFBYvkKRF4rmgQaZQ9XnvvEVlTSjNHuhnCvMa90QWuMIzQfAqyvJc\_L95cOHht7JLIH2yIDmFqdYRPrfrOv3R86mhjXyeA6PZ.\_G5YQ02jHQNqZW.r1lkE75UssFlEE\_zRfeeet777DvALbDrIj7iXxWkez\_9evSBhZHc3p5FRzkIBqkkJ2CajQZF1bOo41KV3m3SSm3Z0nyW0HG3Z45RA570DTIfCCrkKtKC42qmezXv5nyBn8VJhyWblpeNFUQJLs.fMk7F.RDSEUB44UUFjhqrYgsRMvtUEGNFSIA5cRm\_1jyx2osyQ9oRVwaoWgYefZccEWKn\_voeOdvkQ\_aVud00lc\_c0LhwFlzuuXWTtf6vpHZFHhcwAh1KZfFtJbULl.SRIUEbHiy6j7cXdiJU1MSfGGfClTb9g4PweTie5UmgResN6pr9YE0M2pKOQifd1tpp9\_48azXG1pXstA',mdrd: 'BrFCfPgTwTgcJResODtOs8brEYrXeBxdrAI847kA7vI-1777949277-1.2.1.1-l7dlchhKtipywy8AnTNIpLuN4MwPfHy6ccj1YMidWifQ1QTQaHFV5h8oXyRlx9BqB33T05JoXjaNgs3QHo9RvyMwCsuJKhk1WrM9tlUnWpSFqjwJPL7y0k6t434qskWO2Gs2.4vdZFYRs6iYJaBhdkq0\_cXCVz7Yxi.JU\_3KRMl2LcxoO0.D5vIVG\_7toTEFU\_lwzlbbn2WNzn6tWUUpdSZpdo9\_6h5PZ6iwx60Z.04ObP0xFABqhyXS76donFr75nLUdJkLb6zzNB\_IIxrF4kwc3T6L\_YraWWuIcSA3MUfj1hte4oQB2BNDAqQvowqTp8xBP48u3lD\_wlCP.P0sjZgIH63hDZWmO06\_zlRR02ILGJBNNyjMf2kK0UqdhCkSix0OLgJ4IaubrUV1qW8x2fcn98CxYTLF6qGhClox7bTmd6AzmV9B\_qfKpPtMYn8Cwh8C6GyiIkG1GK\_\_dvSAE.322uLaJA.9\_1O9ByvymS6VeGtrt9S252IasGhhF\_gXhnW0sP0wg78umi32ZdJwU4Yvx4RQfuEMFEsYbmqhmjclybDtmATB\_s.Evd1\_tSR5Xq.hdjNTBn5oZDgZuq0\_ogf49rSyys6gBdbIcbzIQnw\_CrZ4eUZuLdITkTuulRjsM2ptYeDuDYXdY3EZmQVDMMxQKDX4UyDyjZ6y51mL9SAuTQAo.t5.L2LxrgoHH38wEmnZcmYvAwoXQ2fvk\_CcipREZeOirnYhtQ0bfnRr9toRyU9pVROzgZpFs3KElROrKdqextw2NFfeWZUcBvCUu2B8FJQjLSgyesY27ZIkiMy8\_fKvFCSM5ShNKO1POaTYS7RXahFomDZNgkR6EdqyYCeMXzLG6ARc.ceVWbeJPsb7BbSodXwg09ZiP9RuZBKt',};var a = document.createElement('script');a.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/chl\_page/v1?ray=9f6c6c6a3b8dc73a';window.\_cf\_chl\_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window.\_cf\_chl\_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window.\_cf\_chl\_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window.\_cf\_chl\_opt.cOgUQuery + window.\_cf\_chl\_opt.cOgUHash;history.replaceState(null, null,"/Computer-Systems/Store/ID-3?\_\_cf\_chl\_rt\_tk=nhrvZUYB59KGDbZSPYuWw8jilWw0KinsisB4328Le94-1777949277-1.0.1.1-Ypy6ebFxdnTbygI70ZP5NdrBg2RwTGEQQa.yD3AjtWA"+ window.\_cf\_chl\_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());
+(function(){window.\_cf\_chl\_opt = {cFPWv: 'g',cH: 'RCPexUdcIVtogtBB0gEw3ZyJoadlOIKxtGg.xr2CZ.w-1777949277-1.2.1.1-cSNokp97fd76t\_MiPDmZpubCGnAk3MyH8nEPwENc6Scio3oCJV5xeaMMUf.XNOJ.',cITimeS: '1777949277',cRay: '9f6c6c69ab19c73a',cTplB: '0',cTplC:1,cTplO:0,cTplV:5,cType: 'managed',cUPMDTk:"/insider?\_\_cf\_chl\_tk=DBVBgYMX7.zKxndDHbkf.E82vBN2C\_KF3fd4nTup0y0-1777949277-1.0.1.1-AqSzpBuT2wR\_jpWe6\_Kg2jyUTMPJeVMqF4ar1GVBnDU",cvId: '3',cZone: 'www.newegg.com',fa:"/insider?\_\_cf\_chl\_f\_tk=DBVBgYMX7.zKxndDHbkf.E82vBN2C\_KF3fd4nTup0y0-1777949277-1.0.1.1-AqSzpBuT2wR\_jpWe6\_Kg2jyUTMPJeVMqF4ar1GVBnDU",md: 'sQoAPHthwb\_Er3Kb4Vsd8L2kOUniTbCn\_BwoB7dCvh4-1777949277-1.2.1.1-puBYDX..GuCzFC9m4idqW.FGZ.ZKb2Fs1VvJ1R5LhV0EiLyHr\_nZmWTrNkNTdZGTLh810luR1Pjmg2eQhp9hVQA7Cou5ZueyPEpjrSqAo.WGbKsSmngVU4mINcVqrMm8.teAVjmsH3zeSc71BxVgBQtJO2AdL29VDz.NvpFNk7zHLOEaqkQUXwg7ljlwWe4FaGCkqT.UQTxuiP.FRDD8kzLu9kSSOFfm9s4zOuRFG3\_2kSeQQbta9dJcV2hlxZDhUt.8EjSZFBhiGDNwaM4UXFrAm\_IjvGXvigK02jh\_8OoNM\_qKUlH4hTnECfTfUVr6Ff3PJUIIUnq3pSye2vTmasWGmq2L8yst6ZEnoSfj4GkK3D02euRjSG2QE5x.oUhWcbcnNClu6sWsZ9YvfClE1rKUviabWPESqh\_LabI0LIlgJkrDWHmGpVM6qYtCcycWIIado6YwdP1Bn9JkFPwn4GwAJ6yFXfYn9zTjjZjeFLZgryQ6F785HGLGQkjwsWsdpBjxj9WPLhO6k8284yu8Wnhwkzaqbc1GOhkm8AuO\_\_l9U0Zewotw4bd4nhkvevmI8VxqZ4qZNRHlCqRQm6oijhtcyz2uXnQGBWs\_8dDIBCROL1YLfiBr8BTHmMQhqrgLAgqifZhBuXf.VVXNgqaDlGc4bi1VEyGZ3WCDaMfnmCBMPxqjqOAVmnhb3IatlQ8zIS8OhSQhHRZx5ogGO.Vrmm5\_41Hx0IS7t84rTvYGIGR4vwCswmbSUsQfplSloyHBEFUJsnbvf1Ncp.PjGrqXNwsu3zw5\_0KOvClO2doDXxmxP\_\_gGuJCIHKCXXjz7pmxwTSYkmczNER\_pg10sSJuHtaYrb\_ULih5scuIhpg0bNxd2F3r53\_W62pk30UV5Dv.memTBEC3\_PIuvTFDffR.vGu5d9x5jvk2\_rEI0TKbtMO.JDvdJdx0D3zv\_698v5Vkd1Gs4B9U3wof4pyFbRB8hNOz1nJr20H.Mta9oAMrucd1e8PdQV9MqY.LFJ\_GN6FOKd3LGn..0S7GfcLyU4HO2TcALlKdM2pew9uviC9O.0A',mdrd: 'sALYhWIomn0NNioqHDQG7AuN0TMXtdqfoPoCiZ.Tj\_M-1777949277-1.2.1.1-fOl9rAjm\_Tg5KD1aZgbemXwJ4VxBJsZBg.lEPdJ3JiKbmMajthZ2.9l.O.8CtOd6wcmCLvUHjThl\_lamcyukppOohPk.yR\_zIs9koaUusnFMmVNaVFHxd3Ay7uVpjFgZoO3\_hgZ9fX4WE1ItCa0d.1Mt6GAems7RRVNUNWMES0s0CY4v18ozs0XtccnCxAcfkEyCnTDhfQSEEigffAthz7cgv1L4Y.VwChXZ022YB1Y5OfEyovu.aowTUoW0NHN.7qtWd51EVQ6FpXP3cIDwmbWCHkaDkGQ9EiN3FLB2wg0CqXI6PVcs6LyzBgqm2AHQYuwNTxIfC\_yr1BhC25gt15\_kAWO.YlkMTxTm2ymidMzPZqukfeT90hfYVB\_Uiim9tgSKBnSOecJWPe.5DAarsgAfWdzpHrvgwBR4ksUW02Vfwx\_5MvC0Ab025f3Otbe0GEtxGZUXWaVdK22XpTDrQyXOPy3Fm8bmEGrAmFJ\_wvwHpTP42IR0\_YJ4nOef5.ee12gJ.8te9KZOG3AZ37ptslyUhw9uoBa6Gzj0ujBUipbx9gC4pgAY6xxwBEzovwvLgsYfUWTSPSYLaGHd1aJkLYQ7\_0AU9CwflVirrGE5I3nDeDqc00IjZxo.qx8cW2\_JeacK89UBu2ve0uqiHpAnLsdaMVEiXZGoRqc\_0U8aWgbJGEx6YyJatGlP71GwRpRn1bu7EkLX54dGeS73vcjw0tXGBppCba2R0Jef6c1LmWR8RUZAc\_PTcqyAZNr0hJDw2UtloQR6YiLU4Teqs.5Owjoqo6TsihQlaCsIjO2nSzrQ5VMhxj85JdP5R3KPX9VbO44Ze18H9RffwH9hu0SwYySKKMHq4sWyjR9WSnM1AlF3q3C\_Mkpkwf4vdAT6.3SU',};var a = document.createElement('script');a.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/chl\_page/v1?ray=9f6c6c69ab19c73a';window.\_cf\_chl\_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window.\_cf\_chl\_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window.\_cf\_chl\_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window.\_cf\_chl\_opt.cOgUQuery + window.\_cf\_chl\_opt.cOgUHash;history.replaceState(null, null,"/insider?\_\_cf\_chl\_rt\_tk=DBVBgYMX7.zKxndDHbkf.E82vBN2C\_KF3fd4nTup0y0-1777949277-1.0.1.1-AqSzpBuT2wR\_jpWe6\_Kg2jyUTMPJeVMqF4ar1GVBnDU"+ window.\_cf\_chl\_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());
 
-Ray ID9f6c6c6a3b8dc73a, Your IP 108.172.128.207
+Ray ID9f6c6c69ab19c73a, Your IP 108.172.128.207
 
 Intel Core 2 Duo E6600 Processor
 

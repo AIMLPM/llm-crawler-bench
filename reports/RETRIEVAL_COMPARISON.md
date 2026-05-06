@@ -697,7 +697,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| markcrawl | 75% (6/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 0.875 | 3580 | 219 |
+| markcrawl | 88% (7/8) | 88% (7/8) | 100% (8/8) | 100% (8/8) | 100% (8/8) | 0.906 | 4518 | 300 |
 | scrapy+md | 75% (6/8) | 88% (7/8) | 88% (7/8) | 88% (7/8) | 88% (7/8) | 0.812 | 6346 | 240 |
 | playwright | 12% (1/8) | 12% (1/8) | 25% (2/8) | 25% (2/8) | 25% (2/8) | 0.154 | 356 | 300 |
 | crawlee | 12% (1/8) | 12% (1/8) | 12% (1/8) | 12% (1/8) | 12% (1/8) | 0.125 | 67 | 16 |
@@ -717,7 +717,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | huggingface.co/docs/transformers/pipeline_tutorial | 0.636 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.624 | huggingface.co/docs/transformers/add_new_pipeline | 0.612 |
+| markcrawl | #1 | huggingface.co/docs/transformers/pipeline_tutorial | 0.636 | huggingface.co/docs/transformers/v5.8.0/en/pipelin | 0.636 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.623 |
 | crawl4ai | — | — | — | — | — | — | — |
 | crawl4ai-raw | miss | huggingface.co/docs/transformers/index | 0.520 | huggingface.co/docs/transformers/index | 0.455 | huggingface.co/docs/transformers/index | 0.453 |
 | scrapy+md | #2 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.663 | huggingface.co/docs/transformers/pipeline_tutorial | 0.655 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.579 |
@@ -731,7 +731,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | huggingface.co/docs/transformers/trainer | 0.560 | huggingface.co/docs/transformers/index | 0.534 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.521 |
+| markcrawl | #1 | huggingface.co/docs/transformers/v5.8.0/en/trainer | 0.560 | huggingface.co/docs/transformers/trainer | 0.560 | huggingface.co/docs/transformers/v5.8.0/en/index | 0.534 |
 | crawl4ai | — | — | — | — | — | — | — |
 | crawl4ai-raw | miss | huggingface.co/join | 0.571 | huggingface.co/google/gemma-4-26B-A4B-it | 0.566 | huggingface.co/docs/transformers/installation | 0.562 |
 | scrapy+md | #1 | huggingface.co/docs/transformers/trainer | 0.539 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.507 | huggingface.co/support | 0.464 |
@@ -745,7 +745,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | huggingface.co/docs/transformers/llm_tutorial | 0.547 | huggingface.co/docs/transformers/llm_tutorial | 0.514 | huggingface.co/docs/transformers/v5.7.0/en/model_d | 0.500 |
+| markcrawl | #1 | huggingface.co/docs/transformers/llm_tutorial | 0.547 | huggingface.co/docs/transformers/v5.8.0/en/tasks/l | 0.531 | huggingface.co/docs/transformers/llm_tutorial | 0.514 |
 | crawl4ai | — | — | — | — | — | — | — |
 | crawl4ai-raw | miss | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.499 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.499 | huggingface.co/google/gemma-4-26B-A4B-it | 0.493 |
 | scrapy+md | #1 | huggingface.co/docs/transformers/llm_tutorial | 0.578 | huggingface.co/docs/transformers/llm_tutorial | 0.514 | huggingface.co/facebook/mbart-large-cc25 | 0.511 |
@@ -759,7 +759,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | huggingface.co/docs/transformers/philosophy | 0.609 | huggingface.co/docs/transformers/index | 0.588 | huggingface.co/docs/transformers/v5.7.0/en/model_d | 0.539 |
+| markcrawl | #1 | huggingface.co/docs/transformers/v5.8.0/en/philoso | 0.606 | huggingface.co/docs/transformers/philosophy | 0.606 | huggingface.co/docs/transformers/index | 0.588 |
 | crawl4ai | — | — | — | — | — | — | — |
 | crawl4ai-raw | miss | huggingface.co/docs/transformers/index | 0.589 | huggingface.co/docs/transformers/index | 0.582 | huggingface.co/docs/transformers/index | 0.503 |
 | scrapy+md | #1 | huggingface.co/docs/transformers/philosophy | 0.610 | huggingface.co/docs/transformers/index | 0.601 | huggingface.co/docs/transformers/index | 0.567 |
@@ -773,7 +773,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | huggingface.co/docs/transformers/index | 0.648 | huggingface.co/docs/transformers/models_timeline | 0.603 | huggingface.co/docs/transformers/v5.7.0/en/model_d | 0.595 |
+| markcrawl | #4 | huggingface.co/docs/transformers/index | 0.648 | huggingface.co/docs/transformers/v5.8.0/en/index | 0.648 | huggingface.co/docs/transformers/main/en/index | 0.642 |
 | crawl4ai | — | — | — | — | — | — | — |
 | crawl4ai-raw | miss | huggingface.co/docs/transformers/index | 0.634 | huggingface.co/docs/transformers/index | 0.563 | huggingface.co/docs/transformers/index | 0.556 |
 | scrapy+md | miss | huggingface.co/docs/transformers/index | 0.663 | huggingface.co/docs/transformers/philosophy | 0.584 | huggingface.co/docs/transformers/index | 0.575 |
@@ -787,7 +787,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.675 | huggingface.co/docs/transformers/pipeline_tutorial | 0.663 | huggingface.co/docs/transformers/add_new_pipeline | 0.662 |
+| markcrawl | #1 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.675 | huggingface.co/docs/transformers/pipeline_tutorial | 0.662 | huggingface.co/docs/transformers/v5.8.0/en/pipelin | 0.662 |
 | crawl4ai | — | — | — | — | — | — | — |
 | crawl4ai-raw | miss | huggingface.co/docs/transformers/index | 0.575 | huggingface.co/docs/transformers/index | 0.533 | huggingface.co/docs/transformers/installation | 0.529 |
 | scrapy+md | #1 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.683 | huggingface.co/docs/transformers/pipeline_tutorial | 0.664 | huggingface.co/docs/transformers/pipeline_tutorial | 0.587 |
@@ -801,7 +801,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | huggingface.co/docs/transformers/main_classes/trai | 0.571 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.571 | huggingface.co/docs/transformers/trainer | 0.549 |
+| markcrawl | #1 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.571 | huggingface.co/docs/transformers/v5.8.0/en/trainer | 0.549 | huggingface.co/docs/transformers/trainer | 0.549 |
 | crawl4ai | — | — | — | — | — | — | — |
 | crawl4ai-raw | miss | huggingface.co/docs/transformers/index | 0.398 | huggingface.co/docs | 0.368 | discuss.huggingface.co/u/dinods | 0.357 |
 | scrapy+md | #1 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.570 | huggingface.co/docs/transformers/trainer | 0.523 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.488 |
@@ -815,7 +815,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | huggingface.co/docs/transformers/v5.7.0/en/model_d | 0.573 | huggingface.co/docs/transformers/index | 0.573 | huggingface.co/docs/transformers/v5.7.0/en/model_d | 0.572 |
+| markcrawl | #1 | huggingface.co/docs/transformers/index | 0.573 | huggingface.co/docs/transformers/v5.8.0/en/index | 0.573 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.571 |
 | crawl4ai | — | — | — | — | — | — | — |
 | crawl4ai-raw | #2 | huggingface.co/docs/transformers/installation | 0.635 | huggingface.co/docs/transformers/index | 0.629 | huggingface.co/docs/transformers/index | 0.593 |
 | scrapy+md | #1 | huggingface.co/docs/transformers/index | 0.542 | huggingface.co/docs/transformers/index | 0.523 | huggingface.co/docs/transformers/philosophy | 0.507 |

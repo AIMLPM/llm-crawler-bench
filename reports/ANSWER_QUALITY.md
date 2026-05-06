@@ -1,7 +1,7 @@
 # End-to-End RAG Answer Quality
 <!-- style: v2, 2026-05-05 -->
 
-All crawlers produce similar LLM answer quality (3.98-4.40 out of 5). crawl4ai leads slightly at 4.40; markcrawl ranks 7th at 3.98 — a 9.4% gap from the best. The gaps are small but consistent.
+All crawlers produce similar LLM answer quality (4.03-4.40 out of 5). crawl4ai leads slightly at 4.40; markcrawl ranks 7th at 4.03 — a 8.3% gap from the best. The gaps are small but consistent.
 
 **Run:** `run_v13_merged_20260504_203748` | **Started:** 2026-05-04T13:36:42Z | **Ended:** 2026-05-05T05:41:25.381501+00:00 | **Pool:** 1.2 (sha256:caa35)
 
@@ -35,13 +35,13 @@ and sent to `gpt-4o-mini` to generate an answer. Answers are scored by
 | colly+md | 4.45 | 4.32 | 4.04 | 4.25 | **4.27 ±0.25** | 3,683 |
 | scrapy+md | 4.41 | 4.17 | 3.84 | 4.09 | **4.13 ±0.26** | 4,180 |
 | playwright | 4.38 | 4.18 | 3.82 | 4.09 | **4.12 ±0.24** | 3,536 |
-| markcrawl | 4.30 | 4.00 | 3.68 | 3.96 | **3.98 ±0.27** | 4,093 |
+| markcrawl | 4.33 | 4.06 | 3.73 | 4.01 | **4.03 ±0.27** | 4,122 |
 
 > **Column definitions:** All scores are 1-5 averages across queries, judged by `gpt-4o-mini`. **Correctness** = factual accuracy. **Relevance** = answers the question asked. **Completeness** = covers all aspects. **Usefulness** = practical value to the user. **Overall** = mean of the four dimensions (± 95% confidence interval). **Avg tokens/query** = estimated input tokens per query (chunk words x 1.33). Gaps within the ± range are not statistically significant.
 
 ## What this means in practice
 
-The quality gap between the best (crawl4ai, 4.40) and worst (markcrawl, 3.98) crawler is 0.41 points on a 5-point scale -- 9.4% relative. This gap is real but small.
+The quality gap between the best (crawl4ai, 4.40) and worst (markcrawl, 4.03) crawler is 0.36 points on a 5-point scale -- 8.3% relative. This gap is real but small.
 
 For most use cases, your choice of crawler will not noticeably affect the quality of LLM-generated answers. All tools produce answers that score above 4.0 ("good") on average, meaning users get helpful, accurate responses regardless of which crawler feeds the pipeline.
 
@@ -502,8 +502,8 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
 | scrapy+md | 5.00 | 5.00 | 5.00 | 5.00 | 5.00 |
+| markcrawl | 4.88 | 5.00 | 4.75 | 4.88 | 4.88 ±0.24 |
 | crawlee | 4.62 | 4.62 | 4.38 | 4.50 | 4.53 ±0.66 |
-| markcrawl | 4.50 | 4.25 | 4.12 | 4.25 | 4.28 ±0.92 |
 | playwright | 4.50 | 4.25 | 3.88 | 4.25 | 4.22 ±0.95 |
 | crawl4ai-raw | 4.25 | 4.00 | 3.25 | 3.88 | 3.84 ±0.97 |
 
@@ -528,7 +528,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To train a model with the Hugging Face Trainer, you need to follow these steps:  1. **Import the Tra... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To train a model with the Hugging Face Trainer, follow these steps:  1. **Prepare Your Model and Dat... |
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To train a model with the Hugging Face Trainer, you need to follow these steps:  1. **Prepare your m... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | To train a model with the Hugging Face Trainer, follow these steps:  1. Load a model and tokenizer: ... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | To train a model with the Hugging Face Trainer, you can use the following code snippet:  ```python f... |
@@ -538,7 +538,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To generate text with a large language model (LLM) using the Transformers library, follow these step... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To generate text with a large language model, you can use the `generate()` API provided in the Trans... |
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To generate text with a large language model (LLM) using the Transformers library, you can follow th... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | To generate text with a large language model, you can use the `pipeline` function from the `transfor... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | To generate text with a large language model, you can use the Pipeline class from the Transformers l... |
@@ -548,7 +548,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The design principles behind the Transformers library include:  1. **PyTorch-first approach**: The l... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The design principles behind the Transformers library include:  1. **Composition over Abstraction**:... |
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The design principles behind the Transformers library are:  1. **Fast and easy to use**: Every model... |
 | crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The design principles behind the Transformers library are: 1. Fast and easy to use: Every model is i... |
 | crawlee | 5 | 5 | 4 | 5 | 4.8 | The design principles behind the Transformers library are:  1. Fast and easy to use: Every model is ... |
@@ -559,7 +559,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The Transformers library supports a wide range of models, including but not limited to:  - Text mode... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| markcrawl | 4 | 5 | 3 | 4 | 4.0 | The Transformers library supports state-of-the-art machine learning models in text, computer vision,... |
 | crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 | crawl4ai-raw | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 | playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
@@ -568,17 +568,17 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The Pipeline API in Transformers is a simple but powerful inference API that allows users to perform... |
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The Pipeline API in Transformers is a simple but powerful inference API that allows users to easily ... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | The Pipeline API reference in Transformers provides a complete list of available tasks that can be p... |
 | crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The Pipeline API in Transformers is a simple and optimized inference class for various machine learn... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 | playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
 **Q7: What does the Trainer class support for distributed training?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The Trainer class supports distributed training on multiple GPUs/TPUs and mixed precision for NVIDIA... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The Trainer class supports distributed training on multiple GPUs/TPUs.... |
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The Trainer class supports distributed training on multiple GPUs/TPUs and mixed precision for NVIDIA... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | The Trainer class supports distributed training with PEFT adapters out of the box. It passes `exclud... |
 | crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The Trainer class supports features such as mixed precision, torch.compile, and FlashAttention for d... |
@@ -588,7 +588,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The Hugging Face Transformers library is a model-definition framework for state-of-the-art machine l... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The Hugging Face Transformers library acts as the model-definition framework for state-of-the-art ma... |
 | crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The Hugging Face Transformers library is a model-definition framework for state-of-the-art machine l... |
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The Hugging Face Transformers library is a model-definition framework for state-of-the-art machine l... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | The Hugging Face Transformers library is a model-definition framework for state-of-the-art machine l... |
