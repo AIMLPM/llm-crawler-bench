@@ -23,6 +23,7 @@ Requires:
 from __future__ import annotations
 
 import argparse
+import csv
 import datetime
 import hashlib
 import json
@@ -1446,6 +1447,63 @@ def _check_hit(url_match: str, page_match: str, ranked_urls: List[str]) -> Tuple
         if page_match and page_match.lower() in normalized:
             return True, rank
     return False, None
+
+
+def _write_query_audit_csv(
+    all_results: Dict[str, Dict[str, "ToolSiteRetrievalResult"]],
+    output_path: Path,
+    top_k: int = 5,
+) -> int:
+    """Write the per-(query × tool × rank) audit artifact (DS-3).
+
+    One row per (query, tool, rank in [1..top_k]) with columns:
+      query_id, query_text, site, tool, rank, url, cosine_score,
+      is_hit, url_match_pattern, normalized_url
+
+    Reviewers questioning a specific number can spot-check the CSV
+    without re-running anything. Returns the row count written.
+
+    Atomic write via .tmp + replace; idempotent across re-runs."""
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = output_path.with_suffix(".csv.tmp")
+    rows_written = 0
+    with open(tmp_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "query_id", "query_text", "site", "tool", "rank",
+            "url", "cosine_score", "is_hit",
+            "url_match_pattern", "normalized_url",
+        ])
+        for site, tool_map in all_results.items():
+            for tool, r in tool_map.items():
+                for q_idx, qr in enumerate(r.query_results):
+                    pattern = qr.expected_url_match or ""
+                    page_pattern = qr.expected_page_match or ""
+                    for rank in range(1, top_k + 1):
+                        if rank > len(qr.top_k_urls):
+                            break
+                        url = qr.top_k_urls[rank - 1]
+                        score = qr.top_k_scores[rank - 1] if rank - 1 < len(qr.top_k_scores) else ""
+                        normalized = _normalize_url_for_matching(url)
+                        is_hit = bool(
+                            (pattern and pattern.lower() in normalized)
+                            or (page_pattern and page_pattern.lower() in normalized)
+                        )
+                        writer.writerow([
+                            f"{site}:{q_idx}",
+                            qr.query,
+                            site,
+                            tool,
+                            rank,
+                            url,
+                            score,
+                            "true" if is_hit else "false",
+                            pattern,
+                            normalized,
+                        ])
+                        rows_written += 1
+    tmp_path.replace(output_path)
+    return rows_written
 
 
 def _compute_mrr(query_results: List[QueryResult]) -> float:
@@ -3013,6 +3071,14 @@ def main():
         logger.warning("Post-generation lint found %d issue(s):", len(lint_warnings))
         for w in lint_warnings:
             logger.warning("  - %s", w)
+
+    # DS-3: emit per-query audit CSV alongside the markdown report
+    audit_path = Path(output_path).parent / "QUERY_AUDIT.csv"
+    try:
+        rows = _write_query_audit_csv(all_results, audit_path)
+        logger.info("Query audit written to %s (%d rows)", audit_path, rows)
+    except Exception as e:
+        logger.warning("Query audit CSV write failed (non-fatal): %s", e)
 
     # Print summary
     logger.info("\n" + "=" * 60)
