@@ -496,6 +496,17 @@ version, tool versions, and repo git SHA — so any run can be replayed
 bit-for-bit. See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for the manifest
 format and replay one-liners.
 
+**Single-command reproduction (DS-13):**
+
+```bash
+make benchmark-quick   # ~5 min, single site, ~$0 spend (cached query embeddings) — verifies the pipeline runs
+make benchmark         # ~24 hours, all 11 sites, ~$3 spend — produces the canonical reports
+```
+
+`benchmark-quick` is the smoke target — it runs `benchmark_retrieval.py` against the most recent merged run dir on a single site (`rust-book` by default; override with `SMOKE_SITE=...`) without the cross-encoder reranker. Useful for verifying the pipeline runs after methodology or code changes, before committing to a 24-hour cycle. Output goes to `reports/RETRIEVAL_QUICK_SMOKE.md` so it doesn't disrupt the canonical `RETRIEVAL_COMPARISON.md`.
+
+`benchmark` is the full pipeline: `preflight` → retrieval (all 11 sites, all 4 modes including reranker) → answer-quality (LLM judge across 7 tools × ~104 queries × 2 calls each ≈ ~1,500 LLM calls) → pipeline timing → README regeneration. Wall-time is dominated by the cross-encoder reranker on large-chunk sites and the LLM-judge calls.
+
 ### Prerequisites
 
 Before running the comparison, run the pre-flight script. It checks every dependency, installs anything missing, and tells you exactly what's ready:
