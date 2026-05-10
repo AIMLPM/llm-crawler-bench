@@ -1,0 +1,368 @@
+#!/usr/bin/env python3
+"""DS-6: LLM-generated, LLM-verified query authoring (v1.4).
+
+For each site:
+  1. Sample N random URLs from crawl4ai-raw's pages.jsonl (highest-coverage
+     tool — gives the broadest topic surface across all 11 sites)
+  2. For each URL, call gpt-4o-mini to draft 1-2 questions answerable from
+     the page content
+  3. For each draft, call a SEPARATE gpt-4o-mini API invocation (fresh
+     context window, no shared messages, no prior turns) to verify
+     answerability
+  4. Accept queries judged answerable, reject the rest
+  5. Write accepted queries to queries/v14_queries.json
+  6. Write rejected drafts + verifier rationale to queries/v14_rejected.json
+
+Removes the COI inherent in v1.3's hand-written queries (authored by the
+same person who maintains markcrawl). Critical: NO human reviews the
+output queries before they enter the benchmark. Fixes to query quality
+happen at the prompt/code level via regeneration, never at the
+individual-query level — see specs/v14-methodology-hardening.md
+"Inspection vs. curation".
+
+Usage:
+    # Single-site smoke (Gate 3a)
+    python tools/generate_queries.py --run run_v13_merged_20260504_203748 \\
+        --sites rust-book
+
+    # Full-pool generation (Gate 3b)
+    python tools/generate_queries.py --run run_v13_merged_20260504_203748
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import logging
+import os
+import random
+import re
+import sys
+import time
+from pathlib import Path
+from urllib.parse import urlsplit
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+logger = logging.getLogger(__name__)
+
+GENERATION_MODEL = os.environ.get("GENERATION_MODEL", "gpt-4o-mini")
+VERIFICATION_MODEL = os.environ.get("VERIFICATION_MODEL", "gpt-4o-mini")
+SAMPLE_URLS_PER_SITE = 30
+MAX_QUERIES_PER_URL = 2
+MAX_PAGE_CHARS = 8000
+MAX_TOKENS_GEN = 200
+MAX_TOKENS_VERIFY = 100
+
+
+GENERATION_PROMPT = """You are creating retrieval-benchmark questions from a documentation page.
+
+Read the page content below and draft 1-2 questions that:
+1. Are answerable using only this page's content (no outside knowledge needed)
+2. A real user might plausibly ask
+3. Cover different aspects of the page (don't ask two near-identical questions)
+4. Are concise — phrase as a user would type into a search box
+
+Return ONLY a JSON array of strings, like:
+["First question?", "Second question?"]
+
+If the page has no substantive content (sitemap, login wall, redirect stub,
+404 page, navigation index), return an empty array: []
+
+## Page URL
+{url}
+
+## Page Content
+{content}
+
+## Questions JSON"""
+
+
+VERIFICATION_PROMPT = """You are evaluating whether a question can be answered from the given page content.
+
+Return ONLY a JSON object with this exact shape:
+{{"answerable": true, "rationale": "one short sentence"}}
+or
+{{"answerable": false, "rationale": "one short sentence"}}
+
+Be strict: only return true if the answer is clearly present in the content.
+If the page is empty/sitemap/login/redirect/navigation-only, return false
+with rationale starting with "page is empty" so the sampler can be debugged.
+
+## Page URL
+{url}
+
+## Page Content
+{content}
+
+## Question
+{query}
+
+## Verdict JSON"""
+
+
+def load_pages_for_site(run_dir: Path, tool: str, site: str) -> list[dict]:
+    """Load pages.jsonl for a (tool, site) combination, skipping malformed lines."""
+    path = run_dir / tool / site / "pages.jsonl"
+    if not path.exists():
+        return []
+    pages = []
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                pages.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+    return pages
+
+
+def call_llm(client, prompt: str, model: str, max_tokens: int) -> str:
+    """Single LLM call with exponential-backoff retries. Returns "" on failure."""
+    for attempt in range(3):
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=max_tokens,
+                temperature=0,
+                timeout=30,
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            if attempt < 2:
+                time.sleep(2 ** attempt * 2)
+            else:
+                logger.warning(f"LLM call failed after 3 attempts: {e}")
+                return ""
+
+
+def parse_json_list(text: str) -> list[str]:
+    """Extract a JSON list of strings from a possibly-markdown-wrapped response."""
+    text = re.sub(r"^```(?:json)?\s*", "", text)
+    text = re.sub(r"\s*```$", "", text)
+    try:
+        result = json.loads(text)
+        if isinstance(result, list):
+            return [str(x).strip() for x in result if isinstance(x, str) and x.strip()]
+    except json.JSONDecodeError:
+        pass
+    return []
+
+
+def parse_verdict(text: str) -> dict:
+    """Extract verdict JSON from a possibly-markdown-wrapped response.
+
+    Returns {"answerable": bool, "rationale": str}. Defaults to rejection
+    on parse failure so malformed output doesn't sneak past verification."""
+    text = re.sub(r"^```(?:json)?\s*", "", text)
+    text = re.sub(r"\s*```$", "", text)
+    try:
+        result = json.loads(text)
+        if isinstance(result, dict):
+            return {
+                "answerable": bool(result.get("answerable", False)),
+                "rationale": str(result.get("rationale", "")),
+            }
+    except json.JSONDecodeError:
+        pass
+    return {"answerable": False, "rationale": "verifier returned malformed JSON"}
+
+
+def derive_url_match(url: str) -> str:
+    """Derive a default url_match pattern — the last meaningful path segment.
+
+    Reviewers can replace this with a more specific pattern, but it gives a
+    reasonable default that tests "did retrieval find the right page?"
+    """
+    try:
+        parts = urlsplit(url).path.rstrip("/").split("/")
+        for seg in reversed(parts):
+            if seg and seg.lower() not in ("index", "index.html", ""):
+                return seg
+    except (ValueError, AttributeError):
+        pass
+    return ""
+
+
+def first_path_segment(url: str) -> str:
+    """First non-empty path segment — used by the diversity check
+    (≥10 distinct path-basepaths in 30 sampled URLs per the spec)."""
+    try:
+        parts = urlsplit(url).path.split("/")
+        for seg in parts:
+            if seg:
+                return seg
+    except (ValueError, AttributeError):
+        pass
+    return ""
+
+
+def generate_for_site(
+    client,
+    site: str,
+    pages: list[dict],
+    sample_size: int,
+    seed: int,
+) -> tuple[list[dict], list[dict]]:
+    """Generate + verify queries for one site. Returns (accepted, rejected).
+
+    Each accepted/rejected entry is a dict with: query, url, url_match,
+    page_match, category, description, verifier_rationale.
+    """
+    rng = random.Random(seed + abs(hash(site)) % 1000)
+
+    if not pages:
+        logger.warning(f"[{site}] No pages — returning empty")
+        return [], []
+
+    sample_n = min(sample_size, len(pages))
+    sampled = rng.sample(pages, sample_n)
+
+    distinct_basepaths = {first_path_segment(p.get("url", "")) for p in sampled}
+    distinct_basepaths.discard("")
+    logger.info(
+        f"[{site}] Sampled {sample_n}/{len(pages)} URLs; "
+        f"distinct first-path segments: {len(distinct_basepaths)}"
+    )
+
+    accepted = []
+    rejected = []
+
+    for i, page in enumerate(sampled, 1):
+        url = page.get("url", "")
+        content = page.get("markdown", "") or page.get("content", "") or page.get("text", "")
+        if not content:
+            logger.info(f"[{site}] {i}/{sample_n}: skip (empty page content) {url}")
+            continue
+        content_capped = content[:MAX_PAGE_CHARS]
+
+        gen_response = call_llm(
+            client,
+            GENERATION_PROMPT.format(url=url, content=content_capped),
+            GENERATION_MODEL,
+            MAX_TOKENS_GEN,
+        )
+        candidates = parse_json_list(gen_response)[:MAX_QUERIES_PER_URL]
+
+        if not candidates:
+            logger.info(f"[{site}] {i}/{sample_n}: 0 candidates from {url}")
+            continue
+
+        n_accepted_this_url = 0
+        for query in candidates:
+            verify_response = call_llm(
+                client,
+                VERIFICATION_PROMPT.format(url=url, content=content_capped, query=query),
+                VERIFICATION_MODEL,
+                MAX_TOKENS_VERIFY,
+            )
+            verdict = parse_verdict(verify_response)
+
+            entry = {
+                "query": query,
+                "url": url,
+                "url_match": derive_url_match(url),
+                "page_match": "",
+                "category": "",
+                "description": "",
+                "verifier_rationale": verdict["rationale"],
+            }
+            if verdict["answerable"]:
+                accepted.append(entry)
+                n_accepted_this_url += 1
+            else:
+                rejected.append(entry)
+
+        logger.info(
+            f"[{site}] {i}/{sample_n}: {len(candidates)} candidates → "
+            f"{n_accepted_this_url} accepted, {len(candidates) - n_accepted_this_url} rejected"
+        )
+
+    return accepted, rejected
+
+
+def main():
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--run", required=True, help="Run directory name (e.g. run_v13_merged_20260504_203748)")
+    parser.add_argument("--source-tool", default="crawl4ai-raw",
+                        help="Tool whose pages.jsonl to sample from (default: crawl4ai-raw — highest coverage)")
+    parser.add_argument("--sites", default=None,
+                        help="Comma-separated sites (default: all sites available under source-tool)")
+    parser.add_argument("--sample-urls", type=int, default=SAMPLE_URLS_PER_SITE,
+                        help=f"URLs to sample per site (default: {SAMPLE_URLS_PER_SITE})")
+    parser.add_argument("--seed", type=int, default=42, help="RNG seed for sampling determinism")
+    parser.add_argument("--queries-out", default="queries/v14_queries.json")
+    parser.add_argument("--rejected-out", default="queries/v14_rejected.json")
+    args = parser.parse_args()
+
+    run_dir = _REPO_ROOT / "runs" / args.run
+    if not run_dir.is_dir():
+        logger.error(f"Run dir not found: {run_dir}")
+        sys.exit(1)
+
+    source_tool_dir = run_dir / args.source_tool
+    if not source_tool_dir.is_dir():
+        logger.error(f"Source-tool dir not found: {source_tool_dir}")
+        sys.exit(1)
+
+    if args.sites:
+        sites = [s.strip() for s in args.sites.split(",")]
+    else:
+        sites = sorted(d.name for d in source_tool_dir.iterdir() if d.is_dir())
+
+    if not os.environ.get("OPENAI_API_KEY"):
+        logger.error("OPENAI_API_KEY env var required")
+        sys.exit(1)
+
+    from openai import OpenAI
+    client = OpenAI()
+
+    all_accepted = {}
+    all_rejected = {}
+
+    for site in sites:
+        logger.info(f"\n=== {site} ===")
+        pages = load_pages_for_site(run_dir, args.source_tool, site)
+        logger.info(f"  {len(pages)} pages available")
+        accepted, rejected = generate_for_site(client, site, pages, args.sample_urls, args.seed)
+        all_accepted[site] = accepted
+        all_rejected[site] = rejected
+        first_pass = len(accepted) / (len(accepted) + len(rejected)) if (accepted or rejected) else 0
+        logger.info(f"  {site} totals: {len(accepted)} accepted / {len(rejected)} rejected ({first_pass:.0%} first-pass)")
+
+    queries_out = _REPO_ROOT / args.queries_out
+    rejected_out = _REPO_ROOT / args.rejected_out
+    queries_out.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(queries_out, "w") as f:
+        json.dump(all_accepted, f, indent=2)
+    with open(rejected_out, "w") as f:
+        json.dump(all_rejected, f, indent=2)
+
+    total_accepted = sum(len(v) for v in all_accepted.values())
+    total_rejected = sum(len(v) for v in all_rejected.values())
+    overall_first_pass = total_accepted / (total_accepted + total_rejected) if (total_accepted + total_rejected) else 0
+    empty_page_rejections = sum(
+        1 for entries in all_rejected.values()
+        for e in entries
+        if "page is empty" in e.get("verifier_rationale", "").lower()
+    )
+
+    logger.info("\n=== TOTAL ===")
+    logger.info(f"Accepted: {total_accepted}")
+    logger.info(f"Rejected: {total_rejected}")
+    logger.info(f"Verifier first-pass rate: {overall_first_pass:.1%}")
+    logger.info(f"'page is empty' rejections: {empty_page_rejections} (sampler health — should be 0)")
+    logger.info(f"Wrote {queries_out}")
+    logger.info(f"Wrote {rejected_out}")
+
+
+if __name__ == "__main__":
+    main()
