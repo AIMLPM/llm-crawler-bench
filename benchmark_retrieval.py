@@ -2473,9 +2473,24 @@ def find_latest_run(runs_dir: Path) -> Optional[Path]:
 CHECKPOINT_DIR = BENCH_DIR / "retrieval_checkpoints"
 
 
+def _embedder_slug(model_name: Optional[str] = None) -> str:
+    """Filesystem-safe slug for an embedder model name.
+
+    text-embedding-3-small               -> text-embedding-3-small
+    mixedbread-ai/mxbai-embed-large-v1   -> mixedbread-ai_mxbai-embed-large-v1
+    """
+    name = model_name if model_name is not None else EMBEDDING_MODEL
+    return name.replace("/", "_")
+
+
 def _checkpoint_key(run_name: str, tool: str, site: str, config_label: str) -> str:
-    """Stable key for a checkpoint file."""
-    safe = f"{run_name}__{tool}__{site}__{config_label}".replace("/", "_")
+    """Embedder-aware key. Without the embedder slug, swapping
+    EMBEDDING_MODEL silently loads the prior embedder's cached vectors
+    (verified 2026-05-05: mxbai re-run produced byte-identical reports
+    because all 72 (tool, site) checkpoints loaded from the OpenAI run).
+    Pre-fix checkpoints lack the slug and are naturally bypassed."""
+    embedder = _embedder_slug()
+    safe = f"{run_name}__{embedder}__{tool}__{site}__{config_label}".replace("/", "_")
     return safe
 
 
