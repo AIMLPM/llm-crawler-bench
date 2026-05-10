@@ -36,6 +36,7 @@ import time as _time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+from urllib.parse import urlsplit, urlunsplit
 
 BENCH_DIR = Path(__file__).parent
 REPO_ROOT = BENCH_DIR
@@ -1371,13 +1372,78 @@ def _rerank(query: str, chunks: List[EmbeddedChunk], candidate_indices: List[int
 # Hit checking and MRR
 # ---------------------------------------------------------------------------
 
+# DS-2: locale subdomain prefixes stripped before url_match evaluation.
+# Explicit allowlist so legitimate-but-similar subdomains (docs.stripe.com,
+# support.X.com) are not collapsed. ISO-639-1 + common BCP-47 region forms
+# observed in the v1.3 site pool.
+_LOCALE_SUBDOMAIN_PREFIXES = frozenset([
+    "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el",
+    "en", "eo", "es", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi",
+    "hr", "hu", "hy", "id", "is", "it", "ja", "ka", "kk", "km", "kn", "ko",
+    "ky", "la", "lt", "lv", "mk", "ml", "mn", "mr", "ms", "mt", "my", "nb",
+    "ne", "nl", "nn", "no", "pa", "pl", "ps", "pt", "ro", "ru", "sa", "si",
+    "sk", "sl", "sq", "sr", "sv", "sw", "ta", "te", "th", "tl", "tr", "uk",
+    "ur", "uz", "vi", "zh",
+    "zh-cn", "zh-tw", "zh-hk", "zh-hans", "zh-hant",
+    "en-us", "en-gb", "en-ca", "en-au",
+    "pt-br", "pt-pt",
+    "es-mx", "es-ar", "es-es", "es-419",
+    "fr-ca", "fr-fr",
+    "de-de", "de-at", "de-ch",
+])
+
+# Query keys dropped before url_match evaluation. utm_* matched by prefix.
+_STRIP_QUERY_KEYS = frozenset(["lang", "language", "locale", "random", "ref", "source"])
+_STRIP_QUERY_KEY_PREFIXES = ("utm_",)
+
+
+def _normalize_url_for_matching(url: str) -> str:
+    """Normalize a URL before evaluating it against an expected_url_match
+    substring (DS-2). Strips locale subdomain prefixes, drops UTM/lang/
+    locale/random query params, drops the fragment, lowercases scheme +
+    host + path.
+
+    Eliminates the v1.3 false positive where `he.react.dev/learn/managing-state`
+    matched url_match='state' for English queries. Malformed URLs fall
+    back to the lowercased raw input — never drop a chunk on parse failure."""
+    if not isinstance(url, str):
+        return ""
+    try:
+        scheme, netloc, path, query, _frag = urlsplit(url.strip())
+    except (ValueError, TypeError):
+        return url.lower()
+
+    netloc = netloc.lower()
+    if "." in netloc:
+        first, _, rest = netloc.partition(".")
+        if first in _LOCALE_SUBDOMAIN_PREFIXES and rest:
+            netloc = rest
+
+    if query:
+        kept = []
+        for pair in query.split("&"):
+            key = pair.partition("=")[0].lower()
+            if key in _STRIP_QUERY_KEYS:
+                continue
+            if any(key.startswith(prefix) for prefix in _STRIP_QUERY_KEY_PREFIXES):
+                continue
+            kept.append(pair)
+        query = "&".join(kept)
+
+    return urlunsplit((scheme.lower(), netloc, path.lower(), query, ""))
+
+
 def _check_hit(url_match: str, page_match: str, ranked_urls: List[str]) -> Tuple[bool, Optional[int]]:
-    """Check if any URL in ranked list matches. Returns (hit, 1-indexed rank)."""
+    """Check if any URL in ranked list matches. Returns (hit, 1-indexed rank).
+
+    URLs run through _normalize_url_for_matching before substring comparison
+    so locale-prefixed and UTM-tagged variants of the same canonical URL no
+    longer create false positives (DS-2)."""
     for rank, url in enumerate(ranked_urls, 1):
-        url_lower = url.lower()
-        if url_match and url_match.lower() in url_lower:
+        normalized = _normalize_url_for_matching(url)
+        if url_match and url_match.lower() in normalized:
             return True, rank
-        if page_match and page_match.lower() in url_lower:
+        if page_match and page_match.lower() in normalized:
             return True, rank
     return False, None
 
