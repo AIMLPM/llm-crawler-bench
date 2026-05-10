@@ -3,7 +3,9 @@
 
 All crawlers produce similar LLM answer quality (4.03-4.40 out of 5). crawl4ai leads slightly at 4.40; markcrawl ranks 7th at 4.03 — a 8.3% gap from the best. The gaps are small but consistent.
 
-> **Single-trial measurement.** Each per-site number reported here comes from one benchmark run. Network jitter, WAF state, and server load can shift per-site speed and coverage between runs by single-digit percent. Confidence intervals reflect query-set sampling only — not run-to-run variance. Multi-trial validation is v1.5 work; see [METHODOLOGY.md](METHODOLOGY.md#single-trial-measurement).
+> **Single-trial measurement.** Each per-site number reported here comes from one benchmark run. Network jitter, WAF state, and server load can shift per-site speed and coverage between runs by single-digit percent. Where CIs are reported, they reflect query-set sampling only — not run-to-run variance. Multi-trial validation is v1.5 work; see [METHODOLOGY.md](METHODOLOGY.md#single-trial-measurement).
+>
+> **Query-set provenance.** The numbers below are computed against the **v1.3 hand-written query set** (the COI that v1.4 fixes — see [author disclosure](METHODOLOGY.md#author-and-conflict-of-interest-disclosure)). v1.4 swaps in an LLM-generated, LLM-verified query set in Gate 4 (DS-6/DS-7/DS-8). This banner line goes away once v1.4 numbers land.
 
 **Run:** `run_v13_merged_20260504_203748` | **Started:** 2026-05-04T13:36:42Z | **Ended:** 2026-05-05T05:41:25.381501+00:00 | **Pool:** 1.2 (sha256:caa35)
 

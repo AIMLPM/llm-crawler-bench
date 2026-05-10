@@ -7,19 +7,20 @@
 This benchmark suite is authored and maintained by the same team that develops one of the tools being compared (markcrawl). The v1.4 cycle removes humans from the query-acceptance loop to keep the benchmark resistant to motivated reasoning:
 
 - **v1.3 query set** (current at this commit): hand-written by the maintainer (paulsave). This is the conflict-of-interest that v1.4 fixes.
-- **v1.4 query set** (forthcoming, see spec [DS-6](../specs/v14-methodology-hardening.md)): drafted by gpt-4o-mini and verified by an independent gpt-4o-mini invocation (no human reviewer in the acceptance loop). Rejected drafts are logged in `queries/v14_rejected.json` for transparency.
+- **v1.4 query set** (forthcoming, see spec [DS-6](../specs/v14-methodology-hardening.md)): drafted by gpt-4o-mini and verified by a separate gpt-4o-mini API invocation with no shared context window (no human reviewer in the acceptance loop). The structural separation is the API-call boundary — the verifier does not see the draft prompt or any prior turns. Rejected drafts are logged in `queries/v14_rejected.json` for transparency.
 - **Runners and methodology**: written by the same maintainer. The fairness contract — every tool runs with equivalent settings, every tool chunked through the same pipeline — is enforced by code in `runners/` and `benchmark_*.py`, which are open for review.
 - **markcrawl tool itself**: developed in a separate repository (https://github.com/AIMLPM/markcrawl). Versions used are pinned in `pyproject.toml` and announced in release notes.
+- **Run execution**: deterministic given the pinned code + query set + crawl data — any third party running the same commit against the same `runs/` directory should reproduce the published numbers within network/API jitter. Reproducibility artifact (DS-13) makes this a single command. Closes the "but you ran it" attack: no party has to trust the maintainer's local execution.
 
 Human inspection of LLM-generated queries before the full benchmark run (per the v1.4 spec's Implementation Roadmap, Gates 3a/3b) is permitted for setup-bug verification only — fixes happen at the prompt/code level, never at the individual-query level. See `specs/v14-methodology-hardening.md` "Inspection vs. curation" for the explicit allow/deny list.
 
 ## Single-trial measurement
 
-Each per-site number in the comparative reports comes from one benchmark run. Network jitter, WAF rate-limiting, and server load can shift per-site speed and coverage between runs by single-digit percent. Confidence intervals on retrieval and answer-quality reflect query-set sampling only (e.g., CI half-width on MRR derived from query count) — they do NOT reflect run-to-run variance.
+Each per-site number in the comparative reports comes from one benchmark run. Network jitter, WAF rate-limiting, and server load can shift per-site speed and coverage between runs by single-digit percent. Where confidence intervals are reported (currently a subset of retrieval Hit@K columns), they reflect query-set sampling only — derived from query count — and do NOT reflect run-to-run variance. Per-dimension CI coverage is widening: v1.4 Gate 4 (DS-9) adds Hit@1/3/5/10 with CIs to every retrieval table.
 
 Multi-trial measurement (running each (tool, site) pair N times to compute both within-run and between-run variance) is deferred to v1.5. The current single-trial constraint is imposed by hardware budget on the development machine: a full v1.3 cycle takes ~24 hours wall-time across 7 tools × 11 sites, and N=3 trials would push that past a week.
 
-For per-site numbers within ~5% of each other across tools, treat them as effectively tied. Aggregate metrics (overall MRR, content signal averaged across sites) are more stable than individual per-site numbers.
+For per-site numbers within ~5% of each other across tools, treat them as effectively tied. The 5% threshold is a **conservative rule of thumb based on observed jitter from prior re-runs, not a formally measured noise floor** — multi-trial work in v1.5 will replace it with a measured value. Aggregate metrics (overall MRR, content signal averaged across sites) are more stable than individual per-site numbers.
 
 ## Goal
 
