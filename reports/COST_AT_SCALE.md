@@ -4,6 +4,8 @@
 
 Switching to markcrawl saves 21-66% on RAG infrastructure costs depending on which tool you're replacing. At mid-size scale (100K pages, 1K queries/day), that's $960-$2,960 saved per year. Solo developers with an AI subscription can run the entire pipeline at $0 marginal cost for up to ~13,000 pages.
 
+> **Single-trial measurement.** Cost numbers are derived from chunk counts and token counts measured in one benchmark run. Network jitter, WAF state, and server load can shift per-site coverage between runs by single-digit percent, propagating into the cost columns. Confidence intervals reflect query-set sampling only — not run-to-run variance. Multi-trial validation is v1.5 work; see [METHODOLOGY.md](METHODOLOGY.md#single-trial-measurement).
+
 ## What drives RAG costs
 
 Crawler choice affects two independent cost drivers in a RAG pipeline. They scale with different things, which is why this report separates them:
