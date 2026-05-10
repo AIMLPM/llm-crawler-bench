@@ -96,6 +96,75 @@ Tier 2 (2-3 days, methodology overhaul)
 v1.4 ship (HN-credibility ready)
 ```
 
+## Implementation Roadmap
+
+This section sequences the DS items from `## Detailed Steps` into smoke-test-gated phases. The phasing is operational guidance for execution; the DS items themselves remain the specifications for what each gate produces. Added 2026-05-10 to lock in the gate ordering and the human-inspection checkpoints (Gate 3a + 3b) that are not visible in the `## Flow` diagram.
+
+### Smoke-test gates
+
+```
+Gate 0  prerequisite           DS-13b                       ~30 min, $0
+   │
+   ▼
+Gate 1  Tier 1 build           DS-1, DS-2, DS-3, DS-4       ~1 day, $0
+   │
+   ▼
+Gate 2  Tier 1 end-to-end      DS-5                         ~30 min, ~$0.05
+   │
+   ▼
+Gate 3a single-site DS-6       DS-6 (one site)              ~10 min, ~$0.30
+   │       ← user inspection checkpoint
+   ▼
+Gate 3b full-pool DS-6         DS-6 (all 11 sites)          ~30 min, ~$5
+   │       ← user inspection checkpoint
+   ▼
+Gate 4  v1.4 numbers           DS-7, DS-8, DS-9             ~2-3 hrs, ~$8
+   │
+   ▼
+Gate 5  docs + tooling         DS-10, DS-11, DS-14          ~half day, $0
+   │
+   ▼
+Gate 6  PUBLISH-BOTH + repro   DS-13c, DS-12, DS-13a, DS-13 ~1-2 days, $0-8
+   │
+   ▼
+v1.4 ship
+```
+
+### Gate-by-gate
+
+**Gate 0 — Prerequisite checkpoint-key fix (DS-13b).** No subsequent gate is meaningful without this — re-running `benchmark_retrieval.py` with a different `EMBEDDING_MODEL` silently loads the prior embedder's cached vectors and emits an "updated" report byte-identical to the old one. Verified empirically 2026-05-05. Smoke: `tests/test_checkpoint_key.py` — load with mismatched embedder slug returns `None`.
+
+**Gate 1 — Tier 1 additive instrumentation (DS-1, DS-2, DS-3, DS-4).** Purely additive: new helper module, new normalization function, new CSV writer, new METHODOLOGY section + per-report banner. None of these change existing numbers. Each lands with its own unit test (`tests/test_page_level_mrr.py`, `tests/test_url_normalization.py`, `tests/test_audit_csv.py`); DS-4 lands with `python lint_reports.py` clean.
+
+**Gate 2 — First end-to-end smoke (DS-5).** Re-run `benchmark_retrieval.py --run run_v13_merged_20260504_203748` against the existing crawl data with the existing v1.3 query set. Verifies Gate 1 wires together. Chunk-level MRR should match v1.3 within rounding (no methodology change yet — just additive instrumentation). Page-level MRR is the new column. `QUERY_AUDIT.csv` populates with ~104 queries × 7 tools × 5 ≈ 3640 rows.
+
+**Gate 3a — Single-site DS-6 with user inspection.** Run `tools/generate_queries.py` on **one site** (suggest `rust-book` — small, technical, mixes prose with API ref so it stresses both modes). ~$0.30, ~20-30 candidate queries. Output a markdown table to chat: `URL | sampled offset | generated draft | verifier verdict | rationale | url_match pattern`. User reviews to catch plumbing bugs (LLM returning malformed JSON, sampler not random, verifier always returning Y, etc.) before committing to the full-pool spend. **Inspection-vs-curation bright line applies — see Technical Decisions row.**
+
+**Gate 3b — Full-pool DS-6 with user inspection.** Once Gate 3a passes, run for all 11 sites. ~150-200 accepted queries, ~$5. User reviews per-site summary (counts + 5 random accepted + 3 random rejected per site) for site-specific weirdness (e.g. `mdn-css` queries clustering on one property, `stripe-docs` verifier too strict). Same bright line.
+
+**Gate 4 — v1.4 numbers (DS-7, DS-8, DS-9).** Refactor `TEST_QUERIES` to load from `queries/v14_queries.json` (DS-7), re-run retrieval + answer-quality on existing merged dir with the new query set (DS-8), render Hit@1/@3/@5/@10 (DS-9). ~2-3 hrs wall, ~$8.
+
+**Gate 5 — Docs and tooling (DS-10, DS-11, DS-14).** Anti-gaming METHODOLOGY section, cost calculator + sensitivity table, v1.3→v1.4 release notes leading with markcrawl deltas (negative ones first). No new compute spend; manual review only.
+
+**Gate 6 — PUBLISH-BOTH + reproducibility (DS-13c, DS-12, DS-13a, DS-13).** Optional MPS batch-size tune (DS-13c) decides DS-12 scope (3-site adversarial vs 11-site full bge-large). Run mxbai + bge-large secondary (DS-12). Complete the PUBLISH-BOTH secondaries: `ANSWER_QUALITY_LOCAL.md` + `PIPELINE_TIMING_LOCAL.md` + METHODOLOGY section leading with markcrawl's +0.043 asymmetric-bias finding (DS-13a — satisfies SC-13). Add `make benchmark` + `make benchmark-quick` targets (DS-13). Final smoke: `make benchmark-quick` on a single site exits clean.
+
+### Inspection vs. curation: the bright line for Gates 3a / 3b
+
+The whole point of DS-6 (LLM gen + LLM verify) is to remove human authorship of queries — the COI v1.3 was vulnerable to. Human inspection of generated queries before the full DS-8 run does NOT re-introduce COI provided the rule is respected: **fixes happen at the prompt/code level, not at the individual-query level.**
+
+| Feedback type | Verdict | Action |
+|---|---|---|
+| "The verifier is accepting nonsense" | OK | Fix verification prompt; regenerate ALL queries (all sites) |
+| "Sampler isn't random" | OK | Fix sampler code; regenerate ALL queries |
+| "LLM only generates factual lookups, no conceptual queries" | OK | Adjust generation prompt; regenerate ALL queries |
+| "Site X has 0 accepted queries — broken" | OK | Investigate root cause (no extractable content? prompt mismatched site?); fix + regenerate ALL |
+| "These 3 specific queries are unfair, drop them" | NOT OK | Re-introduces COI even if intent benign |
+| "Replace this query with this better one I wrote" | NOT OK | Re-introduces human authorship — the exact thing v1.4 removes |
+
+If a regeneration is triggered by Gate 3a or 3b feedback, the cost is paid again (~$0.30 single-site, ~$5 full-pool). The audit trail then captures: "we ran the LLM-only pipeline, inspected for setup bugs, fixed N issues at the prompt level, regenerated everything from scratch, accepted second pass." This reads as more rigorous than a one-shot run, not less.
+
+The motivation is engineering hygiene, not curation: a 20+ hour benchmark + LLM-judge run is too expensive to commit to without a smoke verification of the input pipeline. The cost of the inspection gate is bounded; the cost of discovering the verifier was broken after DS-8 completes is not.
+
 ## Detailed Steps
 
 ### DS-1: Implement `tools/page_level_mrr.py`
@@ -378,6 +447,7 @@ docs/
 | Local embedder dispatch policy | Global (env var swaps for ALL tools simultaneously), not per-tool | Per-tool dispatch was explicitly ruled out earlier in the v1.3 cycle (memory: `feedback_global_embedder_only.md`). The fairness guarantee — "every tool gets the same embedder" — is preserved. The local-embedder mode is a methodology variant, not a per-tool advantage for markcrawl. |
 | Embedder leaderboard structure (v1.4) | PUBLISH-BOTH — OpenAI primary + mxbai secondary, never mixed | Validation Tau=+0.952 aggregate would technically permit switching, BUT directional bias is asymmetric (markcrawl gains +0.043 MRR, every other tool loses). Switching primary would look like motivated reasoning even if the math passes. PUBLISH-BOTH preserves v1.3 comparability AND surfaces the $0-cost story AND blocks the obvious credibility attack ("you switched embedders to favor your tool"). Mixing embedders within a single leaderboard would destroy the fairness contract — explicitly disallowed. |
 | Asymmetric-bias disclosure | Lead with it in METHODOLOGY, not bury it | The instinct is to hide "markcrawl gains more from mxbai than competitors" because it sounds suspicious. Surfacing it explicitly with the rationale ("we considered switching and chose not to") is the credibility-buying move. Without it, hostile reviewers compute the delta themselves and accuse us of burying it; with it, the disclosure itself is evidence we thought hard about confounds. |
+| Setup-verification gates (3a / 3b) | One-site smoke + full-pool review with user inspection before DS-8 commits to the full retrieval + answer-quality run | Catches plumbing bugs (malformed LLM output, sampler not random, verifier saturation, site-specific failures) before paying for a 20+ hour benchmark + LLM-judge run. Does NOT re-introduce COI provided fixes happen at the prompt/code level only — NEVER at the individual-query level. See "Inspection vs. curation" subsection in Implementation Roadmap for the explicit allow/deny list. |
 
 ## Cost / Performance
 
