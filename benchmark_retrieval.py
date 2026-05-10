@@ -1411,8 +1411,8 @@ def generate_retrieval_report(
         "For each tool, the mode with the highest MRR. Most readers can stop here."
     )
     lines.append("")
-    lines.append("| Tool | Best mode | Hit@10 | MRR | Page MRR |")
-    lines.append("|---|---|---|---|---|")
+    lines.append("| Tool | Best mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | MRR | Page MRR |")
+    lines.append("|---|---|---|---|---|---|---|---|")
 
     # Build digest rows, sorted by best MRR descending
     digest_rows = []
@@ -1421,9 +1421,12 @@ def generate_retrieval_report(
             continue
         best_mode = max(tool_mode_aggs[tool], key=lambda m: tool_mode_aggs[tool][m][2])
         total_queries, agg_hits, mrr, page_mrr, _ = tool_mode_aggs[tool][best_mode]
+        hit1 = _fmt_rate(agg_hits.get(1, 0), total_queries)
+        hit3 = _fmt_rate(agg_hits.get(3, 0), total_queries)
+        hit5 = _fmt_rate(agg_hits.get(5, 0), total_queries)
         hit10 = _fmt_rate(agg_hits.get(10, 0), total_queries)
         tname = tool
-        digest_rows.append((mrr, f"| {tname} | {best_mode} | {hit10} | {mrr:.3f} | {page_mrr:.3f} |"))
+        digest_rows.append((mrr, f"| {tname} | {best_mode} | {hit1} | {hit3} | {hit5} | {hit10} | {mrr:.3f} | {page_mrr:.3f} |"))
     digest_rows.sort(key=lambda x: x[0], reverse=True)
     for _, row in digest_rows:
         lines.append(row)
@@ -1432,11 +1435,18 @@ def generate_retrieval_report(
         "",
         "> **Column definitions:** "
         "**Best mode** = retrieval strategy that maximizes MRR for this tool. "
-        "**Hit@10** = correct source page in top 10 results. "
+        "**Hit@K** = % of queries where the correct source page appeared in the top K (chunk-level). "
         "**MRR** (chunk-level) = Mean Reciprocal Rank across all retrieved chunks. "
         "**Page MRR** (DS-1) = MRR after collapsing chunks-per-URL to unique pages — "
         "removes the chunk-density gaming signal where a tool emitting more chunks "
         "per page would otherwise rank ahead at the same content.",
+        "",
+        "> **Density sensitivity (DS-9):** Hit@1 is the LEAST chunk-density-sensitive "
+        "(each chunk competes for one slot, so emitting more chunks doesn't help unless "
+        "the first one is right). Hit@10 is the MOST sensitive (more chunks = more "
+        "chances to land somewhere in the top 10). MRR sits between the two. Page MRR "
+        "removes the density signal entirely — read it as the chunk-density-corrected "
+        "MRR.",
         "",
     ])
 
