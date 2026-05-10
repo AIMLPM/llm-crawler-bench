@@ -53,6 +53,10 @@ except ImportError:
 
 from markcrawl.chunker import chunk_markdown  # noqa: E402
 
+from tools.page_level_mrr import collapse_chunks_to_pages  # noqa: E402
+from tools.page_level_mrr import hit_at_k as _page_hit_at_k  # noqa: E402
+from tools.page_level_mrr import reciprocal_rank as _page_reciprocal_rank  # noqa: E402
+
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -908,7 +912,13 @@ class RetrievalModeResult:
     mode: str  # "embedding", "bm25", "hybrid", "reranked"
     query_results: List[QueryResult]
     hits_at_k: Dict[int, int] = field(default_factory=dict)
-    mrr: float = 0.0  # Mean Reciprocal Rank
+    mrr: float = 0.0  # Mean Reciprocal Rank (chunk-level)
+    # DS-1: page-level metrics — collapse chunks-per-URL using DS-2 normalized
+    # URLs before computing MRR/Hit@K. Removes the chunk-density gaming signal
+    # (a tool emitting 5 chunks per page no longer beats one emitting 1 chunk
+    # when both rank the same canonical page first).
+    page_mrr: float = 0.0
+    page_hits_at_k: Dict[int, int] = field(default_factory=dict)
 
 
 @dataclass
@@ -925,9 +935,10 @@ class ToolSiteRetrievalResult:
     embed_time: float
     search_time: float
     hits_at_k: Dict[int, int] = field(default_factory=dict)  # {k: hit_count}
-    mrr: float = 0.0  # Mean Reciprocal Rank
+    mrr: float = 0.0  # Mean Reciprocal Rank (chunk-level, embedding mode)
     mode_results: Dict[str, RetrievalModeResult] = field(default_factory=dict)
     chunk_config_label: str = ""  # e.g. "~512tok"
+    page_mrr: float = 0.0  # DS-1: page-level MRR for embedding mode
 
 
 # ---------------------------------------------------------------------------
@@ -1525,6 +1536,41 @@ def _compute_hits_at_k(query_results: List[QueryResult]) -> Dict[int, int]:
     }
 
 
+def _compute_page_level_mrr_and_hits(
+    query_results: List[QueryResult],
+) -> Tuple[float, Dict[int, int]]:
+    """Page-level MRR and Hit@K (DS-1 + DS-2).
+
+    Collapse chunks-per-URL to pages using DS-2 normalized URLs, then compute
+    MRR and Hit@K on the deduped page list. Removes the chunk-density gaming
+    signal that affects chunk-level MRR.
+    """
+    if not query_results:
+        return 0.0, {k: 0 for k in REPORT_AT_K}
+
+    rr_sum = 0.0
+    hits_per_k = {k: 0 for k in REPORT_AT_K}
+
+    for qr in query_results:
+        url_match = (qr.expected_url_match or "").lower()
+        page_match = (qr.expected_page_match or "").lower()
+
+        def _matches(url: str, _um=url_match, _pm=page_match) -> bool:
+            normalized = _normalize_url_for_matching(url)
+            return bool(
+                (_um and _um in normalized)
+                or (_pm and _pm in normalized)
+            )
+
+        pages = collapse_chunks_to_pages(qr.top_k_urls)
+        rr_sum += _page_reciprocal_rank(pages, _matches)
+        for k in REPORT_AT_K:
+            if _page_hit_at_k(pages, k, _matches):
+                hits_per_k[k] += 1
+
+    return rr_sum / len(query_results), hits_per_k
+
+
 # ---------------------------------------------------------------------------
 # Core logic
 # ---------------------------------------------------------------------------
@@ -1910,11 +1956,14 @@ def run_retrieval_test(
         qrs = mode_query_results[mode]
         hits_at_k = _compute_hits_at_k(qrs)
         mrr = _compute_mrr(qrs)
+        page_mrr, page_hits_at_k = _compute_page_level_mrr_and_hits(qrs)
         mode_results[mode] = RetrievalModeResult(
             mode=mode,
             query_results=qrs,
             hits_at_k=hits_at_k,
             mrr=mrr,
+            page_mrr=page_mrr,
+            page_hits_at_k=page_hits_at_k,
         )
 
     # Primary result uses embedding mode for backward compatibility
@@ -1938,6 +1987,7 @@ def run_retrieval_test(
         mrr=emb.mrr,
         mode_results=mode_results,
         chunk_config_label=chunk_config_label,
+        page_mrr=emb.page_mrr,
     )
 
 
@@ -1975,12 +2025,15 @@ def _aggregate_tool_mode(
 ) -> Optional[tuple]:
     """Aggregate hit counts and MRR for a tool+mode over the given sites.
 
-    Returns (total_queries, agg_hits_dict, mrr) or None if no data.
+    Returns (total_queries, agg_hits_dict, mrr, page_mrr, agg_page_hits_dict)
+    or None if no data. Page-level fields (DS-1) sit at indices 3 and 4.
     """
     total_queries = 0
     has_data = False
     agg_hits: Dict[int, int] = {k: 0 for k in REPORT_AT_K}
+    agg_page_hits: Dict[int, int] = {k: 0 for k in REPORT_AT_K}
     rr_sum = 0.0
+    page_rr_sum = 0.0
 
     for site, site_results in results.items():
         if sites is not None and site not in sites:
@@ -1992,11 +2045,19 @@ def _aggregate_tool_mode(
             total_queries += r.total_queries
             for k in REPORT_AT_K:
                 agg_hits[k] += mr.hits_at_k.get(k, 0)
+                agg_page_hits[k] += mr.page_hits_at_k.get(k, 0)
             rr_sum += mr.mrr * r.total_queries
+            page_rr_sum += mr.page_mrr * r.total_queries
 
     if not has_data or total_queries == 0:
         return None
-    return (total_queries, agg_hits, rr_sum / total_queries)
+    return (
+        total_queries,
+        agg_hits,
+        rr_sum / total_queries,
+        page_rr_sum / total_queries,
+        agg_page_hits,
+    )
 
 
 def generate_retrieval_report(
@@ -2081,8 +2142,8 @@ def generate_retrieval_report(
         "For each tool, the mode with the highest MRR. Most readers can stop here."
     )
     lines.append("")
-    lines.append("| Tool | Best mode | Hit@10 | MRR |")
-    lines.append("|---|---|---|---|")
+    lines.append("| Tool | Best mode | Hit@10 | MRR | Page MRR |")
+    lines.append("|---|---|---|---|---|")
 
     # Build digest rows, sorted by best MRR descending
     digest_rows = []
@@ -2090,10 +2151,10 @@ def generate_retrieval_report(
         if not tool_mode_aggs[tool]:
             continue
         best_mode = max(tool_mode_aggs[tool], key=lambda m: tool_mode_aggs[tool][m][2])
-        total_queries, agg_hits, mrr = tool_mode_aggs[tool][best_mode]
+        total_queries, agg_hits, mrr, page_mrr, _ = tool_mode_aggs[tool][best_mode]
         hit10 = _fmt_rate(agg_hits.get(10, 0), total_queries)
         tname = tool
-        digest_rows.append((mrr, f"| {tname} | {best_mode} | {hit10} | {mrr:.3f} |"))
+        digest_rows.append((mrr, f"| {tname} | {best_mode} | {hit10} | {mrr:.3f} | {page_mrr:.3f} |"))
     digest_rows.sort(key=lambda x: x[0], reverse=True)
     for _, row in digest_rows:
         lines.append(row)
@@ -2103,7 +2164,10 @@ def generate_retrieval_report(
         "> **Column definitions:** "
         "**Best mode** = retrieval strategy that maximizes MRR for this tool. "
         "**Hit@10** = correct source page in top 10 results. "
-        "**MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged).",
+        "**MRR** (chunk-level) = Mean Reciprocal Rank across all retrieved chunks. "
+        "**Page MRR** (DS-1) = MRR after collapsing chunks-per-URL to unique pages — "
+        "removes the chunk-density gaming signal where a tool emitting more chunks "
+        "per page would otherwise rank ahead at the same content.",
         "",
     ])
 
@@ -2118,10 +2182,10 @@ def generate_retrieval_report(
         )
         lines.append("")
 
-    # Build header: Tool | Mode | Hit@K... | MRR
+    # Build header: Tool | Mode | Hit@K... | MRR | Page MRR
     k_headers = " | ".join(f"Hit@{k}" for k in REPORT_AT_K)
-    lines.append(f"| Tool | Mode | {k_headers} | MRR |")
-    lines.append("|---" + "|---" * len(REPORT_AT_K) + "|---|---|")
+    lines.append(f"| Tool | Mode | {k_headers} | MRR | Page MRR |")
+    lines.append("|---" + "|---" * len(REPORT_AT_K) + "|---|---|---|")
 
     # Sort within each mode group by MRR descending
     for mode in RETRIEVAL_MODES:
@@ -2130,10 +2194,10 @@ def generate_retrieval_report(
             agg = tool_mode_aggs[tool].get(mode)
             if agg is None:
                 continue
-            total_queries, agg_hits, mrr = agg
+            total_queries, agg_hits, mrr, page_mrr, _ = agg
             k_cols = [_fmt_rate(agg_hits[k], total_queries) for k in REPORT_AT_K]
             tname = tool
-            mode_rows.append((mrr, f"| {tname} | {mode} | " + " | ".join(k_cols) + f" | {mrr:.3f} |"))
+            mode_rows.append((mrr, f"| {tname} | {mode} | " + " | ".join(k_cols) + f" | {mrr:.3f} | {page_mrr:.3f} |"))
         mode_rows.sort(key=lambda x: x[0], reverse=True)
         for _, row in mode_rows:
             lines.append(row)
@@ -2142,7 +2206,8 @@ def generate_retrieval_report(
         "",
         "> **Column definitions:** "
         "**Hit@K** = percentage of queries where the correct source page appeared in the top K results (shown as % with raw counts). "
-        "**MRR** (Mean Reciprocal Rank) = average of 1/rank for correct results (1.0 = always rank 1, 0.5 = always rank 2). "
+        "**MRR** (Mean Reciprocal Rank, chunk-level) = average of 1/rank for correct results across the chunk-ordered top-K (1.0 = always rank 1, 0.5 = always rank 2). "
+        "**Page MRR** (DS-1, page-level) = MRR after collapsing multiple chunks per URL into a single rank — neutralises chunk-density inflation. Page MRR ≥ MRR by construction; the gap measures how much chunk-density was inflating the chunk-level number. "
         "**Mode** = retrieval strategy used (see definitions above).",
         "",
     ])
@@ -2635,6 +2700,7 @@ def _save_checkpoint(run_name: str, tool: str, site: str, config_label: str, res
         "search_time": result.search_time,
         "hits_at_k": result.hits_at_k,
         "mrr": result.mrr,
+        "page_mrr": result.page_mrr,
         "chunk_config_label": result.chunk_config_label,
         "mode_results": {},
         "query_results": [],  # primary (embedding) mode
@@ -2645,6 +2711,8 @@ def _save_checkpoint(run_name: str, tool: str, site: str, config_label: str, res
             "mode": mr.mode,
             "hits_at_k": mr.hits_at_k,
             "mrr": mr.mrr,
+            "page_mrr": mr.page_mrr,
+            "page_hits_at_k": mr.page_hits_at_k,
             "query_results": [],
         }
         for qr in mr.query_results:
@@ -2715,6 +2783,8 @@ def _load_checkpoint(run_name: str, tool: str, site: str, config_label: str) -> 
             query_results=_load_qrs(md["query_results"]),
             hits_at_k={int(k): v for k, v in md["hits_at_k"].items()},
             mrr=md["mrr"],
+            page_mrr=md.get("page_mrr", 0.0),
+            page_hits_at_k={int(k): v for k, v in md.get("page_hits_at_k", {}).items()},
         )
 
     return ToolSiteRetrievalResult(
@@ -2733,6 +2803,7 @@ def _load_checkpoint(run_name: str, tool: str, site: str, config_label: str) -> 
         mrr=data["mrr"],
         mode_results=mode_results,
         chunk_config_label=data.get("chunk_config_label", ""),
+        page_mrr=data.get("page_mrr", 0.0),
     )
 
 
