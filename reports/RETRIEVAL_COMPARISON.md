@@ -28,9 +28,9 @@ This benchmark chunks each tool's crawl output, embeds it with
 - **Hybrid**: Embedding + BM25 fused via Reciprocal Rank Fusion
 - **Reranked**: Hybrid candidates reranked by `cross-encoder/ms-marco-MiniLM-L-6-v2`
 
-**557 queries** across 11 sites.
+**561 queries** across 11 sites.
 Hit rate = correct source page in top-K results. Higher is better.
-Summary tables use the **495-query common subset** (9 sites) so all tools are compared on identical queries. Sites excluded: huggingface-transformers, newegg (not all tools have data). Per-site tables show full results.
+Summary tables use the **499-query common subset** (9 sites) so all tools are compared on identical queries. Sites excluded: huggingface-transformers, newegg (not all tools have data). Per-site tables show full results.
 
 ## Quick summary: best retrieval mode per tool
 
@@ -38,13 +38,13 @@ For each tool, the mode with the highest MRR. Most readers can stop here.
 
 | Tool | Best mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | MRR | Page MRR |
 |---|---|---|---|---|---|---|---|
-| crawl4ai-raw | embedding | 70% (347/495) ±4% | 83% (409/495) ±3% | 87% (431/495) ±3% | 91% (450/495) ±3% | 0.777 | 0.791 |
-| crawl4ai | embedding | 68% (339/495) ±4% | 82% (407/495) ±3% | 87% (429/495) ±3% | 90% (446/495) ±3% | 0.766 | 0.779 |
-| playwright | embedding | 68% (337/495) ±4% | 81% (402/495) ±3% | 86% (424/495) ±3% | 90% (447/495) ±3% | 0.761 | 0.773 |
-| crawlee | embedding | 67% (334/495) ±4% | 82% (405/495) ±3% | 86% (428/495) ±3% | 91% (448/495) ±3% | 0.758 | 0.769 |
-| colly+md | embedding | 45% (223/495) ±4% | 53% (260/495) ±4% | 54% (267/495) ±4% | 55% (274/495) ±4% | 0.490 | 0.497 |
-| markcrawl | hybrid | 23% (113/495) ±4% | 34% (169/495) ±4% | 36% (177/495) ±4% | 37% (184/495) ±4% | 0.287 | 0.290 |
-| scrapy+md | reranked | 16% (81/495) ±3% | 19% (95/495) ±3% | 21% (103/495) ±4% | 22% (108/495) ±4% | 0.182 | 0.185 |
+| crawlee | hybrid | 68% (338/499) ±4% | 82% (411/499) ±3% | 88% (438/499) ±3% | 94% (468/499) ±2% | 0.765 | 0.777 |
+| crawl4ai-raw | hybrid | 66% (330/499) ±4% | 84% (418/499) ±3% | 89% (443/499) ±3% | 95% (473/499) ±2% | 0.763 | 0.775 |
+| playwright | hybrid | 67% (332/499) ±4% | 83% (412/499) ±3% | 88% (439/499) ±3% | 94% (468/499) ±2% | 0.758 | 0.771 |
+| crawl4ai | hybrid | 66% (329/499) ±4% | 83% (413/499) ±3% | 88% (438/499) ±3% | 93% (466/499) ±2% | 0.757 | 0.769 |
+| colly+md | embedding | 42% (210/499) ±4% | 48% (241/499) ±4% | 51% (256/499) ±4% | 53% (264/499) ±4% | 0.459 | 0.468 |
+| markcrawl | hybrid | 28% (138/499) ±4% | 40% (201/499) ±4% | 42% (210/499) ±4% | 44% (218/499) ±4% | 0.341 | 0.345 |
+| scrapy+md | embedding | 15% (77/499) ±3% | 19% (97/499) ±3% | 21% (104/499) ±4% | 21% (106/499) ±4% | 0.176 | 0.178 |
 
 > **Column definitions:** **Best mode** = retrieval strategy that maximizes MRR for this tool. **Hit@K** = % of queries where the correct source page appeared in the top K (chunk-level). **MRR** (chunk-level) = Mean Reciprocal Rank across all retrieved chunks. **Page MRR** (DS-1) = MRR after collapsing chunks-per-URL to unique pages — removes the chunk-density gaming signal where a tool emitting more chunks per page would otherwise rank ahead at the same content.
 
@@ -52,60 +52,60 @@ For each tool, the mode with the highest MRR. Most readers can stop here.
 
 ## Summary: retrieval modes compared
 
-_Computed over 495 queries on 9 common sites (ikea, kubernetes-docs, mdn-css, postgres-docs, propublica, react-dev, rust-book, smittenkitchen, stripe-docs)._
+_Computed over 499 queries on 9 common sites (ikea, kubernetes-docs, mdn-css, postgres-docs, propublica, react-dev, rust-book, smittenkitchen, stripe-docs)._
 
 | Tool | Mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Page MRR |
 |---|---|---|---|---|---|---|---|---|
-| crawl4ai-raw | embedding | 70% (347/495) ±4% | 83% (409/495) ±3% | 87% (431/495) ±3% | 91% (450/495) ±3% | 95% (468/495) ±2% | 0.777 | 0.791 |
-| crawl4ai | embedding | 68% (339/495) ±4% | 82% (407/495) ±3% | 87% (429/495) ±3% | 90% (446/495) ±3% | 94% (463/495) ±2% | 0.766 | 0.779 |
-| playwright | embedding | 68% (337/495) ±4% | 81% (402/495) ±3% | 86% (424/495) ±3% | 90% (447/495) ±3% | 93% (460/495) ±2% | 0.761 | 0.773 |
-| crawlee | embedding | 67% (334/495) ±4% | 82% (405/495) ±3% | 86% (428/495) ±3% | 91% (448/495) ±3% | 93% (458/495) ±2% | 0.758 | 0.769 |
-| colly+md | embedding | 45% (223/495) ±4% | 53% (260/495) ±4% | 54% (267/495) ±4% | 55% (274/495) ±4% | 57% (282/495) ±4% | 0.490 | 0.497 |
-| markcrawl | embedding | 22% (108/495) ±4% | 31% (155/495) ±4% | 35% (174/495) ±4% | 38% (190/495) ±4% | 40% (198/495) ±4% | 0.276 | 0.283 |
-| scrapy+md | embedding | 16% (79/495) ±3% | 20% (98/495) ±4% | 21% (105/495) ±4% | 22% (107/495) ±4% | 22% (111/495) ±4% | 0.182 | 0.182 |
-| crawlee | bm25 | 46% (230/495) ±4% | 61% (302/495) ±4% | 67% (331/495) ±4% | 75% (371/495) ±4% | 81% (402/495) ±3% | 0.560 | 0.575 |
-| crawl4ai-raw | bm25 | 45% (223/495) ±4% | 63% (311/495) ±4% | 69% (341/495) ±4% | 75% (373/495) ±4% | 81% (402/495) ±3% | 0.556 | 0.566 |
-| crawl4ai | bm25 | 45% (225/495) ±4% | 62% (309/495) ±4% | 68% (338/495) ±4% | 75% (371/495) ±4% | 80% (397/495) ±4% | 0.555 | 0.565 |
-| playwright | bm25 | 44% (220/495) ±4% | 60% (297/495) ±4% | 65% (324/495) ±4% | 74% (366/495) ±4% | 79% (392/495) ±4% | 0.542 | 0.557 |
-| colly+md | bm25 | 26% (128/495) ±4% | 34% (170/495) ±4% | 39% (193/495) ±4% | 42% (207/495) ±4% | 46% (229/495) ±4% | 0.311 | 0.326 |
-| markcrawl | bm25 | 18% (88/495) ±3% | 28% (139/495) ±4% | 31% (153/495) ±4% | 34% (168/495) ±4% | 37% (182/495) ±4% | 0.239 | 0.241 |
-| scrapy+md | bm25 | 11% (54/495) ±3% | 15% (74/495) ±3% | 18% (89/495) ±3% | 20% (97/495) ±3% | 20% (101/495) ±4% | 0.138 | 0.140 |
-| crawl4ai-raw | hybrid | 64% (319/495) ±4% | 84% (418/495) ±3% | 88% (437/495) ±3% | 94% (464/495) ±2% | 96% (476/495) ±2% | 0.753 | 0.763 |
-| crawlee | hybrid | 66% (327/495) ±4% | 82% (404/495) ±3% | 87% (429/495) ±3% | 92% (457/495) ±2% | 94% (463/495) ±2% | 0.750 | 0.762 |
-| playwright | hybrid | 65% (324/495) ±4% | 82% (407/495) ±3% | 87% (431/495) ±3% | 92% (456/495) ±2% | 94% (466/495) ±2% | 0.747 | 0.761 |
-| crawl4ai | hybrid | 64% (317/495) ±4% | 84% (414/495) ±3% | 87% (432/495) ±3% | 92% (457/495) ±2% | 95% (472/495) ±2% | 0.746 | 0.756 |
-| colly+md | hybrid | 40% (200/495) ±4% | 49% (245/495) ±4% | 52% (259/495) ±4% | 56% (278/495) ±4% | 58% (285/495) ±4% | 0.457 | 0.465 |
-| markcrawl | hybrid | 23% (113/495) ±4% | 34% (169/495) ±4% | 36% (177/495) ±4% | 37% (184/495) ±4% | 39% (195/495) ±4% | 0.287 | 0.290 |
-| scrapy+md | hybrid | 16% (78/495) ±3% | 19% (92/495) ±3% | 20% (98/495) ±4% | 22% (107/495) ±4% | 23% (112/495) ±4% | 0.176 | 0.180 |
-| playwright | reranked | 65% (322/495) ±4% | 83% (409/495) ±3% | 87% (429/495) ±3% | 91% (448/495) ±3% | 94% (464/495) ±2% | 0.750 | 0.757 |
-| crawl4ai-raw | reranked | 64% (319/495) ±4% | 82% (408/495) ±3% | 88% (437/495) ±3% | 93% (458/495) ±2% | 97% (480/495) ±2% | 0.748 | 0.756 |
-| crawl4ai | reranked | 64% (317/495) ±4% | 82% (407/495) ±3% | 87% (433/495) ±3% | 92% (455/495) ±2% | 96% (475/495) ±2% | 0.743 | 0.751 |
-| crawlee | reranked | 62% (309/495) ±4% | 80% (395/495) ±4% | 84% (414/495) ±3% | 87% (432/495) ±3% | 91% (449/495) ±3% | 0.720 | 0.728 |
-| colly+md | reranked | 42% (209/495) ±4% | 52% (258/495) ±4% | 55% (270/495) ±4% | 57% (284/495) ±4% | 58% (287/495) ±4% | 0.478 | 0.483 |
-| markcrawl | reranked | 23% (114/495) ±4% | 33% (163/495) ±4% | 36% (180/495) ±4% | 39% (193/495) ±4% | 40% (197/495) ±4% | 0.285 | 0.289 |
-| scrapy+md | reranked | 16% (81/495) ±3% | 19% (95/495) ±3% | 21% (103/495) ±4% | 22% (108/495) ±4% | 23% (113/495) ±4% | 0.182 | 0.185 |
+| crawl4ai-raw | embedding | 68% (339/499) ±4% | 82% (408/499) ±3% | 87% (433/499) ±3% | 92% (457/499) ±2% | 96% (479/499) ±2% | 0.763 | 0.777 |
+| crawl4ai | embedding | 66% (331/499) ±4% | 81% (406/499) ±3% | 86% (431/499) ±3% | 91% (452/499) ±3% | 95% (474/499) ±2% | 0.753 | 0.765 |
+| playwright | embedding | 65% (326/499) ±4% | 81% (403/499) ±3% | 87% (435/499) ±3% | 91% (453/499) ±3% | 94% (470/499) ±2% | 0.747 | 0.761 |
+| crawlee | embedding | 65% (324/499) ±4% | 81% (403/499) ±3% | 87% (433/499) ±3% | 91% (454/499) ±3% | 94% (467/499) ±2% | 0.743 | 0.757 |
+| colly+md | embedding | 42% (210/499) ±4% | 48% (241/499) ±4% | 51% (256/499) ±4% | 53% (264/499) ±4% | 56% (278/499) ±4% | 0.459 | 0.468 |
+| markcrawl | embedding | 26% (132/499) ±4% | 37% (183/499) ±4% | 42% (208/499) ±4% | 44% (221/499) ±4% | 45% (227/499) ±4% | 0.327 | 0.334 |
+| scrapy+md | embedding | 15% (77/499) ±3% | 19% (97/499) ±3% | 21% (104/499) ±4% | 21% (106/499) ±4% | 22% (110/499) ±4% | 0.176 | 0.178 |
+| crawlee | bm25 | 46% (229/499) ±4% | 64% (318/499) ±4% | 70% (347/499) ±4% | 78% (389/499) ±4% | 84% (417/499) ±3% | 0.569 | 0.583 |
+| crawl4ai-raw | bm25 | 44% (218/499) ±4% | 65% (325/499) ±4% | 71% (352/499) ±4% | 78% (390/499) ±4% | 83% (414/499) ±3% | 0.558 | 0.570 |
+| crawl4ai | bm25 | 44% (220/499) ±4% | 65% (323/499) ±4% | 70% (349/499) ±4% | 78% (388/499) ±4% | 82% (409/499) ±3% | 0.557 | 0.569 |
+| playwright | bm25 | 44% (220/499) ±4% | 62% (309/499) ±4% | 68% (337/499) ±4% | 76% (381/499) ±4% | 82% (407/499) ±3% | 0.550 | 0.566 |
+| colly+md | bm25 | 26% (128/499) ±4% | 34% (168/499) ±4% | 37% (187/499) ±4% | 41% (207/499) ±4% | 46% (230/499) ±4% | 0.308 | 0.323 |
+| markcrawl | bm25 | 21% (104/499) ±4% | 30% (152/499) ±4% | 35% (174/499) ±4% | 39% (194/499) ±4% | 42% (208/499) ±4% | 0.271 | 0.275 |
+| scrapy+md | bm25 | 11% (56/499) ±3% | 15% (73/499) ±3% | 17% (84/499) ±3% | 18% (89/499) ±3% | 19% (97/499) ±3% | 0.135 | 0.138 |
+| crawlee | hybrid | 68% (338/499) ±4% | 82% (411/499) ±3% | 88% (438/499) ±3% | 94% (468/499) ±2% | 95% (473/499) ±2% | 0.765 | 0.777 |
+| crawl4ai-raw | hybrid | 66% (330/499) ±4% | 84% (418/499) ±3% | 89% (443/499) ±3% | 95% (473/499) ±2% | 97% (484/499) ±2% | 0.763 | 0.775 |
+| playwright | hybrid | 67% (332/499) ±4% | 83% (412/499) ±3% | 88% (439/499) ±3% | 94% (468/499) ±2% | 95% (476/499) ±2% | 0.758 | 0.771 |
+| crawl4ai | hybrid | 66% (329/499) ±4% | 83% (413/499) ±3% | 88% (438/499) ±3% | 93% (466/499) ±2% | 96% (480/499) ±2% | 0.757 | 0.769 |
+| colly+md | hybrid | 39% (194/499) ±4% | 46% (232/499) ±4% | 50% (251/499) ±4% | 55% (276/499) ±4% | 57% (284/499) ±4% | 0.439 | 0.450 |
+| markcrawl | hybrid | 28% (138/499) ±4% | 40% (201/499) ±4% | 42% (210/499) ±4% | 44% (218/499) ±4% | 46% (232/499) ±4% | 0.341 | 0.345 |
+| scrapy+md | hybrid | 15% (77/499) ±3% | 17% (87/499) ±3% | 19% (95/499) ±3% | 21% (103/499) ±4% | 22% (110/499) ±4% | 0.170 | 0.173 |
+| crawl4ai-raw | reranked | 64% (318/499) ±4% | 82% (409/499) ±3% | 88% (437/499) ±3% | 94% (467/499) ±2% | 97% (486/499) ±1% | 0.743 | 0.754 |
+| crawl4ai | reranked | 63% (316/499) ±4% | 82% (408/499) ±3% | 87% (433/499) ±3% | 93% (464/499) ±2% | 97% (482/499) ±2% | 0.738 | 0.749 |
+| playwright | reranked | 62% (308/499) ±4% | 81% (403/499) ±3% | 86% (430/499) ±3% | 90% (450/499) ±3% | 94% (471/499) ±2% | 0.726 | 0.736 |
+| crawlee | reranked | 59% (295/499) ±4% | 79% (393/499) ±4% | 83% (413/499) ±3% | 87% (435/499) ±3% | 91% (456/499) ±2% | 0.699 | 0.709 |
+| colly+md | reranked | 39% (197/499) ±4% | 49% (246/499) ±4% | 52% (259/499) ±4% | 56% (277/499) ±4% | 57% (285/499) ±4% | 0.451 | 0.459 |
+| markcrawl | reranked | 28% (141/499) ±4% | 38% (191/499) ±4% | 42% (208/499) ±4% | 44% (220/499) ±4% | 45% (225/499) ±4% | 0.337 | 0.340 |
+| scrapy+md | reranked | 15% (75/499) ±3% | 19% (94/499) ±3% | 20% (100/499) ±4% | 21% (106/499) ±4% | 22% (111/499) ±4% | 0.172 | 0.176 |
 
 > **Column definitions:** **Hit@K** = percentage of queries where the correct source page appeared in the top K results (shown as % with raw counts). **MRR** (Mean Reciprocal Rank, chunk-level) = average of 1/rank for correct results across the chunk-ordered top-K (1.0 = always rank 1, 0.5 = always rank 2). **Page MRR** (DS-1, page-level) = MRR after collapsing multiple chunks per URL into a single rank — neutralises chunk-density inflation. Page MRR ≥ MRR by construction; the gap measures how much chunk-density was inflating the chunk-level number. **Mode** = retrieval strategy used (see definitions above).
 
 ## Summary: embedding-only (hit rate at multiple K values)
 
-_Computed over 495 queries on 9 common sites._
+_Computed over 499 queries on 9 common sites._
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Avg words |
 |---|---|---|---|---|---|---|---|---|
-| crawl4ai-raw | 70% (347/495) ±4% | 83% (409/495) ±3% | 87% (431/495) ±3% | 91% (450/495) ±3% | 95% (468/495) ±2% | 0.777 | 25245 | 344 |
-| crawl4ai | 68% (339/495) ±4% | 82% (407/495) ±3% | 87% (429/495) ±3% | 90% (446/495) ±3% | 94% (463/495) ±2% | 0.766 | 24400 | 345 |
-| playwright | 68% (337/495) ±4% | 81% (402/495) ±3% | 86% (424/495) ±3% | 90% (447/495) ±3% | 93% (460/495) ±2% | 0.761 | 56855 | 382 |
-| crawlee | 67% (334/495) ±4% | 82% (405/495) ±3% | 86% (428/495) ±3% | 91% (448/495) ±3% | 93% (458/495) ±2% | 0.758 | 58912 | 382 |
-| colly+md | 45% (223/495) ±4% | 53% (260/495) ±4% | 54% (267/495) ±4% | 55% (274/495) ±4% | 57% (282/495) ±4% | 0.490 | 59078 | 385 |
-| markcrawl | 22% (108/495) ±4% | 31% (155/495) ±4% | 35% (174/495) ±4% | 38% (190/495) ±4% | 40% (198/495) ±4% | 0.276 | 27193 | 334 |
-| scrapy+md | 16% (79/495) ±3% | 20% (98/495) ±4% | 21% (105/495) ±4% | 22% (107/495) ±4% | 22% (111/495) ±4% | 0.182 | 46141 | 364 |
+| crawl4ai-raw | 68% (339/499) ±4% | 82% (408/499) ±3% | 87% (433/499) ±3% | 92% (457/499) ±2% | 96% (479/499) ±2% | 0.763 | 25245 | 344 |
+| crawl4ai | 66% (331/499) ±4% | 81% (406/499) ±3% | 86% (431/499) ±3% | 91% (452/499) ±3% | 95% (474/499) ±2% | 0.753 | 24400 | 345 |
+| playwright | 65% (326/499) ±4% | 81% (403/499) ±3% | 87% (435/499) ±3% | 91% (453/499) ±3% | 94% (470/499) ±2% | 0.747 | 56855 | 382 |
+| crawlee | 65% (324/499) ±4% | 81% (403/499) ±3% | 87% (433/499) ±3% | 91% (454/499) ±3% | 94% (467/499) ±2% | 0.743 | 58912 | 382 |
+| colly+md | 42% (210/499) ±4% | 48% (241/499) ±4% | 51% (256/499) ±4% | 53% (264/499) ±4% | 56% (278/499) ±4% | 0.459 | 59078 | 385 |
+| markcrawl | 26% (132/499) ±4% | 37% (183/499) ±4% | 42% (208/499) ±4% | 44% (221/499) ±4% | 45% (227/499) ±4% | 0.327 | 27193 | 334 |
+| scrapy+md | 15% (77/499) ±3% | 19% (97/499) ±3% | 21% (104/499) ±4% | 21% (106/499) ±4% | 22% (110/499) ±4% | 0.176 | 46141 | 364 |
 
 > **Column definitions:** **Hit@K** = correct source page in top K results. **MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged). **Chunks** = total chunks produced by this tool (across all pages in common sites). **Avg words** = mean words per chunk.
 
 ## What this means
 
-Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl similar pages from the same seed URLs, and we apply identical chunking and embedding pipelines, but extraction differences -- see [content quality](QUALITY_COMPARISON.md) -- show up at retrieval time.
+Tools span MRR 0.176-0.763 on embedding mode (a 0.587 spread). Tools crawl similar pages from the same seed URLs, and we apply identical chunking and embedding pipelines, but extraction differences -- see [content quality](QUALITY_COMPARISON.md) -- show up at retrieval time.
 
 **Retrieval mode matters more than crawler choice.** Embedding search beats BM25 by roughly 2x on MRR across all tools. Hybrid and reranked modes fall between the two. Choosing the right retrieval strategy will improve your RAG pipeline far more than switching crawlers.
 
@@ -1874,13 +1874,13 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| crawlee | 80% (48/60) | 98% (59/60) | 98% (59/60) | 100% (60/60) | 100% (60/60) | 0.891 | 3891 | 300 |
-| crawl4ai | 78% (47/60) | 98% (59/60) | 100% (60/60) | 100% (60/60) | 100% (60/60) | 0.885 | 3864 | 300 |
-| crawl4ai-raw | 78% (47/60) | 98% (59/60) | 100% (60/60) | 100% (60/60) | 100% (60/60) | 0.885 | 3864 | 300 |
-| playwright | 77% (46/60) | 92% (55/60) | 93% (56/60) | 98% (59/60) | 100% (60/60) | 0.854 | 4168 | 300 |
-| colly+md | 30% (18/60) | 37% (22/60) | 37% (22/60) | 37% (22/60) | 37% (22/60) | 0.328 | 4190 | 289 |
-| markcrawl | 22% (13/60) | 25% (15/60) | 27% (16/60) | 30% (18/60) | 32% (19/60) | 0.245 | 1006 | 300 |
-| scrapy+md | 12% (7/60) | 13% (8/60) | 13% (8/60) | 13% (8/60) | 13% (8/60) | 0.126 | 621 | 300 |
+| crawl4ai | 78% (47/60) | 93% (56/60) | 98% (59/60) | 100% (60/60) | 100% (60/60) | 0.867 | 3864 | 300 |
+| crawl4ai-raw | 78% (47/60) | 93% (56/60) | 98% (59/60) | 100% (60/60) | 100% (60/60) | 0.867 | 3864 | 300 |
+| crawlee | 72% (43/60) | 93% (56/60) | 97% (58/60) | 100% (60/60) | 100% (60/60) | 0.828 | 3891 | 300 |
+| playwright | 65% (39/60) | 90% (54/60) | 98% (59/60) | 98% (59/60) | 100% (60/60) | 0.786 | 4168 | 300 |
+| markcrawl | 23% (14/60) | 33% (20/60) | 37% (22/60) | 37% (22/60) | 37% (22/60) | 0.281 | 1006 | 300 |
+| colly+md | 17% (10/60) | 18% (11/60) | 20% (12/60) | 23% (14/60) | 23% (14/60) | 0.179 | 4190 | 289 |
+| scrapy+md | 3% (2/60) | 3% (2/60) | 3% (2/60) | 3% (2/60) | 3% (2/60) | 0.033 | 621 | 300 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
@@ -1889,35 +1889,371 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 > **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
-**Q1: What is auto-placement in CSS grid layout?**
-*(expects URL containing: `Auto-placement`)*
+**Q1: What is masonry layout in CSS?**
+*(expects URL containing: `Masonry_layout`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.771 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.690 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.659 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.703 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.676 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.674 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.703 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.676 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.674 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.419 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.362 | developer.mozilla.org/en-US/docs/Web/CSS | 0.359 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.698 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.666 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.727 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.704 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.683 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.709 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.683 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.649 |
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.723 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.569 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.568 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.539 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.539 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.466 | developer.mozilla.org/en-US/docs/Web/CSS | 0.456 | developer.mozilla.org/en-US/docs/Web/CSS | 0.413 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.631 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.581 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.645 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.598 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.531 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.612 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.600 |
 
 
-**Q2: How can you control the size of automatically created rows in the implicit grid?**
-*(expects URL containing: `Auto-placement`)*
+**Q2: How do you create a masonry layout using CSS?**
+*(expects URL containing: `Masonry_layout`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.680 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.570 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.546 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.623 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.576 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.573 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.623 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.576 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.573 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.291 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.290 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.262 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.612 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.551 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.539 |
-| colly+md | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.544 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.540 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.531 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.669 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.544 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.537 |
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.724 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.614 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.600 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.692 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.543 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.692 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.543 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.457 | developer.mozilla.org/en-US/docs/Web/CSS | 0.456 | developer.mozilla.org/en-US/docs/Web/CSS | 0.404 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.649 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.553 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.563 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.632 |
 
 
-**Q3: What does the CSS scoping module define?**
+**Q3: What properties are used to define scroll snapping in CSS?**
+*(expects URL containing: `Basic_concepts`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.803 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.757 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.716 |
+| crawl4ai | #4 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.727 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.708 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.705 |
+| crawl4ai-raw | #4 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.727 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.708 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.705 |
+| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.466 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.463 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.449 |
+| crawlee | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.738 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.688 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.686 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.803 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.715 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.705 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.705 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.698 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.695 |
+
+
+**Q4: What does the scroll-snap-type property determine?**
+*(expects URL containing: `Basic_concepts`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.731 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.717 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.658 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.673 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.633 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.620 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.633 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.620 |
+| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.392 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.350 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.338 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.633 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.632 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.686 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.646 |
+| playwright | #4 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.624 |
+
+
+**Q5: What are OpenType features in fonts?**
+*(expects URL containing: `OpenType_fonts`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.600 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.543 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.525 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.604 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.604 |
+| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.371 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.369 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.369 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.627 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.601 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.661 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.600 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.600 |
+
+
+**Q6: How can I enable ligatures in CSS?**
+*(expects URL containing: `OpenType_fonts`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.477 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.470 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.465 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.520 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.485 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.520 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.485 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/HTML/Referenc | 0.431 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.413 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.405 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.585 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.504 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.484 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.507 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.489 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.469 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.489 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.484 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.471 |
+
+
+**Q7: What does the border-radius CSS property do?**
+*(expects URL containing: `border-radius`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.649 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.589 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.582 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.589 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.582 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.397 | developer.mozilla.org/en-US/docs/Web/CSS | 0.387 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.383 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.585 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.576 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.631 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.623 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.618 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.633 |
+
+
+**Q8: How can you specify multiple radii using the border-radius property?**
+*(expects URL containing: `border-radius`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #5 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.578 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.566 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.544 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.534 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.512 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.534 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.512 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.356 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.347 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.343 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.546 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.497 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.635 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.559 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.669 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.594 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 |
+
+
+**Q9: What properties control breaks inside boxes in a multicol layout?**
+*(expects URL containing: `Handling_content_breaks`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.579 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.563 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.535 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.659 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.650 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fr | 0.605 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.659 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.650 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fr | 0.605 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.428 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.369 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.369 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fr | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.609 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.657 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.622 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.650 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fr | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.609 |
+
+
+**Q10: How can you prevent a caption from being separated from its image in a multicol layout?**
+*(expects URL containing: `Handling_content_breaks`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/How_to/La | 0.435 | developer.mozilla.org/en-US/docs/Web/CSS/How_to/La | 0.391 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.386 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.459 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.439 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.428 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.459 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.439 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.428 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.370 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.361 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.339 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.422 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.414 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.407 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.469 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.457 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.455 |
+| playwright | #3 | developer.mozilla.org/en-US/docs/Web/CSS/How_to/La | 0.426 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.422 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.414 |
+
+
+**Q11: What properties does the CSS borders and box decorations module provide?**
+*(expects URL containing: `Borders_and_box_decorations`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.677 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ta | 0.587 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.658 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.646 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.658 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.646 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.508 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.470 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.462 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.677 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.639 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.677 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.656 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.643 |
+| playwright | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.677 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.630 |
+
+
+**Q12: What new features does the CSS borders and box decorations module level 4 introduce?**
+*(expects URL containing: `Borders_and_box_decorations`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.596 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ta | 0.593 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.628 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.628 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.505 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.460 | developer.mozilla.org/en-US/docs/Web/CSS | 0.453 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.662 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.613 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.616 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.614 |
+
+
+**Q13: What are the six keywords accepted by the <timeline-range-name> value type?**
+*(expects URL containing: `Timeline_range_names`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.610 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.510 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.522 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.511 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.444 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.522 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.511 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.444 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/JavaScript/Re | 0.361 | developer.mozilla.org/en-US/docs/Web/JavaScript/Re | 0.358 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.344 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.505 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.481 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.447 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.411 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.395 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.387 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.589 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.447 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.432 |
+
+
+**Q14: How does the 'contain' named timeline range function in relation to the scrollport?**
+*(expects URL containing: `Timeline_range_names`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.606 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.596 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.533 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.691 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.612 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.691 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.612 |
+| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.399 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.354 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.353 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.687 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.601 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.550 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.522 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.520 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.669 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.595 |
+
+
+**Q15: How do browsers handle CSS errors when they encounter invalid values or missing semicolons?**
+*(expects URL containing: `Error_handling`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.518 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.511 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.503 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.637 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.637 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.458 | developer.mozilla.org/en-US/docs/Web/CSS | 0.434 | developer.mozilla.org/en-US/docs/Web/Security/Atta | 0.433 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.627 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.678 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.662 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.619 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.671 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.662 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.653 |
+
+
+**Q16: What happens to a CSS declaration block if it contains an invalid selector?**
+*(expects URL containing: `Error_handling`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ne | 0.522 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.519 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ne | 0.501 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.601 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.601 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.424 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.424 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.412 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.614 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.644 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.614 |
+
+
+**Q17: What is the alignment container in multi-column layout?**
+*(expects URL containing: `In_multi-column_layout`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.531 | developer.mozilla.org/en-US/docs/Web/CSS/How_to/La | 0.529 | developer.mozilla.org/en-US/docs/Web/CSS/How_to/La | 0.507 |
+| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.574 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.573 |
+| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.574 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.573 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.338 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.333 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.323 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.576 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.566 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.598 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.550 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.576 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.566 |
+
+
+**Q18: How does the column-gap property behave in multi-column layout?**
+*(expects URL containing: `In_multi-column_layout`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.672 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.571 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.702 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.612 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.702 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.612 |
+| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.331 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.331 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.330 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.683 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.588 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.571 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.602 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.589 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.683 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.598 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mu | 0.575 |
+
+
+**Q19: What is the initial viewport?**
+*(expects URL containing: `Viewport_concepts`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.572 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.590 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.580 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.590 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.580 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/JavaScript/Gu | 0.313 | developer.mozilla.org/en-US/docs/Web/JavaScript/Gu | 0.297 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.287 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.656 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.541 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.656 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.541 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.656 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.541 |
+
+
+**Q20: How does the viewport meta tag affect the actual viewport?**
+*(expects URL containing: `Viewport_concepts`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.594 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.580 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.649 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.580 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.569 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.649 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.580 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.569 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.355 | developer.mozilla.org/en-US/docs/Web/HTML/Referenc | 0.337 | developer.mozilla.org/en-US/docs/Web/API/ImageDeco | 0.322 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.577 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.563 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.570 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/CS | 0.570 |
+
+
+**Q21: What are the most commonly-used CSS data types?**
+*(expects URL containing: `Data_types`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.622 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.582 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.696 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.630 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.696 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.630 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.512 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.506 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.492 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.680 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.605 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.691 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.628 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.680 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.610 |
+
+
+**Q22: How are CSS data types denoted in formal CSS syntax?**
+*(expects URL containing: `Data_types`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.656 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.599 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.710 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.631 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.611 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.710 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.631 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.611 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.525 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.516 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.512 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.688 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.596 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.724 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.643 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.688 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.603 |
+
+
+**Q23: What are the basic building blocks of CSS syntax?**
+*(expects URL containing: `Introduction`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.612 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.623 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.623 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.534 | developer.mozilla.org/en-US/docs/Web/CSS | 0.524 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.612 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.602 |
+| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.658 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.645 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.612 |
+
+
+**Q24: What is a CSS declaration and how is it structured?**
+*(expects URL containing: `Introduction`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.604 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.592 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.589 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.643 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.609 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.643 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.609 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.565 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.545 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.520 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.568 |
+| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.708 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS | 0.610 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.570 |
+
+
+**Q25: What property is used to set a threshold for opacity when creating shapes from images?**
+*(expects URL containing: `From_images`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.652 |
+| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.581 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.545 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.531 |
+| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.581 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.545 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.531 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.412 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.363 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.352 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.562 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.543 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.521 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.572 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.616 |
+
+
+**Q26: How can you create shapes using a CSS gradient?**
+*(expects URL containing: `From_images`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.595 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.565 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.693 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.608 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.693 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.608 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.452 | developer.mozilla.org/en-US/docs/Web/CSS | 0.449 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.429 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.603 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.735 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.672 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.620 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.735 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.702 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sh | 0.657 |
+
+
+**Q27: What does the CSS scoping module define?**
 *(expects URL containing: `Scoping`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -1931,7 +2267,7 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.570 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.569 |
 
 
-**Q4: How do selectors behave within a shadow tree in CSS?**
+**Q28: How do selectors behave within a shadow tree in CSS?**
 *(expects URL containing: `Scoping`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -1945,119 +2281,119 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #4 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.569 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.566 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.560 |
 
 
-**Q5: What is the Fetch API used for?**
-*(expects URL containing: `Fetch_API`)*
+**Q29: What does the CSS counter styles module allow you to define?**
+*(expects URL containing: `Counter_styles`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.243 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.228 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.225 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.576 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.552 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.541 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.576 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.552 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.541 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/API/XMLHttpRe | 0.433 | developer.mozilla.org/en-US/docs/Web/API/XMLHttpRe | 0.371 | developer.mozilla.org/zh-CN/docs/Web/HTTP/Referenc | 0.366 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.561 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.557 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.540 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/API/Fetch/API | 0.588 | developer.mozilla.org/en-US/docs/Web/API/Fetch/API | 0.545 | developer.mozilla.org/en-US/docs/Web/API/Fetch/API | 0.540 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.557 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.552 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.540 |
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.611 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.671 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.611 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.671 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.611 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.515 | developer.mozilla.org/en-US/docs/Web/CSS | 0.492 | developer.mozilla.org/en-US/docs/Web/CSS | 0.478 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.659 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.650 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.611 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.690 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.630 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.585 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.659 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.650 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.615 |
 
 
-**Q6: What method is used to fetch a resource with the Fetch API?**
-*(expects URL containing: `Fetch_API`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.286 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.279 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.218 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.550 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.550 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.522 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.550 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.550 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.522 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/API/XMLHttpRe | 0.416 | developer.mozilla.org/zh-CN/docs/Web/HTTP/Referenc | 0.386 | developer.mozilla.org/zh-CN/docs/Web/HTTP/Referenc | 0.371 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.550 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.531 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.531 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/API/Fetch/API | 0.555 | developer.mozilla.org/en-US/docs/Web/API/Fetch/API | 0.545 | developer.mozilla.org/en-US/docs/Web/API/Fetch/API | 0.528 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.550 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.546 | developer.mozilla.org/en-US/docs/Web/API/Fetch_API | 0.531 |
-
-
-**Q7: What is the purpose of the :target pseudo-class in CSS?**
-*(expects URL containing: `Using_:target`)*
+**Q30: How many descriptors does the @counter-style rule define?**
+*(expects URL containing: `Counter_styles`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.698 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.659 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.608 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.563 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.563 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/HTML/Referenc | 0.421 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.411 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.405 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.572 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.589 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.575 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ps | 0.575 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.628 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.554 |
+| markcrawl | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.520 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.517 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.516 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.526 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.518 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.510 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.526 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.518 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.510 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.350 | developer.mozilla.org/fr/docs/Web/JavaScript/Refer | 0.296 | developer.mozilla.org/fr/docs/Web/JavaScript/Refer | 0.284 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.519 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.517 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.529 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.515 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.478 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.517 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.515 |
 
 
-**Q8: How can you style all targeted elements using the universal selector?**
-*(expects URL containing: `Using_:target`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #6 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.574 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.564 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.577 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.559 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.577 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.559 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.430 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.427 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.425 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.574 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.565 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.543 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.574 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.553 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.552 |
-| playwright | #8 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.574 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.574 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.545 |
-
-
-**Q9: What types of images can be used in CSS?**
-*(expects URL containing: `Images`)*
+**Q31: What is CSS typed arithmetic?**
+*(expects URL containing: `Using_typed_arithmetic`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #7 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.581 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.555 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.596 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.593 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.596 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.593 |
-| scrapy+md | #2 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.543 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.532 | developer.mozilla.org/en-US/docs/Web/CSS | 0.525 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.617 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.601 |
-| colly+md | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.605 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.610 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.519 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.511 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.664 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.569 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.664 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.569 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.428 | developer.mozilla.org/en-US/docs/Web/CSS | 0.426 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.418 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.643 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.605 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.562 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.546 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.534 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.534 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.643 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.572 |
 
 
-**Q10: What is the image-resolution property in CSS?**
-*(expects URL containing: `Images`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #11 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.603 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.595 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.591 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.618 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.570 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.541 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.618 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.570 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.541 |
-| scrapy+md | #1 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.497 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.454 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.451 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.602 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.569 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.552 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.597 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.569 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.564 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.597 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.569 | developer.mozilla.org/en-US/docs/Web/HTML/Guides/R | 0.564 |
-
-
-**Q11: What are the two types of CSS properties based on inheritance?**
-*(expects URL containing: `Inheritance`)*
+**Q32: How does division work in CSS typed arithmetic?**
+*(expects URL containing: `Using_typed_arithmetic`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.622 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.587 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.572 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.607 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.597 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.584 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.607 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.597 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.584 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.559 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.461 | developer.mozilla.org/en-US/docs/Web/CSS | 0.455 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.600 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.581 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.565 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.596 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.587 |
-| playwright | #7 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.596 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.586 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.551 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.513 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.680 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.627 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.680 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.627 |
+| scrapy+md | miss | developer.mozilla.org/fr/docs/Web/JavaScript/Refer | 0.421 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.414 | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.396 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.648 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.520 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.509 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.502 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.650 |
 
 
-**Q12: What happens when no value is specified for a non-inherited property on an element?**
-*(expects URL containing: `Inheritance`)*
+**Q33: What is a replaced element in CSS?**
+*(expects URL containing: `Replaced_element_properties`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.453 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.444 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.440 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.493 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.484 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.478 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.493 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.484 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.478 |
-| scrapy+md | miss | developer.mozilla.org/ko/docs/Web/JavaScript/Refer | 0.384 | developer.mozilla.org/ja/docs/Web/JavaScript/Refer | 0.372 | developer.mozilla.org/ru/docs/Web/JavaScript/Refer | 0.364 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.501 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.497 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.467 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.557 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.467 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.464 |
-| playwright | #9 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.467 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.464 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.464 |
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.702 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.548 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ps | 0.530 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.508 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.505 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.508 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.505 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.604 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.464 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.463 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.647 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.530 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.509 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS | 0.523 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.647 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.530 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.509 |
 
 
-**Q13: What are at-rules in CSS?**
+**Q34: How does the object-fit property affect replaced elements?**
+*(expects URL containing: `Replaced_element_properties`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.656 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.627 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.607 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.607 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.532 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.477 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.448 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.607 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.598 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.607 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.583 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.607 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.598 |
+
+
+**Q35: What are the logical properties used for sizing elements in CSS?**
+*(expects URL containing: `Sizing`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.588 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.577 |
+| crawl4ai | #5 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.649 |
+| crawl4ai-raw | #5 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.649 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.509 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.500 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.487 |
+| crawlee | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.619 |
+| colly+md | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.651 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.572 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.610 |
+
+
+**Q36: How do inline-size and block-size relate to width and height in a horizontal writing mode?**
+*(expects URL containing: `Sizing`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #31 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.643 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.525 |
+| crawl4ai | #6 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Wr | 0.636 |
+| crawl4ai-raw | #6 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Wr | 0.636 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.392 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.368 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.363 |
+| crawlee | #7 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Wr | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.625 |
+| colly+md | #5 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.654 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/In | 0.568 |
+| playwright | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.654 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Wr | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.623 |
+
+
+**Q37: What are at-rules in CSS?**
 *(expects URL containing: `At-rules`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -2066,222 +2402,82 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.682 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.650 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.632 |
 | crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.682 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.650 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.632 |
 | scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.519 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.444 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.442 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.654 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.646 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.646 |
 | colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.728 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.661 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.660 |
 | playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.678 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.661 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.654 |
 
 
-**Q14: What is the purpose of the @import at-rule?**
+**Q38: How do at-rules begin in CSS?**
 *(expects URL containing: `At-rules`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.612 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.502 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.494 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.560 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.484 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.560 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.484 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.381 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.379 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.379 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.568 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.488 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.577 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.551 |
-| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.566 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.511 |
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.765 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ne | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.653 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.694 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.633 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.694 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.633 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.512 | developer.mozilla.org/en-US/docs/Web/CSS | 0.465 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.462 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.684 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.651 |
+| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.739 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.665 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.661 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.689 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.665 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.661 |
 
 
-**Q15: What is the purpose of the HTTP Observatory?**
-*(expects URL containing: `observatory`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.305 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.270 | developer.mozilla.org/en-US/docs/Web/CSS | 0.268 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.436 | developer.mozilla.org/en-US/observatory | 0.423 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.408 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.436 | developer.mozilla.org/en-US/observatory | 0.423 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.408 |
-| scrapy+md | miss | developer.mozilla.org/zh-CN/docs/Web/HTTP/Referenc | 0.353 | developer.mozilla.org/en-US/docs/Web/API/XMLHttpRe | 0.317 | developer.mozilla.org/zh-CN/docs/Web/HTTP/Referenc | 0.313 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.550 | developer.mozilla.org/en-US/observatory | 0.527 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.454 |
-| colly+md | #1 | developer.mozilla.org/en-US/observatory | 0.520 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.454 | developer.mozilla.org/en-US/observatory | 0.447 |
-| playwright | #2 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.550 | developer.mozilla.org/en-US/observatory | 0.527 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.454 |
-
-
-**Q16: How many websites has the HTTP Observatory provided insights to?**
-*(expects URL containing: `observatory`)*
+**Q39: What does the Color mixer tool allow you to do?**
+*(expects URL containing: `Color_mixer`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.282 | developer.mozilla.org/en-US/docs/Web/CSS | 0.276 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.273 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/observatory | 0.443 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.438 | developer.mozilla.org/en-US/blog/ | 0.433 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/observatory | 0.443 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.438 | developer.mozilla.org/en-US/blog/ | 0.433 |
-| scrapy+md | miss | developer.mozilla.org/zh-CN/docs/Web/HTTP/Referenc | 0.337 | developer.mozilla.org/zh-CN/docs/Web/HTTP/Referenc | 0.318 | developer.mozilla.org/en-US/docs/Web/API/XMLHttpRe | 0.283 |
-| crawlee | #1 | developer.mozilla.org/en-US/observatory | 0.537 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.523 | developer.mozilla.org/en-US/docs/Web | 0.452 |
-| colly+md | #1 | developer.mozilla.org/en-US/observatory | 0.526 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.450 | developer.mozilla.org/en-US/docs/Web/Security | 0.429 |
-| playwright | #1 | developer.mozilla.org/en-US/observatory | 0.537 | developer.mozilla.org/en-US/docs/Web/HTTP | 0.523 | developer.mozilla.org/en-US/docs/Web | 0.452 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.543 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.530 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.513 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.512 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.512 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.389 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.384 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.336 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.577 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.489 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.551 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.533 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.496 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.567 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.545 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.538 |
 
 
-**Q17: What properties are defined by the CSS box model?**
-*(expects URL containing: `Box_model`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.661 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.657 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.656 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.697 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.665 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.661 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.698 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.665 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.660 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.558 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.493 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.473 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.696 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.673 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.655 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.705 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.703 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.672 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.696 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.673 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.655 |
-
-
-**Q18: What does the CSS box model describe about the layout of elements?**
-*(expects URL containing: `Box_model`)*
+**Q40: How can you change the percentages of each input color in the Color mixer?**
+*(expects URL containing: `Color_mixer`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.673 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.642 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.640 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.647 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.644 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.647 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.644 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.554 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.476 | developer.mozilla.org/en-US/docs/Web/CSS | 0.474 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.640 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.661 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.656 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.640 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.538 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.537 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.535 |
+| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.560 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.539 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.502 |
+| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.560 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.539 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.502 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.452 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.365 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.354 |
+| crawlee | #4 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.531 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.491 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.484 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.563 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.528 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.513 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.537 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.536 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.535 |
 
 
-**Q19: How does the `order` property affect the visual order of flex items?**
-*(expects URL containing: `Ordering_items`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.696 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.696 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.625 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.750 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.750 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.742 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.750 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.750 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.742 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.460 | developer.mozilla.org/en-US/docs/Web/HTML/Referenc | 0.403 | developer.mozilla.org/en-US/docs/Web/HTML/Referenc | 0.345 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.743 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.727 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.699 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.742 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.705 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.692 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.742 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.705 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.692 |
-
-
-**Q20: What should authors avoid when using the `order` property in flexbox layouts?**
-*(expects URL containing: `Ordering_items`)*
+**Q41: What does the `subgrid` value do in CSS grid layout?**
+*(expects URL containing: `Subgrid`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.594 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.590 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.669 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.656 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.606 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.669 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.656 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.606 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.463 | developer.mozilla.org/en-US/docs/Web/HTML/Referenc | 0.384 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.370 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.613 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.617 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.615 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.623 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.585 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.579 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.710 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.710 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.708 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.710 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.710 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.708 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.414 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.386 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.377 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.701 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.692 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.683 |
+| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.701 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.700 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.675 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.720 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.700 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.692 |
 
 
-**Q21: What are the types of easing functions defined in the CSS easing functions module?**
-*(expects URL containing: `Easing_functions`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.525 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.519 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.703 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.591 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.703 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.591 |
-| scrapy+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.466 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.448 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.708 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.555 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.612 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.708 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.555 |
-
-
-**Q22: How do cubic bezier easing functions enhance user interface elements?**
-*(expects URL containing: `Easing_functions`)*
+**Q42: How does the `gap` property behave in a subgrid?**
+*(expects URL containing: `Subgrid`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.479 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.457 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.439 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.588 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.454 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.450 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.588 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.454 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.450 |
-| scrapy+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.523 | developer.mozilla.org/en-US/docs/Glossary/Bezier_c | 0.419 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.398 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.604 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.457 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.432 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.628 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.476 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.469 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.604 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.489 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.434 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.603 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.533 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.500 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.728 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.673 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.628 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.728 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.673 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.628 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.317 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.317 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.306 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.716 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.621 |
+| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.704 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.625 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.703 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.625 |
 
 
-**Q23: What are Uniform Resource Identifiers (URI)?**
-*(expects URL containing: `URI`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.338 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.335 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.319 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.502 | developer.mozilla.org/en-US/docs/Glossary/XHTML | 0.458 | developer.mozilla.org/en-US/docs/Web/URI | 0.432 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.502 | developer.mozilla.org/en-US/docs/Glossary/XHTML | 0.458 | developer.mozilla.org/en-US/docs/Web/URI | 0.432 |
-| scrapy+md | #1 | developer.mozilla.org/zh-CN/docs/Web/JavaScript/Re | 0.449 | developer.mozilla.org/fr/docs/Web/JavaScript/Refer | 0.413 | developer.mozilla.org/zh-CN/docs/Web/JavaScript/Re | 0.349 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.525 | developer.mozilla.org/en-US/docs/Web/URI | 0.455 | developer.mozilla.org/en-US/docs/Glossary/XHTML | 0.427 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.549 | developer.mozilla.org/en-US/docs/Web/URI | 0.548 | developer.mozilla.org/en-US/docs/Glossary/XHTML | 0.427 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.525 | developer.mozilla.org/en-US/docs/Web/URI | 0.455 | developer.mozilla.org/en-US/docs/Glossary/XHTML | 0.427 |
-
-
-**Q24: What is the purpose of the fragment in a URI?**
-*(expects URL containing: `URI`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.525 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.412 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.352 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.569 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.497 | developer.mozilla.org/en-US/docs/Web/URI | 0.480 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.569 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.497 | developer.mozilla.org/en-US/docs/Web/URI | 0.480 |
-| scrapy+md | #1 | developer.mozilla.org/zh-CN/docs/Web/JavaScript/Re | 0.329 | developer.mozilla.org/fr/docs/Web/JavaScript/Refer | 0.322 | developer.mozilla.org/fr/docs/Web/JavaScript/Refer | 0.320 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.507 | developer.mozilla.org/en-US/docs/Web/URI | 0.480 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.510 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.390 | developer.mozilla.org/en-US/docs/Web/URI | 0.376 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/URI | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Se | 0.531 | developer.mozilla.org/en-US/docs/Web/URI | 0.480 |
-
-
-**Q25: What problem does scroll anchoring solve?**
-*(expects URL containing: `Overview`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.665 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.497 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.478 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.604 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.604 |
-| scrapy+md | #43 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.372 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.308 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.294 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.612 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.597 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.596 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.586 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.581 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.612 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.599 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.596 |
-
-
-**Q26: How can I disable scroll anchoring in my document?**
-*(expects URL containing: `Overview`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.506 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.477 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.714 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.624 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.587 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.714 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.624 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.587 |
-| scrapy+md | #36 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.401 | developer.mozilla.org/en-US/docs/Web/API/Event/pre | 0.352 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.350 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.662 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.594 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.593 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.572 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.594 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.593 |
-
-
-**Q27: How can I assign names to grid lines in CSS?**
-*(expects URL containing: `Named_grid_lines`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.614 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.614 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.622 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.614 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.622 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.614 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.418 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.412 | developer.mozilla.org/en-US/docs/Web/CSS | 0.405 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.598 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.614 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.609 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.659 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.614 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.611 |
-
-
-**Q28: What happens when I use the repeat() syntax for naming grid lines?**
-*(expects URL containing: `Named_grid_lines`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.586 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.545 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.523 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.624 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.571 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.624 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.571 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.332 | developer.mozilla.org/ja/docs/Web/SVG/Reference/At | 0.324 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.313 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.630 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.560 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.602 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.579 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.603 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.579 |
-
-
-**Q29: What does the CSS box alignment module specify?**
+**Q43: What does the CSS box alignment module specify?**
 *(expects URL containing: `Box_alignment`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -2295,7 +2491,7 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.700 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.688 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.667 |
 
 
-**Q30: How is alignment linked to writing modes in CSS?**
+**Q44: How is alignment linked to writing modes in CSS?**
 *(expects URL containing: `Box_alignment`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -2309,424 +2505,228 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #12 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.644 |
 
 
-**Q31: What are CSS logical properties and values?**
-*(expects URL containing: `Logical_properties_and_values`)*
+**Q45: What properties control alignment in flexbox?**
+*(expects URL containing: `Aligning_items`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.658 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.611 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.828 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.702 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.682 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.828 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.702 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.682 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.610 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.514 | developer.mozilla.org/en-US/docs/Web/CSS | 0.508 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.672 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.645 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.627 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.624 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.672 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.649 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.651 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.648 |
+| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.665 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.654 |
+| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.665 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.654 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.473 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.412 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.405 |
+| crawlee | #5 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.697 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.656 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.676 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.664 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.697 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.691 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.664 |
 
 
-**Q32: How do logical properties define direction-relative equivalents to physical properties?**
-*(expects URL containing: `Logical_properties_and_values`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.474 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.443 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.401 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.521 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.483 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.478 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.521 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.483 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.478 |
-| scrapy+md | miss | developer.mozilla.org/ko/docs/Web/JavaScript/Refer | 0.332 | developer.mozilla.org/ko/docs/Web/JavaScript/Refer | 0.297 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.290 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.515 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.463 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.443 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.476 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.434 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.417 |
-| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.476 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.443 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.443 |
-
-
-**Q33: What does the CSS view transitions module define?**
-*(expects URL containing: `View_transitions`)*
+**Q46: How does the align-items property affect flex items on the cross axis?**
+*(expects URL containing: `Aligning_items`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.635 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.635 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.612 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.713 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.693 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.636 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.713 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.693 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.636 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.515 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.503 | developer.mozilla.org/en-US/docs/Web/CSS | 0.482 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.630 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.621 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.672 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.642 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.612 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.630 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.621 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.683 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.667 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Bo | 0.657 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.736 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.719 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.693 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.736 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.719 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.693 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.380 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.346 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.336 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.725 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.715 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.676 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.752 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.709 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.704 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.709 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.707 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fl | 0.704 |
 
 
-**Q34: How can developers create animated transitions using the View Transition API?**
-*(expects URL containing: `View_transitions`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.580 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.580 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.542 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.564 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.490 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.486 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.564 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.490 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.486 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/JavaScript/Gu | 0.378 | developer.mozilla.org/en-US/docs/Web/JavaScript/Gu | 0.365 | developer.mozilla.org/en-US/docs/Web/JavaScript/Gu | 0.336 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.554 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.484 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.482 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.496 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.492 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.486 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Vi | 0.554 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.496 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.482 |
-
-
-**Q35: What are the four commonly-used CSS math functions?**
-*(expects URL containing: `Using_math_functions`)*
+**Q47: What do logical properties and values in CSS define?**
+*(expects URL containing: `Basic_concepts`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.580 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.570 |
-| crawl4ai | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.677 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.658 |
-| crawl4ai-raw | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.677 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.658 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.461 | developer.mozilla.org/en-US/docs/Web/CSS | 0.457 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.440 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.689 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.662 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.624 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.642 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.563 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.714 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.702 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.689 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.586 |
+| crawl4ai | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.786 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.664 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.645 |
+| crawl4ai-raw | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.786 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.664 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.645 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.581 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.454 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.449 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.627 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.627 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.624 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.614 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.598 |
+| playwright | #4 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.627 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.624 |
 
 
-**Q36: How does the `calc()` function work in CSS?**
-*(expects URL containing: `Using_math_functions`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.756 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.707 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.697 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.628 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.614 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.594 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.628 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.614 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.594 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.453 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.447 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.441 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.606 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.588 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.566 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.562 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.554 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.542 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.689 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.608 |
-
-
-**Q37: What is the focus of web security?**
-*(expects URL containing: `Security`)*
+**Q48: How do logical properties help with different writing modes in CSS?**
+*(expects URL containing: `Basic_concepts`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.302 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.298 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.286 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/Security | 0.540 | developer.mozilla.org/en-US/docs/Web/Security | 0.538 | developer.mozilla.org/en-US/docs/Web/Security | 0.526 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/Security | 0.541 | developer.mozilla.org/en-US/docs/Web/Security | 0.538 | developer.mozilla.org/en-US/docs/Web/Security | 0.526 |
-| scrapy+md | #1 | developer.mozilla.org/en-US/docs/Web/Security/Atta | 0.428 | developer.mozilla.org/en-US/docs/Web/Security/Atta | 0.400 | developer.mozilla.org/en-US/docs/Web/Security/Atta | 0.393 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/Security | 0.531 | developer.mozilla.org/en-US/docs/Web/Security | 0.529 | developer.mozilla.org/en-US/docs/Web/Security | 0.520 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/Security | 0.582 | developer.mozilla.org/en-US/docs/Web/Security | 0.547 | developer.mozilla.org/en-US/docs/Web/Security | 0.531 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/Security | 0.531 | developer.mozilla.org/en-US/docs/Web/Security | 0.529 | developer.mozilla.org/en-US/docs/Web/Security | 0.520 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.743 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Wr | 0.649 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.641 |
+| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.683 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.672 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.662 |
+| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.683 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.672 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.662 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.539 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.510 | developer.mozilla.org/en-US/docs/Web/CSS | 0.475 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.662 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.625 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.753 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.673 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.672 |
+| playwright | #4 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.753 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.708 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.657 |
 
 
-**Q38: How do modern browsers protect users' security on the web?**
-*(expects URL containing: `Security`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.372 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.355 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.346 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.638 | developer.mozilla.org/en-US/docs/Web/Security | 0.634 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.621 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.638 | developer.mozilla.org/en-US/docs/Web/Security | 0.634 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.621 |
-| scrapy+md | #1 | developer.mozilla.org/en-US/docs/Web/Security/Atta | 0.454 | developer.mozilla.org/en-US/docs/Web/Security/Atta | 0.433 | developer.mozilla.org/en-US/docs/Web/Security/Atta | 0.426 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.649 | developer.mozilla.org/en-US/docs/Web/Security | 0.622 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.620 |
-| colly+md | #3 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.649 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.620 | developer.mozilla.org/en-US/docs/Web/Security | 0.601 |
-| playwright | #2 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.649 | developer.mozilla.org/en-US/docs/Web/Security | 0.622 | developer.mozilla.org/en-US/docs/Web/Privacy | 0.620 |
-
-
-**Q39: What does the object-view-box property do?**
-*(expects URL containing: `Using_object-view-box`)*
+**Q49: What are the logical properties for floating and positioning in CSS?**
+*(expects URL containing: `Floating_and_positioning`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.431 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.431 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.429 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.516 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.509 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.484 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.516 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.509 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.484 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.396 | developer.mozilla.org/en-US/docs/Web/JavaScript/Gu | 0.373 | developer.mozilla.org/en-US/docs/Web/JavaScript/Gu | 0.358 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.527 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.510 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.501 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.541 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.527 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.523 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.527 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.523 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.501 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.569 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.567 |
+| crawl4ai | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.602 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.589 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.575 |
+| crawl4ai-raw | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.602 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.589 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.575 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.511 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.431 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.424 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.578 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.572 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.571 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.570 |
+| playwright | #4 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.589 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.578 |
 
 
-**Q40: How does the object-view-box property differ from object-fit?**
-*(expects URL containing: `Using_object-view-box`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.601 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.583 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.583 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.536 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.412 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.373 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.594 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.622 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.575 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.622 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Im | 0.594 |
-
-
-**Q41: What are the different textual data types in CSS?**
-*(expects URL containing: `Textual_data_types`)*
+**Q50: How do the inset properties relate to positioned layout in CSS?**
+*(expects URL containing: `Floating_and_positioning`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.612 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.593 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.593 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.585 | developer.mozilla.org/en-US/docs/Web/CSS | 0.552 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.537 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.633 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.612 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.714 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.627 |
-| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.642 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.612 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.643 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.630 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.594 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.552 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.594 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.552 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.442 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.436 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.413 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.550 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.605 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.579 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.562 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Lo | 0.592 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.562 |
 
 
-**Q42: What do the CSS-wide keywords represent?**
-*(expects URL containing: `Textual_data_types`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.571 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.569 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.558 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.558 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.510 | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.504 | developer.mozilla.org/en-US/docs/Web/CSS | 0.488 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.622 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.557 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.593 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.587 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.557 |
-
-
-**Q43: What does the CSS motion path module allow authors to do?**
-*(expects URL containing: `Motion_path`)*
+**Q51: What does the CSS basic user interface module allow you to define?**
+*(expects URL containing: `Basic_user_interface`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.536 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.502 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.654 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.513 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.512 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.654 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.513 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.512 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.465 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.449 | developer.mozilla.org/en-US/docs/Web/CSS | 0.449 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.508 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.507 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.693 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.577 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.511 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.508 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.507 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.580 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.557 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.571 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.564 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.571 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.564 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.543 | developer.mozilla.org/en-US/docs/Web/CSS | 0.523 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.497 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.598 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.557 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.555 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.660 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.610 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.572 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.661 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.557 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.555 |
 
 
-**Q44: How can you animate an element along a defined path using CSS motion paths?**
-*(expects URL containing: `Motion_path`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.581 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.561 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.495 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.495 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.376 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.356 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.353 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.661 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.558 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.502 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.678 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.549 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Mo | 0.558 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.549 |
-
-
-**Q45: What properties can be used for visual styling of scrollbars?**
-*(expects URL containing: `Scrollbars_styling`)*
+**Q52: How can basic user interface properties improve user experience and accessibility?**
+*(expects URL containing: `Basic_user_interface`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.676 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.671 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.633 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.630 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.553 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.540 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.630 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.553 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.540 |
-| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.462 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.442 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.438 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.553 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.544 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.645 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.551 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.636 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.551 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.457 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.452 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.429 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.606 | developer.mozilla.org/en-US/docs/Web/Accessibility | 0.550 | developer.mozilla.org/en-US/docs/Web/Accessibility | 0.515 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.606 | developer.mozilla.org/en-US/docs/Web/Accessibility | 0.550 | developer.mozilla.org/en-US/docs/Web/Accessibility | 0.515 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.466 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.446 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.416 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.582 | developer.mozilla.org/en-US/docs/Web/Accessibility | 0.532 | developer.mozilla.org/en-US/docs/Web/Accessibility | 0.526 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.589 | developer.mozilla.org/en-US/docs/Web/Accessibility | 0.532 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.527 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.575 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.562 | developer.mozilla.org/en-US/docs/Web/Accessibility | 0.532 |
 
 
-**Q46: How can you customize the color of the scrollbar track and thumb?**
-*(expects URL containing: `Scrollbars_styling`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.568 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.552 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.547 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.406 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.405 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.406 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.405 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.442 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.412 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.410 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.592 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.422 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.400 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.603 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.445 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.596 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sc | 0.530 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.442 |
-
-
-**Q47: What can the border-radius generator tool be used for?**
-*(expects URL containing: `Border-radius_generator`)*
+**Q53: What is the purpose of using the `@media` at-rule in CSS for printing?**
+*(expects URL containing: `Printing`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.736 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.557 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.717 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.578 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.717 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.578 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.443 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.396 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.388 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.610 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.587 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.553 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.547 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.539 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.610 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.610 |
+| markcrawl | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.621 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.595 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.571 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.569 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.571 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.569 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.406 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.401 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.400 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.599 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.599 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.570 |
+| colly+md | #8 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.583 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.578 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.576 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.602 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.599 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.584 |
 
 
-**Q48: How does the border-radius generator help in generating CSS effects?**
-*(expects URL containing: `Border-radius_generator`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.746 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.622 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.615 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.693 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.597 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.693 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.597 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.515 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.413 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.407 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.604 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.596 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.600 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.587 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.583 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ba | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.613 |
-
-
-**Q49: What does the CSS round display module define?**
-*(expects URL containing: `Round_display`)*
+**Q54: How can the `@page` at-rule be used in CSS for printed pages?**
+*(expects URL containing: `Printing`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.715 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.627 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.572 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.567 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.559 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.567 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.559 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.565 | developer.mozilla.org/en-US/docs/Web/CSS | 0.488 | developer.mozilla.org/en-US/docs/Web/CSS | 0.482 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.569 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.635 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.569 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.569 |
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.614 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pa | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pa | 0.528 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.685 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pa | 0.584 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pa | 0.528 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.450 | developer.mozilla.org/en-US/docs/Web/CSS | 0.415 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.407 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pa | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pa | 0.546 |
+| colly+md | #10 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.554 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pa | 0.539 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.529 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pa | 0.572 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Sy | 0.554 |
 
 
-**Q50: Which properties are introduced in the CSS round display module?**
-*(expects URL containing: `Round_display`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.727 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.640 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.614 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.614 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.566 | developer.mozilla.org/en-US/docs/Web/CSS | 0.523 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.623 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.606 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.693 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.640 |
-| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ro | 0.623 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.606 |
-
-
-**Q51: What is the purpose of the CSS ruby layout module?**
-*(expects URL containing: `Ruby_layout`)*
+**Q55: What are CSS custom properties used for?**
+*(expects URL containing: `Cascading_variables`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.585 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.572 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.604 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.575 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.604 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Va | 0.575 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.550 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.530 | developer.mozilla.org/en-US/docs/Web/CSS | 0.504 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.558 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.585 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.575 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.558 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.698 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.663 |
+| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.684 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.645 |
+| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.684 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.675 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.645 |
+| scrapy+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.721 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.509 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.504 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.665 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.633 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.632 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.692 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.635 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.632 |
 
 
-**Q52: Which properties are introduced by the CSS ruby layout module?**
-*(expects URL containing: `Ruby_layout`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.601 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.593 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.694 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.630 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.694 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.630 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.590 | developer.mozilla.org/en-US/docs/Web/CSS | 0.556 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.545 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.659 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.598 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Po | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.608 |
-| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.674 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ru | 0.659 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.598 |
-
-
-**Q53: What is the HTML DOM API made up of?**
-*(expects URL containing: `HTML_DOM_API`)*
+**Q56: How do custom properties simplify complex CSS rules?**
+*(expects URL containing: `Cascading_variables`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.465 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.448 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.438 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.686 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.669 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.621 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.686 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.669 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.621 |
-| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/JavaScript/Refer | 0.584 | developer.mozilla.org/en-US/docs/Web/API/XMLHttpRe | 0.480 | developer.mozilla.org/en-US/docs/Web/XML/XSLT/Guid | 0.435 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.681 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.632 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.631 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/API/HTML/DOM/ | 0.681 | developer.mozilla.org/en-US/docs/Web/API/HTML/DOM/ | 0.647 | developer.mozilla.org/en-US/docs/Web/API/HTML/DOM/ | 0.632 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.681 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.632 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.631 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.624 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.618 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.624 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.620 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.624 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.620 |
+| scrapy+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.630 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.493 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cu | 0.476 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.614 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.595 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.610 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.603 |
+| playwright | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Pr | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.610 |
 
 
-**Q54: What functionality does the HTMLElement interface provide?**
-*(expects URL containing: `HTML_DOM_API`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.420 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.415 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.414 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.628 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.592 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.584 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.628 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.592 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.584 |
-| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/JavaScript/Refer | 0.466 | developer.mozilla.org/en-US/docs/Web/API/XMLHttpRe | 0.438 | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.413 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.603 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.589 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.588 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/API/HTML/DOM/ | 0.603 | developer.mozilla.org/en-US/docs/Web/API/HTML/DOM/ | 0.589 | developer.mozilla.org/en-US/docs/Web/API/HTML/DOM/ | 0.588 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.603 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.589 | developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_ | 0.588 |
-
-
-**Q55: How are grid lines numbered in CSS grid layout?**
-*(expects URL containing: `Line-based_placement`)*
+**Q57: What does the CSS containment module define?**
+*(expects URL containing: `Containment`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.614 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.633 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.619 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.633 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.619 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.411 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.408 | developer.mozilla.org/en-US/docs/Web/CSS | 0.402 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.642 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.606 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.628 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.617 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.612 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.628 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.617 |
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.729 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.597 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.604 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.596 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.604 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.596 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.472 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.460 | developer.mozilla.org/en-US/docs/Web/CSS | 0.444 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.599 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.598 |
+| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.655 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.606 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.613 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.599 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.598 |
 
 
-**Q56: What properties are used for positioning items by line number in a grid?**
-*(expects URL containing: `Line-based_placement`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.663 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.596 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.566 |
-| crawl4ai | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.682 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.613 |
-| crawl4ai-raw | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.682 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.620 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.613 |
-| scrapy+md | miss | developer.mozilla.org/ja/docs/Web/SVG/Reference/At | 0.381 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.372 | developer.mozilla.org/de/docs/Web/SVG/Reference/At | 0.362 |
-| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.670 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.615 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.606 |
-| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.608 |
-| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Gr | 0.596 |
-
-
-**Q57: What does the CSS transforms module define?**
-*(expects URL containing: `Transforms`)*
+**Q58: How do container queries differ from media queries?**
+*(expects URL containing: `Containment`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/An | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.609 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.648 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.609 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.647 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.609 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS | 0.499 | developer.mozilla.org/en-US/docs/Web/CSS | 0.498 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Di | 0.498 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.646 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.625 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.612 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.634 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.603 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Guides | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.594 |
+| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.764 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.682 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.615 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.695 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.664 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.695 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.681 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.664 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.448 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.379 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.367 |
+| crawlee | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.669 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.655 |
+| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.691 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.654 |
+| playwright | #2 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Me | 0.669 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.654 |
 
 
-**Q58: How can the perspective property affect the view of a 3D transformed element?**
-*(expects URL containing: `Transforms`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.592 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.555 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.563 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.509 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.653 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.563 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.509 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.350 | developer.mozilla.org/en-US/docs/Web/JavaScript/Gu | 0.336 | developer.mozilla.org/en-US/docs/Web/SVG/Reference | 0.332 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.632 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.558 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.518 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.627 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.582 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.537 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.581 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.537 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Tr | 0.507 |
-
-
-**Q59: What is CSS masking?**
-*(expects URL containing: `Introduction`)*
+**Q59: What is the syntax for the text-shadow property in CSS?**
+*(expects URL containing: `Text_shadows`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.750 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.733 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.625 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.622 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.640 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.622 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/Security/Atta | 0.456 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.442 | developer.mozilla.org/en-US/docs/Web/CSS | 0.419 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.617 |
-| colly+md | #3 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.668 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.654 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.650 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.639 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.637 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.618 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.573 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.495 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Co | 0.495 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.606 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.616 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.606 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ca | 0.460 | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.431 | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.421 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.606 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.590 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.658 | developer.mozilla.org/en-US/docs/Web/CSS/Reference | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.625 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.641 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.638 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.635 |
 
 
-**Q60: How do alpha masks work in CSS?**
-*(expects URL containing: `Introduction`)*
+**Q60: How can you apply multiple shadows to the same text?**
+*(expects URL containing: `Text_shadows`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.658 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.643 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.639 |
-| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.610 |
-| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.666 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.618 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.610 |
-| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.433 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ea | 0.402 | developer.mozilla.org/en-US/docs/Web/API/CSSFuncti | 0.401 |
-| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.609 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.607 |
-| colly+md | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.624 |
-| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.652 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.644 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ma | 0.626 |
+| markcrawl | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.460 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.408 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fo | 0.384 |
+| crawl4ai | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.662 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.589 |
+| crawl4ai-raw | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.662 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.619 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.589 |
+| scrapy+md | miss | developer.mozilla.org/en-US/docs/Learn_web_develop | 0.325 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.317 | developer.mozilla.org/ja/docs/Web/CSS/Reference/Pr | 0.316 |
+| crawlee | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.611 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.608 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.579 |
+| colly+md | miss | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.631 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.629 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.609 |
+| playwright | #1 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.678 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.626 | developer.mozilla.org/en-US/docs/Web/CSS/Guides/Te | 0.572 |
 
 
 </details>
@@ -3568,13 +3568,13 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| colly+md | 80% (37/46) | 96% (44/46) | 96% (44/46) | 96% (44/46) | 96% (44/46) | 0.877 | 1115 | 401 |
-| crawlee | 80% (37/46) | 96% (44/46) | 96% (44/46) | 96% (44/46) | 96% (44/46) | 0.866 | 1226 | 400 |
-| playwright | 80% (37/46) | 96% (44/46) | 96% (44/46) | 96% (44/46) | 96% (44/46) | 0.866 | 1216 | 400 |
-| crawl4ai | 74% (34/46) | 83% (38/46) | 91% (42/46) | 93% (43/46) | 93% (43/46) | 0.800 | 1193 | 400 |
-| crawl4ai-raw | 74% (34/46) | 83% (38/46) | 89% (41/46) | 93% (43/46) | 93% (43/46) | 0.798 | 1193 | 400 |
-| markcrawl | 28% (13/46) | 35% (16/46) | 37% (17/46) | 39% (18/46) | 39% (18/46) | 0.319 | 2348 | 400 |
-| scrapy+md | 4% (2/46) | 4% (2/46) | 7% (3/46) | 7% (3/46) | 7% (3/46) | 0.050 | 1531 | 394 |
+| colly+md | 64% (32/50) | 74% (37/50) | 78% (39/50) | 78% (39/50) | 88% (44/50) | 0.702 | 1115 | 401 |
+| crawlee | 64% (32/50) | 74% (37/50) | 78% (39/50) | 82% (41/50) | 90% (45/50) | 0.701 | 1226 | 400 |
+| playwright | 64% (32/50) | 74% (37/50) | 78% (39/50) | 80% (40/50) | 90% (45/50) | 0.701 | 1216 | 400 |
+| crawl4ai | 58% (29/50) | 66% (33/50) | 74% (37/50) | 80% (40/50) | 84% (42/50) | 0.641 | 1193 | 400 |
+| crawl4ai-raw | 58% (29/50) | 66% (33/50) | 72% (36/50) | 82% (41/50) | 84% (42/50) | 0.638 | 1193 | 400 |
+| markcrawl | 26% (13/50) | 38% (19/50) | 50% (25/50) | 52% (26/50) | 52% (26/50) | 0.343 | 2348 | 400 |
+| scrapy+md | 8% (4/50) | 12% (6/50) | 12% (6/50) | 12% (6/50) | 12% (6/50) | 0.097 | 1531 | 394 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
@@ -3583,133 +3583,189 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 > **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
-**Q1: Who are the current committers for PostgreSQL?**
-*(expects URL containing: `committers`)*
+**Q1: What does this chapter provide an overview of?**
+*(expects URL containing: `storage.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/index.html | 0.541 | www.postgresql.org/docs/current/index.html | 0.535 | www.postgresql.org/docs/current/internals.html | 0.513 |
-| crawl4ai | #1 | www.postgresql.org/developer/committers/ | 0.714 | www.postgresql.org/developer/committers/ | 0.698 | www.postgresql.org/community/contributors/ | 0.690 |
-| crawl4ai-raw | #1 | www.postgresql.org/developer/committers/ | 0.714 | www.postgresql.org/developer/committers/ | 0.698 | www.postgresql.org/community/contributors/ | 0.690 |
-| scrapy+md | miss | www.postgresql.org/developer/core/ | 0.625 | www.postgresql.org/about/policies/coc/reports/2018 | 0.619 | www.postgresql.org/about/policies/coc/reports/2019 | 0.617 |
-| crawlee | #1 | www.postgresql.org/developer/committers/ | 0.751 | www.postgresql.org/developer/committers/ | 0.714 | www.postgresql.org/community/contributors/ | 0.703 |
-| colly+md | #1 | www.postgresql.org/developer/committers/ | 0.751 | www.postgresql.org/developer/committers/ | 0.714 | www.postgresql.org/community/contributors/ | 0.703 |
-| playwright | #1 | www.postgresql.org/developer/committers/ | 0.751 | www.postgresql.org/developer/committers/ | 0.714 | www.postgresql.org/community/contributors/ | 0.704 |
+| markcrawl | #45 | www.postgresql.org/docs/current/ddl.html | 0.410 | www.postgresql.org/docs/current/views.html | 0.397 | www.postgresql.org/docs/current/overview.html | 0.385 |
+| crawl4ai | miss | www.postgresql.org/docs/current/admin.html | 0.377 | www.postgresql.org/docs/18/admin.html | 0.377 | www.postgresql.org/docs/18/indexam.html | 0.371 |
+| crawl4ai-raw | miss | www.postgresql.org/docs/current/admin.html | 0.377 | www.postgresql.org/docs/18/admin.html | 0.377 | www.postgresql.org/docs/18/indexam.html | 0.371 |
+| scrapy+md | miss | www.postgresql.org/docs/9.0/ddl.html | 0.376 | www.postgresql.org/docs/7.4/sql.html | 0.356 | www.postgresql.org/docs/8.0/admin.html | 0.348 |
+| crawlee | miss | www.postgresql.org/docs/17/ddl.html | 0.432 | www.postgresql.org/docs/current/ddl.html | 0.432 | www.postgresql.org/docs/18/ddl.html | 0.432 |
+| colly+md | miss | www.postgresql.org/docs/18/ddl.html | 0.432 | www.postgresql.org/docs/17/ddl.html | 0.432 | www.postgresql.org/docs/current/ddl.html | 0.432 |
+| playwright | miss | www.postgresql.org/docs/18/ddl.html | 0.432 | www.postgresql.org/docs/17/ddl.html | 0.432 | www.postgresql.org/docs/current/ddl.html | 0.432 |
 
 
-**Q2: What criteria are used to select new committers for PostgreSQL?**
-*(expects URL containing: `committers`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/wal-reliability.ht | 0.405 | www.postgresql.org/docs/current/index.html | 0.401 | www.postgresql.org/docs/current/index.html | 0.399 |
-| crawl4ai | #1 | www.postgresql.org/developer/committers/ | 0.762 | www.postgresql.org/about/policies/npos/ | 0.600 | www.postgresql.org/developer/committers/ | 0.595 |
-| crawl4ai-raw | #1 | www.postgresql.org/developer/committers/ | 0.762 | www.postgresql.org/about/policies/npos/ | 0.600 | www.postgresql.org/developer/committers/ | 0.595 |
-| scrapy+md | miss | www.postgresql.org/about/policies/npos/ | 0.603 | www.postgresql.org/about/policies/coc/reports/2020 | 0.596 | www.postgresql.org/about/policies/coc/reports/2020 | 0.547 |
-| crawlee | #1 | www.postgresql.org/developer/committers/ | 0.764 | www.postgresql.org/developer/committers/ | 0.657 | www.postgresql.org/community/contributors/ | 0.618 |
-| colly+md | #1 | www.postgresql.org/developer/committers/ | 0.764 | www.postgresql.org/developer/committers/ | 0.657 | www.postgresql.org/community/contributors/ | 0.618 |
-| playwright | #1 | www.postgresql.org/developer/committers/ | 0.764 | www.postgresql.org/developer/committers/ | 0.657 | www.postgresql.org/community/contributors/ | 0.618 |
-
-
-**Q3: How can I install PostgreSQL on FreeBSD?**
-*(expects URL containing: `freebsd`)*
+**Q2: What is the main topic of Chapter 66?**
+*(expects URL containing: `storage.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/install-make.html | 0.526 | www.postgresql.org/docs/current/install-make.html | 0.524 | www.postgresql.org/docs/current/install-make.html | 0.514 |
-| crawl4ai | #2 | www.postgresql.org/download/macosx/ | 0.609 | www.postgresql.org/download/freebsd/ | 0.562 | www.postgresql.org/download/linux/redhat | 0.552 |
-| crawl4ai-raw | #2 | www.postgresql.org/download/macosx/ | 0.609 | www.postgresql.org/download/freebsd/ | 0.562 | www.postgresql.org/download/linux/redhat | 0.552 |
-| scrapy+md | miss | www.postgresql.org/docs/9.1/install-procedure.html | 0.549 | www.postgresql.org/docs/9.1/install-procedure.html | 0.542 | www.postgresql.org/docs/9.1/install-procedure.html | 0.526 |
-| crawlee | #1 | www.postgresql.org/download/freebsd/ | 0.696 | www.postgresql.org/download/openbsd/ | 0.649 | www.postgresql.org/download/netbsd/ | 0.634 |
-| colly+md | #1 | www.postgresql.org/download/freebsd/ | 0.696 | www.postgresql.org/download/openbsd/ | 0.649 | www.postgresql.org/download/netbsd/ | 0.634 |
-| playwright | #1 | www.postgresql.org/download/freebsd/ | 0.696 | www.postgresql.org/download/openbsd/ | 0.649 | www.postgresql.org/download/netbsd/ | 0.634 |
+| markcrawl | #1 | www.postgresql.org/docs/current/storage.html | 0.360 | www.postgresql.org/docs/current/internals.html | 0.349 | www.postgresql.org/docs/current/ddl.html | 0.346 |
+| crawl4ai | miss | www.postgresql.org/docs/current/internals.html | 0.358 | www.postgresql.org/docs/18/internals.html | 0.357 | www.postgresql.org/docs/18/admin.html | 0.333 |
+| crawl4ai-raw | miss | www.postgresql.org/docs/current/internals.html | 0.357 | www.postgresql.org/docs/18/internals.html | 0.357 | www.postgresql.org/docs/current/admin.html | 0.333 |
+| scrapy+md | miss | www.postgresql.org/docs/8.0/mvcc.html | 0.299 | www.postgresql.org/docs/9.0/ddl.html | 0.295 | www.postgresql.org/docs/8.0/mvcc.html | 0.292 |
+| crawlee | #32 | www.postgresql.org/docs/17/ddl.html | 0.358 | www.postgresql.org/docs/current/ddl.html | 0.358 | www.postgresql.org/docs/18/ddl.html | 0.358 |
+| colly+md | #33 | www.postgresql.org/docs/current/ddl.html | 0.358 | www.postgresql.org/docs/18/ddl.html | 0.358 | www.postgresql.org/docs/17/ddl.html | 0.358 |
+| playwright | #32 | www.postgresql.org/docs/17/ddl.html | 0.358 | www.postgresql.org/docs/current/ddl.html | 0.358 | www.postgresql.org/docs/18/ddl.html | 0.358 |
 
 
-**Q4: Where can I find a list of PostgreSQL packages for FreeBSD?**
-*(expects URL containing: `freebsd`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/reference-server.h | 0.528 | www.postgresql.org/docs/current/index.html | 0.516 | www.postgresql.org/docs/current/index.html | 0.516 |
-| crawl4ai | #1 | www.postgresql.org/download/freebsd/ | 0.662 | www.postgresql.org/download/macosx/ | 0.655 | www.postgresql.org/download/netbsd/ | 0.630 |
-| crawl4ai-raw | #1 | www.postgresql.org/download/freebsd/ | 0.662 | www.postgresql.org/download/macosx/ | 0.655 | www.postgresql.org/download/netbsd/ | 0.630 |
-| scrapy+md | miss | www.postgresql.org/docs/9.2/libpq-control.html | 0.558 | www.postgresql.org/docs/9.2/libpq-envars.html | 0.558 | www.postgresql.org/docs/9.2/libpq-connect.html | 0.555 |
-| crawlee | #1 | www.postgresql.org/download/freebsd/ | 0.806 | www.postgresql.org/download/openbsd/ | 0.753 | www.postgresql.org/download/netbsd/ | 0.749 |
-| colly+md | #1 | www.postgresql.org/download/freebsd/ | 0.806 | www.postgresql.org/download/openbsd/ | 0.753 | www.postgresql.org/download/netbsd/ | 0.749 |
-| playwright | #1 | www.postgresql.org/download/freebsd/ | 0.806 | www.postgresql.org/download/openbsd/ | 0.753 | www.postgresql.org/download/netbsd/ | 0.749 |
-
-
-**Q5: What should be included in every bug report?**
-*(expects URL containing: `bug-reporting.html`)*
+**Q3: What is PostgreSQL?**
+*(expects URL containing: `intro-whatis.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/runtime-config-log | 0.414 | www.postgresql.org/docs/current/error-style-guide. | 0.410 | www.postgresql.org/docs/current/admin.html | 0.339 |
-| crawl4ai | #1 | www.postgresql.org/docs/17/bug-reporting.html | 0.641 | www.postgresql.org/docs/18/bug-reporting.html | 0.641 | www.postgresql.org/docs/current/bug-reporting.html | 0.641 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/bug-reporting.html | 0.641 | www.postgresql.org/docs/17/bug-reporting.html | 0.641 | www.postgresql.org/docs/18/bug-reporting.html | 0.641 |
-| scrapy+md | miss | www.postgresql.org/docs/7.3/doc-style.html | 0.373 | www.postgresql.org/about/policies/coc/ | 0.364 | www.postgresql.org/docs/7.3/doc-style.html | 0.360 |
-| crawlee | #1 | www.postgresql.org/docs/current/bug-reporting.html | 0.616 | www.postgresql.org/docs/17/bug-reporting.html | 0.616 | www.postgresql.org/docs/18/bug-reporting.html | 0.616 |
-| colly+md | #1 | www.postgresql.org/docs/16/bug-reporting.html | 0.616 | www.postgresql.org/docs/18/bug-reporting.html | 0.616 | www.postgresql.org/docs/17/bug-reporting.html | 0.616 |
-| playwright | #1 | www.postgresql.org/docs/18/bug-reporting.html | 0.616 | www.postgresql.org/docs/current/bug-reporting.html | 0.616 | www.postgresql.org/docs/17/bug-reporting.html | 0.616 |
+| markcrawl | miss | www.postgresql.org/docs/current/app-postgres.html | 0.626 | www.postgresql.org/docs/current/app-postgres.html | 0.570 | www.postgresql.org/docs/current/wal-reliability.ht | 0.557 |
+| crawl4ai | #11 | www.postgresql.org/docs/17/history.html | 0.703 | www.postgresql.org/about/ | 0.684 | www.postgresql.org/about/ | 0.673 |
+| crawl4ai-raw | #10 | www.postgresql.org/docs/17/history.html | 0.703 | www.postgresql.org/about/ | 0.685 | www.postgresql.org/about/ | 0.673 |
+| scrapy+md | miss | www.postgresql.org/docs/7.3/app-postgres.html | 0.590 | www.postgresql.org/docs/current/bookindex.html | 0.566 | www.postgresql.org/docs/7.3/reference.html | 0.559 |
+| crawlee | #10 | www.postgresql.org/docs/17/history.html | 0.688 | www.postgresql.org/about/ | 0.679 | www.postgresql.org/about/ | 0.664 |
+| colly+md | #13 | www.postgresql.org/docs/16/history.html | 0.688 | www.postgresql.org/docs/17/history.html | 0.688 | www.postgresql.org/about/ | 0.679 |
+| playwright | #11 | www.postgresql.org/docs/17/history.html | 0.688 | www.postgresql.org/about/ | 0.679 | www.postgresql.org/about/ | 0.664 |
 
 
-**Q6: Where should I send bug reports for PostgreSQL?**
-*(expects URL containing: `bug-reporting.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/runtime-config-rep | 0.515 | www.postgresql.org/docs/current/reference-server.h | 0.503 | www.postgresql.org/docs/current/runtime-config-fil | 0.488 |
-| crawl4ai | #1 | www.postgresql.org/docs/17/bug-reporting.html | 0.722 | www.postgresql.org/docs/18/bug-reporting.html | 0.722 | www.postgresql.org/docs/current/bug-reporting.html | 0.722 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/17/bug-reporting.html | 0.722 | www.postgresql.org/docs/18/bug-reporting.html | 0.722 | www.postgresql.org/docs/current/bug-reporting.html | 0.722 |
-| scrapy+md | miss | www.postgresql.org/docs/9.2/runtime-config-logging | 0.543 | www.postgresql.org/about/contact/ | 0.515 | www.postgresql.org/docs/7.3/release-0-02.html | 0.506 |
-| crawlee | #1 | www.postgresql.org/docs/17/bug-reporting.html | 0.687 | www.postgresql.org/docs/18/bug-reporting.html | 0.687 | www.postgresql.org/docs/current/bug-reporting.html | 0.687 |
-| colly+md | #1 | www.postgresql.org/docs/16/bug-reporting.html | 0.687 | www.postgresql.org/docs/18/bug-reporting.html | 0.687 | www.postgresql.org/docs/17/bug-reporting.html | 0.687 |
-| playwright | #1 | www.postgresql.org/docs/current/bug-reporting.html | 0.687 | www.postgresql.org/docs/18/bug-reporting.html | 0.687 | www.postgresql.org/docs/17/bug-reporting.html | 0.687 |
-
-
-**Q7: What is PL/Tcl?**
-*(expects URL containing: `pltcl.html`)*
+**Q4: What type of database management system is PostgreSQL?**
+*(expects URL containing: `intro-whatis.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/pltcl.html | 0.690 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.655 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.652 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/pltcl.html | 0.530 | www.postgresql.org/docs/18/pltcl.html | 0.530 | www.postgresql.org/docs/17/pltcl.html | 0.528 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/pltcl.html | 0.530 | www.postgresql.org/docs/18/pltcl.html | 0.530 | www.postgresql.org/docs/17/pltcl.html | 0.528 |
-| scrapy+md | miss | www.postgresql.org/docs/7.3/app-pgtclsh.html | 0.459 | www.postgresql.org/docs/7.4/release-0-03.html | 0.435 | www.postgresql.org/docs/7.3/release-0-03.html | 0.433 |
-| crawlee | #1 | www.postgresql.org/docs/current/pltcl.html | 0.611 | www.postgresql.org/docs/18/pltcl.html | 0.611 | www.postgresql.org/docs/17/pltcl.html | 0.603 |
-| colly+md | #1 | www.postgresql.org/docs/18/pltcl.html | 0.611 | www.postgresql.org/docs/current/pltcl.html | 0.611 | www.postgresql.org/docs/17/server-programming.html | 0.530 |
-| playwright | #1 | www.postgresql.org/docs/current/pltcl.html | 0.611 | www.postgresql.org/docs/18/pltcl.html | 0.611 | www.postgresql.org/docs/17/pltcl.html | 0.603 |
+| markcrawl | miss | www.postgresql.org/docs/current/app-postgres.html | 0.567 | www.postgresql.org/docs/current/manage-ag-createdb | 0.551 | www.postgresql.org/docs/current/app-postgres.html | 0.545 |
+| crawl4ai | #11 | www.postgresql.org/docs/17/history.html | 0.664 | www.postgresql.org/about/ | 0.659 | www.postgresql.org/about/ | 0.651 |
+| crawl4ai-raw | #11 | www.postgresql.org/docs/17/history.html | 0.664 | www.postgresql.org/about/ | 0.659 | www.postgresql.org/about/ | 0.651 |
+| scrapy+md | miss | www.postgresql.org/docs/7.3/app-postgres.html | 0.528 | www.postgresql.org/docs/7.3/biblio.html | 0.526 | www.postgresql.org/docs/7.2/biblio.html | 0.526 |
+| crawlee | #12 | www.postgresql.org/docs/17/history.html | 0.648 | www.postgresql.org/about/ | 0.647 | www.postgresql.org/about/ | 0.629 |
+| colly+md | #13 | www.postgresql.org/docs/16/history.html | 0.648 | www.postgresql.org/docs/17/history.html | 0.648 | www.postgresql.org/about/ | 0.647 |
+| playwright | #11 | www.postgresql.org/docs/17/history.html | 0.648 | www.postgresql.org/about/ | 0.647 | www.postgresql.org/about/ | 0.629 |
 
 
-**Q8: What language does PL/Tcl enable to write PostgreSQL functions and procedures?**
-*(expects URL containing: `pltcl.html`)*
+**Q5: What does this chapter provide an overview of?**
+*(expects URL containing: `overview.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #3 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.693 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.659 | www.postgresql.org/docs/current/pltcl.html | 0.657 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/pltcl.html | 0.651 | www.postgresql.org/docs/18/pltcl.html | 0.651 | www.postgresql.org/docs/17/pltcl.html | 0.649 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/pltcl.html | 0.651 | www.postgresql.org/docs/18/pltcl.html | 0.651 | www.postgresql.org/docs/17/pltcl.html | 0.649 |
-| scrapy+md | miss | www.postgresql.org/docs/9.0/server-programming.htm | 0.560 | www.postgresql.org/docs/current/bookindex.html | 0.532 | www.postgresql.org/docs/7.3/app-pgtclsh.html | 0.530 |
-| crawlee | #1 | www.postgresql.org/docs/18/pltcl.html | 0.702 | www.postgresql.org/docs/current/pltcl.html | 0.702 | www.postgresql.org/docs/17/pltcl.html | 0.694 |
-| colly+md | #1 | www.postgresql.org/docs/18/pltcl.html | 0.702 | www.postgresql.org/docs/current/pltcl.html | 0.701 | www.postgresql.org/docs/18/xplang.html | 0.651 |
-| playwright | #1 | www.postgresql.org/docs/current/pltcl.html | 0.702 | www.postgresql.org/docs/18/pltcl.html | 0.701 | www.postgresql.org/docs/17/pltcl.html | 0.694 |
+| markcrawl | #3 | www.postgresql.org/docs/current/ddl.html | 0.410 | www.postgresql.org/docs/current/views.html | 0.397 | www.postgresql.org/docs/current/overview.html | 0.385 |
+| crawl4ai | miss | www.postgresql.org/docs/current/admin.html | 0.377 | www.postgresql.org/docs/18/admin.html | 0.377 | www.postgresql.org/docs/18/indexam.html | 0.371 |
+| crawl4ai-raw | miss | www.postgresql.org/docs/current/admin.html | 0.377 | www.postgresql.org/docs/18/admin.html | 0.377 | www.postgresql.org/docs/18/indexam.html | 0.371 |
+| scrapy+md | miss | www.postgresql.org/docs/9.0/ddl.html | 0.376 | www.postgresql.org/docs/7.4/sql.html | 0.356 | www.postgresql.org/docs/8.0/admin.html | 0.348 |
+| crawlee | #20 | www.postgresql.org/docs/17/ddl.html | 0.432 | www.postgresql.org/docs/current/ddl.html | 0.432 | www.postgresql.org/docs/18/ddl.html | 0.432 |
+| colly+md | #22 | www.postgresql.org/docs/18/ddl.html | 0.432 | www.postgresql.org/docs/17/ddl.html | 0.432 | www.postgresql.org/docs/current/ddl.html | 0.432 |
+| playwright | #20 | www.postgresql.org/docs/18/ddl.html | 0.432 | www.postgresql.org/docs/17/ddl.html | 0.432 | www.postgresql.org/docs/current/ddl.html | 0.432 |
 
 
-**Q9: What are the procedural languages available in the standard PostgreSQL distribution?**
+**Q6: What should you understand after reading the following sections of this chapter?**
+*(expects URL containing: `overview.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #5 | www.postgresql.org/docs/current/extend.html | 0.401 | www.postgresql.org/docs/current/ddl.html | 0.395 | www.postgresql.org/docs/current/admin.html | 0.394 |
+| crawl4ai | miss | www.postgresql.org/docs/18/admin.html | 0.387 | www.postgresql.org/docs/current/admin.html | 0.387 | www.postgresql.org/docs/17/admin.html | 0.386 |
+| crawl4ai-raw | miss | www.postgresql.org/docs/current/admin.html | 0.387 | www.postgresql.org/docs/18/admin.html | 0.387 | www.postgresql.org/docs/17/admin.html | 0.385 |
+| scrapy+md | miss | www.postgresql.org/docs/7.4/sql.html | 0.350 | www.postgresql.org/docs/9.0/ddl.html | 0.341 | www.postgresql.org/docs/7.4/sql.html | 0.336 |
+| crawlee | #33 | www.postgresql.org/docs/17/ddl.html | 0.414 | www.postgresql.org/docs/18/ddl.html | 0.414 | www.postgresql.org/docs/current/ddl.html | 0.414 |
+| colly+md | #38 | www.postgresql.org/docs/current/ddl.html | 0.414 | www.postgresql.org/docs/17/ddl.html | 0.414 | www.postgresql.org/docs/18/ddl.html | 0.414 |
+| playwright | #32 | www.postgresql.org/docs/18/ddl.html | 0.414 | www.postgresql.org/docs/current/ddl.html | 0.414 | www.postgresql.org/docs/17/ddl.html | 0.414 |
+
+
+**Q7: What does the information schema consist of?**
+*(expects URL containing: `information-schema.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | www.postgresql.org/docs/current/information-schema | 0.574 | www.postgresql.org/docs/current/functions-xml.html | 0.398 | www.postgresql.org/docs/current/glossary.html | 0.385 |
+| crawl4ai | #1 | www.postgresql.org/docs/17/information-schema.html | 0.578 | www.postgresql.org/docs/current/information-schema | 0.577 | www.postgresql.org/docs/18/information-schema.html | 0.577 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/17/information-schema.html | 0.578 | www.postgresql.org/docs/18/information-schema.html | 0.577 | www.postgresql.org/docs/current/information-schema | 0.577 |
+| scrapy+md | miss | www.postgresql.org/docs/9.0/ddl-schemas.html | 0.487 | www.postgresql.org/docs/9.0/ddl-schemas.html | 0.447 | www.postgresql.org/docs/8.2/functions-info.html | 0.439 |
+| crawlee | #1 | www.postgresql.org/docs/current/information-schema | 0.620 | www.postgresql.org/docs/18/information-schema.html | 0.620 | www.postgresql.org/docs/17/information-schema.html | 0.618 |
+| colly+md | #1 | www.postgresql.org/docs/18/information-schema.html | 0.620 | www.postgresql.org/docs/current/information-schema | 0.620 | www.postgresql.org/docs/17/information-schema.html | 0.619 |
+| playwright | #1 | www.postgresql.org/docs/current/information-schema | 0.620 | www.postgresql.org/docs/18/information-schema.html | 0.620 | www.postgresql.org/docs/17/information-schema.html | 0.619 |
+
+
+**Q8: Why might a standard-compliant query return several rows when querying for constraint information?**
+*(expects URL containing: `information-schema.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #24 | www.postgresql.org/docs/current/ddl-partitioning.h | 0.499 | www.postgresql.org/docs/current/catalog-pg-constra | 0.496 | www.postgresql.org/docs/current/catalog-pg-constra | 0.496 |
+| crawl4ai | #1 | www.postgresql.org/docs/17/information-schema.html | 0.515 | www.postgresql.org/docs/18/information-schema.html | 0.515 | www.postgresql.org/docs/current/information-schema | 0.515 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/information-schema.html | 0.515 | www.postgresql.org/docs/current/information-schema | 0.515 | www.postgresql.org/docs/17/information-schema.html | 0.515 |
+| scrapy+md | miss | www.postgresql.org/docs/9.0/ddl-partitioning.html | 0.519 | www.postgresql.org/docs/8.1/ddl-partitioning.html | 0.514 | www.postgresql.org/docs/7.4/ddl-constraints.html | 0.470 |
+| crawlee | #1 | www.postgresql.org/docs/18/information-schema.html | 0.515 | www.postgresql.org/docs/current/information-schema | 0.515 | www.postgresql.org/docs/17/information-schema.html | 0.515 |
+| colly+md | #1 | www.postgresql.org/docs/17/information-schema.html | 0.515 | www.postgresql.org/docs/18/information-schema.html | 0.515 | www.postgresql.org/docs/current/information-schema | 0.515 |
+| playwright | #1 | www.postgresql.org/docs/17/information-schema.html | 0.515 | www.postgresql.org/docs/18/information-schema.html | 0.515 | www.postgresql.org/docs/current/information-schema | 0.515 |
+
+
+**Q9: What is the customary TCP port number for servers supporting the PostgreSQL protocol?**
+*(expects URL containing: `protocol.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | www.postgresql.org/docs/current/protocol.html | 0.547 | www.postgresql.org/docs/current/app-postgres.html | 0.543 | www.postgresql.org/docs/current/ssl-tcp.html | 0.540 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/protocol.html | 0.536 | www.postgresql.org/docs/current/protocol.html | 0.536 | www.postgresql.org/download/macosx/ | 0.494 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/protocol.html | 0.536 | www.postgresql.org/docs/18/protocol.html | 0.536 | www.postgresql.org/download/macosx/ | 0.494 |
+| scrapy+md | miss | www.postgresql.org/docs/7.3/app-postmaster.html | 0.511 | www.postgresql.org/docs/7.4/app-pg-ctl.html | 0.510 | www.postgresql.org/docs/7.3/app-postmaster.html | 0.510 |
+| crawlee | #1 | www.postgresql.org/docs/18/protocol.html | 0.516 | www.postgresql.org/docs/current/protocol.html | 0.516 | www.postgresql.org/docs/18/protocol.html | 0.511 |
+| colly+md | #1 | www.postgresql.org/docs/current/protocol.html | 0.516 | www.postgresql.org/docs/16/runtime-config.html | 0.516 | www.postgresql.org/docs/current/protocol.html | 0.511 |
+| playwright | #1 | www.postgresql.org/docs/current/protocol.html | 0.516 | www.postgresql.org/docs/18/protocol.html | 0.516 | www.postgresql.org/docs/current/protocol.html | 0.511 |
+
+
+**Q10: What version of the protocol was introduced in PostgreSQL version 18?**
+*(expects URL containing: `protocol.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | www.postgresql.org/docs/current/index.html | 0.649 | www.postgresql.org/docs/current/protocol.html | 0.604 | www.postgresql.org/docs/current/ssl-tcp.html | 0.579 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/protocol.html | 0.636 | www.postgresql.org/docs/18/protocol.html | 0.636 | www.postgresql.org/docs/current/sql.html | 0.615 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/protocol.html | 0.636 | www.postgresql.org/docs/current/protocol.html | 0.636 | www.postgresql.org/docs/18/sql.html | 0.616 |
+| scrapy+md | miss | www.postgresql.org/docs/current/sspi-auth.html | 0.654 | www.postgresql.org/docs/current/bookindex.html | 0.633 | www.postgresql.org/docs/current/ | 0.631 |
+| crawlee | #1 | www.postgresql.org/docs/18/protocol.html | 0.708 | www.postgresql.org/docs/current/protocol.html | 0.708 | www.postgresql.org/docs/current/server-programming | 0.654 |
+| colly+md | #1 | www.postgresql.org/docs/current/protocol.html | 0.708 | www.postgresql.org/docs/current/server-programming | 0.654 | www.postgresql.org/docs/18/server-programming.html | 0.654 |
+| playwright | #1 | www.postgresql.org/docs/18/protocol.html | 0.708 | www.postgresql.org/docs/current/protocol.html | 0.708 | www.postgresql.org/docs/18/server-programming.html | 0.656 |
+
+
+**Q11: What is the purpose of logical decoding in PostgreSQL?**
+*(expects URL containing: `logicaldecoding.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #5 | www.postgresql.org/docs/current/logicaldecoding-ex | 0.646 | www.postgresql.org/docs/current/logicaldecoding-ex | 0.638 | www.postgresql.org/docs/current/logicaldecoding-ex | 0.621 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.624 | www.postgresql.org/docs/18/logicaldecoding.html | 0.624 | www.postgresql.org/docs/current/contrib.html | 0.543 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/logicaldecoding.html | 0.624 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.624 | www.postgresql.org/docs/18/contrib.html | 0.543 |
+| scrapy+md | miss | www.postgresql.org/docs/10/test-decoding.html | 0.615 | www.postgresql.org/docs/9.4/test-decoding.html | 0.606 | www.postgresql.org/docs/11/test-decoding.html | 0.606 |
+| crawlee | #1 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.714 | www.postgresql.org/docs/18/logicaldecoding.html | 0.714 | www.postgresql.org/docs/17/logicaldecoding.html | 0.712 |
+| colly+md | #1 | www.postgresql.org/docs/18/logicaldecoding.html | 0.714 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.714 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.642 |
+| playwright | #1 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.714 | www.postgresql.org/docs/18/logicaldecoding.html | 0.714 | www.postgresql.org/docs/18/logicaldecoding.html | 0.642 |
+
+
+**Q12: How are changes streamed in logical decoding?**
+*(expects URL containing: `logicaldecoding.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #4 | www.postgresql.org/docs/current/logicaldecoding-st | 0.625 | www.postgresql.org/docs/current/logicaldecoding-ex | 0.607 | www.postgresql.org/docs/current/logicaldecoding-st | 0.587 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/logicaldecoding.html | 0.509 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.509 | www.postgresql.org/docs/18/logicaldecoding.html | 0.443 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.509 | www.postgresql.org/docs/18/logicaldecoding.html | 0.509 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.443 |
+| scrapy+md | miss | www.postgresql.org/docs/14/test-decoding.html | 0.564 | www.postgresql.org/docs/15/test-decoding.html | 0.560 | www.postgresql.org/docs/17/test-decoding.html | 0.515 |
+| crawlee | #1 | www.postgresql.org/docs/17/logicaldecoding.html | 0.602 | www.postgresql.org/docs/18/logicaldecoding.html | 0.602 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.602 |
+| colly+md | #1 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.602 | www.postgresql.org/docs/18/logicaldecoding.html | 0.602 | www.postgresql.org/docs/18/logicaldecoding.html | 0.495 |
+| playwright | #1 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.602 | www.postgresql.org/docs/18/logicaldecoding.html | 0.602 | www.postgresql.org/docs/current/logicaldecoding.ht | 0.495 |
+
+
+**Q13: What are the four procedural languages available in the standard PostgreSQL distribution?**
 *(expects URL containing: `xplang.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/xplang.html | 0.707 | www.postgresql.org/docs/current/xfunc-pl.html | 0.662 | www.postgresql.org/docs/current/xplang-install.htm | 0.598 |
-| crawl4ai | #1 | www.postgresql.org/docs/18/xplang.html | 0.675 | www.postgresql.org/docs/current/xplang.html | 0.675 | www.postgresql.org/docs/17/xplang.html | 0.675 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/xplang.html | 0.675 | www.postgresql.org/docs/18/xplang.html | 0.675 | www.postgresql.org/docs/17/xplang.html | 0.675 |
-| scrapy+md | miss | www.postgresql.org/docs/9.0/server-programming.htm | 0.580 | www.postgresql.org/docs/9.1/client-interfaces.html | 0.559 | www.postgresql.org/docs/7.2/reference-client.html | 0.553 |
-| crawlee | #1 | www.postgresql.org/docs/current/xplang.html | 0.716 | www.postgresql.org/docs/18/xplang.html | 0.716 | www.postgresql.org/docs/17/xplang.html | 0.715 |
-| colly+md | #1 | www.postgresql.org/docs/18/xplang.html | 0.716 | www.postgresql.org/docs/current/xplang.html | 0.716 | www.postgresql.org/docs/17/xplang.html | 0.715 |
-| playwright | #1 | www.postgresql.org/docs/current/xplang.html | 0.716 | www.postgresql.org/docs/18/xplang.html | 0.716 | www.postgresql.org/docs/17/xplang.html | 0.715 |
+| markcrawl | #1 | www.postgresql.org/docs/current/xplang.html | 0.677 | www.postgresql.org/docs/current/xfunc-pl.html | 0.628 | www.postgresql.org/docs/current/xplang-install.htm | 0.568 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/xplang.html | 0.653 | www.postgresql.org/docs/18/xplang.html | 0.653 | www.postgresql.org/docs/17/xplang.html | 0.653 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/xplang.html | 0.653 | www.postgresql.org/docs/18/xplang.html | 0.653 | www.postgresql.org/docs/17/xplang.html | 0.653 |
+| scrapy+md | miss | www.postgresql.org/docs/8.1/biblio.html | 0.554 | www.postgresql.org/docs/8.2/biblio.html | 0.553 | www.postgresql.org/docs/9.0/server-programming.htm | 0.547 |
+| crawlee | #1 | www.postgresql.org/docs/current/xplang.html | 0.686 | www.postgresql.org/docs/18/xplang.html | 0.686 | www.postgresql.org/docs/17/xplang.html | 0.684 |
+| colly+md | #1 | www.postgresql.org/docs/18/xplang.html | 0.686 | www.postgresql.org/docs/current/xplang.html | 0.686 | www.postgresql.org/docs/17/xplang.html | 0.684 |
+| playwright | #1 | www.postgresql.org/docs/18/xplang.html | 0.686 | www.postgresql.org/docs/current/xplang.html | 0.686 | www.postgresql.org/docs/17/xplang.html | 0.684 |
 
 
-**Q10: How does PostgreSQL handle functions written in procedural languages?**
+**Q14: How does PostgreSQL handle functions written in procedural languages?**
 *(expects URL containing: `xplang.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -3723,35 +3779,35 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #3 | www.postgresql.org/docs/current/plhandler.html | 0.679 | www.postgresql.org/docs/18/plhandler.html | 0.679 | www.postgresql.org/docs/current/xplang.html | 0.679 |
 
 
-**Q11: What is a security vulnerability in PostgreSQL?**
-*(expects URL containing: `security`)*
+**Q15: What resources are available for PostgreSQL besides the documentation?**
+*(expects URL containing: `resources.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/perm-functions.htm | 0.540 | www.postgresql.org/docs/current/wal-reliability.ht | 0.525 | www.postgresql.org/docs/current/internals.html | 0.512 |
-| crawl4ai | #1 | www.postgresql.org/support/security/ | 0.726 | www.postgresql.org/support/security/ | 0.718 | www.postgresql.org/support/security/ | 0.691 |
-| crawl4ai-raw | #1 | www.postgresql.org/support/security/ | 0.726 | www.postgresql.org/support/security/ | 0.718 | www.postgresql.org/support/security/ | 0.691 |
-| scrapy+md | #4 | www.postgresql.org/docs/7.4/libpq-pgpass.html | 0.522 | www.postgresql.org/docs/8.1/libpq-pgpass.html | 0.517 | www.postgresql.org/docs/8.2/libpq-pgpass.html | 0.513 |
-| crawlee | #1 | www.postgresql.org/support/security/ | 0.705 | www.postgresql.org/support/security/ | 0.702 | www.postgresql.org/support/security/ | 0.701 |
-| colly+md | #1 | www.postgresql.org/support/security/ | 0.705 | www.postgresql.org/support/security/ | 0.702 | www.postgresql.org/support/security/ | 0.701 |
-| playwright | #1 | www.postgresql.org/support/security/ | 0.705 | www.postgresql.org/support/security/ | 0.702 | www.postgresql.org/support/security/ | 0.701 |
+| markcrawl | #25 | www.postgresql.org/docs/current/reference-server.h | 0.598 | www.postgresql.org/docs/current/index.html | 0.592 | www.postgresql.org/docs/current/admin.html | 0.576 |
+| crawl4ai | #33 | www.postgresql.org/docs/17/preface.html | 0.632 | www.postgresql.org/docs/9.6/index.html | 0.630 | www.postgresql.org/docs/current/preface.html | 0.629 |
+| crawl4ai-raw | #33 | www.postgresql.org/docs/17/preface.html | 0.632 | www.postgresql.org/about/ | 0.631 | www.postgresql.org/docs/9.6/index.html | 0.630 |
+| scrapy+md | miss | www.postgresql.org/docs/7.1/biblio.html | 0.637 | www.postgresql.org/docs/7.1/docguide.html | 0.633 | www.postgresql.org/docs/7.2/biblio.html | 0.626 |
+| crawlee | #2 | www.postgresql.org/docs/online-resources/ | 0.687 | www.postgresql.org/docs/18/resources.html | 0.640 | www.postgresql.org/docs/current/resources.html | 0.640 |
+| colly+md | #2 | www.postgresql.org/docs/online-resources/ | 0.688 | www.postgresql.org/docs/18/resources.html | 0.640 | www.postgresql.org/docs/current/resources.html | 0.640 |
+| playwright | #2 | www.postgresql.org/docs/online-resources/ | 0.687 | www.postgresql.org/docs/18/resources.html | 0.640 | www.postgresql.org/docs/current/resources.html | 0.640 |
 
 
-**Q12: How can I report a PostgreSQL security vulnerability?**
-*(expects URL containing: `security`)*
+**Q16: How can I contribute to the PostgreSQL community?**
+*(expects URL containing: `resources.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/perm-functions.htm | 0.493 | www.postgresql.org/docs/current/sql-grant.html | 0.481 | www.postgresql.org/docs/current/runtime-config-rep | 0.476 |
-| crawl4ai | #1 | www.postgresql.org/support/security/ | 0.787 | www.postgresql.org/support/security/ | 0.691 | www.postgresql.org/support/security/ | 0.679 |
-| crawl4ai-raw | #1 | www.postgresql.org/support/security/ | 0.787 | www.postgresql.org/support/security/ | 0.691 | www.postgresql.org/support/security/ | 0.679 |
-| scrapy+md | #21 | www.postgresql.org/docs/9.2/runtime-config-logging | 0.517 | www.postgresql.org/docs/7.4/libpq-pgpass.html | 0.500 | www.postgresql.org/docs/8.1/libpq-pgpass.html | 0.496 |
-| crawlee | #1 | www.postgresql.org/support/security/ | 0.778 | www.postgresql.org/support/security/ | 0.713 | www.postgresql.org/support/security/ | 0.667 |
-| colly+md | #1 | www.postgresql.org/support/security/ | 0.778 | www.postgresql.org/support/security/ | 0.713 | www.postgresql.org/support/security/ | 0.667 |
-| playwright | #1 | www.postgresql.org/support/security/ | 0.778 | www.postgresql.org/support/security/ | 0.713 | www.postgresql.org/support/security/ | 0.667 |
+| markcrawl | #48 | www.postgresql.org/docs/current/index.html | 0.545 | www.postgresql.org/docs/current/index.html | 0.518 | www.postgresql.org/docs/current/install-make.html | 0.513 |
+| crawl4ai | #28 | www.postgresql.org/developer/ | 0.733 | www.postgresql.org/developer/related-projects/ | 0.645 | www.postgresql.org/developer/related-projects/ | 0.642 |
+| crawl4ai-raw | #27 | www.postgresql.org/developer/ | 0.733 | www.postgresql.org/developer/related-projects/ | 0.645 | www.postgresql.org/developer/related-projects/ | 0.642 |
+| scrapy+md | miss | www.postgresql.org/about/policies/coc/ | 0.601 | www.postgresql.org/community/user-groups/ | 0.590 | www.postgresql.org/about/policies/npos/ | 0.570 |
+| crawlee | #42 | www.postgresql.org/developer/ | 0.711 | www.postgresql.org/developer/ | 0.671 | www.postgresql.org/community/contributors/ | 0.668 |
+| colly+md | #43 | www.postgresql.org/developer/ | 0.711 | www.postgresql.org/developer/ | 0.671 | www.postgresql.org/community/contributors/ | 0.668 |
+| playwright | #43 | www.postgresql.org/developer/ | 0.711 | www.postgresql.org/developer/ | 0.671 | www.postgresql.org/community/contributors/ | 0.668 |
 
 
-**Q13: What is the title of the book authored by Jesús Espino?**
+**Q17: What is the title of the book authored by Jesús Espino?**
 *(expects URL containing: `books`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -3765,189 +3821,273 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #1 | www.postgresql.org/docs/books/ | 0.256 | www.postgresql.org/docs/books/ | 0.254 | www.postgresql.org/docs/books/ | 0.238 |
 
 
-**Q14: Who are the authors of the book 'PostgreSQL 16 Administration Cookbook'?**
+**Q18: Who are the authors of the book 'PostgreSQL 16 Administration Cookbook'?**
 *(expects URL containing: `books`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/admin.html | 0.529 | www.postgresql.org/docs/current/index.html | 0.511 | www.postgresql.org/docs/current/admin.html | 0.479 |
+| markcrawl | miss | www.postgresql.org/docs/current/admin.html | 0.529 | www.postgresql.org/docs/current/index.html | 0.512 | www.postgresql.org/docs/current/admin.html | 0.479 |
 | crawl4ai | #1 | www.postgresql.org/docs/books/ | 0.653 | www.postgresql.org/docs/books/ | 0.631 | www.postgresql.org/docs/books/ | 0.627 |
 | crawl4ai-raw | #1 | www.postgresql.org/docs/books/ | 0.653 | www.postgresql.org/docs/books/ | 0.631 | www.postgresql.org/docs/books/ | 0.627 |
-| scrapy+md | miss | www.postgresql.org/docs/7.1/biblio.html | 0.558 | www.postgresql.org/docs/7.4/biblio.html | 0.553 | www.postgresql.org/docs/8.1/biblio.html | 0.551 |
-| crawlee | #1 | www.postgresql.org/docs/books/ | 0.668 | www.postgresql.org/docs/books/ | 0.646 | www.postgresql.org/docs/books/ | 0.627 |
-| colly+md | #1 | www.postgresql.org/docs/books/ | 0.668 | www.postgresql.org/docs/books/ | 0.646 | www.postgresql.org/docs/books/ | 0.627 |
-| playwright | #1 | www.postgresql.org/docs/books/ | 0.668 | www.postgresql.org/docs/books/ | 0.646 | www.postgresql.org/docs/books/ | 0.627 |
+| scrapy+md | miss | www.postgresql.org/docs/7.1/biblio.html | 0.558 | www.postgresql.org/docs/7.4/biblio.html | 0.554 | www.postgresql.org/docs/8.1/biblio.html | 0.551 |
+| crawlee | #1 | www.postgresql.org/docs/books/ | 0.668 | www.postgresql.org/docs/books/ | 0.647 | www.postgresql.org/docs/books/ | 0.628 |
+| colly+md | #1 | www.postgresql.org/docs/books/ | 0.669 | www.postgresql.org/docs/books/ | 0.646 | www.postgresql.org/docs/books/ | 0.627 |
+| playwright | #1 | www.postgresql.org/docs/books/ | 0.668 | www.postgresql.org/docs/books/ | 0.647 | www.postgresql.org/docs/books/ | 0.628 |
 
 
-**Q15: What are the procedural languages available in the standard PostgreSQL distribution?**
-*(expects URL containing: `xplang.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/xplang.html | 0.707 | www.postgresql.org/docs/current/xfunc-pl.html | 0.662 | www.postgresql.org/docs/current/xplang-install.htm | 0.598 |
-| crawl4ai | #1 | www.postgresql.org/docs/18/xplang.html | 0.675 | www.postgresql.org/docs/current/xplang.html | 0.675 | www.postgresql.org/docs/17/xplang.html | 0.675 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/xplang.html | 0.675 | www.postgresql.org/docs/18/xplang.html | 0.675 | www.postgresql.org/docs/17/xplang.html | 0.675 |
-| scrapy+md | miss | www.postgresql.org/docs/9.0/server-programming.htm | 0.580 | www.postgresql.org/docs/9.1/client-interfaces.html | 0.559 | www.postgresql.org/docs/7.2/reference-client.html | 0.553 |
-| crawlee | #1 | www.postgresql.org/docs/current/xplang.html | 0.716 | www.postgresql.org/docs/18/xplang.html | 0.716 | www.postgresql.org/docs/17/xplang.html | 0.715 |
-| colly+md | #1 | www.postgresql.org/docs/18/xplang.html | 0.716 | www.postgresql.org/docs/current/xplang.html | 0.716 | www.postgresql.org/docs/17/xplang.html | 0.715 |
-| playwright | #1 | www.postgresql.org/docs/current/xplang.html | 0.716 | www.postgresql.org/docs/18/xplang.html | 0.716 | www.postgresql.org/docs/17/xplang.html | 0.715 |
-
-
-**Q16: How does PostgreSQL handle functions written in procedural languages?**
-*(expects URL containing: `xplang.html`)*
+**Q19: What are the facilities PostgreSQL has for evaluating mixed-type expressions?**
+*(expects URL containing: `typeconv.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | www.postgresql.org/docs/current/xfunc-pl.html | 0.693 | www.postgresql.org/docs/current/xplang.html | 0.679 | www.postgresql.org/docs/current/plpgsql-overview.h | 0.633 |
-| crawl4ai | #3 | www.postgresql.org/docs/current/plhandler.html | 0.664 | www.postgresql.org/docs/18/plhandler.html | 0.664 | www.postgresql.org/docs/18/xplang.html | 0.629 |
-| crawl4ai-raw | #3 | www.postgresql.org/docs/current/plhandler.html | 0.664 | www.postgresql.org/docs/18/plhandler.html | 0.664 | www.postgresql.org/docs/18/xplang.html | 0.629 |
-| scrapy+md | miss | www.postgresql.org/docs/9.0/server-programming.htm | 0.590 | www.postgresql.org/docs/9.0/functions-info.html | 0.539 | www.postgresql.org/docs/8.1/functions.html | 0.537 |
-| crawlee | #3 | www.postgresql.org/docs/18/plhandler.html | 0.679 | www.postgresql.org/docs/current/plhandler.html | 0.679 | www.postgresql.org/docs/18/xplang.html | 0.679 |
-| colly+md | #2 | www.postgresql.org/docs/current/plhandler.html | 0.679 | www.postgresql.org/docs/18/xplang.html | 0.679 | www.postgresql.org/docs/current/xplang.html | 0.679 |
-| playwright | #3 | www.postgresql.org/docs/current/plhandler.html | 0.679 | www.postgresql.org/docs/18/plhandler.html | 0.679 | www.postgresql.org/docs/current/xplang.html | 0.679 |
+| markcrawl | #22 | www.postgresql.org/docs/current/typeconv-overview. | 0.559 | www.postgresql.org/docs/current/plpgsql-expression | 0.539 | www.postgresql.org/docs/current/plpgsql-expression | 0.538 |
+| crawl4ai | #3 | www.postgresql.org/docs/8.0/index.html | 0.552 | www.postgresql.org/docs/7.4/index.html | 0.548 | www.postgresql.org/docs/current/typeconv.html | 0.527 |
+| crawl4ai-raw | #3 | www.postgresql.org/docs/8.0/index.html | 0.552 | www.postgresql.org/docs/7.4/index.html | 0.548 | www.postgresql.org/docs/current/typeconv.html | 0.527 |
+| scrapy+md | miss | www.postgresql.org/docs/8.1/functions.html | 0.547 | www.postgresql.org/docs/7.3/functions.html | 0.521 | www.postgresql.org/docs/current/bookindex.html | 0.517 |
+| crawlee | #3 | www.postgresql.org/docs/8.0/index.html | 0.551 | www.postgresql.org/docs/7.4/index.html | 0.546 | www.postgresql.org/docs/current/typeconv.html | 0.523 |
+| colly+md | #3 | www.postgresql.org/docs/8.0/index.html | 0.551 | www.postgresql.org/docs/7.4/index.html | 0.546 | www.postgresql.org/docs/18/typeconv.html | 0.523 |
+| playwright | #3 | www.postgresql.org/docs/8.0/index.html | 0.552 | www.postgresql.org/docs/7.4/index.html | 0.546 | www.postgresql.org/docs/18/typeconv.html | 0.523 |
 
 
-**Q17: What is logical replication in PostgreSQL?**
-*(expects URL containing: `logical-replication.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.732 | www.postgresql.org/docs/current/logicaldecoding-ex | 0.648 | www.postgresql.org/docs/current/logicaldecoding-ex | 0.625 |
-| crawl4ai | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.720 | www.postgresql.org/docs/current/logical-replicatio | 0.720 | www.postgresql.org/docs/17/logical-replication.htm | 0.712 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.720 | www.postgresql.org/docs/current/logical-replicatio | 0.720 | www.postgresql.org/docs/17/logical-replication.htm | 0.712 |
-| scrapy+md | miss | www.postgresql.org/docs/8.0/mvcc.html | 0.490 | www.postgresql.org/docs/9.5/test-decoding.html | 0.488 | www.postgresql.org/docs/9.4/test-decoding.html | 0.487 |
-| crawlee | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.707 | www.postgresql.org/docs/18/logical-replication.htm | 0.707 | www.postgresql.org/docs/17/logical-replication.htm | 0.699 |
-| colly+md | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.707 | www.postgresql.org/docs/current/logical-replicatio | 0.707 | www.postgresql.org/docs/17/logical-replication.htm | 0.699 |
-| playwright | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.707 | www.postgresql.org/docs/18/logical-replication.htm | 0.707 | www.postgresql.org/docs/17/logical-replication.htm | 0.699 |
-
-
-**Q18: What are the typical use-cases for logical replication?**
-*(expects URL containing: `logical-replication.html`)*
+**Q20: How can explicit type conversion affect the results of a query in PostgreSQL?**
+*(expects URL containing: `typeconv.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.629 | www.postgresql.org/docs/current/logical-replicatio | 0.574 | www.postgresql.org/docs/current/logical-replicatio | 0.557 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.661 | www.postgresql.org/docs/18/logical-replication.htm | 0.661 | www.postgresql.org/docs/17/logical-replication.htm | 0.654 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.661 | www.postgresql.org/docs/18/logical-replication.htm | 0.661 | www.postgresql.org/docs/17/logical-replication.htm | 0.654 |
-| scrapy+md | miss | www.postgresql.org/docs/current/sql-createpublicat | 0.406 | www.postgresql.org/docs/current/sql-createpublicat | 0.360 | www.postgresql.org/docs/current/sql-createrole.htm | 0.351 |
-| crawlee | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.650 | www.postgresql.org/docs/current/logical-replicatio | 0.650 | www.postgresql.org/docs/17/logical-replication.htm | 0.645 |
-| colly+md | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.650 | www.postgresql.org/docs/current/logical-replicatio | 0.650 | www.postgresql.org/docs/17/logical-replication.htm | 0.645 |
-| playwright | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.650 | www.postgresql.org/docs/current/logical-replicatio | 0.650 | www.postgresql.org/docs/17/logical-replication.htm | 0.645 |
+| markcrawl | #3 | www.postgresql.org/docs/current/typeconv-overview. | 0.597 | www.postgresql.org/docs/current/typeconv-overview. | 0.578 | www.postgresql.org/docs/current/typeconv.html | 0.569 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/typeconv.html | 0.510 | www.postgresql.org/docs/current/typeconv.html | 0.510 | www.postgresql.org/docs/17/typeconv.html | 0.507 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/typeconv.html | 0.510 | www.postgresql.org/docs/18/typeconv.html | 0.510 | www.postgresql.org/docs/17/typeconv.html | 0.507 |
+| scrapy+md | miss | www.postgresql.org/docs/9.2/multibyte.html | 0.493 | www.postgresql.org/docs/9.2/multibyte.html | 0.482 | www.postgresql.org/docs/8.0/multibyte.html | 0.470 |
+| crawlee | #1 | www.postgresql.org/docs/18/typeconv.html | 0.587 | www.postgresql.org/docs/current/typeconv.html | 0.587 | www.postgresql.org/docs/17/typeconv.html | 0.577 |
+| colly+md | #1 | www.postgresql.org/docs/18/typeconv.html | 0.587 | www.postgresql.org/docs/current/typeconv.html | 0.587 | www.postgresql.org/docs/17/typeconv.html | 0.577 |
+| playwright | #1 | www.postgresql.org/docs/18/typeconv.html | 0.587 | www.postgresql.org/docs/current/typeconv.html | 0.587 | www.postgresql.org/docs/17/typeconv.html | 0.577 |
 
 
-**Q19: What is PgQue v0.1?**
-*(expects URL containing: `pgque-v01-zero-bloat-postgres-queue-3284`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/libpq-pgpass.html | 0.393 | www.postgresql.org/docs/current/view-pg-file-setti | 0.390 | www.postgresql.org/docs/current/libpq-connect.html | 0.374 |
-| crawl4ai | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.614 | www.postgresql.org/ | 0.519 | www.postgresql.org/about/newsarchive/ | 0.466 |
-| crawl4ai-raw | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.614 | www.postgresql.org/ | 0.519 | www.postgresql.org/about/newsarchive/ | 0.466 |
-| scrapy+md | miss | www.postgresql.org/docs/current/bookindex.html | 0.437 | www.postgresql.org/docs/current/bookindex.html | 0.437 | www.postgresql.org/docs/current/bookindex.html | 0.432 |
-| crawlee | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.622 | www.postgresql.org/about/newsarchive/ | 0.462 | www.postgresql.org/ | 0.461 |
-| colly+md | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.622 | www.postgresql.org/about/newsarchive/ | 0.462 | www.postgresql.org/ | 0.461 |
-| playwright | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.622 | www.postgresql.org/about/newsarchive/ | 0.462 | www.postgresql.org/ | 0.461 |
-
-
-**Q20: What are the key features of PgQue?**
-*(expects URL containing: `pgque-v01-zero-bloat-postgres-queue-3284`)*
+**Q21: What are the three fundamentally different approaches to backing up PostgreSQL data?**
+*(expects URL containing: `backup.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/plpgsql-overview.h | 0.429 | www.postgresql.org/docs/current/plpgsql-overview.h | 0.423 | www.postgresql.org/docs/current/view-pg-file-setti | 0.414 |
-| crawl4ai | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.632 | www.postgresql.org/ | 0.558 | www.postgresql.org/about/newsarchive/ | 0.510 |
-| crawl4ai-raw | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.632 | www.postgresql.org/ | 0.558 | www.postgresql.org/about/newsarchive/ | 0.510 |
-| scrapy+md | miss | www.postgresql.org/docs/current/bookindex.html | 0.518 | www.postgresql.org/docs/current/bookindex.html | 0.502 | www.postgresql.org/docs/current/bookindex.html | 0.488 |
-| crawlee | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.619 | www.postgresql.org/docs/current/bookindex.html | 0.518 | www.postgresql.org/docs/18/bookindex.html | 0.518 |
-| colly+md | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.619 | www.postgresql.org/docs/current/bookindex.html | 0.518 | www.postgresql.org/about/newsarchive/ | 0.507 |
-| playwright | #1 | www.postgresql.org/about/news/pgque-v01-zero-bloat | 0.619 | www.postgresql.org/docs/current/bookindex.html | 0.518 | www.postgresql.org/docs/18/bookindex.html | 0.518 |
+| markcrawl | miss | www.postgresql.org/docs/current/continuous-archivi | 0.565 | www.postgresql.org/docs/current/storage-file-layou | 0.525 | www.postgresql.org/docs/current/continuous-archivi | 0.525 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/backup.html | 0.549 | www.postgresql.org/docs/18/backup.html | 0.549 | www.postgresql.org/docs/17/backup.html | 0.547 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/backup.html | 0.549 | www.postgresql.org/docs/18/backup.html | 0.549 | www.postgresql.org/docs/17/backup.html | 0.547 |
+| scrapy+md | #1 | www.postgresql.org/docs/8.0/backup.html | 0.621 | www.postgresql.org/docs/8.0/backup.html | 0.588 | www.postgresql.org/docs/9.1/upgrading.html | 0.559 |
+| crawlee | #1 | www.postgresql.org/docs/current/backup.html | 0.575 | www.postgresql.org/docs/18/backup.html | 0.575 | www.postgresql.org/docs/17/backup.html | 0.566 |
+| colly+md | #1 | www.postgresql.org/docs/current/backup.html | 0.575 | www.postgresql.org/docs/18/backup.html | 0.575 | www.postgresql.org/docs/16/backup.html | 0.569 |
+| playwright | #1 | www.postgresql.org/docs/current/backup.html | 0.575 | www.postgresql.org/docs/18/backup.html | 0.575 | www.postgresql.org/docs/17/backup.html | 0.566 |
 
 
-**Q21: What does PostgreSQL use for date/time input support?**
-*(expects URL containing: `datetime-appendix.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #5 | www.postgresql.org/docs/current/datatype-datetime. | 0.696 | www.postgresql.org/docs/current/datatype-datetime. | 0.691 | www.postgresql.org/docs/current/datatype-datetime. | 0.661 |
-| crawl4ai | #1 | www.postgresql.org/docs/18/datetime-appendix.html | 0.611 | www.postgresql.org/docs/current/datetime-appendix. | 0.611 | www.postgresql.org/about/ | 0.589 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/18/datetime-appendix.html | 0.611 | www.postgresql.org/docs/current/datetime-appendix. | 0.611 | www.postgresql.org/about/ | 0.589 |
-| scrapy+md | miss | www.postgresql.org/docs/9.1/datatype-datetime.html | 0.664 | www.postgresql.org/docs/9.1/datatype-datetime.html | 0.663 | www.postgresql.org/docs/9.1/datatype-datetime.html | 0.652 |
-| crawlee | #1 | www.postgresql.org/docs/current/datetime-appendix. | 0.634 | www.postgresql.org/docs/18/datetime-appendix.html | 0.634 | www.postgresql.org/about/ | 0.548 |
-| colly+md | #1 | www.postgresql.org/docs/current/datetime-appendix. | 0.634 | www.postgresql.org/about/ | 0.548 | www.postgresql.org/about/ | 0.543 |
-| playwright | #1 | www.postgresql.org/docs/18/datetime-appendix.html | 0.634 | www.postgresql.org/docs/current/datetime-appendix. | 0.634 | www.postgresql.org/about/ | 0.548 |
-
-
-**Q22: What information does this appendix include about the parser?**
-*(expects URL containing: `datetime-appendix.html`)*
+**Q22: What is the importance of backing up PostgreSQL databases regularly?**
+*(expects URL containing: `backup.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #9 | www.postgresql.org/docs/current/parser-stage.html | 0.522 | www.postgresql.org/docs/current/catalog-pg-ts-pars | 0.513 | www.postgresql.org/docs/current/textsearch-parsers | 0.507 |
-| crawl4ai | miss | www.postgresql.org/docs/18/appendixes.html | 0.418 | www.postgresql.org/docs/current/appendixes.html | 0.418 | www.postgresql.org/docs/current/internals.html | 0.418 |
-| crawl4ai-raw | miss | www.postgresql.org/docs/current/appendixes.html | 0.418 | www.postgresql.org/docs/18/appendixes.html | 0.418 | www.postgresql.org/docs/18/internals.html | 0.418 |
-| scrapy+md | miss | www.postgresql.org/docs/9.4/test-parser.html | 0.468 | www.postgresql.org/docs/9.3/test-parser.html | 0.455 | www.postgresql.org/docs/9.2/test-parser.html | 0.452 |
-| crawlee | #46 | www.postgresql.org/docs/18/appendixes.html | 0.422 | www.postgresql.org/docs/current/appendixes.html | 0.422 | www.postgresql.org/docs/18/overview.html | 0.417 |
-| colly+md | #34 | www.postgresql.org/docs/current/appendixes.html | 0.422 | www.postgresql.org/docs/current/overview.html | 0.417 | www.postgresql.org/docs/current/internals.html | 0.417 |
-| playwright | #46 | www.postgresql.org/docs/current/appendixes.html | 0.422 | www.postgresql.org/docs/18/appendixes.html | 0.422 | www.postgresql.org/docs/18/overview.html | 0.417 |
+| markcrawl | miss | www.postgresql.org/docs/current/continuous-archivi | 0.567 | www.postgresql.org/docs/current/wal-reliability.ht | 0.545 | www.postgresql.org/docs/current/wal-reliability.ht | 0.541 |
+| crawl4ai | #4 | www.postgresql.org/docs/18/maintenance.html | 0.580 | www.postgresql.org/docs/current/maintenance.html | 0.580 | www.postgresql.org/docs/17/maintenance.html | 0.580 |
+| crawl4ai-raw | #5 | www.postgresql.org/docs/current/maintenance.html | 0.580 | www.postgresql.org/docs/17/maintenance.html | 0.580 | www.postgresql.org/docs/18/maintenance.html | 0.580 |
+| scrapy+md | #2 | www.postgresql.org/docs/8.0/maintenance.html | 0.604 | www.postgresql.org/docs/8.0/backup.html | 0.599 | www.postgresql.org/docs/8.0/maintenance.html | 0.594 |
+| crawlee | #4 | www.postgresql.org/docs/current/maintenance.html | 0.582 | www.postgresql.org/docs/18/maintenance.html | 0.582 | www.postgresql.org/docs/17/maintenance.html | 0.582 |
+| colly+md | #5 | www.postgresql.org/docs/17/maintenance.html | 0.582 | www.postgresql.org/docs/18/maintenance.html | 0.582 | www.postgresql.org/docs/current/maintenance.html | 0.582 |
+| playwright | #4 | www.postgresql.org/docs/current/maintenance.html | 0.582 | www.postgresql.org/docs/17/maintenance.html | 0.582 | www.postgresql.org/docs/18/maintenance.html | 0.582 |
 
 
-**Q23: What is the contact email for press enquiries?**
-*(expects URL containing: `press`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #43 | www.postgresql.org/docs/current/view-pg-publicatio | 0.182 | www.postgresql.org/docs/current/catalog-pg-publica | 0.179 | www.postgresql.org/docs/current/libpq-pgpass.html | 0.176 |
-| crawl4ai | #5 | www.postgresql.org/community/contributors/ | 0.304 | www.postgresql.org/developer/related-projects/ | 0.275 | www.postgresql.org/community/contributors/ | 0.271 |
-| crawl4ai-raw | #5 | www.postgresql.org/community/contributors/ | 0.304 | www.postgresql.org/developer/related-projects/ | 0.275 | www.postgresql.org/community/contributors/ | 0.271 |
-| scrapy+md | miss | www.postgresql.org/about/contact/ | 0.237 | www.postgresql.org/about/policies/coc/ | 0.223 | www.postgresql.org/about/policies/coc/ | 0.209 |
-| crawlee | #2 | www.postgresql.org/about/contact/ | 0.375 | www.postgresql.org/about/press/ | 0.337 | www.postgresql.org/community/contributors/ | 0.283 |
-| colly+md | #2 | www.postgresql.org/about/contact/ | 0.375 | www.postgresql.org/about/press/ | 0.337 | www.postgresql.org/community/contributors/ | 0.283 |
-| playwright | #2 | www.postgresql.org/about/contact/ | 0.375 | www.postgresql.org/about/press/ | 0.337 | www.postgresql.org/community/contributors/ | 0.283 |
-
-
-**Q24: Who contributed to the PostgreSQL 18 press kit?**
-*(expects URL containing: `press`)*
+**Q23: What is the recommended way to install PostgreSQL for users of the system?**
+*(expects URL containing: `install-binaries.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/index.html | 0.650 | www.postgresql.org/docs/current/index.html | 0.611 | www.postgresql.org/docs/current/appendixes.html | 0.596 |
-| crawl4ai | #1 | www.postgresql.org/about/press/ | 0.780 | www.postgresql.org/community/contributors/ | 0.719 | www.postgresql.org/ | 0.717 |
-| crawl4ai-raw | #1 | www.postgresql.org/about/press/ | 0.780 | www.postgresql.org/community/contributors/ | 0.719 | www.postgresql.org/ | 0.717 |
-| scrapy+md | miss | www.postgresql.org/docs/current/bookindex.html | 0.688 | www.postgresql.org/developer/core/ | 0.687 | www.postgresql.org/about/contact/ | 0.686 |
-| crawlee | #1 | www.postgresql.org/about/press/ | 0.812 | www.postgresql.org/ | 0.703 | www.postgresql.org/docs/release/ | 0.698 |
-| colly+md | #1 | www.postgresql.org/about/press/ | 0.812 | www.postgresql.org/ | 0.703 | www.postgresql.org/docs/release/ | 0.698 |
-| playwright | #1 | www.postgresql.org/about/press/ | 0.812 | www.postgresql.org/ | 0.703 | www.postgresql.org/docs/release/ | 0.698 |
+| markcrawl | miss | www.postgresql.org/docs/current/install-make.html | 0.543 | www.postgresql.org/docs/current/install-make.html | 0.541 | www.postgresql.org/docs/current/app-postgres.html | 0.530 |
+| crawl4ai | #34 | www.postgresql.org/download/linux/redhat | 0.600 | www.postgresql.org/download/linux/redhat | 0.591 | www.postgresql.org/download/linux/ubuntu | 0.564 |
+| crawl4ai-raw | #34 | www.postgresql.org/download/linux/redhat | 0.600 | www.postgresql.org/download/linux/redhat | 0.591 | www.postgresql.org/download/linux/debian/ | 0.564 |
+| scrapy+md | miss | www.postgresql.org/docs/9.1/install-procedure.html | 0.560 | www.postgresql.org/docs/9.1/install-procedure.html | 0.550 | www.postgresql.org/docs/9.1/install-procedure.html | 0.543 |
+| crawlee | #11 | www.postgresql.org/download/linux/redhat | 0.589 | www.postgresql.org/download/linux/redhat | 0.580 | www.postgresql.org/download/linux/ubuntu | 0.580 |
+| colly+md | #12 | www.postgresql.org/download/linux/redhat/ | 0.594 | www.postgresql.org/download/linux/redhat/ | 0.589 | www.postgresql.org/download/linux/ubuntu/ | 0.580 |
+| playwright | #11 | www.postgresql.org/download/linux/redhat | 0.594 | www.postgresql.org/download/linux/redhat | 0.588 | www.postgresql.org/download/linux/ubuntu | 0.580 |
 
 
-**Q25: What companies provide the servers for www.postgresql.org?**
-*(expects URL containing: `servers`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/reference-server.h | 0.498 | www.postgresql.org/docs/current/admin.html | 0.497 | www.postgresql.org/docs/current/app-postgres.html | 0.496 |
-| crawl4ai | #1 | www.postgresql.org/about/servers/ | 0.647 | www.postgresql.org/about/servers/ | 0.639 | www.postgresql.org/docs/17/history.html | 0.612 |
-| crawl4ai-raw | #1 | www.postgresql.org/about/servers/ | 0.647 | www.postgresql.org/about/servers/ | 0.639 | www.postgresql.org/docs/17/history.html | 0.612 |
-| scrapy+md | miss | www.postgresql.org/docs/7.3/reference.html | 0.522 | www.postgresql.org/docs/7.3/release-0-02.html | 0.517 | www.postgresql.org/community/user-groups/ | 0.514 |
-| crawlee | #1 | www.postgresql.org/about/servers/ | 0.683 | www.postgresql.org/support/professional_hosting/ | 0.669 | www.postgresql.org/about/servers/ | 0.644 |
-| colly+md | #1 | www.postgresql.org/about/servers/ | 0.683 | www.postgresql.org/support/professional/hosting/ | 0.669 | www.postgresql.org/about/servers/ | 0.644 |
-| playwright | #1 | www.postgresql.org/about/servers/ | 0.683 | www.postgresql.org/support/professional_hosting/ | 0.669 | www.postgresql.org/about/servers/ | 0.644 |
-
-
-**Q26: What are the specifications of the server named 'arp'?**
-*(expects URL containing: `servers`)*
+**Q24: Where can I find an updated list of platforms providing binary packages for PostgreSQL?**
+*(expects URL containing: `install-binaries.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/runtime-config-pre | 0.351 | www.postgresql.org/docs/current/runtime-config-con | 0.348 | www.postgresql.org/docs/current/runtime-config-con | 0.348 |
-| crawl4ai | #6 | www.postgresql.org/docs/18/bookindex.html | 0.350 | www.postgresql.org/docs/current/bookindex.html | 0.350 | www.postgresql.org/docs/18/acronyms.html | 0.348 |
-| crawl4ai-raw | #6 | www.postgresql.org/docs/18/bookindex.html | 0.350 | www.postgresql.org/docs/current/bookindex.html | 0.350 | www.postgresql.org/docs/current/acronyms.html | 0.348 |
-| scrapy+md | miss | www.postgresql.org/docs/current/bookindex.html | 0.362 | www.postgresql.org/docs/current/bookindex.html | 0.331 | www.postgresql.org/docs/9.2/multibyte.html | 0.322 |
-| crawlee | #3 | www.postgresql.org/docs/18/acronyms.html | 0.377 | www.postgresql.org/docs/current/acronyms.html | 0.377 | www.postgresql.org/about/servers/ | 0.366 |
-| colly+md | #2 | www.postgresql.org/docs/current/acronyms.html | 0.377 | www.postgresql.org/about/servers/ | 0.366 | www.postgresql.org/docs/current/bookindex.html | 0.362 |
-| playwright | #3 | www.postgresql.org/docs/current/acronyms.html | 0.377 | www.postgresql.org/docs/18/acronyms.html | 0.377 | www.postgresql.org/about/servers/ | 0.366 |
+| markcrawl | miss | www.postgresql.org/docs/current/index.html | 0.498 | www.postgresql.org/docs/current/reference-server.h | 0.496 | www.postgresql.org/docs/current/extend-pgxs.html | 0.495 |
+| crawl4ai | #8 | www.postgresql.org/download/macosx/ | 0.595 | www.postgresql.org/download/linux/redhat | 0.590 | www.postgresql.org/download/linux/ubuntu | 0.583 |
+| crawl4ai-raw | #8 | www.postgresql.org/download/macosx/ | 0.595 | www.postgresql.org/download/linux/redhat | 0.590 | www.postgresql.org/download/linux/ubuntu | 0.583 |
+| scrapy+md | miss | www.postgresql.org/docs/10/regress-variant.html | 0.560 | www.postgresql.org/docs/12/regress-variant.html | 0.556 | www.postgresql.org/docs/13/regress-variant.html | 0.555 |
+| crawlee | #2 | www.postgresql.org/download/ | 0.635 | www.postgresql.org/docs/current/install-binaries.h | 0.627 | www.postgresql.org/docs/18/install-binaries.html | 0.627 |
+| colly+md | #2 | www.postgresql.org/download/ | 0.635 | www.postgresql.org/docs/18/install-binaries.html | 0.627 | www.postgresql.org/docs/current/install-binaries.h | 0.627 |
+| playwright | #2 | www.postgresql.org/download/ | 0.635 | www.postgresql.org/docs/current/install-binaries.h | 0.627 | www.postgresql.org/docs/18/install-binaries.html | 0.627 |
 
 
-**Q27: What factors can affect query performance in PostgreSQL?**
+**Q25: What is the process by which the database server establishes the identity of the client?**
+*(expects URL containing: `client-authentication.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | www.postgresql.org/docs/current/connect-estab.html | 0.450 | www.postgresql.org/docs/current/protocol-flow.html | 0.448 | www.postgresql.org/docs/current/logical-replicatio | 0.424 |
+| crawl4ai | #1 | www.postgresql.org/docs/17/client-authentication.h | 0.422 | www.postgresql.org/docs/current/client-authenticat | 0.422 | www.postgresql.org/docs/18/client-authentication.h | 0.422 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/client-authenticat | 0.422 | www.postgresql.org/docs/17/client-authentication.h | 0.422 | www.postgresql.org/docs/18/client-authentication.h | 0.422 |
+| scrapy+md | miss | www.postgresql.org/docs/current/sspi-auth.html | 0.389 | www.postgresql.org/docs/current/database-roles.htm | 0.386 | www.postgresql.org/docs/8.0/multibyte.html | 0.371 |
+| crawlee | #1 | www.postgresql.org/docs/17/client-authentication.h | 0.488 | www.postgresql.org/docs/current/client-authenticat | 0.484 | www.postgresql.org/docs/18/client-authentication.h | 0.484 |
+| colly+md | #1 | www.postgresql.org/docs/17/client-authentication.h | 0.488 | www.postgresql.org/docs/16/client-authentication.h | 0.485 | www.postgresql.org/docs/18/client-authentication.h | 0.484 |
+| playwright | #1 | www.postgresql.org/docs/17/client-authentication.h | 0.488 | www.postgresql.org/docs/current/client-authenticat | 0.484 | www.postgresql.org/docs/18/client-authentication.h | 0.484 |
+
+
+**Q26: How does PostgreSQL determine which database users can connect?**
+*(expects URL containing: `client-authentication.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | www.postgresql.org/docs/current/app-psql.html | 0.561 | www.postgresql.org/docs/current/connect-estab.html | 0.557 | www.postgresql.org/docs/current/app-pg-dumpall.htm | 0.532 |
+| crawl4ai | #1 | www.postgresql.org/docs/17/client-authentication.h | 0.647 | www.postgresql.org/docs/current/client-authenticat | 0.647 | www.postgresql.org/docs/18/client-authentication.h | 0.647 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/client-authentication.h | 0.647 | www.postgresql.org/docs/17/client-authentication.h | 0.647 | www.postgresql.org/docs/current/client-authenticat | 0.647 |
+| scrapy+md | miss | www.postgresql.org/docs/current/database-roles.htm | 0.536 | www.postgresql.org/docs/8.3/app-psql.html | 0.532 | www.postgresql.org/docs/current/database-roles.htm | 0.509 |
+| crawlee | #1 | www.postgresql.org/docs/current/client-authenticat | 0.633 | www.postgresql.org/docs/18/client-authentication.h | 0.633 | www.postgresql.org/docs/17/client-authentication.h | 0.633 |
+| colly+md | #1 | www.postgresql.org/docs/16/client-authentication.h | 0.633 | www.postgresql.org/docs/17/client-authentication.h | 0.633 | www.postgresql.org/docs/current/client-authenticat | 0.633 |
+| playwright | #1 | www.postgresql.org/docs/current/client-authenticat | 0.633 | www.postgresql.org/docs/17/client-authentication.h | 0.633 | www.postgresql.org/docs/18/client-authentication.h | 0.633 |
+
+
+**Q27: What is the difference between a warm standby server and a hot standby server?**
+*(expects URL containing: `high-availability.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #27 | www.postgresql.org/docs/current/warm-standby.html | 0.516 | www.postgresql.org/docs/current/runtime-config-rep | 0.512 | www.postgresql.org/docs/current/runtime-config-rep | 0.508 |
+| crawl4ai | #1 | www.postgresql.org/docs/17/high-availability.html | 0.480 | www.postgresql.org/docs/18/high-availability.html | 0.480 | www.postgresql.org/docs/current/high-availability. | 0.480 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/17/high-availability.html | 0.480 | www.postgresql.org/docs/18/high-availability.html | 0.480 | www.postgresql.org/docs/current/high-availability. | 0.480 |
+| scrapy+md | miss | www.postgresql.org/docs/current/bookindex.html | 0.336 | www.postgresql.org/docs/9.1/upgrading.html | 0.315 | www.postgresql.org/docs/8.0/app-pg-ctl.html | 0.306 |
+| crawlee | #1 | www.postgresql.org/docs/current/high-availability. | 0.483 | www.postgresql.org/docs/17/high-availability.html | 0.483 | www.postgresql.org/docs/18/high-availability.html | 0.483 |
+| colly+md | #1 | www.postgresql.org/docs/16/high-availability.html | 0.485 | www.postgresql.org/docs/18/high-availability.html | 0.483 | www.postgresql.org/docs/current/high-availability. | 0.483 |
+| playwright | #1 | www.postgresql.org/docs/18/high-availability.html | 0.483 | www.postgresql.org/docs/17/high-availability.html | 0.483 | www.postgresql.org/docs/current/high-availability. | 0.483 |
+
+
+**Q28: How do synchronous and asynchronous solutions differ in terms of data propagation?**
+*(expects URL containing: `high-availability.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | www.postgresql.org/docs/current/high-availability. | 0.539 | www.postgresql.org/docs/current/warm-standby.html | 0.450 | www.postgresql.org/docs/current/wal-async-commit.h | 0.444 |
+| crawl4ai | #1 | www.postgresql.org/docs/17/high-availability.html | 0.541 | www.postgresql.org/docs/current/high-availability. | 0.541 | www.postgresql.org/docs/18/high-availability.html | 0.541 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/high-availability.html | 0.541 | www.postgresql.org/docs/current/high-availability. | 0.541 | www.postgresql.org/docs/17/high-availability.html | 0.541 |
+| scrapy+md | miss | www.postgresql.org/docs/8.0/mvcc.html | 0.315 | www.postgresql.org/docs/9.2/runtime-config-resourc | 0.281 | www.postgresql.org/docs/9.4/test-shm-mq.html | 0.271 |
+| crawlee | #1 | www.postgresql.org/docs/17/high-availability.html | 0.388 | www.postgresql.org/docs/18/high-availability.html | 0.388 | www.postgresql.org/docs/current/high-availability. | 0.388 |
+| colly+md | #1 | www.postgresql.org/docs/16/high-availability.html | 0.388 | www.postgresql.org/docs/current/high-availability. | 0.388 | www.postgresql.org/docs/17/high-availability.html | 0.388 |
+| playwright | #1 | www.postgresql.org/docs/current/high-availability. | 0.388 | www.postgresql.org/docs/18/high-availability.html | 0.388 | www.postgresql.org/docs/17/high-availability.html | 0.388 |
+
+
+**Q29: What are the components required for OAuth validator modules in PostgreSQL?**
+*(expects URL containing: `oauth-validators.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | www.postgresql.org/docs/current/runtime-config-con | 0.522 | www.postgresql.org/docs/current/libpq-connect.html | 0.493 | www.postgresql.org/docs/current/runtime-config-con | 0.490 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/oauth-validators.html | 0.656 | www.postgresql.org/docs/current/oauth-validators.h | 0.656 | www.postgresql.org/support/security/ | 0.478 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/oauth-validators.html | 0.656 | www.postgresql.org/docs/current/oauth-validators.h | 0.656 | www.postgresql.org/support/security/ | 0.478 |
+| scrapy+md | miss | www.postgresql.org/docs/9.1/uuid-ossp.html | 0.465 | www.postgresql.org/docs/9.1/contrib.html | 0.454 | www.postgresql.org/docs/current/bookindex.html | 0.445 |
+| crawlee | #1 | www.postgresql.org/docs/18/oauth-validators.html | 0.701 | www.postgresql.org/docs/current/oauth-validators.h | 0.701 | www.postgresql.org/docs/18/contrib.html | 0.458 |
+| colly+md | #1 | www.postgresql.org/docs/18/oauth-validators.html | 0.701 | www.postgresql.org/docs/current/oauth-validators.h | 0.701 | www.postgresql.org/docs/current/contrib.html | 0.458 |
+| playwright | #1 | www.postgresql.org/docs/current/oauth-validators.h | 0.701 | www.postgresql.org/docs/18/oauth-validators.html | 0.701 | www.postgresql.org/docs/18/contrib.html | 0.458 |
+
+
+**Q30: Why is correct implementation of OAuth validator modules crucial for server safety?**
+*(expects URL containing: `oauth-validators.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | www.postgresql.org/docs/current/libpq-connect.html | 0.401 | www.postgresql.org/docs/current/ssl-tcp.html | 0.360 | www.postgresql.org/docs/current/runtime-config-con | 0.355 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/oauth-validators.html | 0.477 | www.postgresql.org/docs/current/oauth-validators.h | 0.476 | www.postgresql.org/about/featurematrix/ | 0.354 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/oauth-validators.h | 0.477 | www.postgresql.org/docs/18/oauth-validators.html | 0.477 | www.postgresql.org/about/featurematrix/ | 0.354 |
+| scrapy+md | miss | www.postgresql.org/docs/current/bookindex.html | 0.300 | www.postgresql.org/docs/current/sslinfo.html | 0.267 | www.postgresql.org/docs/9.1/uuid-ossp.html | 0.264 |
+| crawlee | #1 | www.postgresql.org/docs/current/oauth-validators.h | 0.577 | www.postgresql.org/docs/18/oauth-validators.html | 0.577 | www.postgresql.org/docs/current/plhandler.html | 0.363 |
+| colly+md | #1 | www.postgresql.org/docs/current/oauth-validators.h | 0.577 | www.postgresql.org/docs/18/oauth-validators.html | 0.577 | www.postgresql.org/docs/current/plhandler.html | 0.363 |
+| playwright | #1 | www.postgresql.org/docs/18/oauth-validators.html | 0.577 | www.postgresql.org/docs/current/oauth-validators.h | 0.577 | www.postgresql.org/docs/18/plhandler.html | 0.363 |
+
+
+**Q31: What does Part IV of the PostgreSQL documentation describe?**
+*(expects URL containing: `client-interfaces.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | www.postgresql.org/docs/current/internals.html | 0.692 | www.postgresql.org/docs/current/sql.html | 0.684 | www.postgresql.org/docs/current/admin.html | 0.674 |
+| crawl4ai | #7 | www.postgresql.org/docs/18/preface.html | 0.656 | www.postgresql.org/docs/current/preface.html | 0.656 | www.postgresql.org/docs/17/preface.html | 0.653 |
+| crawl4ai-raw | #7 | www.postgresql.org/docs/18/preface.html | 0.656 | www.postgresql.org/docs/current/preface.html | 0.656 | www.postgresql.org/docs/17/preface.html | 0.653 |
+| scrapy+md | #1 | www.postgresql.org/docs/9.1/client-interfaces.html | 0.673 | www.postgresql.org/docs/8.0/admin.html | 0.653 | www.postgresql.org/docs/8.1/biblio.html | 0.652 |
+| crawlee | #16 | www.postgresql.org/docs/18/reference.html | 0.680 | www.postgresql.org/docs/current/reference.html | 0.680 | www.postgresql.org/docs/17/preface.html | 0.676 |
+| colly+md | #16 | www.postgresql.org/docs/current/reference.html | 0.680 | www.postgresql.org/docs/18/reference.html | 0.680 | www.postgresql.org/docs/17/preface.html | 0.676 |
+| playwright | #16 | www.postgresql.org/docs/18/reference.html | 0.680 | www.postgresql.org/docs/current/reference.html | 0.680 | www.postgresql.org/docs/17/preface.html | 0.676 |
+
+
+**Q32: What should readers of this part be familiar with?**
+*(expects URL containing: `client-interfaces.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | www.postgresql.org/docs/current/admin.html | 0.420 | www.postgresql.org/docs/current/internals.html | 0.408 | www.postgresql.org/docs/current/sql.html | 0.397 |
+| crawl4ai | #4 | www.postgresql.org/docs/current/admin.html | 0.405 | www.postgresql.org/docs/18/admin.html | 0.405 | www.postgresql.org/docs/17/admin.html | 0.400 |
+| crawl4ai-raw | #4 | www.postgresql.org/docs/current/admin.html | 0.405 | www.postgresql.org/docs/18/admin.html | 0.405 | www.postgresql.org/docs/17/admin.html | 0.400 |
+| scrapy+md | #3 | www.postgresql.org/docs/8.0/admin.html | 0.389 | www.postgresql.org/docs/7.4/sql.html | 0.381 | www.postgresql.org/docs/9.1/client-interfaces.html | 0.365 |
+| crawlee | #4 | www.postgresql.org/docs/18/admin.html | 0.422 | www.postgresql.org/docs/current/admin.html | 0.422 | www.postgresql.org/docs/17/admin.html | 0.419 |
+| colly+md | #5 | www.postgresql.org/docs/18/admin.html | 0.422 | www.postgresql.org/docs/current/admin.html | 0.422 | www.postgresql.org/docs/17/admin.html | 0.419 |
+| playwright | #4 | www.postgresql.org/docs/current/admin.html | 0.422 | www.postgresql.org/docs/18/admin.html | 0.422 | www.postgresql.org/docs/17/admin.html | 0.419 |
+
+
+**Q33: How do I set up and run the PostgreSQL database server?**
+*(expects URL containing: `runtime.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | www.postgresql.org/docs/current/runtime.html | 0.608 | www.postgresql.org/docs/current/manage-ag-createdb | 0.598 | www.postgresql.org/docs/current/app-postgres.html | 0.596 |
+| crawl4ai | #1 | www.postgresql.org/docs/17/runtime.html | 0.607 | www.postgresql.org/docs/current/runtime.html | 0.607 | www.postgresql.org/docs/18/runtime.html | 0.607 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/17/runtime.html | 0.607 | www.postgresql.org/docs/18/runtime.html | 0.607 | www.postgresql.org/docs/current/runtime.html | 0.607 |
+| scrapy+md | miss | www.postgresql.org/docs/8.0/admin.html | 0.592 | www.postgresql.org/docs/9.1/install-procedure.html | 0.587 | www.postgresql.org/docs/9.1/upgrading.html | 0.586 |
+| crawlee | #1 | www.postgresql.org/docs/17/runtime.html | 0.641 | www.postgresql.org/docs/current/runtime.html | 0.641 | www.postgresql.org/docs/18/runtime.html | 0.641 |
+| colly+md | #1 | www.postgresql.org/docs/18/runtime.html | 0.641 | www.postgresql.org/docs/current/runtime.html | 0.641 | www.postgresql.org/docs/17/runtime.html | 0.641 |
+| playwright | #1 | www.postgresql.org/docs/18/runtime.html | 0.641 | www.postgresql.org/docs/current/runtime.html | 0.641 | www.postgresql.org/docs/17/runtime.html | 0.641 |
+
+
+**Q34: What should I do if I am using a pre-packaged version of PostgreSQL?**
+*(expects URL containing: `runtime.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #5 | www.postgresql.org/docs/current/install-make.html | 0.540 | www.postgresql.org/docs/current/install-make.html | 0.537 | www.postgresql.org/docs/current/install-make.html | 0.525 |
+| crawl4ai | #6 | www.postgresql.org/download/linux/ubuntu | 0.568 | www.postgresql.org/download/linux/debian/ | 0.568 | www.postgresql.org/download/macosx/ | 0.559 |
+| crawl4ai-raw | #6 | www.postgresql.org/download/linux/debian/ | 0.568 | www.postgresql.org/download/linux/ubuntu | 0.568 | www.postgresql.org/download/macosx/ | 0.559 |
+| scrapy+md | miss | www.postgresql.org/docs/9.1/upgrading.html | 0.542 | www.postgresql.org/docs/9.1/install-procedure.html | 0.541 | www.postgresql.org/docs/9.1/upgrading.html | 0.541 |
+| crawlee | #10 | www.postgresql.org/download/linux/debian/ | 0.572 | www.postgresql.org/download/linux/ubuntu | 0.572 | www.postgresql.org/docs/18/bug-reporting.html | 0.561 |
+| colly+md | #11 | www.postgresql.org/download/linux/debian/ | 0.572 | www.postgresql.org/download/linux/ubuntu/ | 0.572 | www.postgresql.org/docs/18/bug-reporting.html | 0.561 |
+| playwright | #10 | www.postgresql.org/download/linux/ubuntu | 0.572 | www.postgresql.org/download/linux/debian/ | 0.572 | www.postgresql.org/docs/18/bug-reporting.html | 0.561 |
+
+
+**Q35: What is the primary purpose of the backup manifest generated by pg_basebackup?**
+*(expects URL containing: `backup-manifest-format.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | www.postgresql.org/docs/current/internals.html | 0.584 | www.postgresql.org/docs/current/continuous-archivi | 0.560 | www.postgresql.org/docs/current/continuous-archivi | 0.501 |
+| crawl4ai | #3 | www.postgresql.org/docs/18/internals.html | 0.624 | www.postgresql.org/docs/current/internals.html | 0.624 | www.postgresql.org/docs/current/backup-manifest-fo | 0.547 |
+| crawl4ai-raw | #3 | www.postgresql.org/docs/18/internals.html | 0.624 | www.postgresql.org/docs/current/internals.html | 0.624 | www.postgresql.org/docs/current/backup-manifest-fo | 0.547 |
+| scrapy+md | miss | www.postgresql.org/docs/8.0/backup.html | 0.469 | www.postgresql.org/docs/8.0/app-initdb.html | 0.436 | www.postgresql.org/docs/8.0/backup.html | 0.422 |
+| crawlee | #1 | www.postgresql.org/docs/current/backup-manifest-fo | 0.655 | www.postgresql.org/docs/18/backup-manifest-format. | 0.655 | www.postgresql.org/docs/current/internals.html | 0.599 |
+| colly+md | #1 | www.postgresql.org/docs/current/backup-manifest-fo | 0.655 | www.postgresql.org/docs/current/internals.html | 0.599 | www.postgresql.org/about/featurematrix/ | 0.496 |
+| playwright | #1 | www.postgresql.org/docs/current/backup-manifest-fo | 0.655 | www.postgresql.org/docs/18/backup-manifest-format. | 0.655 | www.postgresql.org/docs/current/internals.html | 0.599 |
+
+
+**Q36: What format is the backup manifest encoded in?**
+*(expects URL containing: `backup-manifest-format.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | www.postgresql.org/docs/current/internals.html | 0.494 | www.postgresql.org/docs/current/continuous-archivi | 0.308 | www.postgresql.org/docs/current/logicaldecoding-st | 0.302 |
+| crawl4ai | #3 | www.postgresql.org/docs/18/internals.html | 0.524 | www.postgresql.org/docs/current/internals.html | 0.524 | www.postgresql.org/docs/current/backup-manifest-fo | 0.458 |
+| crawl4ai-raw | #3 | www.postgresql.org/docs/current/internals.html | 0.524 | www.postgresql.org/docs/18/internals.html | 0.524 | www.postgresql.org/docs/current/backup-manifest-fo | 0.458 |
+| scrapy+md | miss | www.postgresql.org/docs/7.4/sql-copy.html | 0.302 | www.postgresql.org/docs/7.1/sql-copy.html | 0.292 | www.postgresql.org/docs/current/ | 0.290 |
+| crawlee | #1 | www.postgresql.org/docs/current/backup-manifest-fo | 0.606 | www.postgresql.org/docs/18/backup-manifest-format. | 0.605 | www.postgresql.org/docs/current/internals.html | 0.495 |
+| colly+md | #1 | www.postgresql.org/docs/current/backup-manifest-fo | 0.605 | www.postgresql.org/docs/current/internals.html | 0.495 | www.postgresql.org/about/featurematrix/ | 0.327 |
+| playwright | #1 | www.postgresql.org/docs/current/backup-manifest-fo | 0.606 | www.postgresql.org/docs/18/backup-manifest-format. | 0.606 | www.postgresql.org/docs/18/internals.html | 0.495 |
+
+
+**Q37: What factors can affect query performance in PostgreSQL?**
 *(expects URL containing: `performance-tips.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -3955,13 +4095,13 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | markcrawl | #1 | www.postgresql.org/docs/current/performance-tips.h | 0.521 | www.postgresql.org/docs/current/pgstatstatements.h | 0.506 | www.postgresql.org/docs/current/indexes-types.html | 0.497 |
 | crawl4ai | #4 | www.postgresql.org/docs/18/limits.html | 0.507 | www.postgresql.org/docs/current/limits.html | 0.507 | www.postgresql.org/about/ | 0.501 |
 | crawl4ai-raw | #6 | www.postgresql.org/about/ | 0.521 | www.postgresql.org/docs/current/limits.html | 0.507 | www.postgresql.org/docs/18/limits.html | 0.507 |
-| scrapy+md | miss | www.postgresql.org/docs/7.4/sql-explain.html | 0.510 | www.postgresql.org/docs/7.4/sql-cluster.html | 0.499 | www.postgresql.org/docs/8.0/maintenance.html | 0.482 |
+| scrapy+md | miss | www.postgresql.org/docs/7.4/sql-explain.html | 0.511 | www.postgresql.org/docs/7.4/sql-cluster.html | 0.499 | www.postgresql.org/docs/8.0/maintenance.html | 0.482 |
 | crawlee | #1 | www.postgresql.org/docs/current/performance-tips.h | 0.550 | www.postgresql.org/docs/18/performance-tips.html | 0.550 | www.postgresql.org/docs/17/performance-tips.html | 0.545 |
 | colly+md | #1 | www.postgresql.org/docs/current/performance-tips.h | 0.550 | www.postgresql.org/docs/18/performance-tips.html | 0.550 | www.postgresql.org/docs/17/performance-tips.html | 0.545 |
 | playwright | #1 | www.postgresql.org/docs/current/performance-tips.h | 0.550 | www.postgresql.org/docs/18/performance-tips.html | 0.550 | www.postgresql.org/docs/17/performance-tips.html | 0.545 |
 
 
-**Q28: What does this chapter provide hints about regarding PostgreSQL performance?**
+**Q38: What does this chapter provide hints about regarding PostgreSQL performance?**
 *(expects URL containing: `performance-tips.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -3975,256 +4115,172 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #1 | www.postgresql.org/docs/18/performance-tips.html | 0.670 | www.postgresql.org/docs/current/performance-tips.h | 0.670 | www.postgresql.org/docs/17/performance-tips.html | 0.662 |
 
 
-**Q29: What are Recognised NPOs in relation to the PostgreSQL project?**
-*(expects URL containing: `recognised-npos`)*
+**Q39: What tools are available for monitoring database activity?**
+*(expects URL containing: `monitoring.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/index.html | 0.492 | www.postgresql.org/docs/current/index.html | 0.477 | www.postgresql.org/docs/current/catalog-pg-namespa | 0.471 |
-| crawl4ai | #4 | www.postgresql.org/about/policies/npos/ | 0.713 | www.postgresql.org/about/donate/ | 0.686 | www.postgresql.org/about/policies/npos/ | 0.677 |
-| crawl4ai-raw | #4 | www.postgresql.org/about/policies/npos/ | 0.713 | www.postgresql.org/about/donate/ | 0.686 | www.postgresql.org/about/policies/npos/ | 0.677 |
-| scrapy+md | miss | www.postgresql.org/about/policies/npos/ | 0.722 | www.postgresql.org/about/policies/npos/ | 0.685 | www.postgresql.org/community/user-groups/ | 0.532 |
-| crawlee | #2 | www.postgresql.org/about/policies/npos/ | 0.781 | www.postgresql.org/community/recognised-npos/ | 0.753 | www.postgresql.org/about/donate/ | 0.702 |
-| colly+md | #2 | www.postgresql.org/about/policies/npos/ | 0.781 | www.postgresql.org/community/recognised-npos/ | 0.753 | www.postgresql.org/about/donate/ | 0.702 |
-| playwright | #2 | www.postgresql.org/about/policies/npos/ | 0.781 | www.postgresql.org/community/recognised-npos | 0.753 | www.postgresql.org/community/recognised-npos/ | 0.753 |
+| markcrawl | #1 | www.postgresql.org/docs/current/monitoring.html | 0.559 | www.postgresql.org/docs/current/monitoring-stats.h | 0.458 | www.postgresql.org/docs/current/progress-reporting | 0.458 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/monitoring.html | 0.498 | www.postgresql.org/docs/18/monitoring.html | 0.498 | www.postgresql.org/docs/17/monitoring.html | 0.498 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/monitoring.html | 0.498 | www.postgresql.org/docs/18/monitoring.html | 0.498 | www.postgresql.org/docs/17/monitoring.html | 0.498 |
+| scrapy+md | miss | www.postgresql.org/docs/8.0/admin.html | 0.464 | www.postgresql.org/docs/9.1/dynamic-trace.html | 0.444 | www.postgresql.org/docs/9.1/dynamic-trace.html | 0.441 |
+| crawlee | #1 | www.postgresql.org/docs/18/monitoring.html | 0.561 | www.postgresql.org/docs/current/monitoring.html | 0.561 | www.postgresql.org/docs/17/monitoring.html | 0.554 |
+| colly+md | #1 | www.postgresql.org/docs/18/monitoring.html | 0.561 | www.postgresql.org/docs/current/monitoring.html | 0.560 | www.postgresql.org/docs/16/monitoring.html | 0.559 |
+| playwright | #1 | www.postgresql.org/docs/18/monitoring.html | 0.561 | www.postgresql.org/docs/current/monitoring.html | 0.560 | www.postgresql.org/docs/17/monitoring.html | 0.556 |
 
 
-**Q30: What is the goal of PostgreSQL Europe?**
-*(expects URL containing: `recognised-npos`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/index.html | 0.495 | www.postgresql.org/docs/current/index.html | 0.485 | www.postgresql.org/docs/current/app-postgres.html | 0.483 |
-| crawl4ai | #2 | www.postgresql.org/about/eventarchive/ | 0.644 | www.postgresql.org/community/recognised-npos/ | 0.635 | www.postgresql.org/community/recognised-npos | 0.635 |
-| crawl4ai-raw | #2 | www.postgresql.org/about/eventarchive/ | 0.644 | www.postgresql.org/community/recognised-npos | 0.635 | www.postgresql.org/community/recognised-npos/ | 0.635 |
-| scrapy+md | miss | www.postgresql.org/about/policies/npos/ | 0.565 | www.postgresql.org/community/user-groups/ | 0.560 | www.postgresql.org/community/user-groups/ | 0.550 |
-| crawlee | #3 | www.postgresql.org/about/eventarchive/ | 0.634 | www.postgresql.org/about/eventarchive/ | 0.614 | www.postgresql.org/community/recognised-npos/ | 0.611 |
-| colly+md | #3 | www.postgresql.org/about/eventarchive/ | 0.634 | www.postgresql.org/about/eventarchive/ | 0.614 | www.postgresql.org/community/recognised-npos/ | 0.611 |
-| playwright | #3 | www.postgresql.org/about/eventarchive/ | 0.634 | www.postgresql.org/about/eventarchive/ | 0.614 | www.postgresql.org/community/recognised-npos | 0.611 |
-
-
-**Q31: What do brackets indicate in the command synopsis?**
-*(expects URL containing: `notation.html`)*
+**Q40: What command can be used to investigate a poorly-performing query in PostgreSQL?**
+*(expects URL containing: `monitoring.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/app-psql.html | 0.470 | www.postgresql.org/docs/current/app-psql.html | 0.463 | www.postgresql.org/docs/current/app-psql.html | 0.455 |
-| crawl4ai | miss | www.postgresql.org/docs/18/bookindex.html | 0.406 | www.postgresql.org/docs/current/bookindex.html | 0.406 | www.postgresql.org/docs/18/monitoring.html | 0.381 |
-| crawl4ai-raw | miss | www.postgresql.org/docs/current/bookindex.html | 0.406 | www.postgresql.org/docs/18/bookindex.html | 0.406 | www.postgresql.org/docs/18/monitoring.html | 0.381 |
-| scrapy+md | miss | www.postgresql.org/docs/8.3/app-psql.html | 0.438 | www.postgresql.org/docs/8.3/app-psql.html | 0.434 | www.postgresql.org/docs/8.3/app-psql.html | 0.434 |
-| crawlee | #1 | www.postgresql.org/docs/18/notation.html | 0.421 | www.postgresql.org/docs/current/notation.html | 0.421 | www.postgresql.org/docs/17/notation.html | 0.415 |
-| colly+md | #1 | www.postgresql.org/docs/current/notation.html | 0.421 | www.postgresql.org/docs/18/notation.html | 0.421 | www.postgresql.org/docs/16/notation.html | 0.419 |
-| playwright | #1 | www.postgresql.org/docs/current/notation.html | 0.421 | www.postgresql.org/docs/18/notation.html | 0.421 | www.postgresql.org/docs/17/notation.html | 0.415 |
+| markcrawl | #4 | www.postgresql.org/docs/current/performance-tips.h | 0.503 | www.postgresql.org/docs/current/using-explain.html | 0.499 | www.postgresql.org/docs/current/progress-reporting | 0.497 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/monitoring.html | 0.518 | www.postgresql.org/docs/18/monitoring.html | 0.518 | www.postgresql.org/docs/17/monitoring.html | 0.517 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/monitoring.html | 0.518 | www.postgresql.org/docs/18/monitoring.html | 0.518 | www.postgresql.org/docs/17/monitoring.html | 0.517 |
+| scrapy+md | miss | www.postgresql.org/docs/9.1/dynamic-trace.html | 0.520 | www.postgresql.org/docs/7.4/sql-explain.html | 0.496 | www.postgresql.org/docs/7.4/sql-explain.html | 0.484 |
+| crawlee | #1 | www.postgresql.org/docs/18/monitoring.html | 0.525 | www.postgresql.org/docs/current/monitoring.html | 0.525 | www.postgresql.org/docs/17/monitoring.html | 0.519 |
+| colly+md | #1 | www.postgresql.org/docs/16/monitoring.html | 0.526 | www.postgresql.org/docs/current/monitoring.html | 0.525 | www.postgresql.org/docs/18/monitoring.html | 0.525 |
+| playwright | #1 | www.postgresql.org/docs/18/monitoring.html | 0.525 | www.postgresql.org/docs/current/monitoring.html | 0.525 | www.postgresql.org/docs/17/monitoring.html | 0.518 |
 
 
-**Q32: What is the role of an administrator in PostgreSQL?**
-*(expects URL containing: `notation.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/admin.html | 0.593 | www.postgresql.org/docs/current/app-postgres.html | 0.541 | www.postgresql.org/docs/current/admin.html | 0.527 |
-| crawl4ai | #34 | www.postgresql.org/about/ | 0.592 | www.postgresql.org/docs/18/admin.html | 0.561 | www.postgresql.org/docs/current/admin.html | 0.561 |
-| crawl4ai-raw | #34 | www.postgresql.org/docs/18/admin.html | 0.561 | www.postgresql.org/docs/current/admin.html | 0.561 | www.postgresql.org/docs/17/admin.html | 0.561 |
-| scrapy+md | miss | www.postgresql.org/docs/current/database-roles.htm | 0.548 | www.postgresql.org/docs/8.0/admin.html | 0.546 | www.postgresql.org/docs/9.0/user-manag.html | 0.542 |
-| crawlee | miss | www.postgresql.org/docs/17/admin.html | 0.555 | www.postgresql.org/docs/current/admin.html | 0.551 | www.postgresql.org/docs/18/admin.html | 0.551 |
-| colly+md | miss | www.postgresql.org/docs/17/admin.html | 0.555 | www.postgresql.org/docs/current/admin.html | 0.551 | www.postgresql.org/docs/18/admin.html | 0.551 |
-| playwright | miss | www.postgresql.org/docs/17/admin.html | 0.555 | www.postgresql.org/docs/current/admin.html | 0.551 | www.postgresql.org/docs/18/admin.html | 0.551 |
-
-
-**Q33: What topics are covered in the Server Administration section?**
-*(expects URL containing: `admin.html`)*
+**Q41: What does PostgreSQL use for date/time input support?**
+*(expects URL containing: `datetime-appendix.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/admin.html | 0.555 | www.postgresql.org/docs/current/admin.html | 0.536 | www.postgresql.org/docs/current/admin.html | 0.497 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/admin.html | 0.533 | www.postgresql.org/docs/18/admin.html | 0.533 | www.postgresql.org/docs/17/admin.html | 0.524 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/admin.html | 0.533 | www.postgresql.org/docs/18/admin.html | 0.533 | www.postgresql.org/docs/17/admin.html | 0.523 |
-| scrapy+md | #1 | www.postgresql.org/docs/8.0/admin.html | 0.490 | www.postgresql.org/docs/8.0/admin.html | 0.453 | www.postgresql.org/docs/9.0/server-programming.htm | 0.409 |
-| crawlee | #1 | www.postgresql.org/docs/current/admin.html | 0.536 | www.postgresql.org/docs/18/admin.html | 0.536 | www.postgresql.org/docs/17/admin.html | 0.535 |
-| colly+md | #1 | www.postgresql.org/docs/18/admin.html | 0.536 | www.postgresql.org/docs/current/admin.html | 0.536 | www.postgresql.org/docs/17/admin.html | 0.535 |
-| playwright | #1 | www.postgresql.org/docs/18/admin.html | 0.536 | www.postgresql.org/docs/current/admin.html | 0.536 | www.postgresql.org/docs/17/admin.html | 0.535 |
+| markcrawl | #5 | www.postgresql.org/docs/current/datatype-datetime. | 0.696 | www.postgresql.org/docs/current/datatype-datetime. | 0.691 | www.postgresql.org/docs/current/datatype-datetime. | 0.661 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/datetime-appendix.html | 0.611 | www.postgresql.org/docs/current/datetime-appendix. | 0.611 | www.postgresql.org/about/ | 0.589 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/datetime-appendix.html | 0.611 | www.postgresql.org/docs/current/datetime-appendix. | 0.611 | www.postgresql.org/about/ | 0.589 |
+| scrapy+md | miss | www.postgresql.org/docs/9.1/datatype-datetime.html | 0.664 | www.postgresql.org/docs/9.1/datatype-datetime.html | 0.663 | www.postgresql.org/docs/9.1/datatype-datetime.html | 0.652 |
+| crawlee | #1 | www.postgresql.org/docs/current/datetime-appendix. | 0.634 | www.postgresql.org/docs/18/datetime-appendix.html | 0.634 | www.postgresql.org/about/ | 0.548 |
+| colly+md | #1 | www.postgresql.org/docs/current/datetime-appendix. | 0.634 | www.postgresql.org/about/ | 0.548 | www.postgresql.org/about/ | 0.543 |
+| playwright | #1 | www.postgresql.org/docs/18/datetime-appendix.html | 0.634 | www.postgresql.org/docs/current/datetime-appendix. | 0.634 | www.postgresql.org/about/ | 0.548 |
 
 
-**Q34: Who should be familiar with the topics in the Server Administration part?**
-*(expects URL containing: `admin.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/admin.html | 0.534 | www.postgresql.org/docs/current/admin.html | 0.485 | www.postgresql.org/docs/current/admin.html | 0.459 |
-| crawl4ai | #1 | www.postgresql.org/docs/17/admin.html | 0.482 | www.postgresql.org/docs/18/admin.html | 0.482 | www.postgresql.org/docs/current/admin.html | 0.482 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/17/admin.html | 0.482 | www.postgresql.org/docs/18/admin.html | 0.482 | www.postgresql.org/docs/current/admin.html | 0.482 |
-| scrapy+md | #1 | www.postgresql.org/docs/8.0/admin.html | 0.474 | www.postgresql.org/docs/8.0/admin.html | 0.376 | www.postgresql.org/docs/9.0/server-programming.htm | 0.342 |
-| crawlee | #1 | www.postgresql.org/docs/17/admin.html | 0.496 | www.postgresql.org/docs/18/admin.html | 0.494 | www.postgresql.org/docs/current/admin.html | 0.494 |
-| colly+md | #1 | www.postgresql.org/docs/17/admin.html | 0.496 | www.postgresql.org/docs/18/admin.html | 0.494 | www.postgresql.org/docs/current/admin.html | 0.494 |
-| playwright | #1 | www.postgresql.org/docs/17/admin.html | 0.496 | www.postgresql.org/docs/18/admin.html | 0.494 | www.postgresql.org/docs/current/admin.html | 0.494 |
-
-
-**Q35: How do I install PL/Python in a PostgreSQL database?**
-*(expects URL containing: `plpython.html`)*
+**Q42: What information does the appendix include about the parser's lookup tables?**
+*(expects URL containing: `datetime-appendix.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/plpython.html | 0.593 | www.postgresql.org/docs/current/xplang.html | 0.570 | www.postgresql.org/docs/current/plpgsql-overview.h | 0.556 |
-| crawl4ai | #1 | www.postgresql.org/docs/17/plpython.html | 0.654 | www.postgresql.org/docs/current/plpython.html | 0.654 | www.postgresql.org/docs/18/plpython.html | 0.654 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/17/plpython.html | 0.654 | www.postgresql.org/docs/18/plpython.html | 0.654 | www.postgresql.org/docs/current/plpython.html | 0.654 |
-| scrapy+md | miss | www.postgresql.org/docs/9.1/plpython-python23.html | 0.635 | www.postgresql.org/docs/9.1/plpython-python23.html | 0.631 | www.postgresql.org/docs/9.1/install-procedure.html | 0.519 |
-| crawlee | #1 | www.postgresql.org/docs/current/plpython.html | 0.647 | www.postgresql.org/docs/18/plpython.html | 0.647 | www.postgresql.org/docs/18/plpython.html | 0.570 |
-| colly+md | #1 | www.postgresql.org/docs/18/plpython.html | 0.647 | www.postgresql.org/docs/current/plpython.html | 0.647 | www.postgresql.org/docs/18/plpython.html | 0.570 |
-| playwright | #1 | www.postgresql.org/docs/current/plpython.html | 0.647 | www.postgresql.org/docs/18/plpython.html | 0.647 | www.postgresql.org/docs/17/plpython.html | 0.647 |
+| markcrawl | #9 | www.postgresql.org/docs/current/catalog-pg-ts-pars | 0.480 | www.postgresql.org/docs/current/textsearch-parsers | 0.448 | www.postgresql.org/docs/current/parser-stage.html | 0.445 |
+| crawl4ai | miss | www.postgresql.org/docs/18/appendixes.html | 0.430 | www.postgresql.org/docs/current/appendixes.html | 0.430 | www.postgresql.org/docs/18/contrib.html | 0.405 |
+| crawl4ai-raw | miss | www.postgresql.org/docs/18/appendixes.html | 0.430 | www.postgresql.org/docs/current/appendixes.html | 0.430 | www.postgresql.org/docs/18/contrib.html | 0.405 |
+| scrapy+md | miss | www.postgresql.org/docs/9.4/test-parser.html | 0.411 | www.postgresql.org/docs/7.3/developer.html | 0.407 | www.postgresql.org/docs/8.4/test-parser.html | 0.400 |
+| crawlee | miss | www.postgresql.org/docs/18/appendixes.html | 0.438 | www.postgresql.org/docs/current/appendixes.html | 0.438 | www.postgresql.org/docs/18/contrib.html | 0.412 |
+| colly+md | miss | www.postgresql.org/docs/current/appendixes.html | 0.438 | www.postgresql.org/docs/current/contrib.html | 0.412 | www.postgresql.org/docs/current/internals.html | 0.404 |
+| playwright | miss | www.postgresql.org/docs/current/appendixes.html | 0.438 | www.postgresql.org/docs/18/appendixes.html | 0.438 | www.postgresql.org/docs/current/contrib.html | 0.412 |
 
 
-**Q36: What does it mean that PL/Python is an 'untrusted' language?**
-*(expects URL containing: `plpython.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/plpython.html | 0.520 | www.postgresql.org/docs/current/xplang-install.htm | 0.511 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.460 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/plpython.html | 0.568 | www.postgresql.org/docs/18/plpython.html | 0.568 | www.postgresql.org/docs/17/plpython.html | 0.568 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/18/plpython.html | 0.568 | www.postgresql.org/docs/current/plpython.html | 0.568 | www.postgresql.org/docs/17/plpython.html | 0.568 |
-| scrapy+md | miss | www.postgresql.org/docs/9.1/plpython-python23.html | 0.535 | www.postgresql.org/docs/9.1/plpython-python23.html | 0.497 | www.postgresql.org/docs/9.0/server-programming.htm | 0.348 |
-| crawlee | #1 | www.postgresql.org/docs/current/plpython.html | 0.559 | www.postgresql.org/docs/18/plpython.html | 0.559 | www.postgresql.org/docs/current/plpython.html | 0.544 |
-| colly+md | #1 | www.postgresql.org/docs/18/plpython.html | 0.559 | www.postgresql.org/docs/current/plpython.html | 0.559 | www.postgresql.org/docs/18/plpython.html | 0.544 |
-| playwright | #1 | www.postgresql.org/docs/17/plpython.html | 0.559 | www.postgresql.org/docs/current/plpython.html | 0.559 | www.postgresql.org/docs/18/plpython.html | 0.559 |
-
-
-**Q37: What information do I need to provide to sign up for a free community account?**
-*(expects URL containing: `signup`)*
+**Q43: What was the initial implementation year of the POSTGRES project?**
+*(expects URL containing: `history.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/libpq-pgpass.html | 0.272 | www.postgresql.org/docs/current/runtime-config.htm | 0.267 | www.postgresql.org/docs/current/runtime-config-log | 0.245 |
-| crawl4ai | #1 | www.postgresql.org/account/signup/ | 0.353 | www.postgresql.org/account/products/new/ | 0.301 | www.postgresql.org/account/ | 0.301 |
-| crawl4ai-raw | #1 | www.postgresql.org/account/signup/ | 0.353 | www.postgresql.org/account/ | 0.301 | www.postgresql.org/account/comments/new/18/index.h | 0.301 |
-| scrapy+md | miss | www.postgresql.org/about/policies/npos/ | 0.245 | www.postgresql.org/about/policies/npos/ | 0.236 | www.postgresql.org/about/policies/coc/ | 0.233 |
-| crawlee | #1 | www.postgresql.org/account/signup/ | 0.438 | www.postgresql.org/account/events/new/ | 0.291 | www.postgresql.org/account/submitbug/ | 0.291 |
-| colly+md | #1 | www.postgresql.org/account/signup/ | 0.438 | www.postgresql.org/account/login/?next=/account/su | 0.291 | www.postgresql.org/account/login/?next=/account/ | 0.291 |
-| playwright | #1 | www.postgresql.org/account/signup/ | 0.438 | www.postgresql.org/account/products/new/ | 0.291 | www.postgresql.org/account/ | 0.291 |
+| markcrawl | #25 | www.postgresql.org/docs/current/app-postgres.html | 0.476 | www.postgresql.org/docs/current/index.html | 0.471 | www.postgresql.org/docs/current/app-postgres.html | 0.467 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/history.html | 0.694 | www.postgresql.org/docs/current/history.html | 0.693 | www.postgresql.org/docs/17/history.html | 0.682 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/history.html | 0.694 | www.postgresql.org/docs/current/history.html | 0.693 | www.postgresql.org/docs/17/history.html | 0.682 |
+| scrapy+md | miss | www.postgresql.org/docs/current/biblio.html | 0.562 | www.postgresql.org/docs/7.1/biblio.html | 0.549 | www.postgresql.org/docs/7.3/biblio.html | 0.545 |
+| crawlee | #1 | www.postgresql.org/docs/18/history.html | 0.680 | www.postgresql.org/docs/current/history.html | 0.680 | www.postgresql.org/docs/17/history.html | 0.661 |
+| colly+md | #1 | www.postgresql.org/docs/18/history.html | 0.680 | www.postgresql.org/docs/current/history.html | 0.680 | www.postgresql.org/docs/16/history.html | 0.661 |
+| playwright | #1 | www.postgresql.org/docs/18/history.html | 0.680 | www.postgresql.org/docs/current/history.html | 0.680 | www.postgresql.org/docs/17/history.html | 0.661 |
 
 
-**Q38: What happens after I enter my email address during the signup process?**
-*(expects URL containing: `signup`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/protocol-flow.html | 0.226 | www.postgresql.org/docs/current/event-trigger-data | 0.220 | www.postgresql.org/docs/current/protocol-flow.html | 0.219 |
-| crawl4ai | #1 | www.postgresql.org/account/signup/ | 0.246 | www.postgresql.org/community/contributors/ | 0.219 | www.postgresql.org/community/contributors/ | 0.217 |
-| crawl4ai-raw | #1 | www.postgresql.org/account/signup/ | 0.246 | www.postgresql.org/community/contributors/ | 0.219 | www.postgresql.org/community/contributors/ | 0.217 |
-| scrapy+md | miss | www.postgresql.org/docs/current/sspi-auth.html | 0.205 | www.postgresql.org/docs/current/sql-createrole.htm | 0.190 | www.postgresql.org/docs/8.3/app-createuser.html | 0.171 |
-| crawlee | #1 | www.postgresql.org/account/signup/ | 0.316 | www.postgresql.org/community/contributors/ | 0.228 | www.postgresql.org/account/reset/ | 0.218 |
-| colly+md | #1 | www.postgresql.org/account/signup/ | 0.316 | www.postgresql.org/community/contributors/ | 0.228 | www.postgresql.org/account/reset/ | 0.218 |
-| playwright | #1 | www.postgresql.org/account/signup/ | 0.316 | www.postgresql.org/community/contributors/ | 0.228 | www.postgresql.org/account/reset/ | 0.218 |
-
-
-**Q39: What is the formal name of the SQL standard?**
-*(expects URL containing: `features.html`)*
+**Q44: What major enhancements were made in Postgres95 compared to POSTGRES, Version 4.2?**
+*(expects URL containing: `history.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/glossary.html | 0.504 | www.postgresql.org/docs/current/sql.html | 0.491 | www.postgresql.org/docs/current/sql.html | 0.478 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/features.html | 0.578 | www.postgresql.org/docs/18/features.html | 0.578 | www.postgresql.org/docs/current/glossary.html | 0.500 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/18/features.html | 0.578 | www.postgresql.org/docs/current/features.html | 0.578 | www.postgresql.org/docs/current/glossary.html | 0.500 |
-| scrapy+md | miss | www.postgresql.org/docs/7.1/biblio.html | 0.452 | www.postgresql.org/docs/7.3/functions.html | 0.449 | www.postgresql.org/docs/current/biblio.html | 0.448 |
-| crawlee | #1 | www.postgresql.org/docs/18/features.html | 0.588 | www.postgresql.org/docs/current/features.html | 0.588 | www.postgresql.org/docs/current/glossary.html | 0.504 |
-| colly+md | #1 | www.postgresql.org/docs/current/features.html | 0.588 | www.postgresql.org/docs/current/glossary.html | 0.504 | www.postgresql.org/docs/current/sql.html | 0.469 |
-| playwright | #1 | www.postgresql.org/docs/18/features.html | 0.588 | www.postgresql.org/docs/current/features.html | 0.588 | www.postgresql.org/docs/18/glossary.html | 0.504 |
+| markcrawl | miss | www.postgresql.org/docs/current/internals.html | 0.537 | www.postgresql.org/docs/current/internals.html | 0.534 | www.postgresql.org/docs/current/appendixes.html | 0.533 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/history.html | 0.752 | www.postgresql.org/docs/current/history.html | 0.752 | www.postgresql.org/docs/17/history.html | 0.752 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/history.html | 0.752 | www.postgresql.org/docs/current/history.html | 0.752 | www.postgresql.org/docs/17/history.html | 0.752 |
+| scrapy+md | miss | www.postgresql.org/docs/7.2/release-0-03.html | 0.702 | www.postgresql.org/docs/7.3/release-0-03.html | 0.700 | www.postgresql.org/docs/8.1/release-0-03.html | 0.690 |
+| crawlee | #1 | www.postgresql.org/docs/17/history.html | 0.745 | www.postgresql.org/docs/current/history.html | 0.745 | www.postgresql.org/docs/18/history.html | 0.745 |
+| colly+md | #1 | www.postgresql.org/docs/18/history.html | 0.745 | www.postgresql.org/docs/17/history.html | 0.745 | www.postgresql.org/docs/16/history.html | 0.745 |
+| playwright | #1 | www.postgresql.org/docs/17/history.html | 0.745 | www.postgresql.org/docs/18/history.html | 0.745 | www.postgresql.org/docs/current/history.html | 0.745 |
 
 
-**Q40: How many mandatory features does PostgreSQL conform to for full Core conformance?**
-*(expects URL containing: `features.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/wal-reliability.ht | 0.527 | www.postgresql.org/docs/current/sql-createtable.ht | 0.519 | www.postgresql.org/docs/current/sql-select.html | 0.515 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/features.html | 0.662 | www.postgresql.org/docs/18/features.html | 0.662 | www.postgresql.org/docs/18/features.html | 0.658 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/features.html | 0.662 | www.postgresql.org/docs/18/features.html | 0.662 | www.postgresql.org/docs/18/features.html | 0.658 |
-| scrapy+md | miss | www.postgresql.org/docs/8.0/sql-createtable.html | 0.540 | www.postgresql.org/docs/7.4/sql-createtable.html | 0.536 | www.postgresql.org/about/policies/npos/ | 0.528 |
-| crawlee | #2 | www.postgresql.org/about/ | 0.675 | www.postgresql.org/docs/current/features.html | 0.662 | www.postgresql.org/docs/18/features.html | 0.662 |
-| colly+md | #2 | www.postgresql.org/about/ | 0.675 | www.postgresql.org/docs/current/features.html | 0.662 | www.postgresql.org/docs/current/features.html | 0.657 |
-| playwright | #2 | www.postgresql.org/about/ | 0.675 | www.postgresql.org/docs/current/features.html | 0.662 | www.postgresql.org/docs/18/features.html | 0.662 |
-
-
-**Q41: How do I install PL/Python in a PostgreSQL database?**
-*(expects URL containing: `plpython.html`)*
+**Q45: What is PL/Tcl?**
+*(expects URL containing: `pltcl.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/plpython.html | 0.593 | www.postgresql.org/docs/current/xplang.html | 0.570 | www.postgresql.org/docs/current/plpgsql-overview.h | 0.556 |
-| crawl4ai | #1 | www.postgresql.org/docs/17/plpython.html | 0.654 | www.postgresql.org/docs/current/plpython.html | 0.654 | www.postgresql.org/docs/18/plpython.html | 0.654 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/17/plpython.html | 0.654 | www.postgresql.org/docs/18/plpython.html | 0.654 | www.postgresql.org/docs/current/plpython.html | 0.654 |
-| scrapy+md | miss | www.postgresql.org/docs/9.1/plpython-python23.html | 0.635 | www.postgresql.org/docs/9.1/plpython-python23.html | 0.631 | www.postgresql.org/docs/9.1/install-procedure.html | 0.519 |
-| crawlee | #1 | www.postgresql.org/docs/current/plpython.html | 0.647 | www.postgresql.org/docs/18/plpython.html | 0.647 | www.postgresql.org/docs/18/plpython.html | 0.570 |
-| colly+md | #1 | www.postgresql.org/docs/18/plpython.html | 0.647 | www.postgresql.org/docs/current/plpython.html | 0.647 | www.postgresql.org/docs/18/plpython.html | 0.570 |
-| playwright | #1 | www.postgresql.org/docs/current/plpython.html | 0.647 | www.postgresql.org/docs/18/plpython.html | 0.647 | www.postgresql.org/docs/17/plpython.html | 0.647 |
+| markcrawl | #1 | www.postgresql.org/docs/current/pltcl.html | 0.690 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.655 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.652 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/pltcl.html | 0.530 | www.postgresql.org/docs/18/pltcl.html | 0.530 | www.postgresql.org/docs/17/pltcl.html | 0.528 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/pltcl.html | 0.530 | www.postgresql.org/docs/18/pltcl.html | 0.530 | www.postgresql.org/docs/17/pltcl.html | 0.528 |
+| scrapy+md | miss | www.postgresql.org/docs/7.3/app-pgtclsh.html | 0.459 | www.postgresql.org/docs/7.4/release-0-03.html | 0.435 | www.postgresql.org/docs/7.3/release-0-03.html | 0.433 |
+| crawlee | #1 | www.postgresql.org/docs/current/pltcl.html | 0.611 | www.postgresql.org/docs/18/pltcl.html | 0.611 | www.postgresql.org/docs/17/pltcl.html | 0.603 |
+| colly+md | #1 | www.postgresql.org/docs/18/pltcl.html | 0.611 | www.postgresql.org/docs/current/pltcl.html | 0.611 | www.postgresql.org/docs/17/server-programming.html | 0.530 |
+| playwright | #1 | www.postgresql.org/docs/current/pltcl.html | 0.611 | www.postgresql.org/docs/18/pltcl.html | 0.611 | www.postgresql.org/docs/17/pltcl.html | 0.603 |
 
 
-**Q42: What does it mean that PL/Python is an 'untrusted' language?**
-*(expects URL containing: `plpython.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | www.postgresql.org/docs/current/plpython.html | 0.520 | www.postgresql.org/docs/current/xplang-install.htm | 0.511 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.460 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/plpython.html | 0.568 | www.postgresql.org/docs/18/plpython.html | 0.568 | www.postgresql.org/docs/17/plpython.html | 0.568 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/18/plpython.html | 0.568 | www.postgresql.org/docs/current/plpython.html | 0.568 | www.postgresql.org/docs/17/plpython.html | 0.568 |
-| scrapy+md | miss | www.postgresql.org/docs/9.1/plpython-python23.html | 0.535 | www.postgresql.org/docs/9.1/plpython-python23.html | 0.497 | www.postgresql.org/docs/9.0/server-programming.htm | 0.348 |
-| crawlee | #1 | www.postgresql.org/docs/current/plpython.html | 0.559 | www.postgresql.org/docs/18/plpython.html | 0.559 | www.postgresql.org/docs/current/plpython.html | 0.544 |
-| colly+md | #1 | www.postgresql.org/docs/18/plpython.html | 0.559 | www.postgresql.org/docs/current/plpython.html | 0.559 | www.postgresql.org/docs/18/plpython.html | 0.544 |
-| playwright | #1 | www.postgresql.org/docs/17/plpython.html | 0.559 | www.postgresql.org/docs/current/plpython.html | 0.559 | www.postgresql.org/docs/18/plpython.html | 0.559 |
-
-
-**Q43: What is the signature of a table sampling method function in PostgreSQL?**
-*(expects URL containing: `tablesample-method.html`)*
+**Q46: What language does PL/Tcl enable to write PostgreSQL functions and procedures?**
+*(expects URL containing: `pltcl.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/sql-select.html | 0.584 | www.postgresql.org/docs/current/sql-select.html | 0.558 | www.postgresql.org/docs/current/xfunc-sql.html | 0.508 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/tablesample-method | 0.667 | www.postgresql.org/docs/18/tablesample-method.html | 0.667 | www.postgresql.org/docs/18/tablesample-method.html | 0.591 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/tablesample-method | 0.667 | www.postgresql.org/docs/18/tablesample-method.html | 0.667 | www.postgresql.org/docs/current/tablesample-method | 0.591 |
-| scrapy+md | miss | www.postgresql.org/docs/9.6/tsm-system-rows.html | 0.535 | www.postgresql.org/docs/9.5/tsm-system-rows.html | 0.529 | www.postgresql.org/docs/9.6/tsm-system-time.html | 0.522 |
-| crawlee | #1 | www.postgresql.org/docs/18/tablesample-method.html | 0.714 | www.postgresql.org/docs/current/tablesample-method | 0.714 | www.postgresql.org/docs/18/tablesample-method.html | 0.682 |
-| colly+md | #1 | www.postgresql.org/docs/current/tablesample-method | 0.714 | www.postgresql.org/docs/current/tablesample-method | 0.682 | www.postgresql.org/docs/current/tablesample-method | 0.616 |
-| playwright | #1 | www.postgresql.org/docs/18/tablesample-method.html | 0.714 | www.postgresql.org/docs/current/tablesample-method | 0.714 | www.postgresql.org/docs/current/tablesample-method | 0.682 |
+| markcrawl | #3 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.693 | www.postgresql.org/docs/current/pltcl-overview.htm | 0.659 | www.postgresql.org/docs/current/pltcl.html | 0.657 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/pltcl.html | 0.651 | www.postgresql.org/docs/18/pltcl.html | 0.651 | www.postgresql.org/docs/17/pltcl.html | 0.649 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/pltcl.html | 0.651 | www.postgresql.org/docs/18/pltcl.html | 0.651 | www.postgresql.org/docs/17/pltcl.html | 0.649 |
+| scrapy+md | miss | www.postgresql.org/docs/9.0/server-programming.htm | 0.560 | www.postgresql.org/docs/current/bookindex.html | 0.532 | www.postgresql.org/docs/7.3/app-pgtclsh.html | 0.530 |
+| crawlee | #1 | www.postgresql.org/docs/current/pltcl.html | 0.702 | www.postgresql.org/docs/18/pltcl.html | 0.702 | www.postgresql.org/docs/17/pltcl.html | 0.694 |
+| colly+md | #1 | www.postgresql.org/docs/18/pltcl.html | 0.702 | www.postgresql.org/docs/current/pltcl.html | 0.701 | www.postgresql.org/docs/18/xplang.html | 0.651 |
+| playwright | #1 | www.postgresql.org/docs/current/pltcl.html | 0.702 | www.postgresql.org/docs/18/pltcl.html | 0.701 | www.postgresql.org/docs/17/pltcl.html | 0.694 |
 
 
-**Q44: What does the `repeatable_across_queries` field in the TsmRoutine struct indicate?**
-*(expects URL containing: `tablesample-method.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/glossary.html | 0.415 | www.postgresql.org/docs/current/glossary.html | 0.398 | www.postgresql.org/docs/current/textsearch-feature | 0.387 |
-| crawl4ai | #1 | www.postgresql.org/docs/current/tablesample-method | 0.599 | www.postgresql.org/docs/18/tablesample-method.html | 0.599 | www.postgresql.org/docs/current/glossary.html | 0.415 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/18/tablesample-method.html | 0.599 | www.postgresql.org/docs/current/tablesample-method | 0.599 | www.postgresql.org/docs/current/glossary.html | 0.415 |
-| scrapy+md | miss | www.postgresql.org/docs/14/tsm-system-time.html | 0.390 | www.postgresql.org/docs/15/tsm-system-time.html | 0.389 | www.postgresql.org/docs/13/tsm-system-time.html | 0.386 |
-| crawlee | #1 | www.postgresql.org/docs/18/tablesample-method.html | 0.484 | www.postgresql.org/docs/current/tablesample-method | 0.483 | www.postgresql.org/docs/18/glossary.html | 0.415 |
-| colly+md | #1 | www.postgresql.org/docs/current/tablesample-method | 0.483 | www.postgresql.org/docs/current/glossary.html | 0.415 | www.postgresql.org/docs/current/tablesample-method | 0.414 |
-| playwright | #1 | www.postgresql.org/docs/current/tablesample-method | 0.483 | www.postgresql.org/docs/18/tablesample-method.html | 0.483 | www.postgresql.org/docs/18/glossary.html | 0.415 |
-
-
-**Q45: What should be included in every bug report?**
-*(expects URL containing: `bug-reporting.html`)*
+**Q47: What topics are covered in Part II of the SQL Language documentation?**
+*(expects URL containing: `sql.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/runtime-config-log | 0.414 | www.postgresql.org/docs/current/error-style-guide. | 0.410 | www.postgresql.org/docs/current/admin.html | 0.339 |
-| crawl4ai | #1 | www.postgresql.org/docs/17/bug-reporting.html | 0.641 | www.postgresql.org/docs/18/bug-reporting.html | 0.641 | www.postgresql.org/docs/current/bug-reporting.html | 0.641 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/current/bug-reporting.html | 0.641 | www.postgresql.org/docs/17/bug-reporting.html | 0.641 | www.postgresql.org/docs/18/bug-reporting.html | 0.641 |
-| scrapy+md | miss | www.postgresql.org/docs/7.3/doc-style.html | 0.373 | www.postgresql.org/about/policies/coc/ | 0.364 | www.postgresql.org/docs/7.3/doc-style.html | 0.360 |
-| crawlee | #1 | www.postgresql.org/docs/current/bug-reporting.html | 0.616 | www.postgresql.org/docs/17/bug-reporting.html | 0.616 | www.postgresql.org/docs/18/bug-reporting.html | 0.616 |
-| colly+md | #1 | www.postgresql.org/docs/16/bug-reporting.html | 0.616 | www.postgresql.org/docs/18/bug-reporting.html | 0.616 | www.postgresql.org/docs/17/bug-reporting.html | 0.616 |
-| playwright | #1 | www.postgresql.org/docs/18/bug-reporting.html | 0.616 | www.postgresql.org/docs/current/bug-reporting.html | 0.616 | www.postgresql.org/docs/17/bug-reporting.html | 0.616 |
+| markcrawl | #1 | www.postgresql.org/docs/current/sql.html | 0.702 | www.postgresql.org/docs/current/sql.html | 0.654 | www.postgresql.org/docs/current/sql.html | 0.600 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/sql.html | 0.652 | www.postgresql.org/docs/current/sql.html | 0.652 | www.postgresql.org/docs/17/sql.html | 0.650 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/sql.html | 0.652 | www.postgresql.org/docs/18/sql.html | 0.652 | www.postgresql.org/docs/17/sql.html | 0.651 |
+| scrapy+md | #1 | www.postgresql.org/docs/7.4/sql.html | 0.620 | www.postgresql.org/docs/7.4/sql.html | 0.589 | www.postgresql.org/docs/9.0/server-programming.htm | 0.561 |
+| crawlee | #1 | www.postgresql.org/docs/18/sql.html | 0.655 | www.postgresql.org/docs/current/sql.html | 0.655 | www.postgresql.org/docs/17/sql.html | 0.653 |
+| colly+md | #1 | www.postgresql.org/docs/16/sql.html | 0.657 | www.postgresql.org/docs/18/sql.html | 0.655 | www.postgresql.org/docs/current/sql.html | 0.655 |
+| playwright | #1 | www.postgresql.org/docs/18/sql.html | 0.655 | www.postgresql.org/docs/current/sql.html | 0.655 | www.postgresql.org/docs/17/sql.html | 0.653 |
 
 
-**Q46: Where should I send bug reports for PostgreSQL?**
-*(expects URL containing: `bug-reporting.html`)*
+**Q48: What is the recommended way to enter SQL commands in PostgreSQL?**
+*(expects URL containing: `sql.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | www.postgresql.org/docs/current/runtime-config-rep | 0.515 | www.postgresql.org/docs/current/reference-server.h | 0.503 | www.postgresql.org/docs/current/runtime-config-fil | 0.488 |
-| crawl4ai | #1 | www.postgresql.org/docs/17/bug-reporting.html | 0.722 | www.postgresql.org/docs/18/bug-reporting.html | 0.722 | www.postgresql.org/docs/current/bug-reporting.html | 0.722 |
-| crawl4ai-raw | #1 | www.postgresql.org/docs/17/bug-reporting.html | 0.722 | www.postgresql.org/docs/18/bug-reporting.html | 0.722 | www.postgresql.org/docs/current/bug-reporting.html | 0.722 |
-| scrapy+md | miss | www.postgresql.org/docs/9.2/runtime-config-logging | 0.543 | www.postgresql.org/about/contact/ | 0.515 | www.postgresql.org/docs/7.3/release-0-02.html | 0.506 |
-| crawlee | #1 | www.postgresql.org/docs/17/bug-reporting.html | 0.687 | www.postgresql.org/docs/18/bug-reporting.html | 0.687 | www.postgresql.org/docs/current/bug-reporting.html | 0.687 |
-| colly+md | #1 | www.postgresql.org/docs/16/bug-reporting.html | 0.687 | www.postgresql.org/docs/18/bug-reporting.html | 0.687 | www.postgresql.org/docs/17/bug-reporting.html | 0.687 |
-| playwright | #1 | www.postgresql.org/docs/current/bug-reporting.html | 0.687 | www.postgresql.org/docs/18/bug-reporting.html | 0.687 | www.postgresql.org/docs/17/bug-reporting.html | 0.687 |
+| markcrawl | #2 | www.postgresql.org/docs/current/sql-commands.html | 0.643 | www.postgresql.org/docs/current/app-psql.html | 0.618 | www.postgresql.org/docs/current/app-psql.html | 0.608 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/sql.html | 0.592 | www.postgresql.org/docs/current/sql.html | 0.592 | www.postgresql.org/docs/17/sql.html | 0.588 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/current/sql.html | 0.592 | www.postgresql.org/docs/18/sql.html | 0.592 | www.postgresql.org/docs/17/sql.html | 0.588 |
+| scrapy+md | #1 | www.postgresql.org/docs/8.3/app-psql.html | 0.624 | www.postgresql.org/docs/8.3/tutorial-sql-intro.htm | 0.597 | www.postgresql.org/docs/7.4/sql.html | 0.590 |
+| crawlee | #3 | www.postgresql.org/docs/current/sql-commands.html | 0.601 | www.postgresql.org/docs/18/sql-commands.html | 0.601 | www.postgresql.org/docs/18/sql.html | 0.588 |
+| colly+md | #3 | www.postgresql.org/docs/current/sql-commands.html | 0.601 | www.postgresql.org/docs/18/sql-commands.html | 0.601 | www.postgresql.org/docs/current/sql.html | 0.588 |
+| playwright | #3 | www.postgresql.org/docs/current/sql-commands.html | 0.601 | www.postgresql.org/docs/18/sql-commands.html | 0.601 | www.postgresql.org/docs/18/sql.html | 0.588 |
+
+
+**Q49: What is logical replication in PostgreSQL?**
+*(expects URL containing: `logical-replication.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.732 | www.postgresql.org/docs/current/logicaldecoding-ex | 0.648 | www.postgresql.org/docs/current/logicaldecoding-ex | 0.625 |
+| crawl4ai | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.720 | www.postgresql.org/docs/current/logical-replicatio | 0.720 | www.postgresql.org/docs/17/logical-replication.htm | 0.712 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.720 | www.postgresql.org/docs/current/logical-replicatio | 0.720 | www.postgresql.org/docs/17/logical-replication.htm | 0.712 |
+| scrapy+md | miss | www.postgresql.org/docs/8.0/mvcc.html | 0.490 | www.postgresql.org/docs/9.5/test-decoding.html | 0.488 | www.postgresql.org/docs/9.4/test-decoding.html | 0.487 |
+| crawlee | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.707 | www.postgresql.org/docs/18/logical-replication.htm | 0.707 | www.postgresql.org/docs/17/logical-replication.htm | 0.699 |
+| colly+md | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.707 | www.postgresql.org/docs/current/logical-replicatio | 0.707 | www.postgresql.org/docs/17/logical-replication.htm | 0.699 |
+| playwright | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.707 | www.postgresql.org/docs/18/logical-replication.htm | 0.707 | www.postgresql.org/docs/17/logical-replication.htm | 0.699 |
+
+
+**Q50: What are the typical use-cases for logical replication?**
+*(expects URL containing: `logical-replication.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.629 | www.postgresql.org/docs/current/logical-replicatio | 0.574 | www.postgresql.org/docs/current/logical-replicatio | 0.557 |
+| crawl4ai | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.661 | www.postgresql.org/docs/18/logical-replication.htm | 0.661 | www.postgresql.org/docs/17/logical-replication.htm | 0.654 |
+| crawl4ai-raw | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.661 | www.postgresql.org/docs/current/logical-replicatio | 0.661 | www.postgresql.org/docs/17/logical-replication.htm | 0.654 |
+| scrapy+md | miss | www.postgresql.org/docs/current/sql-createpublicat | 0.406 | www.postgresql.org/docs/current/sql-createpublicat | 0.360 | www.postgresql.org/docs/current/sql-createrole.htm | 0.351 |
+| crawlee | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.650 | www.postgresql.org/docs/current/logical-replicatio | 0.650 | www.postgresql.org/docs/17/logical-replication.htm | 0.645 |
+| colly+md | #1 | www.postgresql.org/docs/18/logical-replication.htm | 0.650 | www.postgresql.org/docs/current/logical-replicatio | 0.650 | www.postgresql.org/docs/17/logical-replication.htm | 0.645 |
+| playwright | #1 | www.postgresql.org/docs/current/logical-replicatio | 0.650 | www.postgresql.org/docs/18/logical-replication.htm | 0.650 | www.postgresql.org/docs/17/logical-replication.htm | 0.645 |
 
 
 </details>
@@ -5038,13 +5094,13 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| scrapy+md | 79% (46/58) | 91% (53/58) | 93% (54/58) | 93% (54/58) | 93% (54/58) | 0.857 | 1259 | 216 |
-| crawlee | 81% (47/58) | 86% (50/58) | 91% (53/58) | 93% (54/58) | 93% (54/58) | 0.851 | 3063 | 217 |
-| playwright | 81% (47/58) | 86% (50/58) | 91% (53/58) | 93% (54/58) | 93% (54/58) | 0.851 | 3067 | 221 |
-| colly+md | 78% (45/58) | 84% (49/58) | 84% (49/58) | 90% (52/58) | 90% (52/58) | 0.812 | 5083 | 292 |
-| crawl4ai | 76% (44/58) | 84% (49/58) | 88% (51/58) | 88% (51/58) | 91% (53/58) | 0.807 | 3210 | 500 |
-| crawl4ai-raw | 76% (44/58) | 84% (49/58) | 88% (51/58) | 88% (51/58) | 91% (53/58) | 0.807 | 3210 | 500 |
-| markcrawl | 7% (4/58) | 7% (4/58) | 7% (4/58) | 7% (4/58) | 7% (4/58) | 0.069 | 419 | 51 |
+| scrapy+md | 81% (47/58) | 97% (56/58) | 100% (58/58) | 100% (58/58) | 100% (58/58) | 0.884 | 1259 | 216 |
+| playwright | 79% (46/58) | 90% (52/58) | 97% (56/58) | 98% (57/58) | 100% (58/58) | 0.858 | 3067 | 221 |
+| colly+md | 81% (47/58) | 86% (50/58) | 95% (55/58) | 98% (57/58) | 100% (58/58) | 0.858 | 5083 | 292 |
+| crawlee | 79% (46/58) | 88% (51/58) | 93% (54/58) | 97% (56/58) | 100% (58/58) | 0.854 | 3063 | 217 |
+| crawl4ai | 76% (44/58) | 88% (51/58) | 90% (52/58) | 93% (54/58) | 100% (58/58) | 0.821 | 3210 | 500 |
+| crawl4ai-raw | 76% (44/58) | 88% (51/58) | 90% (52/58) | 93% (54/58) | 100% (58/58) | 0.821 | 3210 | 500 |
+| markcrawl | 16% (9/58) | 22% (13/58) | 26% (15/58) | 26% (15/58) | 28% (16/58) | 0.196 | 419 | 51 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
@@ -5053,287 +5109,147 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 > **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
-**Q1: What is the purpose of the `addTransitionType` API?**
-*(expects URL containing: `addTransitionType`)*
+**Q1: What is the purpose of the `useSyncExternalStore` hook?**
+*(expects URL containing: `useSyncExternalStore`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/reusing-logic-with-custom-hooks | 0.364 | react.dev/learn/reusing-logic-with-custom-hooks | 0.355 | react.dev/learn/typescript | 0.339 |
-| crawl4ai | #1 | react.dev/reference/react/addTransitionType | 0.659 | react.dev/reference/react/addTransitionType | 0.646 | react.dev/reference/react/useTransition | 0.560 |
-| crawl4ai-raw | #1 | react.dev/reference/react/addTransitionType | 0.659 | react.dev/reference/react/addTransitionType | 0.646 | react.dev/reference/react/useTransition | 0.560 |
-| scrapy+md | #1 | react.dev/reference/react/addTransitionType | 0.687 | react.dev/reference/react/addTransitionType | 0.553 | react.dev/reference/react/useTransition | 0.552 |
-| crawlee | #1 | react.dev/reference/react/addTransitionType | 0.647 | react.dev/reference/react/addTransitionType | 0.643 | react.dev/reference/react/addTransitionType | 0.576 |
-| colly+md | #1 | react.dev/reference/react/addTransitionType | 0.647 | react.dev/reference/react/addTransitionType | 0.643 | react.dev/reference/react/addTransitionType | 0.576 |
-| playwright | #1 | react.dev/reference/react/addTransitionType | 0.647 | react.dev/reference/react/addTransitionType | 0.643 | react.dev/reference/react/addTransitionType | 0.576 |
+| markcrawl | miss | react.dev/learn/you-might-not-need-an-effect | 0.500 | react.dev/learn/reusing-logic-with-custom-hooks | 0.484 | react.dev/learn/reusing-logic-with-custom-hooks | 0.424 |
+| crawl4ai | #1 | react.dev/reference/react/useSyncExternalStore | 0.628 | react.dev/reference/react/useSyncExternalStore | 0.576 | react.dev/blog/2022/03/29/react-v18 | 0.571 |
+| crawl4ai-raw | #1 | react.dev/reference/react/useSyncExternalStore | 0.628 | react.dev/reference/react/useSyncExternalStore | 0.576 | react.dev/blog/2022/03/29/react-v18 | 0.571 |
+| scrapy+md | #1 | react.dev/reference/react/useSyncExternalStore | 0.610 | react.dev/reference/react/useSyncExternalStore | 0.595 | react.dev/reference/react/useSyncExternalStore | 0.561 |
+| crawlee | #1 | react.dev/reference/react/useSyncExternalStore | 0.610 | react.dev/reference/react/useSyncExternalStore | 0.570 | react.dev/reference/react/useSyncExternalStore | 0.561 |
+| colly+md | #1 | react.dev/reference/react/useSyncExternalStore | 0.610 | react.dev/reference/react/useSyncExternalStore | 0.570 | react.dev/reference/react/useSyncExternalStore | 0.561 |
+| playwright | #1 | react.dev/reference/react/useSyncExternalStore | 0.610 | react.dev/reference/react/useSyncExternalStore | 0.570 | react.dev/reference/react/useSyncExternalStore | 0.561 |
 
 
-**Q2: What happens to Transition Types after each commit?**
-*(expects URL containing: `addTransitionType`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/react-compiler/debugging | 0.366 | react.dev/learn/render-and-commit | 0.347 | react.dev/learn/typescript | 0.346 |
-| crawl4ai | #1 | react.dev/reference/react/addTransitionType | 0.469 | react.dev/reference/react/useTransition | 0.457 | react.dev/reference/react/addTransitionType | 0.451 |
-| crawl4ai-raw | #1 | react.dev/reference/react/addTransitionType | 0.469 | react.dev/reference/react/useTransition | 0.457 | react.dev/reference/react/addTransitionType | 0.451 |
-| scrapy+md | #5 | react.dev/reference/react/useTransition | 0.468 | react.dev/reference/react/startTransition | 0.430 | react.dev/reference/react/startTransition | 0.428 |
-| crawlee | #1 | react.dev/reference/react/addTransitionType | 0.536 | react.dev/reference/react/useTransition | 0.468 | react.dev/reference/react/startTransition | 0.460 |
-| colly+md | #1 | react.dev/reference/react/addTransitionType | 0.536 | react.dev/reference/react/useTransition | 0.468 | react.dev/reference/react/startTransition | 0.460 |
-| playwright | #1 | react.dev/reference/react/addTransitionType | 0.536 | react.dev/reference/react/useTransition | 0.468 | react.dev/reference/react/startTransition | 0.460 |
-
-
-**Q3: What do the `react-dom/static` APIs allow you to generate?**
-*(expects URL containing: `static`)*
+**Q2: What functions do you need to pass as arguments to `useSyncExternalStore`?**
+*(expects URL containing: `useSyncExternalStore`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/add-react-to-an-existing-project | 0.515 | react.dev/learn/add-react-to-an-existing-project | 0.506 | react.dev/learn/build-a-react-app-from-scratch | 0.502 |
-| crawl4ai | #2 | de.react.dev/reference/react-dom | 0.654 | react.dev/reference/react-dom/static | 0.647 | react.dev/reference/react-dom | 0.610 |
-| crawl4ai-raw | #2 | de.react.dev/reference/react-dom | 0.654 | react.dev/reference/react-dom/static | 0.647 | react.dev/reference/react-dom | 0.610 |
-| scrapy+md | #1 | react.dev/reference/react-dom/static | 0.639 | react.dev/reference/react-dom/static/prerender | 0.611 | react.dev/reference/react-dom/static/prerenderToNo | 0.593 |
-| crawlee | #1 | react.dev/reference/react-dom/static | 0.635 | react.dev/reference/react-dom | 0.611 | react.dev/blog/2024/04/25/react-19#ref-as-a-prop | 0.593 |
-| colly+md | #1 | react.dev/reference/react-dom/static | 0.634 | react.dev/reference/react-dom | 0.611 | react.dev/blog/2024/12/05/react-19 | 0.593 |
-| playwright | #1 | react.dev/reference/react-dom/static | 0.634 | react.dev/reference/react-dom | 0.611 | react.dev/blog/2024/12/05/react-19 | 0.593 |
+| markcrawl | miss | react.dev/learn/you-might-not-need-an-effect | 0.425 | react.dev/learn/lifecycle-of-reactive-effects | 0.407 | react.dev/learn/reusing-logic-with-custom-hooks | 0.379 |
+| crawl4ai | #1 | react.dev/reference/react/useSyncExternalStore | 0.600 | react.dev/reference/react/useSyncExternalStore | 0.568 | react.dev/reference/react/useSyncExternalStore | 0.555 |
+| crawl4ai-raw | #1 | react.dev/reference/react/useSyncExternalStore | 0.600 | react.dev/reference/react/useSyncExternalStore | 0.568 | react.dev/reference/react/useSyncExternalStore | 0.555 |
+| scrapy+md | #1 | react.dev/reference/react/useSyncExternalStore | 0.590 | react.dev/reference/react/useSyncExternalStore | 0.535 | react.dev/reference/react/useSyncExternalStore | 0.488 |
+| crawlee | #1 | react.dev/reference/react/useSyncExternalStore | 0.590 | react.dev/reference/react/useSyncExternalStore | 0.537 | react.dev/reference/react/useSyncExternalStore | 0.514 |
+| colly+md | #1 | react.dev/reference/react/useSyncExternalStore | 0.590 | react.dev/reference/react/useSyncExternalStore | 0.537 | react.dev/reference/react/useSyncExternalStore | 0.514 |
+| playwright | #1 | react.dev/reference/react/useSyncExternalStore | 0.590 | react.dev/reference/react/useSyncExternalStore | 0.537 | react.dev/reference/react/useSyncExternalStore | 0.514 |
 
 
-**Q4: Which methods are available for rendering a React tree to static HTML with Node.js Streams?**
-*(expects URL containing: `static`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.579 | react.dev/learn/understanding-your-ui-as-a-tree | 0.534 | react.dev/learn/describing-the-ui | 0.531 |
-| crawl4ai | #1 | 18.react.dev/reference/react-dom/server/renderToSt | 0.774 | 18.react.dev/reference/react-dom/server/renderToNo | 0.739 | 18.react.dev/reference/react-dom/server/renderToSt | 0.719 |
-| crawl4ai-raw | #1 | 18.react.dev/reference/react-dom/server/renderToSt | 0.774 | 18.react.dev/reference/react-dom/server/renderToNo | 0.739 | 18.react.dev/reference/react-dom/server/renderToSt | 0.719 |
-| scrapy+md | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.722 | react.dev/reference/react-dom/static/prerenderToNo | 0.716 | react.dev/reference/react-dom/server/renderToPipea | 0.685 |
-| crawlee | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.722 | react.dev/reference/react-dom/server/renderToStrin | 0.692 | react.dev/reference/react-dom/server/renderToPipea | 0.685 |
-| colly+md | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.722 | react.dev/reference/react-dom/server/renderToStrin | 0.692 | react.dev/reference/react-dom/server/renderToPipea | 0.685 |
-| playwright | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.722 | react.dev/reference/react-dom/server/renderToStrin | 0.692 | react.dev/reference/react-dom/server/renderToPipea | 0.685 |
-
-
-**Q5: What is the purpose of the `taintUniqueValue` function in React?**
-*(expects URL containing: `experimental_taintUniqueValue`)*
+**Q3: How do you combine a reducer with context in React?**
+*(expects URL containing: `scaling-up-with-reducer-and-context`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/keeping-components-pure | 0.475 | react.dev/learn/rendering-lists | 0.452 | react.dev/learn/referencing-values-with-refs | 0.439 |
-| crawl4ai | #1 | react.dev/reference/react/experimental_taintUnique | 0.692 | react.dev/reference/react/experimental_taintUnique | 0.673 | react.dev/reference/react/experimental_taintUnique | 0.672 |
-| crawl4ai-raw | #1 | react.dev/reference/react/experimental_taintUnique | 0.692 | react.dev/reference/react/experimental_taintUnique | 0.673 | react.dev/reference/react/experimental_taintUnique | 0.672 |
-| scrapy+md | #1 | react.dev/reference/react/experimental_taintUnique | 0.691 | react.dev/reference/react/experimental_taintUnique | 0.684 | react.dev/reference/react/experimental_taintUnique | 0.620 |
-| crawlee | #1 | react.dev/reference/react/experimental_taintUnique | 0.706 | react.dev/reference/react/experimental_taintUnique | 0.674 | react.dev/reference/react/experimental_taintUnique | 0.674 |
-| colly+md | miss | react.dev/reference/react/experimental/taintUnique | 0.706 | react.dev/reference/react/experimental/taintUnique | 0.674 | react.dev/reference/react/experimental/taintUnique | 0.674 |
-| playwright | #1 | react.dev/reference/react/experimental_taintUnique | 0.706 | react.dev/reference/react/experimental_taintUnique | 0.674 | react.dev/reference/react/experimental_taintUnique | 0.674 |
+| markcrawl | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.652 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.652 | react.dev/learn/passing-data-deeply-with-context | 0.638 |
+| crawl4ai | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.718 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.709 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.698 |
+| crawl4ai-raw | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.718 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.709 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.698 |
+| scrapy+md | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.691 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.652 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.652 |
+| crawlee | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.747 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.691 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.689 |
+| colly+md | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.747 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.691 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.652 |
+| playwright | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.747 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.691 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.652 |
 
 
-**Q6: What parameters does the `taintUniqueValue` function accept?**
-*(expects URL containing: `experimental_taintUniqueValue`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/keeping-components-pure | 0.203 | react.dev/learn/lifecycle-of-reactive-effects | 0.195 | react.dev/learn/reusing-logic-with-custom-hooks | 0.194 |
-| crawl4ai | #1 | react.dev/reference/react/experimental_taintUnique | 0.590 | react.dev/reference/react/experimental_taintUnique | 0.556 | react.dev/reference/react/experimental_taintUnique | 0.555 |
-| crawl4ai-raw | #1 | react.dev/reference/react/experimental_taintUnique | 0.590 | react.dev/reference/react/experimental_taintUnique | 0.556 | react.dev/reference/react/experimental_taintUnique | 0.555 |
-| scrapy+md | #1 | react.dev/reference/react/experimental_taintUnique | 0.640 | react.dev/reference/react/experimental_taintUnique | 0.609 | react.dev/reference/react/experimental_taintUnique | 0.510 |
-| crawlee | #1 | react.dev/reference/react/experimental_taintUnique | 0.591 | react.dev/reference/react/experimental_taintUnique | 0.558 | react.dev/reference/react/experimental_taintUnique | 0.545 |
-| colly+md | miss | react.dev/reference/react/experimental/taintUnique | 0.591 | react.dev/reference/react/experimental/taintUnique | 0.558 | react.dev/reference/react/experimental/taintUnique | 0.545 |
-| playwright | #1 | react.dev/reference/react/experimental_taintUnique | 0.591 | react.dev/reference/react/experimental_taintUnique | 0.558 | react.dev/reference/react/experimental_taintUnique | 0.545 |
-
-
-**Q7: What are React components?**
-*(expects URL containing: ``)*
+**Q4: What are the steps to create a context for managing tasks?**
+*(expects URL containing: `scaling-up-with-reducer-and-context`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/your-first-component | 0.631 | react.dev/learn/your-first-component | 0.618 | react.dev/learn/describing-the-ui | 0.612 |
-| crawl4ai | miss | 15.react.dev | 0.680 | react.dev/learn/your-first-component | 0.661 | az.react.dev/learn/describing-the-ui | 0.653 |
-| crawl4ai-raw | miss | 15.react.dev | 0.680 | react.dev/learn/your-first-component | 0.661 | az.react.dev/learn/describing-the-ui | 0.653 |
-| scrapy+md | miss | react.dev/learn/your-first-component | 0.655 | react.dev/learn/describing-the-ui | 0.639 | react.dev/learn/your-first-component | 0.610 |
-| crawlee | miss | react.dev/learn/describing-the-ui | 0.643 | react.dev/reference/react/components | 0.641 | react.dev/learn/your-first-component | 0.634 |
-| colly+md | miss | react.dev/reference/react/components | 0.641 | react.dev/learn/describing-the-ui | 0.638 | react.dev/learn/your-first-component | 0.634 |
-| playwright | miss | react.dev/reference/react/components | 0.641 | react.dev/learn/describing-the-ui | 0.638 | react.dev/learn/your-first-component | 0.634 |
+| markcrawl | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.512 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.507 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.491 |
+| crawl4ai | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.517 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.517 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.511 |
+| crawl4ai-raw | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.517 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.517 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.511 |
+| scrapy+md | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.508 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.505 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.491 |
+| crawlee | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.508 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.505 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.500 |
+| colly+md | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.508 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.505 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.491 |
+| playwright | #1 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.508 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.505 | react.dev/learn/scaling-up-with-reducer-and-contex | 0.491 |
 
 
-**Q8: How does React handle data updates in components?**
-*(expects URL containing: ``)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/preserving-and-resetting-state | 0.590 | react.dev/learn/render-and-commit | 0.580 | react.dev/learn/updating-objects-in-state | 0.579 |
-| crawl4ai | miss | react.dev/learn/queueing-a-series-of-state-updates | 0.619 | az.react.dev/learn/adding-interactivity | 0.609 | 18.react.dev/learn/adding-interactivity | 0.609 |
-| crawl4ai-raw | miss | react.dev/learn/queueing-a-series-of-state-updates | 0.619 | az.react.dev/learn/adding-interactivity | 0.609 | 18.react.dev/learn/adding-interactivity | 0.609 |
-| scrapy+md | miss | react.dev/learn/adding-interactivity | 0.595 | react.dev/learn/updating-objects-in-state | 0.581 | react.dev/reference/react/useReducer | 0.579 |
-| crawlee | miss | react.dev/reference/react/Component | 0.638 | react.dev/learn/queueing-a-series-of-state-updates | 0.626 | react.dev/learn/you-might-not-need-an-effect | 0.610 |
-| colly+md | miss | react.dev/reference/react/Component | 0.638 | react.dev/learn/queueing-a-series-of-state-updates | 0.626 | react.dev/learn/you-might-not-need-an-effect | 0.610 |
-| playwright | miss | react.dev/reference/react/Component | 0.638 | react.dev/learn/queueing-a-series-of-state-updates | 0.626 | react.dev/learn/you-might-not-need-an-effect | 0.610 |
-
-
-**Q9: How many languages is react.dev being translated into?**
-*(expects URL containing: ``)*
+**Q5: What new features will React 18 include?**
+*(expects URL containing: `the-plan-for-react-18`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/react-compiler/incremental-adoptio | 0.457 | react.dev/learn/react-compiler/installation | 0.450 | react.dev/learn/setup | 0.448 |
-| crawl4ai | miss | translations.react.dev/ | 0.732 | de.react.dev/community/translations | 0.659 | react.dev/community/translations | 0.648 |
-| crawl4ai-raw | miss | translations.react.dev/ | 0.732 | de.react.dev/community/translations | 0.658 | react.dev/community/translations | 0.648 |
-| scrapy+md | miss | react.dev/community/translations | 0.587 | react.dev/community/acknowledgements | 0.518 | react.dev/community/meetups | 0.517 |
-| crawlee | miss | react.dev/community/translations | 0.625 | react.dev/community/translations | 0.618 | react.dev/community/acknowledgements | 0.545 |
-| colly+md | miss | react.dev/community/translations | 0.625 | react.dev/community/translations | 0.618 | react.dev/community/acknowledgements | 0.545 |
-| playwright | miss | react.dev/community/translations | 0.625 | react.dev/community/translations | 0.618 | react.dev/community/acknowledgements | 0.545 |
+| markcrawl | miss | react.dev/learn/creating-a-react-app | 0.587 | react.dev/learn/typescript | 0.516 | react.dev/learn/react-compiler/incremental-adoptio | 0.515 |
+| crawl4ai | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.754 | react.dev/blog/2022/03/29/react-v18 | 0.734 | react.dev/blog/2022/03/08/react-18-upgrade-guide | 0.719 |
+| crawl4ai-raw | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.754 | react.dev/blog/2022/03/29/react-v18 | 0.734 | react.dev/blog/2022/03/08/react-18-upgrade-guide | 0.719 |
+| scrapy+md | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.716 | react.dev/blog/2022/03/29/react-v18 | 0.702 | react.dev/blog/2022/03/29/react-v18 | 0.699 |
+| crawlee | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.730 | react.dev/blog/2022/03/08/react-18-upgrade-guide | 0.708 | react.dev/blog/2022/03/08/react-18-upgrade-guide | 0.706 |
+| colly+md | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.730 | react.dev/blog/2022/03/08/react-18-upgrade-guide | 0.708 | react.dev/blog/2022/03/08/react-18-upgrade-guide | 0.706 |
+| playwright | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.730 | react.dev/blog/2022/03/08/react-18-upgrade-guide | 0.708 | react.dev/blog/2022/03/08/react-18-upgrade-guide | 0.706 |
 
 
-**Q10: Which languages have completed translations for both core and other content?**
-*(expects URL containing: ``)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/react-compiler/incremental-adoptio | 0.247 | react.dev/learn/creating-a-react-app | 0.228 | react.dev/learn/react-compiler/incremental-adoptio | 0.227 |
-| crawl4ai | miss | translations.react.dev/ | 0.564 | translations.react.dev/ | 0.553 | translations.react.dev/ | 0.487 |
-| crawl4ai-raw | miss | translations.react.dev/ | 0.564 | translations.react.dev/ | 0.553 | translations.react.dev/ | 0.487 |
-| scrapy+md | miss | react.dev/community/translations | 0.421 | react.dev/community/acknowledgements | 0.330 | react.dev/community/docs-contributors | 0.322 |
-| crawlee | miss | react.dev/community/translations | 0.457 | react.dev/community/translations | 0.443 | react.dev/community/acknowledgements | 0.354 |
-| colly+md | miss | react.dev/community/translations | 0.457 | react.dev/community/translations | 0.443 | react.dev/community/acknowledgements | 0.354 |
-| playwright | miss | react.dev/community/translations | 0.457 | react.dev/community/translations | 0.443 | react.dev/community/acknowledgements | 0.354 |
-
-
-**Q11: What is the purpose of using `<Fragment>` in React?**
-*(expects URL containing: `Fragment`)*
+**Q6: How can I try React 18 Alpha today?**
+*(expects URL containing: `the-plan-for-react-18`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/writing-markup-with-jsx | 0.555 | react.dev/learn/rendering-lists | 0.504 | react.dev/learn/rendering-lists | 0.499 |
-| crawl4ai | #1 | react.dev/reference/react/Fragment | 0.681 | react.dev/reference/react/Fragment | 0.662 | react.dev/reference/react/Fragment | 0.656 |
-| crawl4ai-raw | #1 | react.dev/reference/react/Fragment | 0.681 | react.dev/reference/react/Fragment | 0.662 | react.dev/reference/react/Fragment | 0.656 |
-| scrapy+md | #1 | react.dev/reference/react/Fragment | 0.634 | react.dev/reference/react/Fragment | 0.631 | react.dev/reference/react/Fragment | 0.600 |
-| crawlee | #1 | react.dev/reference/react/Fragment | 0.635 | react.dev/reference/react/Fragment | 0.631 | react.dev/reference/react/Fragment | 0.609 |
-| colly+md | #1 | react.dev/reference/react/Fragment | 0.634 | react.dev/reference/react/Fragment#rendering-a-lis | 0.634 | react.dev/reference/react/Fragment#rendering-a-lis | 0.631 |
-| playwright | #1 | react.dev/reference/react/Fragment | 0.634 | react.dev/reference/react/Fragment | 0.631 | react.dev/reference/react/Fragment | 0.609 |
+| markcrawl | miss | react.dev/learn/react-developer-tools | 0.523 | react.dev/learn/installation | 0.509 | react.dev/learn/setup | 0.509 |
+| crawl4ai | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.716 | he.react.dev/blog | 0.671 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.662 |
+| crawl4ai-raw | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.716 | he.react.dev/blog | 0.671 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.662 |
+| scrapy+md | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.694 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.632 | react.dev/blog | 0.630 |
+| crawlee | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.724 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.694 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.692 |
+| colly+md | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.724 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.694 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.692 |
+| playwright | #1 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.724 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.694 | react.dev/blog/2021/06/08/the-plan-for-react-18 | 0.692 |
 
 
-**Q12: How can you pass a `key` to a Fragment?**
-*(expects URL containing: `Fragment`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/rendering-lists | 0.457 | react.dev/learn/tutorial-tic-tac-toe | 0.387 | react.dev/learn/tutorial-tic-tac-toe | 0.371 |
-| crawl4ai | #1 | react.dev/reference/react/Fragment | 0.459 | react.dev/reference/react/Fragment | 0.452 | react.dev/reference/react/Fragment | 0.440 |
-| crawl4ai-raw | #1 | react.dev/reference/react/Fragment | 0.459 | react.dev/reference/react/Fragment | 0.452 | react.dev/reference/react/Fragment | 0.440 |
-| scrapy+md | #1 | react.dev/reference/react/Fragment | 0.485 | react.dev/reference/react/Fragment | 0.440 | react.dev/reference/react/Fragment | 0.435 |
-| crawlee | #1 | react.dev/reference/react/Fragment | 0.490 | react.dev/reference/react/Fragment | 0.438 | react.dev/learn/rendering-lists | 0.433 |
-| colly+md | #1 | react.dev/reference/react/Fragment#rendering-a-lis | 0.490 | react.dev/reference/react/Fragment | 0.490 | react.dev/reference/react/Fragment#rendering-a-lis | 0.440 |
-| playwright | #1 | react.dev/reference/react/Fragment | 0.490 | react.dev/reference/react/Fragment | 0.440 | react.dev/learn/rendering-lists | 0.432 |
-
-
-**Q13: What does <StrictMode> do in React?**
-*(expects URL containing: `StrictMode`)*
+**Q7: How do you specify the title of the document using the `<title>` component?**
+*(expects URL containing: `title`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/synchronizing-with-effects | 0.517 | react.dev/learn/render-and-commit | 0.515 | react.dev/learn/keeping-components-pure | 0.512 |
-| crawl4ai | #1 | react.dev/reference/react/StrictMode | 0.733 | react.dev/reference/react/StrictMode | 0.728 | react.dev/reference/react/StrictMode | 0.697 |
-| crawl4ai-raw | #1 | react.dev/reference/react/StrictMode | 0.733 | react.dev/reference/react/StrictMode | 0.728 | react.dev/reference/react/StrictMode | 0.697 |
-| scrapy+md | #1 | react.dev/reference/react/StrictMode | 0.730 | react.dev/reference/react/StrictMode | 0.719 | react.dev/reference/react/StrictMode | 0.677 |
-| crawlee | #1 | react.dev/reference/react/StrictMode | 0.716 | react.dev/reference/react/StrictMode | 0.715 | react.dev/reference/react/StrictMode | 0.684 |
-| colly+md | #1 | react.dev/reference/react/StrictMode | 0.716 | react.dev/reference/react/StrictMode#fixing-bugs-f | 0.716 | react.dev/reference/react/StrictMode | 0.715 |
-| playwright | #1 | react.dev/reference/react/StrictMode | 0.716 | react.dev/reference/react/StrictMode | 0.715 | react.dev/reference/react/StrictMode | 0.684 |
+| markcrawl | miss | react.dev/learn/your-first-component | 0.350 | react.dev/learn/your-first-component | 0.346 | react.dev/learn/passing-data-deeply-with-context | 0.339 |
+| crawl4ai | #1 | react.dev/reference/react-dom/components/title | 0.554 | react.dev/reference/react-dom/components/title | 0.550 | react.dev/reference/react-dom/components/title | 0.450 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/components/title | 0.554 | react.dev/reference/react-dom/components/title | 0.550 | react.dev/reference/react-dom/components/title | 0.450 |
+| scrapy+md | #1 | react.dev/reference/react-dom/components/title | 0.593 | react.dev/reference/react-dom/components/title | 0.520 | react.dev/blog/2024/12/05/react-19 | 0.433 |
+| crawlee | #1 | react.dev/reference/react-dom/components/title | 0.540 | react.dev/reference/react-dom/components/title | 0.520 | react.dev/reference/react-dom/components/title | 0.510 |
+| colly+md | #1 | react.dev/reference/react-dom/components/title | 0.540 | react.dev/reference/react-dom/components/title | 0.520 | react.dev/reference/react-dom/components/title | 0.511 |
+| playwright | #1 | react.dev/reference/react-dom/components/title | 0.540 | react.dev/reference/react-dom/components/title | 0.520 | react.dev/reference/react-dom/components/title | 0.510 |
 
 
-**Q14: How can you enable Strict Mode for a part of your application?**
-*(expects URL containing: `StrictMode`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/react-compiler/incremental-adoptio | 0.400 | react.dev/learn/react-compiler/incremental-adoptio | 0.368 | react.dev/learn/build-a-react-app-from-scratch | 0.359 |
-| crawl4ai | #1 | react.dev/reference/react/StrictMode | 0.617 | react.dev/reference/react/StrictMode | 0.534 | react.dev/reference/react/StrictMode | 0.524 |
-| crawl4ai-raw | #1 | react.dev/reference/react/StrictMode | 0.617 | react.dev/reference/react/StrictMode | 0.534 | react.dev/reference/react/StrictMode | 0.524 |
-| scrapy+md | #1 | react.dev/reference/react/StrictMode | 0.652 | react.dev/reference/react/StrictMode | 0.612 | react.dev/reference/react/StrictMode | 0.546 |
-| crawlee | #1 | react.dev/reference/react/StrictMode | 0.625 | react.dev/reference/react/StrictMode | 0.555 | react.dev/reference/react/StrictMode | 0.514 |
-| colly+md | #1 | react.dev/reference/react/StrictMode#fixing-bugs-f | 0.625 | react.dev/reference/react/StrictMode | 0.625 | react.dev/reference/react/StrictMode | 0.555 |
-| playwright | #1 | react.dev/reference/react/StrictMode | 0.625 | react.dev/reference/react/StrictMode | 0.555 | react.dev/reference/react/StrictMode | 0.514 |
-
-
-**Q15: What does memo do in React?**
-*(expects URL containing: `memo`)*
+**Q8: What special rendering behavior does React have for the `<title>` component?**
+*(expects URL containing: `title`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/typescript | 0.614 | react.dev/learn/react-compiler/introduction | 0.602 | react.dev/learn/you-might-not-need-an-effect | 0.577 |
-| crawl4ai | #1 | react.dev/reference/react/memo | 0.723 | react.dev/reference/react/memo | 0.720 | react.dev/reference/react/useMemo | 0.695 |
-| crawl4ai-raw | #1 | react.dev/reference/react/memo | 0.723 | react.dev/reference/react/memo | 0.720 | react.dev/reference/react/useMemo | 0.695 |
-| scrapy+md | #1 | react.dev/reference/react/memo | 0.678 | react.dev/reference/react/memo | 0.672 | react.dev/reference/react/memo | 0.655 |
-| crawlee | #1 | react.dev/reference/react-compiler/directives/use- | 0.756 | react.dev/reference/react/memo | 0.729 | react.dev/reference/react/memo | 0.689 |
-| colly+md | #1 | react.dev/reference/react-compiler/directives/use- | 0.756 | react.dev/reference/react/memo | 0.728 | react.dev/reference/react/memo | 0.689 |
-| playwright | #1 | react.dev/reference/react-compiler/directives/use- | 0.756 | react.dev/reference/react/memo | 0.728 | react.dev/reference/react/memo | 0.689 |
+| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.536 | react.dev/learn/render-and-commit | 0.516 | react.dev/learn/understanding-your-ui-as-a-tree | 0.499 |
+| crawl4ai | #1 | react.dev/reference/react-dom/components/title | 0.688 | react.dev/reference/react-dom/components/title | 0.650 | react.dev/reference/react-dom/components/style | 0.593 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/components/title | 0.688 | react.dev/reference/react-dom/components/title | 0.650 | react.dev/reference/react-dom/components/style | 0.593 |
+| scrapy+md | #1 | react.dev/reference/react-dom/components/title | 0.682 | react.dev/reference/react-dom/components/title | 0.619 | react.dev/reference/react-dom/components/style | 0.531 |
+| crawlee | #1 | react.dev/reference/react-dom/components/title | 0.682 | react.dev/reference/react-dom/components/title | 0.670 | react.dev/reference/react-dom/components/title | 0.649 |
+| colly+md | #1 | react.dev/reference/react-dom/components/title | 0.682 | react.dev/reference/react-dom/components/title | 0.671 | react.dev/reference/react-dom/components/title | 0.649 |
+| playwright | #1 | react.dev/reference/react-dom/components/title | 0.682 | react.dev/reference/react-dom/components/title | 0.670 | react.dev/reference/react-dom/components/title | 0.649 |
 
 
-**Q16: How can you specify a custom comparison function for memo?**
-*(expects URL containing: `memo`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/you-might-not-need-an-effect | 0.409 | react.dev/learn/typescript | 0.392 | react.dev/learn/react-compiler/introduction | 0.355 |
-| crawl4ai | #1 | react.dev/reference/react/memo | 0.525 | react.dev/reference/react-compiler/directives/use- | 0.495 | react.dev/reference/react/useMemo | 0.448 |
-| crawl4ai-raw | #1 | react.dev/reference/react/memo | 0.525 | react.dev/reference/react-compiler/directives/use- | 0.495 | react.dev/reference/react/useMemo | 0.448 |
-| scrapy+md | #1 | react.dev/reference/react/memo | 0.550 | react.dev/reference/react-compiler/directives/use- | 0.502 | react.dev/reference/react/memo | 0.497 |
-| crawlee | #1 | react.dev/reference/react/memo | 0.551 | react.dev/reference/react-compiler/directives/use- | 0.513 | react.dev/reference/react/memo | 0.500 |
-| colly+md | #1 | react.dev/reference/react/memo | 0.551 | react.dev/reference/react-compiler/directives/use- | 0.513 | react.dev/reference/react/memo | 0.500 |
-| playwright | #1 | react.dev/reference/react/memo | 0.550 | react.dev/reference/react-compiler/directives/use- | 0.513 | react.dev/reference/react/memo | 0.500 |
-
-
-**Q17: What does cloneElement do in React?**
-*(expects URL containing: `cloneElement`)*
+**Q9: What are Server Functions used for in React?**
+*(expects URL containing: `server-functions`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/render-and-commit | 0.502 | react.dev/learn/react-compiler/introduction | 0.494 | react.dev/learn/react-compiler/introduction | 0.489 |
-| crawl4ai | #1 | react.dev/reference/react/cloneElement | 0.747 | react.dev/reference/react/cloneElement | 0.707 | react.dev/reference/react/cloneElement | 0.673 |
-| crawl4ai-raw | #1 | react.dev/reference/react/cloneElement | 0.747 | react.dev/reference/react/cloneElement | 0.707 | react.dev/reference/react/cloneElement | 0.672 |
-| scrapy+md | #1 | react.dev/reference/react/cloneElement | 0.744 | react.dev/reference/react/cloneElement | 0.737 | react.dev/reference/react/cloneElement | 0.664 |
-| crawlee | #1 | react.dev/reference/react/cloneElement | 0.737 | react.dev/reference/react/cloneElement | 0.716 | react.dev/reference/react/cloneElement | 0.685 |
-| colly+md | #1 | react.dev/reference/react/cloneElement | 0.737 | react.dev/reference/react/cloneElement | 0.715 | react.dev/reference/react/cloneElement | 0.685 |
-| playwright | #1 | react.dev/reference/react/cloneElement | 0.737 | react.dev/reference/react/cloneElement | 0.716 | react.dev/reference/react/cloneElement | 0.685 |
+| markcrawl | miss | react.dev/learn/creating-a-react-app | 0.534 | react.dev/learn/add-react-to-an-existing-project | 0.526 | react.dev/learn/escape-hatches | 0.517 |
+| crawl4ai | #1 | react.dev/reference/rsc/server-functions | 0.744 | react.dev/reference/rsc/server-actions | 0.744 | react.dev/reference/rsc/use-server | 0.721 |
+| crawl4ai-raw | #1 | react.dev/reference/rsc/server-functions | 0.744 | react.dev/reference/rsc/server-actions | 0.744 | react.dev/reference/rsc/use-server | 0.721 |
+| scrapy+md | #1 | react.dev/reference/rsc/server-functions | 0.731 | react.dev/reference/rsc/server-functions | 0.712 | react.dev/reference/rsc/use-server | 0.672 |
+| crawlee | #1 | react.dev/reference/rsc/server-functions | 0.725 | react.dev/reference/rsc/server-actions | 0.725 | react.dev/reference/rsc/server-actions | 0.724 |
+| colly+md | #1 | react.dev/reference/rsc/server-functions | 0.725 | react.dev/reference/rsc/server-functions | 0.724 | react.dev/reference/rsc/server-functions | 0.712 |
+| playwright | #2 | react.dev/reference/rsc/server-actions | 0.725 | react.dev/reference/rsc/server-functions | 0.725 | react.dev/reference/rsc/server-actions | 0.724 |
 
 
-**Q18: What are the parameters required for cloneElement?**
-*(expects URL containing: `cloneElement`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/passing-data-deeply-with-context | 0.273 | react.dev/learn/passing-props-to-a-component | 0.270 | react.dev/learn/passing-props-to-a-component | 0.266 |
-| crawl4ai | #1 | react.dev/reference/react/cloneElement | 0.593 | react.dev/reference/react/cloneElement | 0.492 | react.dev/reference/react/cloneElement | 0.472 |
-| crawl4ai-raw | #1 | react.dev/reference/react/cloneElement | 0.593 | react.dev/reference/react/cloneElement | 0.492 | react.dev/reference/react/cloneElement | 0.472 |
-| scrapy+md | #1 | react.dev/reference/react/cloneElement | 0.590 | react.dev/reference/react/cloneElement | 0.545 | react.dev/reference/react/cloneElement | 0.415 |
-| crawlee | #1 | react.dev/reference/react/cloneElement | 0.550 | react.dev/reference/react/cloneElement | 0.545 | react.dev/reference/react/cloneElement | 0.536 |
-| colly+md | #1 | react.dev/reference/react/cloneElement | 0.550 | react.dev/reference/react/cloneElement | 0.545 | react.dev/reference/react/cloneElement | 0.536 |
-| playwright | #1 | react.dev/reference/react/cloneElement | 0.550 | react.dev/reference/react/cloneElement | 0.545 | react.dev/reference/react/cloneElement | 0.536 |
-
-
-**Q19: How do you share state between components in React?**
-*(expects URL containing: `sharing-state-between-components`)*
+**Q10: How do you create a Server Function from a Server Component?**
+*(expects URL containing: `server-functions`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | react.dev/learn/sharing-state-between-components | 0.662 | react.dev/learn/state-a-components-memory | 0.662 | react.dev/learn/managing-state | 0.652 |
-| crawl4ai | #1 | react.dev/learn/sharing-state-between-components | 0.725 | react.dev/learn/state-a-components-memory | 0.690 | react.dev/learn/sharing-state-between-components | 0.688 |
-| crawl4ai-raw | #1 | react.dev/learn/sharing-state-between-components | 0.726 | react.dev/learn/state-a-components-memory | 0.690 | react.dev/learn/sharing-state-between-components | 0.688 |
-| scrapy+md | #1 | react.dev/learn/sharing-state-between-components | 0.707 | react.dev/learn/state-a-components-memory | 0.664 | react.dev/learn/sharing-state-between-components | 0.662 |
-| crawlee | #2 | react.dev/learn/state-a-components-memory | 0.664 | react.dev/learn/sharing-state-between-components | 0.662 | react.dev/learn/sharing-state-between-components | 0.661 |
-| colly+md | #3 | react.dev/learn/state-a-components-memory | 0.664 | react.dev/learn/state-a-components-memory#anatomy- | 0.664 | react.dev/learn/sharing-state-between-components | 0.662 |
-| playwright | #2 | react.dev/learn/state-a-components-memory | 0.664 | react.dev/learn/sharing-state-between-components | 0.662 | react.dev/learn/managing-state | 0.653 |
+| markcrawl | miss | react.dev/learn/your-first-component | 0.390 | react.dev/learn/reusing-logic-with-custom-hooks | 0.374 | react.dev/learn/add-react-to-an-existing-project | 0.366 |
+| crawl4ai | #2 | react.dev/reference/rsc/server-actions | 0.656 | react.dev/reference/rsc/server-functions | 0.656 | react.dev/reference/rsc/server-components | 0.587 |
+| crawl4ai-raw | #2 | react.dev/reference/rsc/server-actions | 0.656 | react.dev/reference/rsc/server-functions | 0.656 | react.dev/reference/rsc/server-components | 0.587 |
+| scrapy+md | #1 | react.dev/reference/rsc/server-functions | 0.651 | react.dev/reference/rsc/server-functions | 0.621 | react.dev/reference/rsc/server-components | 0.588 |
+| crawlee | #2 | react.dev/reference/rsc/server-actions | 0.651 | react.dev/reference/rsc/server-functions | 0.651 | react.dev/reference/rsc/server-functions | 0.616 |
+| colly+md | #1 | react.dev/reference/rsc/server-functions | 0.651 | react.dev/reference/rsc/server-functions | 0.616 | react.dev/reference/rsc/server-components | 0.580 |
+| playwright | #1 | react.dev/reference/rsc/server-functions | 0.651 | react.dev/reference/rsc/server-actions | 0.651 | react.dev/reference/rsc/server-functions | 0.616 |
 
 
-**Q20: What is the difference between controlled and uncontrolled components?**
-*(expects URL containing: `sharing-state-between-components`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | react.dev/learn/sharing-state-between-components | 0.514 | react.dev/learn/sharing-state-between-components | 0.487 | react.dev/learn/sharing-state-between-components | 0.360 |
-| crawl4ai | #1 | react.dev/learn/sharing-state-between-components | 0.572 | react.dev/learn/sharing-state-between-components | 0.487 | react.dev/reference/react-dom/components/input | 0.369 |
-| crawl4ai-raw | #1 | react.dev/learn/sharing-state-between-components | 0.573 | react.dev/learn/sharing-state-between-components | 0.486 | react.dev/reference/react-dom/components/input | 0.369 |
-| scrapy+md | #1 | react.dev/learn/sharing-state-between-components | 0.487 | react.dev/learn/sharing-state-between-components | 0.467 | react.dev/reference/react-dom/components/input | 0.396 |
-| crawlee | #1 | react.dev/learn/sharing-state-between-components | 0.520 | react.dev/learn/sharing-state-between-components | 0.487 | react.dev/learn/sharing-state-between-components | 0.475 |
-| colly+md | #1 | react.dev/learn/sharing-state-between-components | 0.520 | react.dev/learn/sharing-state-between-components | 0.487 | react.dev/learn/sharing-state-between-components | 0.474 |
-| playwright | #1 | react.dev/learn/sharing-state-between-components | 0.520 | react.dev/learn/sharing-state-between-components | 0.487 | react.dev/learn/sharing-state-between-components | 0.475 |
-
-
-**Q21: What is the new domain for the React documentation site?**
+**Q11: What is the new domain for the React documentation site?**
 *(expects URL containing: `introducing-react-dev`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -5347,133 +5263,189 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.666 | react.dev/blog/2023/03/16/introducing-react-dev | 0.658 | react.dev/blog | 0.649 |
 
 
-**Q22: How does the new documentation teach React differently than before?**
+**Q12: How does the new documentation teach React differently than the previous version?**
 *(expects URL containing: `introducing-react-dev`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/reacting-to-input-with-state | 0.558 | react.dev/learn/typescript | 0.552 | react.dev/learn/writing-markup-with-jsx | 0.532 |
-| crawl4ai | #1 | he.react.dev/blog/2023/03/16/introducing-react-dev | 0.677 | react.dev/blog/2023/03/16/introducing-react-dev | 0.674 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.658 |
-| crawl4ai-raw | #1 | he.react.dev/blog/2023/03/16/introducing-react-dev | 0.677 | react.dev/blog/2023/03/16/introducing-react-dev | 0.674 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.658 |
-| scrapy+md | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.666 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.628 | react.dev/versions | 0.621 |
-| crawlee | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.682 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.659 | react.dev/blog/2023/03/16/introducing-react-dev | 0.656 |
-| colly+md | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.682 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.659 | react.dev/blog/2023/03/16/introducing-react-dev | 0.656 |
-| playwright | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.682 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.659 | react.dev/blog/2023/03/16/introducing-react-dev | 0.656 |
+| markcrawl | miss | react.dev/learn/typescript | 0.546 | react.dev/learn/reacting-to-input-with-state | 0.544 | react.dev/learn/writing-markup-with-jsx | 0.524 |
+| crawl4ai | #1 | he.react.dev/blog/2023/03/16/introducing-react-dev | 0.673 | react.dev/blog/2023/03/16/introducing-react-dev | 0.670 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.655 |
+| crawl4ai-raw | #1 | he.react.dev/blog/2023/03/16/introducing-react-dev | 0.673 | react.dev/blog/2023/03/16/introducing-react-dev | 0.670 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.655 |
+| scrapy+md | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.665 | react.dev/versions | 0.638 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.628 |
+| crawlee | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.682 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.653 | react.dev/blog/2023/03/16/introducing-react-dev | 0.651 |
+| colly+md | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.682 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.653 | react.dev/blog/2023/03/16/introducing-react-dev | 0.651 |
+| playwright | #1 | react.dev/blog/2023/03/16/introducing-react-dev | 0.682 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.653 | react.dev/blog/2023/03/16/introducing-react-dev | 0.651 |
 
 
-**Q23: What is the mission of the React Foundation?**
-*(expects URL containing: `introducing-the-react-foundation`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/build-a-react-app-from-scratch | 0.493 | react.dev/learn/installation | 0.484 | react.dev/learn/react-compiler | 0.483 |
-| crawl4ai | #1 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.702 | ar.react.dev/blog/2025/10/07/introducing-the-react | 0.698 | react.dev/blog/2026/02/24/the-react-foundation | 0.686 |
-| crawl4ai-raw | #1 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.702 | ar.react.dev/blog/2025/10/07/introducing-the-react | 0.698 | react.dev/blog/2026/02/24/the-react-foundation | 0.686 |
-| scrapy+md | #2 | react.dev/blog/2026/02/24/the-react-foundation | 0.678 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.666 | react.dev/blog/2026/02/24/the-react-foundation | 0.635 |
-| crawlee | #2 | react.dev/blog/2026/02/24/the-react-foundation | 0.693 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.675 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.672 |
-| colly+md | #2 | react.dev/blog/2026/02/24/the-react-foundation | 0.693 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.675 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.672 |
-| playwright | #2 | react.dev/blog/2026/02/24/the-react-foundation | 0.693 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.675 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.672 |
-
-
-**Q24: Who will serve as the executive director of the React Foundation?**
-*(expects URL containing: `introducing-the-react-foundation`)*
+**Q13: What does the `startTransition` function do?**
+*(expects URL containing: `startTransition`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/build-a-react-app-from-scratch | 0.407 | react.dev/learn/creating-a-react-app | 0.407 | react.dev/learn/setup | 0.404 |
-| crawl4ai | #4 | zh-hans.react.dev/blog/2026/02/24/the-react-founda | 0.695 | react.dev/blog/2026/02/24/the-react-foundation | 0.693 | tr.react.dev/blog/2026/02/24/the-react-foundation | 0.689 |
-| crawl4ai-raw | #4 | zh-hans.react.dev/blog/2026/02/24/the-react-founda | 0.695 | react.dev/blog/2026/02/24/the-react-foundation | 0.693 | tr.react.dev/blog/2026/02/24/the-react-foundation | 0.689 |
-| scrapy+md | #2 | react.dev/blog/2026/02/24/the-react-foundation | 0.666 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.661 | react.dev/blog/2026/02/24/the-react-foundation | 0.561 |
-| crawlee | #2 | react.dev/blog/2026/02/24/the-react-foundation | 0.667 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.666 | react.dev/blog/2026/02/24/the-react-foundation | 0.650 |
-| colly+md | #2 | react.dev/blog/2026/02/24/the-react-foundation | 0.667 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.666 | react.dev/blog/2026/02/24/the-react-foundation | 0.650 |
-| playwright | #2 | react.dev/blog/2026/02/24/the-react-foundation | 0.667 | react.dev/blog/2025/10/07/introducing-the-react-fo | 0.666 | react.dev/blog/2026/02/24/the-react-foundation | 0.650 |
+| markcrawl | miss | react.dev/learn/reusing-logic-with-custom-hooks | 0.365 | react.dev/learn/reusing-logic-with-custom-hooks | 0.360 | react.dev/learn/tutorial-tic-tac-toe | 0.350 |
+| crawl4ai | #2 | react.dev/reference/react/useTransition | 0.674 | react.dev/reference/react/startTransition | 0.650 | react.dev/reference/react/useTransition | 0.643 |
+| crawl4ai-raw | #2 | react.dev/reference/react/useTransition | 0.674 | react.dev/reference/react/startTransition | 0.650 | react.dev/reference/react/useTransition | 0.643 |
+| scrapy+md | #2 | react.dev/reference/react/useTransition | 0.705 | react.dev/reference/react/startTransition | 0.672 | react.dev/reference/react/useTransition | 0.669 |
+| crawlee | #2 | react.dev/reference/react/useTransition | 0.669 | react.dev/reference/react/startTransition | 0.669 | react.dev/reference/react/useTransition | 0.660 |
+| colly+md | #2 | react.dev/reference/react/useTransition | 0.669 | react.dev/reference/react/startTransition | 0.669 | react.dev/reference/react/useTransition | 0.660 |
+| playwright | #2 | react.dev/reference/react/useTransition | 0.669 | react.dev/reference/react/startTransition | 0.669 | react.dev/reference/react/useTransition | 0.660 |
 
 
-**Q25: What does 'use memo' do in React?**
-*(expects URL containing: `use-memo`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/typescript | 0.618 | react.dev/learn/you-might-not-need-an-effect | 0.595 | react.dev/learn/react-compiler/introduction | 0.574 |
-| crawl4ai | #3 | react.dev/reference/react/memo | 0.717 | react.dev/reference/react/memo | 0.710 | react.dev/reference/react-compiler/directives/use- | 0.686 |
-| crawl4ai-raw | #3 | react.dev/reference/react/memo | 0.717 | react.dev/reference/react/memo | 0.710 | react.dev/reference/react-compiler/directives/use- | 0.686 |
-| scrapy+md | #1 | react.dev/reference/react-compiler/directives/use- | 0.673 | react.dev/reference/react/memo | 0.670 | react.dev/reference/react-compiler/directives/use- | 0.669 |
-| crawlee | #1 | react.dev/reference/react-compiler/directives/use- | 0.766 | react.dev/reference/react/memo | 0.716 | react.dev/reference/react/useMemo | 0.690 |
-| colly+md | #1 | react.dev/reference/react-compiler/directives/use- | 0.766 | react.dev/reference/react/memo | 0.717 | react.dev/reference/react/useMemo | 0.690 |
-| playwright | #1 | react.dev/reference/react-compiler/directives/use- | 0.766 | react.dev/reference/react/memo | 0.716 | react.dev/reference/react/useMemo | 0.690 |
-
-
-**Q26: When should you consider using 'use memo'?**
-*(expects URL containing: `use-memo`)*
+**Q14: How do you mark a state update as a Transition in React?**
+*(expects URL containing: `startTransition`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/you-might-not-need-an-effect | 0.485 | react.dev/learn/typescript | 0.457 | react.dev/learn/react-compiler/introduction | 0.432 |
-| crawl4ai | #2 | react.dev/reference/react/useMemo | 0.606 | react.dev/reference/react-compiler/directives/use- | 0.597 | react.dev/reference/react/memo | 0.586 |
-| crawl4ai-raw | #2 | react.dev/reference/react/useMemo | 0.606 | react.dev/reference/react-compiler/directives/use- | 0.597 | react.dev/reference/react/memo | 0.586 |
-| scrapy+md | #1 | react.dev/reference/react-compiler/directives/use- | 0.602 | react.dev/reference/react-compiler/directives/use- | 0.589 | react.dev/reference/react/memo | 0.585 |
-| crawlee | #1 | react.dev/reference/react-compiler/directives/use- | 0.617 | react.dev/reference/react-compiler/directives/use- | 0.616 | react.dev/reference/react/memo | 0.585 |
-| colly+md | #1 | react.dev/reference/react-compiler/directives/use- | 0.617 | react.dev/reference/react-compiler/directives/use- | 0.616 | react.dev/reference/react/memo | 0.585 |
-| playwright | #1 | react.dev/reference/react-compiler/directives/use- | 0.617 | react.dev/reference/react-compiler/directives/use- | 0.616 | react.dev/reference/react/memo | 0.585 |
+| markcrawl | miss | react.dev/learn/reacting-to-input-with-state | 0.598 | react.dev/learn/state-as-a-snapshot | 0.590 | react.dev/learn/preserving-and-resetting-state | 0.584 |
+| crawl4ai | #1 | react.dev/reference/react/startTransition | 0.705 | react.dev/reference/react/useTransition | 0.687 | react.dev/reference/react/useTransition | 0.682 |
+| crawl4ai-raw | #1 | react.dev/reference/react/startTransition | 0.705 | react.dev/reference/react/useTransition | 0.687 | react.dev/reference/react/useTransition | 0.682 |
+| scrapy+md | #1 | react.dev/reference/react/startTransition | 0.692 | react.dev/reference/react/useTransition | 0.679 | react.dev/blog/2022/03/29/react-v18 | 0.652 |
+| crawlee | #1 | react.dev/reference/react/startTransition | 0.713 | react.dev/reference/react/useTransition | 0.684 | react.dev/reference/react/startTransition | 0.683 |
+| colly+md | #1 | react.dev/reference/react/startTransition | 0.713 | react.dev/reference/react/useTransition | 0.684 | react.dev/reference/react/startTransition | 0.683 |
+| playwright | #1 | react.dev/reference/react/startTransition | 0.713 | react.dev/reference/react/useTransition | 0.684 | react.dev/reference/react/startTransition | 0.683 |
 
 
-**Q27: What does renderToStaticMarkup do?**
-*(expects URL containing: `renderToStaticMarkup`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/writing-markup-with-jsx | 0.362 | react.dev/learn/render-and-commit | 0.345 | react.dev/learn/understanding-your-ui-as-a-tree | 0.332 |
-| crawl4ai | #1 | react.dev/reference/react-dom/server/renderToStati | 0.604 | react.dev/reference/react-dom/server/renderToStati | 0.548 | react.dev/reference/react-dom/server/renderToStati | 0.530 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/server/renderToStati | 0.604 | react.dev/reference/react-dom/server/renderToStati | 0.548 | react.dev/reference/react-dom/server/renderToStati | 0.530 |
-| scrapy+md | #1 | react.dev/reference/react-dom/server/renderToStati | 0.506 | react.dev/reference/react-dom/server/renderToStrin | 0.438 | react.dev/reference/react-dom/static/prerenderToNo | 0.435 |
-| crawlee | #1 | react.dev/reference/react-dom/server/renderToStati | 0.605 | react.dev/reference/react-dom/server/renderToStati | 0.585 | react.dev/reference/react-dom/server/renderToStati | 0.532 |
-| colly+md | #1 | react.dev/reference/react-dom/server/renderToStati | 0.605 | react.dev/reference/react-dom/server/renderToStati | 0.585 | react.dev/reference/react-dom/server/renderToStati | 0.532 |
-| playwright | #1 | react.dev/reference/react-dom/server/renderToStati | 0.605 | react.dev/reference/react-dom/server/renderToStati | 0.585 | react.dev/reference/react-dom/server/renderToStati | 0.532 |
-
-
-**Q28: What are the parameters for renderToStaticMarkup?**
-*(expects URL containing: `renderToStaticMarkup`)*
+**Q15: What are the characteristics of a pure component or hook in React?**
+*(expects URL containing: `components-and-hooks-must-be-pure`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.332 | react.dev/learn/build-a-react-app-from-scratch | 0.323 | react.dev/learn/render-and-commit | 0.299 |
-| crawl4ai | #1 | react.dev/reference/react-dom/server/renderToStati | 0.529 | react.dev/reference/react-dom/server/renderToStati | 0.529 | react.dev/reference/react-dom/server/renderToStati | 0.473 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/server/renderToStati | 0.529 | react.dev/reference/react-dom/server/renderToStati | 0.529 | react.dev/reference/react-dom/server/renderToStati | 0.473 |
-| scrapy+md | #1 | react.dev/reference/react-dom/server/renderToStati | 0.455 | react.dev/reference/react-dom/static/prerenderToNo | 0.388 | react.dev/reference/rsc/server-components | 0.387 |
-| crawlee | #1 | react.dev/reference/react-dom/server/renderToStati | 0.537 | react.dev/reference/react-dom/server/renderToStati | 0.531 | react.dev/reference/react-dom/server/renderToStati | 0.501 |
-| colly+md | #1 | react.dev/reference/react-dom/server/renderToStati | 0.537 | react.dev/reference/react-dom/server/renderToStati | 0.531 | react.dev/reference/react-dom/server/renderToStati | 0.501 |
-| playwright | #1 | react.dev/reference/react-dom/server/renderToStati | 0.537 | react.dev/reference/react-dom/server/renderToStati | 0.531 | react.dev/reference/react-dom/server/renderToStati | 0.501 |
+| markcrawl | miss | react.dev/learn/reusing-logic-with-custom-hooks | 0.601 | react.dev/learn/reusing-logic-with-custom-hooks | 0.599 | react.dev/learn/keeping-components-pure | 0.575 |
+| crawl4ai | #3 | react.dev/reference/rules | 0.667 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.652 | react.dev/reference/rules/components-and-hooks-mus | 0.641 |
+| crawl4ai-raw | #3 | react.dev/reference/rules | 0.667 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.652 | react.dev/reference/rules/components-and-hooks-mus | 0.641 |
+| scrapy+md | #2 | react.dev/reference/rules | 0.647 | react.dev/reference/rules/components-and-hooks-mus | 0.618 | react.dev/reference/rules | 0.604 |
+| crawlee | #4 | react.dev/reference/rules | 0.658 | react.dev/reference/rules | 0.643 | react.dev/reference/rules | 0.642 |
+| colly+md | #4 | react.dev/reference/rules | 0.658 | react.dev/reference/rules | 0.643 | react.dev/reference/rules | 0.642 |
+| playwright | #4 | react.dev/reference/rules | 0.658 | react.dev/reference/rules | 0.643 | react.dev/reference/rules | 0.642 |
 
 
-**Q29: What does the globals rule validate against in React?**
-*(expects URL containing: `globals`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/react-compiler/introduction | 0.472 | react.dev/learn/lifecycle-of-reactive-effects | 0.471 | react.dev/learn/react-compiler/debugging | 0.461 |
-| crawl4ai | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.668 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.579 | react.dev/reference/rules | 0.573 |
-| crawl4ai-raw | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.668 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.579 | react.dev/reference/rules | 0.573 |
-| scrapy+md | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.653 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.556 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.534 |
-| crawlee | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.659 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.638 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.579 |
-| colly+md | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.659 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.638 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.579 |
-| playwright | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.659 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.638 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.579 |
-
-
-**Q30: What are examples of invalid code for the globals rule?**
-*(expects URL containing: `globals`)*
+**Q16: Why should side effects run outside of render in React components?**
+*(expects URL containing: `components-and-hooks-must-be-pure`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/react-compiler/debugging | 0.327 | react.dev/learn/react-compiler/debugging | 0.309 | react.dev/learn/choosing-the-state-structure | 0.297 |
-| crawl4ai | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.484 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.407 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.393 |
-| crawl4ai-raw | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.484 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.407 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.393 |
-| scrapy+md | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.454 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.399 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.369 |
-| crawlee | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.528 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.477 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.461 |
-| colly+md | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.528 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.477 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.461 |
-| playwright | #1 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.528 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.477 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.461 |
+| markcrawl | miss | react.dev/learn/keeping-components-pure | 0.596 | react.dev/learn/synchronizing-with-effects | 0.581 | react.dev/learn/synchronizing-with-effects | 0.579 |
+| crawl4ai | #3 | react.dev/learn/keeping-components-pure | 0.638 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.634 | react.dev/reference/rules/components-and-hooks-mus | 0.627 |
+| crawl4ai-raw | #3 | react.dev/learn/keeping-components-pure | 0.638 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.634 | react.dev/reference/rules/components-and-hooks-mus | 0.627 |
+| scrapy+md | #1 | react.dev/reference/rules/components-and-hooks-mus | 0.616 | react.dev/reference/rules/components-and-hooks-mus | 0.616 | react.dev/reference/rules/components-and-hooks-mus | 0.610 |
+| crawlee | #1 | react.dev/reference/rules/components-and-hooks-mus | 0.667 | react.dev/reference/rules/components-and-hooks-mus | 0.652 | react.dev/reference/rules/components-and-hooks-mus | 0.616 |
+| colly+md | #1 | react.dev/reference/rules/components-and-hooks-mus | 0.667 | react.dev/reference/rules/components-and-hooks-mus | 0.652 | react.dev/reference/rules/components-and-hooks-mus | 0.616 |
+| playwright | #1 | react.dev/reference/rules/components-and-hooks-mus | 0.667 | react.dev/reference/rules/components-and-hooks-mus | 0.652 | react.dev/reference/rules/components-and-hooks-mus | 0.616 |
 
 
-**Q31: What does the `preconnect` function do?**
+**Q17: What does `prerenderToNodeStream` return upon successful rendering?**
+*(expects URL containing: `prerenderToNodeStream`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.391 | react.dev/learn/understanding-your-ui-as-a-tree | 0.374 | react.dev/learn/render-and-commit | 0.370 |
+| crawl4ai | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.634 | react.dev/reference/react-dom/static/prerenderToNo | 0.602 | react.dev/reference/react-dom/static/resumeAndPrer | 0.597 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.634 | react.dev/reference/react-dom/static/prerenderToNo | 0.602 | react.dev/reference/react-dom/static/resumeAndPrer | 0.597 |
+| scrapy+md | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.668 | react.dev/reference/react-dom/static/prerenderToNo | 0.588 | react.dev/reference/react-dom/static/prerender | 0.576 |
+| crawlee | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.668 | react.dev/reference/react-dom/static/prerenderToNo | 0.632 | react.dev/reference/react-dom/static/prerender | 0.613 |
+| colly+md | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.668 | react.dev/reference/react-dom/static/prerenderToNo | 0.632 | react.dev/reference/react-dom/static/prerender | 0.613 |
+| playwright | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.668 | react.dev/reference/react-dom/static/prerenderToNo | 0.632 | react.dev/reference/react-dom/static/prerender | 0.613 |
+
+
+**Q18: When should I use `prerenderToNodeStream` instead of `renderToString`?**
+*(expects URL containing: `prerenderToNodeStream`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.427 | react.dev/learn/understanding-your-ui-as-a-tree | 0.425 | react.dev/learn/render-and-commit | 0.393 |
+| crawl4ai | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.660 | react.dev/reference/react-dom/static/resumeAndPrer | 0.638 | react.dev/reference/react-dom/static/prerenderToNo | 0.635 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.660 | react.dev/reference/react-dom/static/resumeAndPrer | 0.638 | react.dev/reference/react-dom/static/prerenderToNo | 0.635 |
+| scrapy+md | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.665 | react.dev/reference/react-dom/static/prerenderToNo | 0.623 | react.dev/reference/react-dom/static/prerenderToNo | 0.620 |
+| crawlee | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.665 | react.dev/reference/react-dom/static/prerenderToNo | 0.658 | react.dev/reference/react-dom/static/prerender | 0.629 |
+| colly+md | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.665 | react.dev/reference/react-dom/static/prerenderToNo | 0.658 | react.dev/reference/react-dom/static/prerender | 0.629 |
+| playwright | #1 | react.dev/reference/react-dom/static/prerenderToNo | 0.665 | react.dev/reference/react-dom/static/prerenderToNo | 0.658 | react.dev/reference/react-dom/static/prerender | 0.629 |
+
+
+**Q19: What are the built-in React DOM Hooks?**
+*(expects URL containing: `hooks`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | react.dev/learn/reusing-logic-with-custom-hooks | 0.650 | react.dev/learn/state-a-components-memory | 0.603 | react.dev/learn/reusing-logic-with-custom-hooks | 0.602 |
+| crawl4ai | #1 | react.dev/reference/react/hooks | 0.681 | react.dev/learn/reusing-logic-with-custom-hooks | 0.666 | react.dev/learn/reusing-logic-with-custom-hooks | 0.662 |
+| crawl4ai-raw | #1 | react.dev/reference/react/hooks | 0.681 | react.dev/learn/reusing-logic-with-custom-hooks | 0.666 | react.dev/learn/reusing-logic-with-custom-hooks | 0.662 |
+| scrapy+md | #1 | react.dev/reference/react/hooks | 0.651 | react.dev/reference/react/hooks | 0.638 | react.dev/learn/reusing-logic-with-custom-hooks | 0.638 |
+| crawlee | #1 | react.dev/reference/react/hooks | 0.703 | react.dev/reference/react-dom/hooks | 0.685 | react.dev/reference/react/hooks | 0.674 |
+| colly+md | #1 | react.dev/reference/react/hooks | 0.703 | react.dev/reference/react-dom/hooks | 0.685 | react.dev/reference/react/hooks | 0.674 |
+| playwright | #1 | react.dev/reference/react/hooks | 0.703 | react.dev/reference/react-dom/hooks | 0.685 | react.dev/reference/react/hooks | 0.674 |
+
+
+**Q20: What does the useFormStatus hook do?**
+*(expects URL containing: `hooks`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | react.dev/learn/reusing-logic-with-custom-hooks | 0.419 | react.dev/learn/reusing-logic-with-custom-hooks | 0.419 | react.dev/learn/reusing-logic-with-custom-hooks | 0.406 |
+| crawl4ai | #1 | react.dev/reference/react-dom/hooks/useFormStatus | 0.575 | react.dev/reference/react-dom/hooks/useFormStatus | 0.556 | react.dev/reference/react-dom/hooks/useFormStatus | 0.555 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/hooks/useFormStatus | 0.575 | react.dev/reference/react-dom/hooks/useFormStatus | 0.556 | react.dev/reference/react-dom/hooks/useFormStatus | 0.555 |
+| scrapy+md | #1 | react.dev/reference/react-dom/hooks/useFormStatus | 0.628 | react.dev/reference/react-dom/hooks/useFormStatus | 0.527 | react.dev/reference/react-dom/hooks/useFormStatus | 0.517 |
+| crawlee | #1 | react.dev/reference/react-dom/hooks/useFormStatus | 0.567 | react.dev/reference/react-dom/hooks/useFormStatus | 0.560 | react.dev/reference/react-dom/hooks/useFormStatus | 0.558 |
+| colly+md | #1 | react.dev/reference/react-dom/hooks/useFormStatus | 0.567 | react.dev/reference/react-dom/hooks/useFormStatus | 0.560 | react.dev/reference/react-dom/hooks/useFormStatus | 0.558 |
+| playwright | #1 | react.dev/reference/react-dom/hooks/useFormStatus | 0.567 | react.dev/reference/react-dom/hooks/useFormStatus | 0.560 | react.dev/reference/react-dom/hooks/useFormStatus | 0.559 |
+
+
+**Q21: What is the purpose of useLayoutEffect?**
+*(expects URL containing: `useLayoutEffect`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/passing-data-deeply-with-context | 0.430 | react.dev/learn/escape-hatches | 0.429 | react.dev/learn/synchronizing-with-effects | 0.426 |
+| crawl4ai | #1 | react.dev/reference/react/useLayoutEffect | 0.633 | react.dev/reference/react/useLayoutEffect | 0.609 | react.dev/reference/react/useLayoutEffect | 0.578 |
+| crawl4ai-raw | #1 | react.dev/reference/react/useLayoutEffect | 0.633 | react.dev/reference/react/useLayoutEffect | 0.609 | react.dev/reference/react/useLayoutEffect | 0.578 |
+| scrapy+md | #1 | react.dev/reference/react/useLayoutEffect | 0.581 | react.dev/reference/react/useLayoutEffect | 0.529 | react.dev/reference/react/useLayoutEffect | 0.526 |
+| crawlee | #1 | react.dev/reference/react/useLayoutEffect | 0.581 | react.dev/reference/react/useLayoutEffect | 0.555 | react.dev/reference/react/useLayoutEffect | 0.520 |
+| colly+md | #1 | react.dev/reference/react/useLayoutEffect | 0.581 | react.dev/reference/react/useLayoutEffect | 0.555 | react.dev/reference/react/useLayoutEffect | 0.520 |
+| playwright | #1 | react.dev/reference/react/useLayoutEffect | 0.581 | react.dev/reference/react/useLayoutEffect | 0.555 | react.dev/reference/react/useLayoutEffect | 0.520 |
+
+
+**Q22: How does useLayoutEffect differ from useEffect?**
+*(expects URL containing: `useLayoutEffect`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/escape-hatches | 0.519 | react.dev/learn/separating-events-from-effects | 0.504 | react.dev/learn/separating-events-from-effects | 0.500 |
+| crawl4ai | #1 | react.dev/reference/react/useLayoutEffect | 0.664 | react.dev/reference/react/useLayoutEffect | 0.654 | react.dev/reference/react/useLayoutEffect | 0.633 |
+| crawl4ai-raw | #1 | react.dev/reference/react/useLayoutEffect | 0.664 | react.dev/reference/react/useLayoutEffect | 0.654 | react.dev/reference/react/useLayoutEffect | 0.633 |
+| scrapy+md | #1 | react.dev/reference/react/useLayoutEffect | 0.642 | react.dev/reference/react/useLayoutEffect | 0.583 | react.dev/reference/react/useLayoutEffect | 0.578 |
+| crawlee | #1 | react.dev/reference/react/useLayoutEffect | 0.642 | react.dev/reference/react/useLayoutEffect | 0.604 | react.dev/reference/react/useInsertionEffect | 0.565 |
+| colly+md | #1 | react.dev/reference/react/useLayoutEffect | 0.642 | react.dev/reference/react/useLayoutEffect | 0.604 | react.dev/reference/react/useInsertionEffect | 0.565 |
+| playwright | #1 | react.dev/reference/react/useLayoutEffect | 0.642 | react.dev/reference/react/useLayoutEffect | 0.604 | react.dev/reference/react/useInsertionEffect | 0.565 |
+
+
+**Q23: How do you pass a string attribute to JSX?**
+*(expects URL containing: `javascript-in-jsx-with-curly-braces`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.603 | react.dev/learn/writing-markup-with-jsx | 0.557 | react.dev/learn | 0.556 |
+| crawl4ai | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.598 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.588 | de.react.dev/learn/describing-the-ui | 0.563 |
+| crawl4ai-raw | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.598 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.588 | de.react.dev/learn/describing-the-ui | 0.563 |
+| scrapy+md | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.601 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.580 | react.dev/learn | 0.555 |
+| crawlee | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.623 | react.dev/learn | 0.578 | react.dev/learn/describing-the-ui | 0.561 |
+| colly+md | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.601 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.601 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.601 |
+| playwright | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.601 | react.dev/learn | 0.578 | react.dev/learn/describing-the-ui | 0.561 |
+
+
+**Q24: What is the purpose of using curly braces in JSX?**
+*(expects URL containing: `javascript-in-jsx-with-curly-braces`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.649 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.614 | react.dev/learn/writing-markup-with-jsx | 0.594 |
+| crawl4ai | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.655 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.632 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.626 |
+| crawl4ai-raw | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.655 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.632 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.626 |
+| scrapy+md | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.649 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.612 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.608 |
+| crawlee | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.654 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.629 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.629 |
+| colly+md | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.662 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.662 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.662 |
+| playwright | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.662 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.646 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.635 |
+
+
+**Q25: What does the `preconnect` function do?**
 *(expects URL containing: `preconnect`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -5483,11 +5455,11 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | crawl4ai-raw | #1 | react.dev/reference/react-dom/preconnect | 0.584 | react.dev/reference/react-dom/preconnect | 0.569 | react.dev/reference/react-dom/preconnect | 0.551 |
 | scrapy+md | #1 | react.dev/reference/react-dom/preconnect | 0.659 | react.dev/reference/react-dom/preconnect | 0.621 | react.dev/reference/react-dom/prefetchDNS | 0.486 |
 | crawlee | #1 | react.dev/reference/react-dom/preconnect | 0.635 | react.dev/reference/react-dom/preconnect | 0.621 | react.dev/reference/react-dom/preconnect | 0.595 |
-| colly+md | #1 | react.dev/reference/react-dom/preconnect | 0.635 | react.dev/reference/react-dom/preconnect | 0.621 | react.dev/reference/react-dom/preconnect | 0.594 |
-| playwright | #1 | react.dev/reference/react-dom/preconnect | 0.635 | react.dev/reference/react-dom/preconnect | 0.621 | react.dev/reference/react-dom/preconnect | 0.594 |
+| colly+md | #1 | react.dev/reference/react-dom/preconnect | 0.635 | react.dev/reference/react-dom/preconnect | 0.621 | react.dev/reference/react-dom/preconnect | 0.595 |
+| playwright | #1 | react.dev/reference/react-dom/preconnect | 0.635 | react.dev/reference/react-dom/preconnect | 0.621 | react.dev/reference/react-dom/preconnect | 0.595 |
 
 
-**Q32: How can you call `preconnect` in an event handler?**
+**Q26: How can you call `preconnect` in an event handler?**
 *(expects URL containing: `preconnect`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -5501,368 +5473,452 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #1 | react.dev/reference/react-dom/preconnect | 0.594 | react.dev/reference/react-dom/preconnect | 0.590 | react.dev/reference/react-dom/preconnect | 0.582 |
 
 
-**Q33: What are the special React props supported for all built-in components?**
-*(expects URL containing: `common`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/passing-props-to-a-component | 0.574 | react.dev/learn/typescript | 0.574 | react.dev/learn/typescript | 0.561 |
-| crawl4ai | #1 | react.dev/reference/react-dom/components/common | 0.658 | react.dev/reference/react-dom/components | 0.656 | react.dev/reference/react-dom/components/common | 0.654 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/components/common | 0.658 | react.dev/reference/react-dom/components | 0.656 | react.dev/reference/react-dom/components/common | 0.654 |
-| scrapy+md | #1 | react.dev/reference/react-dom/components/common | 0.680 | react.dev/reference/react-dom/components | 0.660 | react.dev/reference/react-dom/components/common | 0.624 |
-| crawlee | #1 | react.dev/reference/react-dom/components/common | 0.680 | react.dev/reference/react/components | 0.648 | react.dev/reference/react-dom/components | 0.645 |
-| colly+md | #1 | react.dev/reference/react-dom/components/common#co | 0.680 | react.dev/reference/react-dom/components/common | 0.680 | react.dev/reference/react-dom/components/common#re | 0.680 |
-| playwright | #1 | react.dev/reference/react-dom/components/common | 0.680 | react.dev/reference/react/components | 0.648 | react.dev/reference/react-dom/components | 0.645 |
-
-
-**Q34: What does the `dangerouslySetInnerHTML` prop do in React components?**
-*(expects URL containing: `common`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/keeping-components-pure | 0.484 | react.dev/learn/render-and-commit | 0.467 | react.dev/learn/writing-markup-with-jsx | 0.467 |
-| crawl4ai | #1 | react.dev/reference/react-dom/components/common | 0.655 | react.dev/reference/react-dom/components/common | 0.591 | react.dev/reference/react-dom/components/common | 0.570 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/components/common | 0.655 | react.dev/reference/react-dom/components/common | 0.591 | react.dev/reference/react-dom/components/common | 0.570 |
-| scrapy+md | #1 | react.dev/reference/react-dom/components/common | 0.638 | react.dev/reference/react-dom/components/common | 0.624 | react.dev/reference/react-dom/components/link | 0.508 |
-| crawlee | #1 | react.dev/reference/react-dom/components/common | 0.638 | react.dev/reference/react-dom/components/common | 0.624 | react.dev/reference/react-dom/components/common | 0.599 |
-| colly+md | #1 | react.dev/reference/react-dom/components/common | 0.638 | react.dev/reference/react-dom/components/common#co | 0.638 | react.dev/reference/react-dom/components/common#re | 0.638 |
-| playwright | #1 | react.dev/reference/react-dom/components/common | 0.638 | react.dev/reference/react-dom/components/common | 0.624 | react.dev/reference/react-dom/components/common | 0.599 |
-
-
-**Q35: Who leads the React development team?**
-*(expects URL containing: `team`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/react-developer-tools | 0.518 | react.dev/learn/setup | 0.515 | react.dev/learn/react-compiler | 0.504 |
-| crawl4ai | #1 | he.react.dev/community/team | 0.745 | de.react.dev/community/team | 0.737 | he.react.dev/community/acknowledgements | 0.726 |
-| crawl4ai-raw | #1 | he.react.dev/community/team | 0.745 | de.react.dev/community/team | 0.737 | he.react.dev/community/acknowledgements | 0.726 |
-| scrapy+md | #1 | react.dev/community/team | 0.662 | react.dev/ | 0.636 | react.dev/community/team | 0.628 |
-| crawlee | #1 | react.dev/community/team | 0.674 | react.dev/community/team | 0.661 | react.dev/ | 0.645 |
-| colly+md | #1 | react.dev/community/team | 0.674 | react.dev/community/team | 0.661 | react.dev/ | 0.645 |
-| playwright | #1 | react.dev/community/team | 0.674 | react.dev/community/team | 0.661 | react.dev/ | 0.645 |
-
-
-**Q36: What roles do the current members of the React Core team work on?**
-*(expects URL containing: `team`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/creating-a-react-app | 0.527 | react.dev/learn/react-compiler | 0.499 | react.dev/learn/setup | 0.496 |
-| crawl4ai | #1 | he.react.dev/community/team | 0.704 | de.react.dev/community/team | 0.694 | react.dev/community/team | 0.683 |
-| crawl4ai-raw | #1 | he.react.dev/community/team | 0.704 | de.react.dev/community/team | 0.694 | react.dev/community/team | 0.683 |
-| scrapy+md | #1 | react.dev/community/team | 0.658 | react.dev/blog/2026/02/24/the-react-foundation | 0.593 | react.dev/community/team | 0.593 |
-| crawlee | #1 | react.dev/community/team | 0.662 | react.dev/community/team | 0.618 | react.dev/blog/2024/02/15/react-labs-what-we-have- | 0.610 |
-| colly+md | #1 | react.dev/community/team | 0.662 | react.dev/community/team | 0.618 | react.dev/blog/2024/02/15/react-labs-what-we-have- | 0.610 |
-| playwright | #1 | react.dev/community/team | 0.662 | react.dev/community/team | 0.618 | react.dev/blog/2024/02/15/react-labs-what-we-have- | 0.610 |
-
-
-**Q37: What does renderToReadableStream do?**
+**Q27: What does `renderToReadableStream` do in React?**
 *(expects URL containing: `renderToReadableStream`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.290 | react.dev/learn/synchronizing-with-effects | 0.285 | react.dev/learn/render-and-commit | 0.278 |
-| crawl4ai | #1 | react.dev/reference/react-dom/server/renderToReada | 0.562 | react.dev/reference/react-dom/server/renderToPipea | 0.519 | 18.react.dev/reference/react-dom/server/renderToNo | 0.492 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/server/renderToReada | 0.562 | react.dev/reference/react-dom/server/renderToPipea | 0.519 | 18.react.dev/reference/react-dom/server/renderToNo | 0.492 |
-| scrapy+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.557 | react.dev/reference/react-dom/server/renderToReada | 0.507 | react.dev/reference/react-dom/server/renderToPipea | 0.468 |
-| crawlee | #1 | react.dev/reference/react-dom/server/renderToReada | 0.586 | react.dev/reference/react-dom/server/renderToReada | 0.517 | react.dev/reference/react-dom/server/renderToPipea | 0.517 |
-| colly+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.586 | react.dev/reference/react-dom/server/renderToReada | 0.517 | react.dev/reference/react-dom/server/renderToPipea | 0.517 |
-| playwright | #1 | react.dev/reference/react-dom/server/renderToReada | 0.586 | react.dev/reference/react-dom/server/renderToReada | 0.517 | react.dev/reference/react-dom/server/renderToPipea | 0.517 |
+| markcrawl | miss | react.dev/learn/render-and-commit | 0.495 | react.dev/learn/understanding-your-ui-as-a-tree | 0.494 | react.dev/learn/render-and-commit | 0.492 |
+| crawl4ai | #1 | react.dev/reference/react-dom/server/renderToReada | 0.726 | 18.react.dev/reference/react-dom/server/renderToNo | 0.701 | 18.react.dev/reference/react-dom/server/renderToSt | 0.678 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/server/renderToReada | 0.726 | 18.react.dev/reference/react-dom/server/renderToNo | 0.701 | 18.react.dev/reference/react-dom/server/renderToSt | 0.678 |
+| scrapy+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.704 | react.dev/reference/react-dom/server/renderToReada | 0.647 | react.dev/reference/react-dom/static/prerenderToNo | 0.629 |
+| crawlee | #1 | react.dev/reference/react-dom/server/renderToReada | 0.740 | react.dev/reference/react-dom/server/renderToReada | 0.686 | react.dev/reference/react-dom/server/renderToPipea | 0.678 |
+| colly+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.740 | react.dev/reference/react-dom/server/renderToReada | 0.686 | react.dev/reference/react-dom/server/renderToPipea | 0.678 |
+| playwright | #1 | react.dev/reference/react-dom/server/renderToReada | 0.740 | react.dev/reference/react-dom/server/renderToReada | 0.686 | react.dev/reference/react-dom/server/renderToPipea | 0.678 |
 
 
-**Q38: What parameters can be passed to renderToReadableStream?**
+**Q28: What parameters can be passed to the `renderToReadableStream` function?**
 *(expects URL containing: `renderToReadableStream`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.308 | react.dev/learn/build-a-react-app-from-scratch | 0.298 | react.dev/learn/keeping-components-pure | 0.253 |
-| crawl4ai | #1 | react.dev/reference/react-dom/server/renderToReada | 0.507 | react.dev/reference/react-dom/server/renderToPipea | 0.484 | react.dev/reference/react-dom/server/renderToReada | 0.473 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/server/renderToReada | 0.507 | react.dev/reference/react-dom/server/renderToPipea | 0.484 | react.dev/reference/react-dom/server/renderToReada | 0.473 |
-| scrapy+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.496 | react.dev/reference/react-dom/server/renderToReada | 0.459 | react.dev/reference/react-dom/server/renderToPipea | 0.440 |
-| crawlee | #1 | react.dev/reference/react-dom/server/renderToReada | 0.518 | react.dev/reference/react-dom/server/renderToReada | 0.476 | react.dev/reference/react-dom/server/renderToPipea | 0.474 |
-| colly+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.518 | react.dev/reference/react-dom/server/renderToReada | 0.476 | react.dev/reference/react-dom/server/renderToPipea | 0.473 |
-| playwright | #1 | react.dev/reference/react-dom/server/renderToReada | 0.518 | react.dev/reference/react-dom/server/renderToReada | 0.476 | react.dev/reference/react-dom/server/renderToPipea | 0.473 |
+| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.372 | react.dev/learn/build-a-react-app-from-scratch | 0.335 | react.dev/learn/keeping-components-pure | 0.316 |
+| crawl4ai | #1 | react.dev/reference/react-dom/server/renderToReada | 0.584 | react.dev/reference/react-dom/server/renderToReada | 0.564 | react.dev/reference/react-dom/server/renderToPipea | 0.544 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/server/renderToReada | 0.584 | react.dev/reference/react-dom/server/renderToReada | 0.564 | react.dev/reference/react-dom/server/renderToPipea | 0.544 |
+| scrapy+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.570 | react.dev/reference/react-dom/server/renderToReada | 0.530 | react.dev/reference/react-dom/server/renderToReada | 0.512 |
+| crawlee | #1 | react.dev/reference/react-dom/server/renderToReada | 0.595 | react.dev/reference/react-dom/server/renderToPipea | 0.539 | react.dev/reference/react-dom/server/renderToReada | 0.538 |
+| colly+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.595 | react.dev/reference/react-dom/server/renderToPipea | 0.539 | react.dev/reference/react-dom/server/renderToReada | 0.538 |
+| playwright | #1 | react.dev/reference/react-dom/server/renderToReada | 0.595 | react.dev/reference/react-dom/server/renderToPipea | 0.539 | react.dev/reference/react-dom/server/renderToReada | 0.538 |
 
 
-**Q39: What do the `react-dom/server` APIs do?**
-*(expects URL containing: `server`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/creating-a-react-app | 0.524 | react.dev/learn/add-react-to-an-existing-project | 0.520 | react.dev/learn/add-react-to-an-existing-project | 0.512 |
-| crawl4ai | #2 | de.react.dev/reference/react-dom | 0.662 | react.dev/reference/react-dom/server | 0.659 | react.dev/reference/rsc/server-components | 0.650 |
-| crawl4ai-raw | #2 | de.react.dev/reference/react-dom | 0.662 | react.dev/reference/react-dom/server | 0.659 | react.dev/reference/rsc/server-components | 0.650 |
-| scrapy+md | #1 | react.dev/reference/react-dom/server | 0.657 | react.dev/reference/react-dom/client | 0.610 | react.dev/reference/react-dom | 0.605 |
-| crawlee | #4 | react.dev/blog/2024/12/05/react-19 | 0.648 | react.dev/blog/2024/04/25/react-19#ref-as-a-prop | 0.648 | react.dev/reference/react-dom | 0.630 |
-| colly+md | #3 | react.dev/blog/2024/12/05/react-19 | 0.649 | react.dev/reference/react-dom | 0.630 | react.dev/reference/react-dom/server | 0.617 |
-| playwright | #4 | react.dev/blog/2024/04/25/react-19 | 0.648 | react.dev/blog/2024/12/05/react-19 | 0.648 | react.dev/reference/react-dom | 0.630 |
-
-
-**Q40: What methods are available for Node.js Streams in the `react-dom/server` APIs?**
-*(expects URL containing: `server`)*
+**Q29: What is the recommended way to start building a new app or website with React?**
+*(expects URL containing: `creating-a-react-app`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/escape-hatches | 0.480 | react.dev/learn/creating-a-react-app | 0.479 | react.dev/learn/manipulating-the-dom-with-refs | 0.464 |
-| crawl4ai | #1 | react.dev/reference/react-dom/server | 0.690 | react.dev/reference/react-dom/server | 0.658 | react.dev/reference/react-dom/server/renderToReada | 0.657 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/server | 0.690 | react.dev/reference/react-dom/server | 0.658 | react.dev/reference/react-dom/server/renderToReada | 0.657 |
-| scrapy+md | #1 | react.dev/reference/react-dom/server/renderToReada | 0.660 | react.dev/blog/2024/12/05/react-19 | 0.639 | react.dev/reference/react-dom/server/renderToPipea | 0.635 |
-| crawlee | #1 | react.dev/reference/react-dom/server | 0.672 | react.dev/reference/react-dom/server/renderToReada | 0.658 | react.dev/reference/react-dom/server/renderToPipea | 0.649 |
-| colly+md | #1 | react.dev/reference/react-dom/server | 0.672 | react.dev/reference/react-dom/server/renderToReada | 0.658 | react.dev/reference/react-dom/server/renderToPipea | 0.649 |
-| playwright | #1 | react.dev/reference/react-dom/server | 0.672 | react.dev/reference/react-dom/server/renderToReada | 0.658 | react.dev/reference/react-dom/server/renderToPipea | 0.649 |
+| markcrawl | #4 | react.dev/learn/build-a-react-app-from-scratch | 0.647 | react.dev/learn/build-a-react-app-from-scratch | 0.643 | react.dev/learn/add-react-to-an-existing-project | 0.640 |
+| crawl4ai | #9 | react.dev/learn/build-a-react-app-from-scratch | 0.682 | az.react.dev/learn/add-react-to-an-existing-projec | 0.650 | zh-hans.react.dev/learn/add-react-to-an-existing-p | 0.649 |
+| crawl4ai-raw | #9 | react.dev/learn/build-a-react-app-from-scratch | 0.682 | az.react.dev/learn/add-react-to-an-existing-projec | 0.650 | zh-hans.react.dev/learn/add-react-to-an-existing-p | 0.649 |
+| scrapy+md | #5 | react.dev/learn/build-a-react-app-from-scratch | 0.674 | react.dev/learn/build-a-react-app-from-scratch | 0.643 | react.dev/learn/build-a-react-app-from-scratch | 0.626 |
+| crawlee | #6 | react.dev/learn/build-a-react-app-from-scratch | 0.661 | react.dev/learn/build-a-react-app-from-scratch | 0.658 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.621 |
+| colly+md | #8 | react.dev/learn/build-a-react-app-from-scratch#con | 0.661 | react.dev/learn/build-a-react-app-from-scratch | 0.661 | react.dev/learn/build-a-react-app-from-scratch#con | 0.658 |
+| playwright | #5 | react.dev/learn/build-a-react-app-from-scratch | 0.661 | react.dev/learn/build-a-react-app-from-scratch | 0.658 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.621 |
 
 
-**Q41: What does the `preinit` function do?**
-*(expects URL containing: `preinit`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/you-might-not-need-an-effect | 0.375 | react.dev/learn/synchronizing-with-effects | 0.351 | react.dev/learn/build-a-react-app-from-scratch | 0.317 |
-| crawl4ai | #1 | react.dev/reference/react-dom/preinit | 0.594 | react.dev/reference/react-dom/preinit | 0.571 | react.dev/reference/react-dom/preinitModule | 0.564 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/preinit | 0.594 | react.dev/reference/react-dom/preinit | 0.571 | react.dev/reference/react-dom/preinitModule | 0.564 |
-| scrapy+md | #1 | react.dev/reference/react-dom/preinit | 0.617 | react.dev/reference/react-dom/preinit | 0.579 | react.dev/reference/react-dom/preinitModule | 0.552 |
-| crawlee | #1 | react.dev/reference/react-dom/preinit | 0.622 | react.dev/reference/react-dom/preinitModule | 0.568 | react.dev/reference/react-dom/preinit | 0.566 |
-| colly+md | #1 | react.dev/reference/react-dom/preinit | 0.622 | react.dev/reference/react-dom/preinitModule | 0.568 | react.dev/reference/react-dom/preinit | 0.567 |
-| playwright | #1 | react.dev/reference/react-dom/preinit | 0.622 | react.dev/reference/react-dom/preinitModule | 0.568 | react.dev/reference/react-dom/preinit | 0.567 |
-
-
-**Q42: What parameters does the `preinit` function accept?**
-*(expects URL containing: `preinit`)*
+**Q30: What command is used to create a new Expo project?**
+*(expects URL containing: `creating-a-react-app`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/build-a-react-app-from-scratch | 0.285 | react.dev/learn/you-might-not-need-an-effect | 0.270 | react.dev/learn/synchronizing-with-effects | 0.269 |
-| crawl4ai | #1 | react.dev/reference/react-dom/preinit | 0.550 | react.dev/reference/react-dom/preinit | 0.507 | react.dev/reference/react-dom/preinitModule | 0.494 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/preinit | 0.550 | react.dev/reference/react-dom/preinit | 0.507 | react.dev/reference/react-dom/preinitModule | 0.494 |
-| scrapy+md | #1 | react.dev/reference/react-dom/preinit | 0.551 | react.dev/reference/react-dom/preinit | 0.528 | react.dev/reference/react-dom/preinitModule | 0.468 |
-| crawlee | #1 | react.dev/reference/react-dom/preinit | 0.537 | react.dev/reference/react-dom/preinit | 0.513 | react.dev/reference/react-dom/preinit | 0.510 |
-| colly+md | #1 | react.dev/reference/react-dom/preinit | 0.537 | react.dev/reference/react-dom/preinit | 0.513 | react.dev/reference/react-dom/preinit | 0.510 |
-| playwright | #1 | react.dev/reference/react-dom/preinit | 0.537 | react.dev/reference/react-dom/preinit | 0.513 | react.dev/reference/react-dom/preinit | 0.510 |
+| markcrawl | #1 | react.dev/learn/creating-a-react-app | 0.591 | react.dev/learn/build-a-react-app-from-scratch | 0.445 | react.dev/learn/creating-a-react-app | 0.417 |
+| crawl4ai | #4 | 18.react.dev/learn/start-a-new-react-project | 0.537 | he.react.dev/learn/start-a-new-react-project | 0.535 | az.react.dev/learn/start-a-new-react-project | 0.533 |
+| crawl4ai-raw | #4 | 18.react.dev/learn/start-a-new-react-project | 0.537 | he.react.dev/learn/start-a-new-react-project | 0.535 | az.react.dev/learn/start-a-new-react-project | 0.534 |
+| scrapy+md | #1 | react.dev/learn/creating-a-react-app | 0.509 | react.dev/learn/build-a-react-app-from-scratch | 0.445 | react.dev/learn/creating-a-react-app | 0.440 |
+| crawlee | #1 | react.dev/learn/creating-a-react-app | 0.482 | react.dev/blog/2025/10/07/react-compiler-1 | 0.436 | react.dev/learn/creating-a-react-app | 0.431 |
+| colly+md | #1 | react.dev/learn/creating-a-react-app | 0.482 | react.dev/learn/creating-a-react-app#full-stack-fr | 0.482 | react.dev/blog/2025/10/07/react-compiler-1 | 0.436 |
+| playwright | #1 | react.dev/learn/creating-a-react-app | 0.482 | react.dev/blog/2025/10/07/react-compiler-1 | 0.436 | react.dev/learn/creating-a-react-app | 0.431 |
 
 
-**Q43: What is the main topic of the videos dedicated to React?**
-*(expects URL containing: `videos`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/writing-markup-with-jsx | 0.572 | react.dev/learn/your-first-component | 0.562 | react.dev/learn/describing-the-ui | 0.561 |
-| crawl4ai | #5 | he.react.dev/ | 0.693 | ru.react.dev/ | 0.682 | hi.react.dev/ | 0.682 |
-| crawl4ai-raw | #5 | he.react.dev/ | 0.693 | ru.react.dev/ | 0.682 | hi.react.dev/ | 0.682 |
-| scrapy+md | #1 | react.dev/community/videos | 0.647 | react.dev/ | 0.646 | react.dev/ | 0.645 |
-| crawlee | #1 | react.dev/community/videos | 0.660 | react.dev/ | 0.646 | react.dev/ | 0.645 |
-| colly+md | #1 | react.dev/community/videos | 0.660 | react.dev/ | 0.646 | react.dev/ | 0.645 |
-| playwright | #1 | react.dev/community/videos | 0.660 | react.dev/ | 0.646 | react.dev/ | 0.645 |
-
-
-**Q44: Who shared a welcome message at React Conf 2024?**
-*(expects URL containing: `videos`)*
+**Q31: What is the purpose of the `useDebugValue` hook?**
+*(expects URL containing: `useDebugValue`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/creating-a-react-app | 0.446 | react.dev/learn/setup | 0.436 | react.dev/learn/react-compiler | 0.432 |
-| crawl4ai | #45 | conf2024.react.dev/talks | 0.719 | az.react.dev/blog/2024/05/22/react-conf-2024-recap | 0.699 | he.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.699 |
-| crawl4ai-raw | #45 | conf2024.react.dev/talks | 0.719 | az.react.dev/blog/2024/05/22/react-conf-2024-recap | 0.699 | he.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.699 |
-| scrapy+md | #2 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.666 | react.dev/community/videos | 0.659 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.648 |
-| crawlee | #7 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.686 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.666 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.662 |
-| colly+md | #7 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.686 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.666 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.662 |
-| playwright | #7 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.686 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.666 | react.dev/blog/2024/05/22/react-conf-2024-recap | 0.662 |
+| markcrawl | miss | react.dev/learn/reusing-logic-with-custom-hooks | 0.409 | react.dev/learn/reusing-logic-with-custom-hooks | 0.404 | react.dev/learn/reusing-logic-with-custom-hooks | 0.403 |
+| crawl4ai | #1 | react.dev/reference/react/useDebugValue | 0.589 | react.dev/reference/react/useDebugValue | 0.566 | react.dev/reference/react/useDebugValue | 0.539 |
+| crawl4ai-raw | #1 | react.dev/reference/react/useDebugValue | 0.589 | react.dev/reference/react/useDebugValue | 0.566 | react.dev/reference/react/useDebugValue | 0.539 |
+| scrapy+md | #1 | react.dev/reference/react/useDebugValue | 0.630 | react.dev/reference/react/useDebugValue | 0.541 | react.dev/reference/rules/react-calls-components-a | 0.435 |
+| crawlee | #1 | react.dev/reference/react/useDebugValue | 0.642 | react.dev/reference/react/useDebugValue | 0.601 | react.dev/reference/react/useDebugValue | 0.554 |
+| colly+md | #1 | react.dev/reference/react/useDebugValue | 0.644 | react.dev/reference/react/useDebugValue | 0.601 | react.dev/reference/react/useDebugValue | 0.554 |
+| playwright | #1 | react.dev/reference/react/useDebugValue | 0.642 | react.dev/reference/react/useDebugValue | 0.601 | react.dev/reference/react/useDebugValue | 0.554 |
 
 
-**Q45: What is React Compiler?**
-*(expects URL containing: `introduction`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | react.dev/learn/react-compiler/introduction | 0.699 | react.dev/learn/react-compiler | 0.692 | react.dev/learn/react-compiler/introduction | 0.660 |
-| crawl4ai | #12 | he.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.737 | az.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.736 | ar.react.dev/blog/2025/10/07/react-compiler-1 | 0.721 |
-| crawl4ai-raw | #12 | he.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.737 | az.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.736 | ar.react.dev/blog/2025/10/07/react-compiler-1 | 0.721 |
-| scrapy+md | #1 | react.dev/learn/react-compiler/introduction | 0.725 | react.dev/blog/2024/02/15/react-labs-what-we-have- | 0.705 | react.dev/learn/react-compiler/introduction | 0.694 |
-| crawlee | #1 | react.dev/learn/react-compiler/introduction | 0.713 | react.dev/blog/2024/02/15/react-labs-what-we-have- | 0.705 | react.dev/learn/react-compiler/introduction | 0.694 |
-| colly+md | #1 | react.dev/learn/react-compiler/introduction | 0.713 | react.dev/blog/2024/02/15/react-labs-what-we-have- | 0.705 | react.dev/learn/react-compiler/introduction | 0.694 |
-| playwright | #1 | react.dev/learn/react-compiler/introduction | 0.713 | react.dev/blog/2024/02/15/react-labs-what-we-have- | 0.705 | react.dev/learn/react-compiler/introduction | 0.694 |
-
-
-**Q46: How does React Compiler optimize re-renders?**
-*(expects URL containing: `introduction`)*
+**Q32: How do you use the optional formatting function with `useDebugValue`?**
+*(expects URL containing: `useDebugValue`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | react.dev/learn/react-compiler/introduction | 0.697 | react.dev/learn/react-compiler/introduction | 0.674 | react.dev/learn/react-compiler/introduction | 0.642 |
-| crawl4ai | #1 | react.dev/learn/react-compiler/introduction | 0.710 | he.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.696 | az.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.695 |
-| crawl4ai-raw | #1 | react.dev/learn/react-compiler/introduction | 0.710 | he.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.696 | az.react.dev/blog/2024/02/15/react-labs-what-we-ha | 0.695 |
-| scrapy+md | #1 | react.dev/learn/react-compiler/introduction | 0.705 | react.dev/learn/react-compiler/introduction | 0.696 | react.dev/blog/2024/02/15/react-labs-what-we-have- | 0.680 |
-| crawlee | #1 | react.dev/learn/react-compiler/introduction | 0.701 | react.dev/learn/react-compiler/introduction | 0.696 | react.dev/reference/react/memo | 0.692 |
-| colly+md | #1 | react.dev/learn/react-compiler/introduction | 0.701 | react.dev/learn/react-compiler/introduction | 0.696 | react.dev/reference/react/memo | 0.692 |
-| playwright | #1 | react.dev/learn/react-compiler/introduction | 0.701 | react.dev/learn/react-compiler/introduction | 0.696 | react.dev/reference/react/memo | 0.692 |
+| markcrawl | miss | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.329 | react.dev/learn/react-compiler/incremental-adoptio | 0.319 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.317 |
+| crawl4ai | #1 | react.dev/reference/react/useDebugValue | 0.598 | react.dev/reference/react/useDebugValue | 0.573 | react.dev/reference/react/useDebugValue | 0.535 |
+| crawl4ai-raw | #1 | react.dev/reference/react/useDebugValue | 0.598 | react.dev/reference/react/useDebugValue | 0.573 | react.dev/reference/react/useDebugValue | 0.535 |
+| scrapy+md | #1 | react.dev/reference/react/useDebugValue | 0.529 | react.dev/reference/react/useDebugValue | 0.467 | react.dev/reference/react-compiler/directives/use- | 0.361 |
+| crawlee | #1 | react.dev/reference/react/useDebugValue | 0.657 | react.dev/reference/react/useDebugValue | 0.619 | react.dev/reference/react/useDebugValue | 0.583 |
+| colly+md | #1 | react.dev/reference/react/useDebugValue | 0.658 | react.dev/reference/react/useDebugValue | 0.619 | react.dev/reference/react/useDebugValue | 0.583 |
+| playwright | #1 | react.dev/reference/react/useDebugValue | 0.657 | react.dev/reference/react/useDebugValue | 0.619 | react.dev/reference/react/useDebugValue | 0.583 |
 
 
-**Q47: What does the `prerender` function do?**
-*(expects URL containing: `prerender`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/render-and-commit | 0.426 | react.dev/learn/render-and-commit | 0.423 | react.dev/learn/understanding-your-ui-as-a-tree | 0.391 |
-| crawl4ai | #1 | react.dev/reference/react-dom/static/prerender | 0.678 | react.dev/reference/react-dom/static/resumeAndPrer | 0.605 | react.dev/reference/react-dom/static/prerenderToNo | 0.602 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/static/prerender | 0.678 | react.dev/reference/react-dom/static/resumeAndPrer | 0.605 | react.dev/reference/react-dom/static/prerenderToNo | 0.602 |
-| scrapy+md | #1 | react.dev/reference/react-dom/static/prerender | 0.691 | react.dev/reference/react-dom/static/prerenderToNo | 0.607 | react.dev/reference/react-dom/static/prerender | 0.602 |
-| crawlee | #1 | react.dev/reference/react-dom/static/prerender | 0.691 | react.dev/reference/react-dom/static/prerender | 0.633 | react.dev/reference/react-dom/static/resumeAndPrer | 0.633 |
-| colly+md | #1 | react.dev/reference/react-dom/static/prerender | 0.691 | react.dev/reference/react-dom/static/prerender | 0.633 | react.dev/reference/react-dom/static/resumeAndPrer | 0.633 |
-| playwright | #1 | react.dev/reference/react-dom/static/prerender | 0.691 | react.dev/reference/react-dom/static/prerender | 0.633 | react.dev/reference/react-dom/static/resumeAndPrer | 0.633 |
-
-
-**Q48: What parameters can be passed to the `prerender` function?**
-*(expects URL containing: `prerender`)*
+**Q33: What does createContext return?**
+*(expects URL containing: `createContext`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/understanding-your-ui-as-a-tree | 0.374 | react.dev/learn/render-and-commit | 0.357 | react.dev/learn/build-a-react-app-from-scratch | 0.355 |
-| crawl4ai | #1 | react.dev/reference/react-dom/static/prerender | 0.639 | react.dev/reference/react-dom/static/resumeAndPrer | 0.615 | react.dev/reference/react-dom/static/prerender | 0.584 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/static/prerender | 0.639 | react.dev/reference/react-dom/static/resumeAndPrer | 0.615 | react.dev/reference/react-dom/static/prerender | 0.584 |
-| scrapy+md | #1 | react.dev/reference/react-dom/static/prerender | 0.670 | react.dev/reference/react-dom/static/prerenderToNo | 0.595 | react.dev/reference/react-dom/static/prerender | 0.542 |
-| crawlee | #1 | react.dev/reference/react-dom/static/prerender | 0.670 | react.dev/reference/react-dom/static/prerenderToNo | 0.595 | react.dev/reference/react-dom/static/prerender | 0.583 |
-| colly+md | #1 | react.dev/reference/react-dom/static/prerender | 0.670 | react.dev/reference/react-dom/static/prerenderToNo | 0.595 | react.dev/reference/react-dom/static/prerender | 0.583 |
-| playwright | #1 | react.dev/reference/react-dom/static/prerender | 0.670 | react.dev/reference/react-dom/static/prerenderToNo | 0.595 | react.dev/reference/react-dom/static/prerender | 0.583 |
+| markcrawl | miss | react.dev/learn/passing-data-deeply-with-context | 0.472 | react.dev/learn/typescript | 0.448 | react.dev/learn/passing-data-deeply-with-context | 0.421 |
+| crawl4ai | #1 | react.dev/reference/react/createContext | 0.523 | react.dev/learn/passing-data-deeply-with-context | 0.487 | react.dev/reference/react/createContext | 0.478 |
+| crawl4ai-raw | #1 | react.dev/reference/react/createContext | 0.523 | react.dev/learn/passing-data-deeply-with-context | 0.487 | react.dev/reference/react/createContext | 0.478 |
+| scrapy+md | #1 | react.dev/reference/react/createContext | 0.552 | react.dev/reference/react/useContext | 0.471 | react.dev/learn/passing-data-deeply-with-context | 0.469 |
+| crawlee | #1 | react.dev/reference/react/createContext | 0.515 | react.dev/reference/react/createContext | 0.507 | react.dev/reference/react/createContext | 0.486 |
+| colly+md | #1 | react.dev/reference/react/createContext | 0.515 | react.dev/reference/react/createContext | 0.507 | react.dev/reference/react/createContext | 0.486 |
+| playwright | #1 | react.dev/reference/react/createContext | 0.515 | react.dev/reference/react/createContext | 0.507 | react.dev/reference/react/createContext | 0.486 |
 
 
-**Q49: What does the built-in browser `<meta>` component do?**
-*(expects URL containing: `meta`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/your-first-component | 0.412 | react.dev/learn/react-compiler/introduction | 0.401 | react.dev/learn/react-compiler | 0.384 |
-| crawl4ai | #1 | react.dev/reference/react-dom/components/meta | 0.559 | react.dev/reference/react-dom/components/meta | 0.539 | react.dev/reference/react-dom/components/meta | 0.528 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/components/meta | 0.559 | react.dev/reference/react-dom/components/meta | 0.539 | react.dev/reference/react-dom/components/meta | 0.528 |
-| scrapy+md | #1 | react.dev/reference/react-dom/components/meta | 0.667 | react.dev/reference/react-dom/components/meta | 0.561 | react.dev/blog/2023/03/22/react-labs-what-we-have- | 0.518 |
-| crawlee | #1 | react.dev/reference/react-dom/components/meta | 0.557 | react.dev/reference/react-dom/components/meta | 0.540 | react.dev/blog/2023/03/22/react-labs-what-we-have- | 0.518 |
-| colly+md | #1 | react.dev/reference/react-dom/components/meta | 0.557 | react.dev/reference/react-dom/components/meta | 0.540 | react.dev/blog/2023/03/22/react-labs-what-we-have- | 0.518 |
-| playwright | #1 | react.dev/reference/react-dom/components/meta | 0.557 | react.dev/reference/react-dom/components/meta | 0.540 | react.dev/blog/2023/03/22/react-labs-what-we-have- | 0.518 |
-
-
-**Q50: What props does the `<meta>` component support?**
-*(expects URL containing: `meta`)*
+**Q34: How do you specify the value of a context in a provider?**
+*(expects URL containing: `createContext`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/passing-props-to-a-component | 0.476 | react.dev/learn/passing-props-to-a-component | 0.452 | react.dev/learn/passing-props-to-a-component | 0.449 |
-| crawl4ai | #1 | react.dev/reference/react-dom/components/meta | 0.652 | react.dev/reference/react-dom/components/meta | 0.627 | react.dev/reference/react-dom/components/meta | 0.601 |
-| crawl4ai-raw | #1 | react.dev/reference/react-dom/components/meta | 0.652 | react.dev/reference/react-dom/components/meta | 0.627 | react.dev/reference/react-dom/components/meta | 0.601 |
-| scrapy+md | #1 | react.dev/reference/react-dom/components/meta | 0.688 | react.dev/reference/react-dom/components/meta | 0.645 | react.dev/reference/react-dom/components | 0.563 |
-| crawlee | #1 | react.dev/reference/react-dom/components/meta | 0.677 | react.dev/reference/react-dom/components/meta | 0.610 | react.dev/reference/react-dom/components/meta | 0.605 |
-| colly+md | #1 | react.dev/reference/react-dom/components/meta | 0.677 | react.dev/reference/react-dom/components/meta | 0.610 | react.dev/reference/react-dom/components/meta | 0.605 |
-| playwright | #1 | react.dev/reference/react-dom/components/meta | 0.677 | react.dev/reference/react-dom/components/meta | 0.610 | react.dev/reference/react-dom/components/meta | 0.605 |
+| markcrawl | miss | react.dev/learn/passing-data-deeply-with-context | 0.461 | react.dev/learn/passing-data-deeply-with-context | 0.454 | react.dev/learn/passing-data-deeply-with-context | 0.439 |
+| crawl4ai | #1 | react.dev/reference/react/createContext | 0.539 | react.dev/reference/react/useContext | 0.509 | react.dev/reference/react/useContext | 0.492 |
+| crawl4ai-raw | #1 | react.dev/reference/react/createContext | 0.539 | react.dev/reference/react/useContext | 0.509 | react.dev/reference/react/useContext | 0.492 |
+| scrapy+md | #1 | react.dev/reference/react/createContext | 0.560 | react.dev/reference/react/useContext | 0.518 | react.dev/reference/react/useContext | 0.492 |
+| crawlee | #1 | react.dev/reference/react/createContext | 0.548 | react.dev/reference/react/createContext | 0.545 | react.dev/reference/react/createContext | 0.537 |
+| colly+md | #1 | react.dev/reference/react/createContext | 0.548 | react.dev/reference/react/createContext | 0.545 | react.dev/reference/react/createContext | 0.537 |
+| playwright | #1 | react.dev/reference/react/createContext | 0.548 | react.dev/reference/react/createContext | 0.545 | react.dev/reference/react/createContext | 0.537 |
 
 
-**Q51: What is the purpose of forwardRef in React?**
-*(expects URL containing: `forwardRef`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/manipulating-the-dom-with-refs | 0.628 | react.dev/learn/referencing-values-with-refs | 0.624 | react.dev/learn/escape-hatches | 0.595 |
-| crawl4ai | #1 | react.dev/reference/react/forwardRef | 0.709 | react.dev/reference/react/forwardRef | 0.699 | react.dev/reference/react/forwardRef | 0.670 |
-| crawl4ai-raw | #1 | react.dev/reference/react/forwardRef | 0.709 | react.dev/reference/react/forwardRef | 0.699 | react.dev/reference/react/forwardRef | 0.670 |
-| scrapy+md | #1 | react.dev/reference/react/forwardRef | 0.706 | react.dev/reference/react/forwardRef | 0.675 | react.dev/reference/react/forwardRef | 0.640 |
-| crawlee | #1 | react.dev/reference/react/forwardRef | 0.698 | react.dev/reference/react/forwardRef | 0.696 | react.dev/reference/react/forwardRef | 0.684 |
-| colly+md | #1 | react.dev/reference/react/forwardRef | 0.698 | react.dev/reference/react/forwardRef | 0.696 | react.dev/reference/react/forwardRef | 0.685 |
-| playwright | #1 | react.dev/reference/react/forwardRef | 0.698 | react.dev/reference/react/forwardRef | 0.696 | react.dev/reference/react/forwardRef | 0.684 |
-
-
-**Q52: How do you expose a DOM node to the parent component using forwardRef?**
-*(expects URL containing: `forwardRef`)*
+**Q35: What does the `compilationMode` option control in the React Compiler?**
+*(expects URL containing: `compilationMode`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/manipulating-the-dom-with-refs | 0.574 | react.dev/learn/manipulating-the-dom-with-refs | 0.573 | react.dev/learn/manipulating-the-dom-with-refs | 0.566 |
-| crawl4ai | #1 | react.dev/reference/react/forwardRef | 0.714 | react.dev/reference/react/forwardRef | 0.681 | react.dev/reference/react/forwardRef | 0.665 |
-| crawl4ai-raw | #1 | react.dev/reference/react/forwardRef | 0.714 | react.dev/reference/react/forwardRef | 0.681 | react.dev/reference/react/forwardRef | 0.665 |
-| scrapy+md | #1 | react.dev/reference/react/forwardRef | 0.663 | react.dev/reference/react/forwardRef | 0.654 | react.dev/reference/react/forwardRef | 0.622 |
-| crawlee | #1 | react.dev/reference/react/forwardRef | 0.708 | react.dev/reference/react/forwardRef | 0.691 | react.dev/reference/react/forwardRef | 0.654 |
-| colly+md | #1 | react.dev/reference/react/forwardRef | 0.709 | react.dev/reference/react/forwardRef | 0.692 | react.dev/reference/react/forwardRef | 0.654 |
-| playwright | #1 | react.dev/reference/react/forwardRef | 0.708 | react.dev/reference/react/forwardRef | 0.691 | react.dev/reference/react/forwardRef | 0.654 |
+| markcrawl | miss | react.dev/learn/react-compiler/incremental-adoptio | 0.586 | react.dev/learn/react-compiler/incremental-adoptio | 0.585 | react.dev/learn/react-compiler/introduction | 0.564 |
+| crawl4ai | #1 | react.dev/reference/react-compiler/compilationMode | 0.700 | react.dev/reference/react-compiler/configuration | 0.629 | react.dev/reference/react-compiler/directives | 0.626 |
+| crawl4ai-raw | #1 | react.dev/reference/react-compiler/compilationMode | 0.700 | react.dev/reference/react-compiler/configuration | 0.629 | react.dev/reference/react-compiler/directives | 0.626 |
+| scrapy+md | #1 | react.dev/reference/react-compiler/compilationMode | 0.646 | react.dev/reference/react-compiler/configuration | 0.637 | react.dev/reference/react-compiler/configuration | 0.615 |
+| crawlee | #1 | react.dev/reference/react-compiler/compilationMode | 0.721 | react.dev/reference/react-compiler/configuration | 0.653 | react.dev/reference/react-compiler/configuration | 0.636 |
+| colly+md | #1 | react.dev/reference/react-compiler/compilationMode | 0.721 | react.dev/reference/react-compiler/configuration | 0.653 | react.dev/reference/react-compiler/configuration | 0.636 |
+| playwright | #1 | react.dev/reference/react-compiler/compilationMode | 0.721 | react.dev/reference/react-compiler/configuration | 0.653 | react.dev/reference/react-compiler/configuration | 0.636 |
 
 
-**Q53: What is the reason for deprecating Create React App?**
-*(expects URL containing: `sunsetting-create-react-app`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/installation | 0.537 | react.dev/learn/build-a-react-app-from-scratch | 0.529 | react.dev/learn/build-a-react-app-from-scratch | 0.526 |
-| crawl4ai | #1 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.744 | de.react.dev/blog/2025/02/14/sunsetting-create-rea | 0.730 | de.react.dev/blog/2025/02/14/sunsetting-create-rea | 0.677 |
-| crawl4ai-raw | #1 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.744 | de.react.dev/blog/2025/02/14/sunsetting-create-rea | 0.730 | de.react.dev/blog/2025/02/14/sunsetting-create-rea | 0.677 |
-| scrapy+md | #1 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.766 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.581 | react.dev/blog/2024/04/25/react-19-upgrade-guide | 0.559 |
-| crawlee | #1 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.756 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.723 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.654 |
-| colly+md | #1 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.756 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.722 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.654 |
-| playwright | #1 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.756 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.723 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.654 |
-
-
-**Q54: What are the recommended frameworks for creating new React apps?**
-*(expects URL containing: `sunsetting-create-react-app`)*
+**Q36: What are the different options available for `compilationMode`?**
+*(expects URL containing: `compilationMode`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/build-a-react-app-from-scratch | 0.687 | react.dev/learn/build-a-react-app-from-scratch | 0.681 | react.dev/learn/creating-a-react-app | 0.667 |
-| crawl4ai | #14 | tr.react.dev/learn/creating-a-react-app | 0.705 | de.react.dev/learn/start-a-new-react-project | 0.702 | tr.react.dev/learn/creating-a-react-app | 0.702 |
-| crawl4ai-raw | #14 | tr.react.dev/learn/creating-a-react-app | 0.705 | de.react.dev/learn/start-a-new-react-project | 0.702 | tr.react.dev/learn/creating-a-react-app | 0.702 |
-| scrapy+md | #2 | react.dev/learn/build-a-react-app-from-scratch | 0.687 | react.dev/blog/2025/02/14/sunsetting-create-react- | 0.669 | react.dev/learn/creating-a-react-app | 0.658 |
-| crawlee | #4 | react.dev/learn/creating-a-react-app | 0.704 | react.dev/learn/creating-a-react-app | 0.681 | react.dev/learn/build-a-react-app-from-scratch | 0.677 |
-| colly+md | #7 | react.dev/learn/creating-a-react-app | 0.704 | react.dev/learn/creating-a-react-app#full-stack-fr | 0.704 | react.dev/learn/creating-a-react-app | 0.681 |
-| playwright | #4 | react.dev/learn/creating-a-react-app | 0.704 | react.dev/learn/creating-a-react-app | 0.681 | react.dev/learn/build-a-react-app-from-scratch | 0.677 |
+| markcrawl | miss | react.dev/learn/react-compiler/incremental-adoptio | 0.505 | react.dev/learn/react-compiler/incremental-adoptio | 0.499 | react.dev/learn/react-compiler/introduction | 0.427 |
+| crawl4ai | #1 | react.dev/reference/react-compiler/compilationMode | 0.587 | react.dev/reference/react-compiler/directives | 0.586 | react.dev/learn/react-compiler/incremental-adoptio | 0.543 |
+| crawl4ai-raw | #1 | react.dev/reference/react-compiler/compilationMode | 0.587 | react.dev/reference/react-compiler/directives | 0.586 | react.dev/learn/react-compiler/incremental-adoptio | 0.543 |
+| scrapy+md | #1 | react.dev/reference/react-compiler/compilationMode | 0.548 | react.dev/reference/react-compiler/directives | 0.513 | react.dev/reference/react-compiler/configuration | 0.503 |
+| crawlee | #1 | react.dev/reference/react-compiler/compilationMode | 0.588 | react.dev/reference/react-compiler/directives | 0.546 | react.dev/learn/react-compiler/incremental-adoptio | 0.539 |
+| colly+md | #1 | react.dev/reference/react-compiler/compilationMode | 0.588 | react.dev/reference/react-compiler/directives | 0.546 | react.dev/learn/react-compiler/incremental-adoptio | 0.539 |
+| playwright | #1 | react.dev/reference/react-compiler/compilationMode | 0.588 | react.dev/reference/react-compiler/directives | 0.546 | react.dev/learn/react-compiler/incremental-adoptio | 0.539 |
 
 
-**Q55: What is the purpose of the useEffectEvent hook?**
-*(expects URL containing: `useEffectEvent`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/separating-events-from-effects | 0.535 | react.dev/learn/separating-events-from-effects | 0.519 | react.dev/learn/reusing-logic-with-custom-hooks | 0.511 |
-| crawl4ai | #3 | react.dev/blog/2025/10/01/react-19-2 | 0.610 | ar.react.dev/blog/2025/10/01/react-19-2 | 0.609 | react.dev/reference/react/useEffectEvent | 0.595 |
-| crawl4ai-raw | #3 | react.dev/blog/2025/10/01/react-19-2 | 0.610 | ar.react.dev/blog/2025/10/01/react-19-2 | 0.609 | react.dev/reference/react/useEffectEvent | 0.595 |
-| scrapy+md | #2 | react.dev/blog/2025/10/01/react-19-2 | 0.603 | react.dev/reference/react/useEffectEvent | 0.601 | react.dev/reference/react/useEffectEvent | 0.581 |
-| crawlee | #1 | react.dev/reference/react/useEffectEvent | 0.611 | react.dev/blog/2025/10/01/react-19-2 | 0.603 | react.dev/reference/react/useEffectEvent | 0.587 |
-| colly+md | #1 | react.dev/reference/react/useEffectEvent | 0.611 | react.dev/blog/2025/10/01/react-19-2 | 0.603 | react.dev/reference/react/useEffectEvent | 0.587 |
-| playwright | #1 | react.dev/reference/react/useEffectEvent | 0.611 | react.dev/blog/2025/10/01/react-19-2 | 0.603 | react.dev/reference/react/useEffectEvent | 0.587 |
-
-
-**Q56: How does useEffectEvent handle the latest values from render?**
-*(expects URL containing: `useEffectEvent`)*
+**Q37: What is the purpose of the `cache` function in React?**
+*(expects URL containing: `cache`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/separating-events-from-effects | 0.504 | react.dev/learn/separating-events-from-effects | 0.503 | react.dev/learn/you-might-not-need-an-effect | 0.500 |
-| crawl4ai | #1 | react.dev/reference/react/useEffectEvent | 0.612 | react.dev/reference/react/useEffectEvent | 0.576 | react.dev/reference/react/useEffect | 0.565 |
-| crawl4ai-raw | #1 | react.dev/reference/react/useEffectEvent | 0.612 | react.dev/reference/react/useEffectEvent | 0.576 | react.dev/reference/react/useEffect | 0.565 |
-| scrapy+md | #1 | react.dev/reference/react/useEffectEvent | 0.572 | react.dev/reference/react/useEffectEvent | 0.559 | react.dev/reference/react/useEffectEvent | 0.546 |
-| crawlee | #1 | react.dev/reference/react/useEffectEvent | 0.609 | react.dev/reference/react/useEffectEvent | 0.571 | react.dev/reference/react/useEffectEvent | 0.570 |
-| colly+md | #1 | react.dev/reference/react/useEffectEvent | 0.609 | react.dev/reference/react/useEffectEvent | 0.572 | react.dev/reference/react/useEffectEvent | 0.571 |
-| playwright | #1 | react.dev/reference/react/useEffectEvent | 0.609 | react.dev/reference/react/useEffectEvent | 0.572 | react.dev/reference/react/useEffectEvent | 0.571 |
+| markcrawl | miss | react.dev/learn/you-might-not-need-an-effect | 0.540 | react.dev/learn/react-compiler/introduction | 0.531 | react.dev/learn/you-might-not-need-an-effect | 0.530 |
+| crawl4ai | #1 | react.dev/reference/react/cache | 0.664 | react.dev/reference/react/cache | 0.652 | react.dev/reference/react/cache | 0.624 |
+| crawl4ai-raw | #1 | react.dev/reference/react/cache | 0.664 | react.dev/reference/react/cache | 0.652 | react.dev/reference/react/cache | 0.624 |
+| scrapy+md | #1 | react.dev/reference/react/cache | 0.630 | react.dev/reference/react/cache | 0.625 | react.dev/reference/react/cache | 0.625 |
+| crawlee | #1 | react.dev/reference/react/cache | 0.670 | react.dev/reference/react/useCallback | 0.650 | react.dev/reference/react/cache | 0.630 |
+| colly+md | #1 | react.dev/reference/react/cache | 0.670 | react.dev/reference/react/useCallback | 0.650 | react.dev/reference/react/cache | 0.630 |
+| playwright | #1 | react.dev/reference/react/cache | 0.670 | react.dev/reference/react/useCallback | 0.650 | react.dev/reference/react/cache | 0.630 |
 
 
-**Q57: What does `Children.count(children)` do?**
-*(expects URL containing: `Children`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/passing-props-to-a-component | 0.362 | react.dev/learn/preserving-and-resetting-state | 0.352 | react.dev/learn/preserving-and-resetting-state | 0.342 |
-| crawl4ai | #1 | react.dev/reference/react/Children | 0.631 | react.dev/reference/react/Children | 0.516 | react.dev/reference/react/Children | 0.504 |
-| crawl4ai-raw | #1 | react.dev/reference/react/Children | 0.631 | react.dev/reference/react/Children | 0.516 | react.dev/reference/react/Children | 0.504 |
-| scrapy+md | #1 | react.dev/reference/react/Children | 0.536 | react.dev/reference/react/Children | 0.515 | react.dev/reference/react/Children | 0.489 |
-| crawlee | #1 | react.dev/reference/react/Children | 0.659 | react.dev/reference/react/Children | 0.550 | react.dev/reference/react/Children | 0.535 |
-| colly+md | #1 | react.dev/reference/react/Children | 0.658 | react.dev/reference/react/Children | 0.550 | react.dev/reference/react/Children | 0.535 |
-| playwright | #1 | react.dev/reference/react/Children | 0.659 | react.dev/reference/react/Children | 0.550 | react.dev/reference/react/Children | 0.535 |
-
-
-**Q58: How can you transform the children JSX received by a component?**
-*(expects URL containing: `Children`)*
+**Q38: How does `cache` handle errors when a memoized function throws an error?**
+*(expects URL containing: `cache`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | react.dev/learn/passing-props-to-a-component | 0.604 | react.dev/learn/passing-props-to-a-component | 0.598 | react.dev/learn/writing-markup-with-jsx | 0.596 |
-| crawl4ai | #1 | react.dev/reference/react/Children | 0.626 | react.dev/learn/passing-props-to-a-component | 0.614 | react.dev/learn/describing-the-ui | 0.596 |
-| crawl4ai-raw | #1 | react.dev/reference/react/Children | 0.626 | react.dev/learn/passing-props-to-a-component | 0.614 | react.dev/learn/describing-the-ui | 0.596 |
-| scrapy+md | #2 | react.dev/learn/passing-props-to-a-component | 0.603 | react.dev/reference/react/Children | 0.603 | react.dev/learn/passing-props-to-a-component | 0.593 |
-| crawlee | #5 | react.dev/learn/writing-markup-with-jsx | 0.613 | react.dev/learn/passing-props-to-a-component | 0.603 | react.dev/reference/rules/components-and-hooks-mus | 0.602 |
-| colly+md | #7 | react.dev/learn/writing-markup-with-jsx | 0.613 | react.dev/learn/passing-props-to-a-component | 0.603 | react.dev/learn/passing-props-to-a-component#passi | 0.603 |
-| playwright | #5 | react.dev/learn/writing-markup-with-jsx | 0.613 | react.dev/learn/passing-props-to-a-component | 0.603 | react.dev/reference/rules/components-and-hooks-mus | 0.602 |
+| markcrawl | miss | react.dev/learn/you-might-not-need-an-effect | 0.400 | react.dev/learn/react-compiler/introduction | 0.359 | react.dev/learn/react-compiler/introduction | 0.323 |
+| crawl4ai | #1 | react.dev/reference/react/cache | 0.539 | react.dev/reference/react/cache | 0.489 | react.dev/reference/react/useMemo | 0.485 |
+| crawl4ai-raw | #1 | react.dev/reference/react/cache | 0.538 | react.dev/reference/react/cache | 0.489 | react.dev/reference/react/useMemo | 0.485 |
+| scrapy+md | #1 | react.dev/reference/react/cache | 0.537 | react.dev/reference/react/cache | 0.502 | react.dev/reference/react/cache | 0.500 |
+| crawlee | #1 | react.dev/reference/react/cache | 0.537 | react.dev/reference/react/cache | 0.510 | react.dev/reference/react/cache | 0.502 |
+| colly+md | #1 | react.dev/reference/react/cache | 0.537 | react.dev/reference/react/cache | 0.510 | react.dev/reference/react/cache | 0.502 |
+| playwright | #1 | react.dev/reference/react/cache | 0.537 | react.dev/reference/react/cache | 0.510 | react.dev/reference/react/cache | 0.502 |
+
+
+**Q39: What are the differences between event handlers and Effects in React?**
+*(expects URL containing: `separating-events-from-effects`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | react.dev/learn/synchronizing-with-effects | 0.686 | react.dev/learn/separating-events-from-effects | 0.655 | react.dev/learn/you-might-not-need-an-effect | 0.646 |
+| crawl4ai | #1 | react.dev/learn/separating-events-from-effects | 0.723 | react.dev/learn/separating-events-from-effects | 0.711 | react.dev/learn/synchronizing-with-effects | 0.686 |
+| crawl4ai-raw | #1 | react.dev/learn/separating-events-from-effects | 0.723 | react.dev/learn/separating-events-from-effects | 0.712 | react.dev/learn/synchronizing-with-effects | 0.686 |
+| scrapy+md | #2 | react.dev/learn/synchronizing-with-effects | 0.686 | react.dev/learn/separating-events-from-effects | 0.682 | react.dev/learn/you-might-not-need-an-effect | 0.646 |
+| crawlee | #1 | react.dev/learn/separating-events-from-effects | 0.727 | react.dev/learn/separating-events-from-effects | 0.698 | react.dev/learn/synchronizing-with-effects | 0.682 |
+| colly+md | #1 | react.dev/learn/separating-events-from-effects#dec | 0.727 | react.dev/learn/separating-events-from-effects#rea | 0.727 | react.dev/learn/separating-events-from-effects | 0.726 |
+| playwright | #1 | react.dev/learn/separating-events-from-effects | 0.727 | react.dev/learn/separating-events-from-effects | 0.698 | react.dev/learn/synchronizing-with-effects | 0.682 |
+
+
+**Q40: How can you extract non-reactive logic from Effects using Effect Events?**
+*(expects URL containing: `separating-events-from-effects`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #3 | react.dev/learn/you-might-not-need-an-effect | 0.579 | react.dev/learn/synchronizing-with-effects | 0.555 | react.dev/learn/separating-events-from-effects | 0.552 |
+| crawl4ai | #1 | react.dev/learn/separating-events-from-effects | 0.654 | react.dev/learn/you-might-not-need-an-effect | 0.592 | react.dev/learn/separating-events-from-effects | 0.590 |
+| crawl4ai-raw | #1 | react.dev/learn/separating-events-from-effects | 0.654 | react.dev/learn/you-might-not-need-an-effect | 0.592 | react.dev/learn/separating-events-from-effects | 0.590 |
+| scrapy+md | #1 | react.dev/learn/separating-events-from-effects | 0.658 | react.dev/learn/you-might-not-need-an-effect | 0.579 | react.dev/reference/react/useEffectEvent | 0.574 |
+| crawlee | #1 | react.dev/learn/separating-events-from-effects | 0.658 | react.dev/learn/separating-events-from-effects | 0.603 | react.dev/reference/react/useEffectEvent | 0.603 |
+| colly+md | #1 | react.dev/learn/separating-events-from-effects | 0.658 | react.dev/learn/separating-events-from-effects#rea | 0.658 | react.dev/learn/separating-events-from-effects#dec | 0.658 |
+| playwright | #1 | react.dev/learn/separating-events-from-effects | 0.658 | react.dev/learn/separating-events-from-effects | 0.603 | react.dev/reference/react/useEffectEvent | 0.603 |
+
+
+**Q41: What are directives used for in React Server Components?**
+*(expects URL containing: `directives`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/reacting-to-input-with-state | 0.530 | react.dev/learn/manipulating-the-dom-with-refs | 0.510 | react.dev/learn | 0.500 |
+| crawl4ai | #1 | react.dev/reference/rsc/directives | 0.645 | react.dev/reference/rsc/use-client | 0.633 | 18.react.dev/blog/2024/04/25/react-19 | 0.612 |
+| crawl4ai-raw | #1 | react.dev/reference/rsc/directives | 0.645 | react.dev/reference/rsc/use-client | 0.633 | react.dev/blog/2024/12/05/react-19 | 0.612 |
+| scrapy+md | #1 | react.dev/reference/rsc/directives | 0.678 | react.dev/reference/rsc/use-client | 0.617 | react.dev/blog/2024/12/05/react-19 | 0.598 |
+| crawlee | #1 | react.dev/reference/rsc/directives | 0.655 | react.dev/reference/react-compiler/directives | 0.648 | react.dev/reference/rsc/use-client | 0.617 |
+| colly+md | #1 | react.dev/reference/rsc/directives | 0.655 | react.dev/reference/react-compiler/directives | 0.648 | react.dev/reference/rsc/use-client | 0.617 |
+| playwright | #1 | react.dev/reference/rsc/directives | 0.655 | react.dev/reference/react-compiler/directives | 0.648 | react.dev/reference/rsc/use-client | 0.617 |
+
+
+**Q42: What does the directive 'use client' do?**
+*(expects URL containing: `directives`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/removing-effect-dependencies | 0.259 | react.dev/learn/reacting-to-input-with-state | 0.255 | react.dev/learn/lifecycle-of-reactive-effects | 0.249 |
+| crawl4ai | #18 | react.dev/reference/rsc/use-client | 0.519 | react.dev/reference/rsc/use-client | 0.465 | react.dev/reference/rsc/use-server | 0.453 |
+| crawl4ai-raw | #18 | react.dev/reference/rsc/use-client | 0.519 | react.dev/reference/rsc/use-client | 0.465 | react.dev/reference/rsc/use-server | 0.453 |
+| scrapy+md | #3 | react.dev/reference/rsc/use-client | 0.580 | react.dev/reference/rsc/use-client | 0.533 | react.dev/reference/rsc/directives | 0.458 |
+| crawlee | #12 | react.dev/reference/rsc/use-client | 0.533 | react.dev/reference/rsc/use-client | 0.474 | react.dev/reference/rsc/use-client | 0.462 |
+| colly+md | #12 | react.dev/reference/rsc/use-client | 0.533 | react.dev/reference/rsc/use-client | 0.474 | react.dev/reference/rsc/use-client | 0.462 |
+| playwright | #12 | react.dev/reference/rsc/use-client | 0.533 | react.dev/reference/rsc/use-client | 0.474 | react.dev/reference/rsc/use-client | 0.462 |
+
+
+**Q43: What does eslint-plugin-react-hooks help you catch?**
+*(expects URL containing: `eslint-plugin-react-hooks`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/reusing-logic-with-custom-hooks | 0.583 | react.dev/learn/react-compiler/installation | 0.573 | react.dev/learn/reusing-logic-with-custom-hooks | 0.566 |
+| crawl4ai | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.676 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.652 | zh-hans.react.dev/reference/react | 0.629 |
+| crawl4ai-raw | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.676 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.654 | zh-hans.react.dev/reference/react | 0.629 |
+| scrapy+md | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.657 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.622 | react.dev/reference/eslint-plugin-react-hooks | 0.616 |
+| crawlee | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.667 | react.dev/reference/eslint-plugin-react-hooks | 0.665 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.637 |
+| colly+md | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.667 | react.dev/reference/eslint-plugin-react-hooks | 0.665 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.637 |
+| playwright | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.667 | react.dev/reference/eslint-plugin-react-hooks | 0.665 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.637 |
+
+
+**Q44: What are the recommended rules included in eslint-plugin-react-hooks?**
+*(expects URL containing: `eslint-plugin-react-hooks`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/react-compiler/installation | 0.574 | react.dev/learn/editor-setup | 0.554 | react.dev/learn/editor-setup | 0.553 |
+| crawl4ai | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.691 | react.dev/reference/rules | 0.685 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.678 |
+| crawl4ai-raw | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.691 | react.dev/reference/rules | 0.685 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.679 |
+| scrapy+md | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.676 | react.dev/reference/eslint-plugin-react-hooks/lint | 0.622 | react.dev/blog/2025/10/07/react-compiler-1 | 0.620 |
+| crawlee | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.676 | react.dev/reference/rules | 0.670 | react.dev/reference/rules | 0.663 |
+| colly+md | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.676 | react.dev/reference/rules | 0.670 | react.dev/reference/rules | 0.663 |
+| playwright | #1 | react.dev/reference/eslint-plugin-react-hooks | 0.676 | react.dev/reference/rules | 0.670 | react.dev/reference/rules | 0.663 |
+
+
+**Q45: What is the purpose of the React Compiler Beta release?**
+*(expects URL containing: `react-compiler-beta-release`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/react-compiler | 0.616 | react.dev/learn/react-compiler/introduction | 0.615 | react.dev/learn/react-compiler/incremental-adoptio | 0.591 |
+| crawl4ai | #1 | 18.react.dev/blog/2024/10/21/react-compiler-beta-r | 0.771 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.771 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.733 |
+| crawl4ai-raw | #1 | 18.react.dev/blog/2024/10/21/react-compiler-beta-r | 0.771 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.771 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.733 |
+| scrapy+md | #1 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.764 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.725 | react.dev/blog/2025/10/07/react-compiler-1 | 0.697 |
+| crawlee | #1 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.763 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.725 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.706 |
+| colly+md | #1 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.763 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.725 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.706 |
+| playwright | #1 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.763 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.725 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.706 |
+
+
+**Q46: How can developers install the React Compiler ESLint plugin?**
+*(expects URL containing: `react-compiler-beta-release`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/react-compiler/installation | 0.647 | react.dev/learn/react-compiler/installation | 0.592 | react.dev/learn/react-compiler/installation | 0.574 |
+| crawl4ai | #3 | react.dev/learn/react-compiler/installation | 0.638 | react.dev/learn/react-compiler/installation | 0.610 | 18.react.dev/blog/2024/10/21/react-compiler-beta-r | 0.601 |
+| crawl4ai-raw | #3 | react.dev/learn/react-compiler/installation | 0.638 | react.dev/learn/react-compiler/installation | 0.610 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.601 |
+| scrapy+md | #3 | react.dev/learn/react-compiler/installation | 0.646 | react.dev/learn/react-compiler/installation | 0.613 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.600 |
+| crawlee | #2 | react.dev/learn/react-compiler/installation | 0.646 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.610 | react.dev/learn/react-compiler/installation | 0.601 |
+| colly+md | #2 | react.dev/learn/react-compiler/installation | 0.646 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.610 | react.dev/learn/react-compiler/installation | 0.601 |
+| playwright | #2 | react.dev/learn/react-compiler/installation | 0.646 | react.dev/blog/2024/10/21/react-compiler-beta-rele | 0.610 | react.dev/learn/react-compiler/installation | 0.601 |
+
+
+**Q47: Who are some of the contributors to the React documentation?**
+*(expects URL containing: `docs-contributors`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/typescript | 0.582 | react.dev/learn/your-first-component | 0.572 | react.dev/learn/react-compiler | 0.571 |
+| crawl4ai | #14 | he.react.dev/community/acknowledgements | 0.739 | he.react.dev/community/acknowledgements | 0.732 | de.react.dev/community/acknowledgements | 0.725 |
+| crawl4ai-raw | #14 | he.react.dev/community/acknowledgements | 0.739 | he.react.dev/community/acknowledgements | 0.732 | de.react.dev/community/acknowledgements | 0.725 |
+| scrapy+md | #1 | react.dev/community/docs-contributors | 0.682 | react.dev/community/acknowledgements | 0.681 | react.dev/community/translations | 0.665 |
+| crawlee | #5 | react.dev/community/acknowledgements | 0.704 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.679 | react.dev/blog/2023/03/16/introducing-react-dev | 0.678 |
+| colly+md | #5 | react.dev/community/acknowledgements | 0.704 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.679 | react.dev/blog/2023/03/16/introducing-react-dev | 0.678 |
+| playwright | #5 | react.dev/community/acknowledgements | 0.704 | react.dev/blog/2022/06/15/react-labs-what-we-have- | 0.679 | react.dev/blog/2023/03/16/introducing-react-dev | 0.678 |
+
+
+**Q48: What types of contributions did Rachel Nabors make to the React documentation?**
+*(expects URL containing: `docs-contributors`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/setup | 0.446 | react.dev/learn/react-compiler | 0.435 | react.dev/learn/typescript | 0.432 |
+| crawl4ai | #12 | he.react.dev/community/acknowledgements | 0.596 | he.react.dev/blog/2023/03/16/introducing-react-dev | 0.589 | de.react.dev/community/acknowledgements | 0.587 |
+| crawl4ai-raw | #12 | he.react.dev/community/acknowledgements | 0.596 | he.react.dev/blog/2023/03/16/introducing-react-dev | 0.589 | de.react.dev/community/acknowledgements | 0.587 |
+| scrapy+md | #1 | react.dev/community/docs-contributors | 0.576 | react.dev/blog/2023/03/16/introducing-react-dev | 0.564 | react.dev/community/team | 0.561 |
+| crawlee | #4 | react.dev/blog/2023/03/16/introducing-react-dev | 0.564 | react.dev/community/acknowledgements | 0.562 | react.dev/community/team | 0.543 |
+| colly+md | #4 | react.dev/blog/2023/03/16/introducing-react-dev | 0.564 | react.dev/community/acknowledgements | 0.562 | react.dev/community/team | 0.543 |
+| playwright | #4 | react.dev/blog/2023/03/16/introducing-react-dev | 0.564 | react.dev/community/acknowledgements | 0.562 | react.dev/community/team | 0.543 |
+
+
+**Q49: How do you make a select box controlled in React?**
+*(expects URL containing: `select`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/managing-state | 0.525 | react.dev/learn/managing-state | 0.522 | react.dev/learn/sharing-state-between-components | 0.498 |
+| crawl4ai | #1 | react.dev/reference/react-dom/components/select | 0.698 | react.dev/reference/react-dom/components/select | 0.663 | react.dev/reference/react-dom/components/select | 0.627 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/components/select | 0.698 | react.dev/reference/react-dom/components/select | 0.663 | react.dev/reference/react-dom/components/select | 0.627 |
+| scrapy+md | #1 | react.dev/reference/react-dom/components/select | 0.670 | react.dev/reference/react-dom/components/select | 0.646 | react.dev/reference/react-dom/components/select | 0.621 |
+| crawlee | #1 | react.dev/reference/react-dom/components/select | 0.670 | react.dev/reference/react-dom/components/select | 0.645 | react.dev/reference/react-dom/components/select | 0.644 |
+| colly+md | #1 | react.dev/reference/react-dom/components/select | 0.670 | react.dev/reference/react-dom/components/select | 0.646 | react.dev/reference/react-dom/components/select | 0.644 |
+| playwright | #1 | react.dev/reference/react-dom/components/select | 0.670 | react.dev/reference/react-dom/components/select | 0.646 | react.dev/reference/react-dom/components/select | 0.644 |
+
+
+**Q50: What prop do you use to specify the initially selected option in a select box?**
+*(expects URL containing: `select`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/you-might-not-need-an-effect | 0.341 | react.dev/learn/choosing-the-state-structure | 0.335 | react.dev/learn/thinking-in-react | 0.330 |
+| crawl4ai | #1 | react.dev/reference/react-dom/components/select | 0.513 | react.dev/reference/react-dom/components/select | 0.511 | react.dev/reference/react-dom/components/select | 0.511 |
+| crawl4ai-raw | #1 | react.dev/reference/react-dom/components/select | 0.513 | react.dev/reference/react-dom/components/select | 0.511 | react.dev/reference/react-dom/components/select | 0.511 |
+| scrapy+md | #1 | react.dev/reference/react-dom/components/select | 0.518 | react.dev/reference/react-dom/components/select | 0.459 | react.dev/reference/react-dom/components/select | 0.447 |
+| crawlee | #1 | react.dev/reference/react-dom/components/select | 0.518 | react.dev/reference/react-dom/components/select | 0.502 | react.dev/reference/react-dom/components/select | 0.501 |
+| colly+md | #1 | react.dev/reference/react-dom/components/select | 0.518 | react.dev/reference/react-dom/components/select | 0.502 | react.dev/reference/react-dom/components/select | 0.501 |
+| playwright | #1 | react.dev/reference/react-dom/components/select | 0.518 | react.dev/reference/react-dom/components/select | 0.502 | react.dev/reference/react-dom/components/select | 0.501 |
+
+
+**Q51: What are the three steps involved in displaying a component on screen in React?**
+*(expects URL containing: `render-and-commit`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | react.dev/learn/reacting-to-input-with-state | 0.615 | react.dev/learn/render-and-commit | 0.596 | react.dev/learn/describing-the-ui | 0.582 |
+| crawl4ai | #15 | az.react.dev/learn/describing-the-ui | 0.627 | 18.react.dev/learn/describing-the-ui | 0.625 | de.react.dev/learn/describing-the-ui | 0.616 |
+| crawl4ai-raw | #15 | az.react.dev/learn/describing-the-ui | 0.627 | 18.react.dev/learn/describing-the-ui | 0.625 | de.react.dev/learn/describing-the-ui | 0.616 |
+| scrapy+md | #3 | react.dev/learn/describing-the-ui | 0.606 | react.dev/learn/reacting-to-input-with-state | 0.603 | react.dev/learn/render-and-commit | 0.594 |
+| crawlee | #7 | react.dev/learn/describing-the-ui | 0.605 | react.dev/learn/reacting-to-input-with-state | 0.603 | react.dev/learn/describing-the-ui | 0.603 |
+| colly+md | #9 | react.dev/learn/describing-the-ui | 0.606 | react.dev/learn/reacting-to-input-with-state | 0.603 | react.dev/learn/describing-the-ui | 0.595 |
+| playwright | #7 | react.dev/learn/describing-the-ui | 0.606 | react.dev/learn/reacting-to-input-with-state | 0.603 | react.dev/learn/describing-the-ui | 0.595 |
+
+
+**Q52: What triggers a re-render of a component in React?**
+*(expects URL containing: `render-and-commit`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | react.dev/learn/render-and-commit | 0.647 | react.dev/learn/render-and-commit | 0.626 | react.dev/learn/react-compiler/introduction | 0.600 |
+| crawl4ai | #1 | react.dev/learn/render-and-commit | 0.672 | react.dev/learn/render-and-commit | 0.626 | react.dev/learn/render-and-commit | 0.620 |
+| crawl4ai-raw | #1 | react.dev/learn/render-and-commit | 0.672 | react.dev/learn/render-and-commit | 0.626 | react.dev/learn/render-and-commit | 0.620 |
+| scrapy+md | #1 | react.dev/learn/render-and-commit | 0.649 | react.dev/learn/render-and-commit | 0.623 | react.dev/learn/react-compiler/introduction | 0.592 |
+| crawlee | #1 | react.dev/learn/render-and-commit | 0.629 | react.dev/learn/render-and-commit | 0.624 | react.dev/reference/react/useState | 0.614 |
+| colly+md | #1 | react.dev/learn/render-and-commit#re-renders-when- | 0.629 | react.dev/learn/render-and-commit#step-3-react-com | 0.629 | react.dev/learn/render-and-commit | 0.629 |
+| playwright | #1 | react.dev/learn/render-and-commit | 0.629 | react.dev/learn/render-and-commit | 0.624 | react.dev/reference/react/useState | 0.614 |
+
+
+**Q53: What is state in React?**
+*(expects URL containing: `adding-interactivity`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | react.dev/learn/reacting-to-input-with-state | 0.678 | react.dev/learn/adding-interactivity | 0.654 | react.dev/learn/preserving-and-resetting-state | 0.652 |
+| crawl4ai | #7 | react.dev/learn/state-a-components-memory | 0.687 | react.dev/learn/queueing-a-series-of-state-updates | 0.682 | react.dev/learn/preserving-and-resetting-state | 0.675 |
+| crawl4ai-raw | #7 | react.dev/learn/state-a-components-memory | 0.687 | react.dev/learn/queueing-a-series-of-state-updates | 0.682 | react.dev/learn/preserving-and-resetting-state | 0.675 |
+| scrapy+md | #4 | react.dev/learn/reacting-to-input-with-state | 0.676 | react.dev/learn/reacting-to-input-with-state | 0.668 | react.dev/learn/state-a-components-memory | 0.666 |
+| crawlee | #3 | react.dev/learn/thinking-in-react | 0.677 | react.dev/learn/state-a-components-memory | 0.671 | react.dev/learn/adding-interactivity | 0.669 |
+| colly+md | #5 | react.dev/learn/thinking-in-react#step-3-find-the- | 0.677 | react.dev/learn/thinking-in-react | 0.677 | react.dev/learn/state-a-components-memory#anatomy- | 0.671 |
+| playwright | #3 | react.dev/learn/thinking-in-react | 0.677 | react.dev/learn/state-a-components-memory | 0.671 | react.dev/learn/adding-interactivity | 0.669 |
+
+
+**Q54: How do you add event handlers to JSX in React?**
+*(expects URL containing: `adding-interactivity`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #12 | react.dev/learn/responding-to-events | 0.618 | react.dev/learn/writing-markup-with-jsx | 0.583 | react.dev/learn | 0.571 |
+| crawl4ai | #3 | react.dev/learn/responding-to-events | 0.678 | react.dev/learn/responding-to-events | 0.641 | az.react.dev/learn/adding-interactivity | 0.618 |
+| crawl4ai-raw | #3 | react.dev/learn/responding-to-events | 0.678 | react.dev/learn/responding-to-events | 0.641 | az.react.dev/learn/adding-interactivity | 0.618 |
+| scrapy+md | #2 | react.dev/learn/responding-to-events | 0.682 | react.dev/learn/adding-interactivity | 0.585 | react.dev/learn/writing-markup-with-jsx | 0.579 |
+| crawlee | #11 | react.dev/learn/responding-to-events | 0.674 | react.dev/learn/responding-to-events | 0.622 | react.dev/learn/writing-markup-with-jsx | 0.590 |
+| colly+md | #5 | react.dev/learn/responding-to-events#passing-event | 0.685 | react.dev/learn/responding-to-events | 0.685 | react.dev/learn/responding-to-events | 0.622 |
+| playwright | #3 | react.dev/learn/responding-to-events | 0.686 | react.dev/learn/responding-to-events | 0.622 | react.dev/learn/adding-interactivity | 0.595 |
+
+
+**Q55: What is state in React?**
+*(expects URL containing: `state-a-components-memory`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #5 | react.dev/learn/reacting-to-input-with-state | 0.678 | react.dev/learn/adding-interactivity | 0.654 | react.dev/learn/preserving-and-resetting-state | 0.652 |
+| crawl4ai | #1 | react.dev/learn/state-a-components-memory | 0.687 | react.dev/learn/queueing-a-series-of-state-updates | 0.682 | react.dev/learn/preserving-and-resetting-state | 0.675 |
+| crawl4ai-raw | #1 | react.dev/learn/state-a-components-memory | 0.687 | react.dev/learn/queueing-a-series-of-state-updates | 0.682 | react.dev/learn/preserving-and-resetting-state | 0.675 |
+| scrapy+md | #3 | react.dev/learn/reacting-to-input-with-state | 0.676 | react.dev/learn/reacting-to-input-with-state | 0.668 | react.dev/learn/state-a-components-memory | 0.666 |
+| crawlee | #2 | react.dev/learn/thinking-in-react | 0.677 | react.dev/learn/state-a-components-memory | 0.671 | react.dev/learn/adding-interactivity | 0.669 |
+| colly+md | #3 | react.dev/learn/thinking-in-react#step-3-find-the- | 0.677 | react.dev/learn/thinking-in-react | 0.677 | react.dev/learn/state-a-components-memory#anatomy- | 0.671 |
+| playwright | #2 | react.dev/learn/thinking-in-react | 0.677 | react.dev/learn/state-a-components-memory | 0.671 | react.dev/learn/adding-interactivity | 0.669 |
+
+
+**Q56: How do you add a state variable using the useState Hook?**
+*(expects URL containing: `state-a-components-memory`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | react.dev/learn/state-a-components-memory | 0.620 | react.dev/learn/state-a-components-memory | 0.592 | react.dev/learn/state-a-components-memory | 0.590 |
+| crawl4ai | #1 | react.dev/learn/state-a-components-memory | 0.665 | react.dev/learn/state-a-components-memory | 0.635 | react.dev/learn/state-a-components-memory | 0.635 |
+| crawl4ai-raw | #1 | react.dev/learn/state-a-components-memory | 0.665 | react.dev/learn/state-a-components-memory | 0.635 | react.dev/learn/state-a-components-memory | 0.635 |
+| scrapy+md | #1 | react.dev/learn/state-a-components-memory | 0.624 | react.dev/reference/react/useState | 0.621 | react.dev/learn/state-a-components-memory | 0.619 |
+| crawlee | #1 | react.dev/learn/state-a-components-memory | 0.692 | react.dev/learn/state-a-components-memory | 0.625 | react.dev/learn/state-a-components-memory | 0.621 |
+| colly+md | #1 | react.dev/learn/state-a-components-memory#anatomy- | 0.692 | react.dev/learn/state-a-components-memory | 0.692 | react.dev/learn/state-a-components-memory#anatomy- | 0.624 |
+| playwright | #1 | react.dev/learn/state-a-components-memory | 0.692 | react.dev/learn/state-a-components-memory | 0.624 | react.dev/learn/state-a-components-memory | 0.621 |
+
+
+**Q57: What does createRef return?**
+*(expects URL containing: `createRef`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/referencing-values-with-refs | 0.462 | react.dev/learn/referencing-values-with-refs | 0.436 | react.dev/learn/escape-hatches | 0.427 |
+| crawl4ai | #2 | react.dev/reference/react/useImperativeHandle | 0.503 | react.dev/reference/react/createRef | 0.499 | react.dev/reference/react/createRef | 0.490 |
+| crawl4ai-raw | #2 | react.dev/reference/react/useImperativeHandle | 0.503 | react.dev/reference/react/createRef | 0.499 | react.dev/reference/react/createRef | 0.490 |
+| scrapy+md | #1 | react.dev/reference/react/createRef | 0.537 | react.dev/reference/react/useRef | 0.468 | react.dev/reference/react/useRef | 0.458 |
+| crawlee | #1 | react.dev/reference/react/createRef | 0.514 | react.dev/reference/react/useRef | 0.491 | react.dev/learn/manipulating-the-dom-with-refs | 0.486 |
+| colly+md | #1 | react.dev/reference/react/createRef | 0.514 | react.dev/reference/react/useRef#reference | 0.491 | react.dev/reference/react/useRef | 0.491 |
+| playwright | #1 | react.dev/reference/react/createRef | 0.514 | react.dev/reference/react/useRef | 0.491 | react.dev/learn/manipulating-the-dom-with-refs | 0.486 |
+
+
+**Q58: How do you declare a ref in a class component using createRef?**
+*(expects URL containing: `createRef`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | miss | react.dev/learn/escape-hatches | 0.583 | react.dev/learn/manipulating-the-dom-with-refs | 0.581 | react.dev/learn/referencing-values-with-refs | 0.574 |
+| crawl4ai | #1 | react.dev/reference/react/createRef | 0.731 | react.dev/reference/react/createRef | 0.668 | react.dev/reference/react/createRef | 0.643 |
+| crawl4ai-raw | #1 | react.dev/reference/react/createRef | 0.731 | react.dev/reference/react/createRef | 0.668 | react.dev/reference/react/createRef | 0.643 |
+| scrapy+md | #1 | react.dev/reference/react/createRef | 0.708 | react.dev/reference/react/createRef | 0.617 | react.dev/reference/react/useRef | 0.611 |
+| crawlee | #1 | react.dev/reference/react/createRef | 0.655 | react.dev/reference/react/createRef | 0.646 | react.dev/reference/react/createRef | 0.633 |
+| colly+md | #1 | react.dev/reference/react/createRef | 0.655 | react.dev/reference/react/createRef | 0.645 | react.dev/reference/react/createRef | 0.633 |
+| playwright | #1 | react.dev/reference/react/createRef | 0.655 | react.dev/reference/react/createRef | 0.645 | react.dev/reference/react/createRef | 0.633 |
 
 
 </details>
@@ -5871,13 +5927,13 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| markcrawl | 35% (21/60) | 70% (42/60) | 78% (47/60) | 83% (50/60) | 87% (52/60) | 0.543 | 1287 | 112 |
-| crawl4ai | 38% (23/60) | 63% (38/60) | 73% (44/60) | 82% (49/60) | 88% (53/60) | 0.536 | 2702 | 200 |
-| crawl4ai-raw | 38% (23/60) | 63% (38/60) | 73% (44/60) | 82% (49/60) | 88% (53/60) | 0.536 | 2702 | 200 |
-| playwright | 32% (19/60) | 62% (37/60) | 72% (43/60) | 83% (50/60) | 88% (53/60) | 0.499 | 2829 | 200 |
-| crawlee | 30% (18/60) | 62% (37/60) | 72% (43/60) | 83% (50/60) | 90% (54/60) | 0.492 | 2829 | 200 |
-| scrapy+md | 5% (3/60) | 13% (8/60) | 13% (8/60) | 13% (8/60) | 13% (8/60) | 0.086 | 2978 | 199 |
-| colly+md | 7% (4/60) | 10% (6/60) | 10% (6/60) | 10% (6/60) | 12% (7/60) | 0.080 | 1976 | 54 |
+| markcrawl | 65% (39/60) | 88% (53/60) | 93% (56/60) | 97% (58/60) | 97% (58/60) | 0.778 | 1287 | 112 |
+| playwright | 35% (21/60) | 73% (44/60) | 88% (53/60) | 95% (57/60) | 97% (58/60) | 0.579 | 2829 | 200 |
+| crawlee | 32% (19/60) | 73% (44/60) | 88% (53/60) | 95% (57/60) | 97% (58/60) | 0.563 | 2829 | 200 |
+| crawl4ai | 33% (20/60) | 72% (43/60) | 85% (51/60) | 92% (55/60) | 100% (60/60) | 0.556 | 2702 | 200 |
+| crawl4ai-raw | 33% (20/60) | 72% (43/60) | 85% (51/60) | 92% (55/60) | 100% (60/60) | 0.556 | 2702 | 200 |
+| scrapy+md | 5% (3/60) | 10% (6/60) | 10% (6/60) | 10% (6/60) | 10% (6/60) | 0.075 | 2978 | 199 |
+| colly+md | 3% (2/60) | 7% (4/60) | 7% (4/60) | 7% (4/60) | 8% (5/60) | 0.046 | 1976 | 54 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
 
@@ -5886,259 +5942,231 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 > **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
-**Q1: What is a slice in Rust?**
-*(expects URL containing: `ch04-03-slices.html`)*
+**Q1: What is the conventional style for function and variable names in Rust?**
+*(expects URL containing: `ch03-03-how-functions-work.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.677 | doc.rust-lang.org/book/ch04-03-slices.html | 0.677 | doc.rust-lang.org/book/ch04-03-slices.html | 0.634 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch04-03-slices.html | 0.658 | doc.rust-lang.org/book/print.html | 0.658 | doc.rust-lang.org/book/ch04-03-slices.html | 0.658 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch04-03-slices.html | 0.658 | doc.rust-lang.org/book/print.html | 0.658 | doc.rust-lang.org/book/ch04-03-slices.html | 0.658 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.631 | doc.rust-lang.org/stable/book/print.html | 0.631 | doc.rust-lang.org/src/core/slice/index.rs.html | 0.601 |
-| crawlee | #1 | doc.rust-lang.org/book/ch04-03-slices.html | 0.631 | doc.rust-lang.org/book/print.html | 0.631 | doc.rust-lang.org/stable/book/ch04-03-slices.html | 0.631 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.631 | doc.rust-lang.org/book/print.html | 0.631 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.596 |
-| playwright | #1 | doc.rust-lang.org/stable/book/ch04-03-slices.html | 0.631 | doc.rust-lang.org/book/print.html | 0.631 | doc.rust-lang.org/book/ch04-03-slices.html | 0.631 |
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.554 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.544 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.565 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.558 | doc.rust-lang.org/stable/book/ch03-03-how-function | 0.558 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.565 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.558 | doc.rust-lang.org/stable/book/ch03-03-how-function | 0.558 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.546 | doc.rust-lang.org/book/print.html | 0.546 | doc.rust-lang.org/book/print.html | 0.535 |
+| crawlee | #1 | doc.rust-lang.org/stable/book/ch03-03-how-function | 0.547 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.547 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.546 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.546 | doc.rust-lang.org/book/print.html | 0.546 | doc.rust-lang.org/stable/book/print.html | 0.535 |
+| playwright | #1 | doc.rust-lang.org/stable/book/ch03-03-how-function | 0.547 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.547 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.546 |
 
 
-**Q2: How do you create a string slice using a range?**
-*(expects URL containing: `ch04-03-slices.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.596 | doc.rust-lang.org/book/ch04-03-slices.html | 0.596 | doc.rust-lang.org/book/ch08-02-strings.html | 0.557 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch04-03-slices.html | 0.576 | doc.rust-lang.org/book/ch04-03-slices.html | 0.576 | doc.rust-lang.org/book/print.html | 0.576 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch04-03-slices.html | 0.576 | doc.rust-lang.org/book/ch04-03-slices.html | 0.576 | doc.rust-lang.org/book/print.html | 0.576 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.547 | doc.rust-lang.org/book/print.html | 0.547 | doc.rust-lang.org/book/print.html | 0.541 |
-| crawlee | #4 | doc.rust-lang.org/book/ch08-02-strings.html | 0.547 | doc.rust-lang.org/book/print.html | 0.547 | doc.rust-lang.org/stable/book/ch08-02-strings.html | 0.547 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.547 | doc.rust-lang.org/book/print.html | 0.547 | doc.rust-lang.org/stable/book/print.html | 0.541 |
-| playwright | #5 | doc.rust-lang.org/book/print.html | 0.547 | doc.rust-lang.org/stable/book/ch08-02-strings.html | 0.547 | doc.rust-lang.org/book/ch08-02-strings.html | 0.547 |
-
-
-**Q3: What advanced features are covered in this chapter?**
-*(expects URL containing: `ch20-00-advanced-features.html`)*
+**Q2: How do you define a function in Rust that returns a value?**
+*(expects URL containing: `ch03-03-how-functions-work.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch20-00-advanced-features.h | 0.549 | doc.rust-lang.org/book/print.html | 0.487 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.451 |
-| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.474 | doc.rust-lang.org/book/ch20-00-advanced-features.h | 0.468 | doc.rust-lang.org/book/print.html | 0.433 |
-| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.474 | doc.rust-lang.org/book/ch20-00-advanced-features.h | 0.468 | doc.rust-lang.org/book/print.html | 0.433 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.487 | doc.rust-lang.org/book/print.html | 0.487 | doc.rust-lang.org/book/print.html | 0.421 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.487 | doc.rust-lang.org/book/ch20-00-advanced-features.h | 0.442 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.436 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.487 | doc.rust-lang.org/book/print.html | 0.487 | doc.rust-lang.org/book/print.html | 0.421 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.487 | doc.rust-lang.org/book/ch20-00-advanced-features.h | 0.442 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.436 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.565 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.558 | doc.rust-lang.org/book/print.html | 0.558 |
+| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch03-03-how-function | 0.545 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.545 | doc.rust-lang.org/book/print.html | 0.545 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch03-03-how-function | 0.545 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.545 | doc.rust-lang.org/book/print.html | 0.545 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.559 | doc.rust-lang.org/book/print.html | 0.559 | doc.rust-lang.org/stable/book/print.html | 0.541 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.559 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.559 | doc.rust-lang.org/stable/book/ch03-03-how-function | 0.559 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.559 | doc.rust-lang.org/stable/book/print.html | 0.559 | doc.rust-lang.org/book/print.html | 0.541 |
+| playwright | #1 | doc.rust-lang.org/stable/book/ch03-03-how-function | 0.559 | doc.rust-lang.org/book/ch03-03-how-functions-work. | 0.559 | doc.rust-lang.org/book/print.html | 0.559 |
 
 
-**Q4: What is Unsafe Rust in the context of this chapter?**
-*(expects URL containing: `ch20-00-advanced-features.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #10 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.671 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/book/print.html | 0.611 |
-| crawl4ai | #29 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.634 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.625 |
-| crawl4ai-raw | #29 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.634 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.625 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.634 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/stable/book/print.html | 0.611 |
-| crawlee | #27 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.670 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/book/print.html | 0.611 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/stable/book/print.html | 0.634 | doc.rust-lang.org/stable/book/print.html | 0.611 |
-| playwright | #27 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.670 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/book/print.html | 0.611 |
-
-
-**Q5: When should you call `panic!` instead of returning a `Result`?**
-*(expects URL containing: `ch09-03-to-panic-or-not-to-panic.html`)*
+**Q3: What does the `cargo install` command do?**
+*(expects URL containing: `ch14-04-installing-binaries.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.705 | doc.rust-lang.org/book/print.html | 0.701 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.625 |
-| crawl4ai | #4 | doc.rust-lang.org/book/print.html | 0.686 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/book/print.html | 0.610 |
-| crawl4ai-raw | #4 | doc.rust-lang.org/book/print.html | 0.686 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/book/print.html | 0.610 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.675 | doc.rust-lang.org/book/print.html | 0.675 | doc.rust-lang.org/stable/book/print.html | 0.625 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.675 | doc.rust-lang.org/stable/book/ch09-03-to-panic-or- | 0.631 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.631 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.675 | doc.rust-lang.org/stable/book/print.html | 0.675 | doc.rust-lang.org/stable/book/print.html | 0.625 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.675 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.631 | doc.rust-lang.org/stable/book/ch09-03-to-panic-or- | 0.631 |
+| markcrawl | #2 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.594 | doc.rust-lang.org/book/ch14-04-installing-binaries | 0.580 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.561 |
+| crawl4ai | #12 | doc.rust-lang.org/book/print.html | 0.590 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.573 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.573 |
+| crawl4ai-raw | #12 | doc.rust-lang.org/book/print.html | 0.590 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.573 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.573 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.571 | doc.rust-lang.org/book/print.html | 0.570 | doc.rust-lang.org/stable/book/print.html | 0.547 |
+| crawlee | #9 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.571 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.570 | doc.rust-lang.org/book/print.html | 0.570 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.570 | doc.rust-lang.org/stable/book/print.html | 0.570 | doc.rust-lang.org/book/print.html | 0.547 |
+| playwright | #9 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.570 | doc.rust-lang.org/book/print.html | 0.570 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.570 |
 
 
-**Q6: What is the purpose of the `Guess` struct in the context of error handling?**
-*(expects URL containing: `ch09-03-to-panic-or-not-to-panic.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.592 | doc.rust-lang.org/book/print.html | 0.592 | doc.rust-lang.org/book/print.html | 0.547 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch09-03-to-panic-or- | 0.581 | doc.rust-lang.org/book/print.html | 0.581 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.581 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch09-03-to-panic-or- | 0.581 | doc.rust-lang.org/book/print.html | 0.581 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.581 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.530 | doc.rust-lang.org/book/print.html | 0.530 | doc.rust-lang.org/stable/book/print.html | 0.521 |
-| crawlee | #1 | doc.rust-lang.org/stable/book/ch09-03-to-panic-or- | 0.536 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.536 | doc.rust-lang.org/book/print.html | 0.530 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.530 | doc.rust-lang.org/stable/book/print.html | 0.530 | doc.rust-lang.org/stable/book/print.html | 0.521 |
-| playwright | #1 | doc.rust-lang.org/book/ch09-03-to-panic-or-not-to- | 0.536 | doc.rust-lang.org/stable/book/ch09-03-to-panic-or- | 0.536 | doc.rust-lang.org/book/print.html | 0.530 |
-
-
-**Q7: What are the three kinds of procedural macros in Rust?**
-*(expects URL containing: `ch20-05-macros.html`)*
+**Q4: Where are binaries installed with `cargo install` stored?**
+*(expects URL containing: `ch14-04-installing-binaries.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch20-05-macros.html | 0.692 | doc.rust-lang.org/book/print.html | 0.692 | doc.rust-lang.org/book/ch20-05-macros.html | 0.644 |
-| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.716 | doc.rust-lang.org/book/ch20-05-macros.html | 0.716 | doc.rust-lang.org/book/print.html | 0.660 |
-| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.716 | doc.rust-lang.org/book/ch20-05-macros.html | 0.716 | doc.rust-lang.org/book/print.html | 0.660 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.679 | doc.rust-lang.org/stable/book/print.html | 0.679 | doc.rust-lang.org/stable/book/print.html | 0.645 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.679 | doc.rust-lang.org/book/ch20-05-macros.html | 0.679 | doc.rust-lang.org/book/print.html | 0.645 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.679 | doc.rust-lang.org/book/print.html | 0.679 | doc.rust-lang.org/stable/book/print.html | 0.645 |
-| playwright | #1 | doc.rust-lang.org/book/ch20-05-macros.html | 0.679 | doc.rust-lang.org/book/print.html | 0.679 | doc.rust-lang.org/book/ch20-05-macros.html | 0.645 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch14-04-installing-binaries | 0.678 | doc.rust-lang.org/book/print.html | 0.534 | doc.rust-lang.org/book/print.html | 0.492 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.662 | doc.rust-lang.org/book/ch14-04-installing-binaries | 0.526 | doc.rust-lang.org/book/print.html | 0.497 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.662 | doc.rust-lang.org/book/ch14-04-installing-binaries | 0.526 | doc.rust-lang.org/book/print.html | 0.497 |
+| scrapy+md | miss | doc.rust-lang.org/nightly/cargo/reference/environm | 0.550 | doc.rust-lang.org/stable/book/print.html | 0.534 | doc.rust-lang.org/book/print.html | 0.534 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.534 | doc.rust-lang.org/book/ch14-04-installing-binaries | 0.526 | doc.rust-lang.org/book/print.html | 0.492 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.534 | doc.rust-lang.org/stable/book/print.html | 0.534 | doc.rust-lang.org/stable/book/print.html | 0.492 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.534 | doc.rust-lang.org/book/ch14-04-installing-binaries | 0.526 | doc.rust-lang.org/book/print.html | 0.492 |
 
 
-**Q8: How do declarative macros compare to functions in Rust?**
-*(expects URL containing: `ch20-05-macros.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.711 | doc.rust-lang.org/book/ch20-05-macros.html | 0.711 | doc.rust-lang.org/book/ch20-05-macros.html | 0.681 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch20-05-macros.html | 0.749 | doc.rust-lang.org/book/print.html | 0.749 | doc.rust-lang.org/book/ch20-05-macros.html | 0.639 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch20-05-macros.html | 0.749 | doc.rust-lang.org/book/print.html | 0.749 | doc.rust-lang.org/book/ch20-05-macros.html | 0.639 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.720 | doc.rust-lang.org/book/print.html | 0.720 | doc.rust-lang.org/stable/book/print.html | 0.639 |
-| crawlee | #1 | doc.rust-lang.org/book/ch20-05-macros.html | 0.720 | doc.rust-lang.org/book/print.html | 0.720 | doc.rust-lang.org/book/ch20-05-macros.html | 0.675 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.720 | doc.rust-lang.org/stable/book/print.html | 0.720 | doc.rust-lang.org/stable/book/print.html | 0.639 |
-| playwright | #1 | doc.rust-lang.org/book/ch20-05-macros.html | 0.720 | doc.rust-lang.org/book/print.html | 0.720 | doc.rust-lang.org/book/ch20-05-macros.html | 0.675 |
-
-
-**Q9: How do I set up a Crates.io account to publish my crate?**
-*(expects URL containing: `ch14-02-publishing-to-crates-io.html`)*
+**Q5: How do I run tests in parallel using cargo test?**
+*(expects URL containing: `ch11-02-running-tests.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.616 | doc.rust-lang.org/book/ch14-00-more-about-cargo.ht | 0.588 |
-| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.689 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.689 | doc.rust-lang.org/cargo/reference/publishing.html | 0.656 |
-| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.689 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.689 | doc.rust-lang.org/cargo/reference/publishing.html | 0.656 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.694 | doc.rust-lang.org/book/print.html | 0.694 | doc.rust-lang.org/cargo/reference/publishing.html | 0.681 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.694 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.694 | doc.rust-lang.org/cargo/reference/publishing.html | 0.611 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.694 | doc.rust-lang.org/book/print.html | 0.694 | doc.rust-lang.org/cargo/reference/publishing.html | 0.665 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.694 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.694 | doc.rust-lang.org/cargo/reference/publishing.html | 0.611 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.621 | doc.rust-lang.org/book/print.html | 0.621 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.599 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.620 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.620 | doc.rust-lang.org/stable/book/ch11-02-running-test | 0.620 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.620 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.620 | doc.rust-lang.org/stable/book/ch11-02-running-test | 0.620 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.615 | doc.rust-lang.org/book/print.html | 0.615 | doc.rust-lang.org/book/print.html | 0.614 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.615 | doc.rust-lang.org/stable/book/ch11-02-running-test | 0.615 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.615 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.615 | doc.rust-lang.org/stable/book/print.html | 0.615 | doc.rust-lang.org/stable/book/print.html | 0.614 |
+| playwright | #1 | doc.rust-lang.org/stable/book/ch11-02-running-test | 0.615 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.615 | doc.rust-lang.org/book/print.html | 0.615 |
 
 
-**Q10: What command do I run to generate HTML documentation from documentation comments in Rust?**
-*(expects URL containing: `ch14-02-publishing-to-crates-io.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.677 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.615 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.585 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.676 | doc.rust-lang.org/book/print.html | 0.676 | doc.rust-lang.org/book/print.html | 0.601 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.676 | doc.rust-lang.org/book/print.html | 0.676 | doc.rust-lang.org/book/print.html | 0.601 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.676 | doc.rust-lang.org/book/print.html | 0.676 | doc.rust-lang.org/book/print.html | 0.591 |
-| crawlee | #1 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.676 | doc.rust-lang.org/book/print.html | 0.676 | doc.rust-lang.org/book/print.html | 0.591 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.676 | doc.rust-lang.org/stable/book/print.html | 0.676 | doc.rust-lang.org/book/print.html | 0.591 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.676 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.676 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.591 |
-
-
-**Q11: What are enums in Rust?**
-*(expects URL containing: `ch06-00-enums.html`)*
+**Q6: What command do I use to see output from passing tests?**
+*(expects URL containing: `ch11-02-running-tests.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #12 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.656 | doc.rust-lang.org/book/ch06-03-if-let.html | 0.597 | doc.rust-lang.org/book/print.html | 0.597 |
-| crawl4ai | #4 | doc.rust-lang.org/book/print.html | 0.683 | doc.rust-lang.org/stable/book/ch06-01-defining-an- | 0.641 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.641 |
-| crawl4ai-raw | #4 | doc.rust-lang.org/book/print.html | 0.683 | doc.rust-lang.org/stable/book/ch06-01-defining-an- | 0.641 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.641 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.681 | doc.rust-lang.org/book/print.html | 0.681 | doc.rust-lang.org/stable/book/print.html | 0.591 |
-| crawlee | #8 | doc.rust-lang.org/book/print.html | 0.681 | doc.rust-lang.org/stable/book/ch06-01-defining-an- | 0.648 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.648 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.681 | doc.rust-lang.org/book/print.html | 0.681 | doc.rust-lang.org/book/print.html | 0.591 |
-| playwright | #8 | doc.rust-lang.org/book/print.html | 0.681 | doc.rust-lang.org/stable/book/ch06-01-defining-an- | 0.648 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.648 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.598 | doc.rust-lang.org/book/print.html | 0.598 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.479 |
+| crawl4ai | #1 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.581 | doc.rust-lang.org/book/print.html | 0.581 | doc.rust-lang.org/stable/book/ch11-02-running-test | 0.580 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.581 | doc.rust-lang.org/book/print.html | 0.581 | doc.rust-lang.org/stable/book/ch11-02-running-test | 0.580 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.563 | doc.rust-lang.org/stable/book/print.html | 0.563 | doc.rust-lang.org/stable/book/print.html | 0.490 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.563 | doc.rust-lang.org/stable/book/ch11-02-running-test | 0.563 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.563 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.563 | doc.rust-lang.org/book/print.html | 0.563 | doc.rust-lang.org/stable/book/print.html | 0.490 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.563 | doc.rust-lang.org/book/ch11-02-running-tests.html | 0.563 | doc.rust-lang.org/stable/book/ch11-02-running-test | 0.563 |
 
 
-**Q12: What is the purpose of the `Option` enum?**
-*(expects URL containing: `ch06-00-enums.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #11 | doc.rust-lang.org/book/print.html | 0.557 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.557 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.551 |
-| crawl4ai | #27 | doc.rust-lang.org/stable/book/ch06-01-defining-an- | 0.605 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.604 | doc.rust-lang.org/book/print.html | 0.604 |
-| crawl4ai-raw | #27 | doc.rust-lang.org/stable/book/ch06-01-defining-an- | 0.605 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.604 | doc.rust-lang.org/book/print.html | 0.604 |
-| scrapy+md | miss | doc.rust-lang.org/std/option/enum.Option.html | 0.596 | doc.rust-lang.org/stable/book/print.html | 0.557 | doc.rust-lang.org/book/print.html | 0.557 |
-| crawlee | #30 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.575 | doc.rust-lang.org/stable/book/ch06-01-defining-an- | 0.575 | doc.rust-lang.org/book/print.html | 0.557 |
-| colly+md | miss | doc.rust-lang.org/std/option/enum.Option.html | 0.574 | doc.rust-lang.org/std/option/enum.Option.html#meth | 0.574 | doc.rust-lang.org/stable/book/print.html | 0.557 |
-| playwright | #30 | doc.rust-lang.org/book/ch06-01-defining-an-enum.ht | 0.575 | doc.rust-lang.org/stable/book/ch06-01-defining-an- | 0.575 | doc.rust-lang.org/book/print.html | 0.557 |
-
-
-**Q13: What are the tradeoffs of using threads for concurrency?**
-*(expects URL containing: `ch17-06-futures-tasks-threads.html`)*
+**Q7: How do you extract the `front_of_house` module to its own file?**
+*(expects URL containing: `ch07-05-separating-modules-into-different-files.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/ch16-01-threads.html | 0.546 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.536 | doc.rust-lang.org/book/ch17-02-concurrency-with-as | 0.527 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.549 | doc.rust-lang.org/book/print.html | 0.549 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.527 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.549 | doc.rust-lang.org/book/print.html | 0.549 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.527 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.519 | doc.rust-lang.org/stable/book/print.html | 0.519 | doc.rust-lang.org/stable/book/print.html | 0.498 |
-| crawlee | #1 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.529 | doc.rust-lang.org/book/print.html | 0.519 | doc.rust-lang.org/book/print.html | 0.498 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.519 | doc.rust-lang.org/stable/book/print.html | 0.519 | doc.rust-lang.org/stable/book/print.html | 0.498 |
-| playwright | #1 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.529 | doc.rust-lang.org/book/print.html | 0.519 | doc.rust-lang.org/book/print.html | 0.498 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.587 | doc.rust-lang.org/book/print.html | 0.558 | doc.rust-lang.org/book/print.html | 0.504 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.583 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.583 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.583 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.583 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.583 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.583 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.566 | doc.rust-lang.org/stable/book/print.html | 0.566 | doc.rust-lang.org/stable/book/print.html | 0.493 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.566 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.563 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.563 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.566 | doc.rust-lang.org/book/print.html | 0.566 | doc.rust-lang.org/stable/book/print.html | 0.493 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.566 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.563 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.563 |
 
 
-**Q14: When should I choose async over threads for concurrent operations?**
-*(expects URL containing: `ch17-06-futures-tasks-threads.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/ch17-02-concurrency-with-as | 0.623 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.564 | doc.rust-lang.org/book/print.html | 0.553 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.611 | doc.rust-lang.org/book/print.html | 0.611 | doc.rust-lang.org/book/print.html | 0.569 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.611 | doc.rust-lang.org/book/print.html | 0.611 | doc.rust-lang.org/book/print.html | 0.569 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.553 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/stable/book/print.html | 0.545 |
-| crawlee | #1 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.569 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/book/print.html | 0.545 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.553 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/stable/book/print.html | 0.545 |
-| playwright | #1 | doc.rust-lang.org/book/ch17-06-futures-tasks-threa | 0.569 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/book/ch17-00-async-await.html | 0.545 |
-
-
-**Q15: How do I print error messages to standard error in Rust?**
-*(expects URL containing: `ch12-06-writing-to-stderr-instead-of-stdout.html`)*
+**Q8: What are the file paths the Rust compiler looks for a module named `front_of_house`?**
+*(expects URL containing: `ch07-05-separating-modules-into-different-files.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.582 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.573 | doc.rust-lang.org/book/print.html | 0.543 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.598 | doc.rust-lang.org/book/print.html | 0.598 | doc.rust-lang.org/stable/book/ch12-06-writing-to-s | 0.598 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.598 | doc.rust-lang.org/book/print.html | 0.598 | doc.rust-lang.org/stable/book/ch12-06-writing-to-s | 0.598 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.603 | doc.rust-lang.org/stable/book/print.html | 0.603 | doc.rust-lang.org/stable/book/print.html | 0.544 |
-| crawlee | #1 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.603 | doc.rust-lang.org/stable/book/ch12-06-writing-to-s | 0.603 | doc.rust-lang.org/book/print.html | 0.603 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.603 | doc.rust-lang.org/stable/book/print.html | 0.603 | doc.rust-lang.org/stable/book/print.html | 0.543 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.603 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.603 | doc.rust-lang.org/stable/book/ch12-06-writing-to-s | 0.603 |
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.676 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.676 | doc.rust-lang.org/book/print.html | 0.593 |
+| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.705 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.705 | doc.rust-lang.org/book/print.html | 0.705 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.705 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.705 | doc.rust-lang.org/book/print.html | 0.705 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.656 | doc.rust-lang.org/stable/book/print.html | 0.656 | doc.rust-lang.org/stable/book/print.html | 0.639 |
+| crawlee | #1 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.656 | doc.rust-lang.org/book/print.html | 0.656 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.656 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.656 | doc.rust-lang.org/book/print.html | 0.656 | doc.rust-lang.org/stable/book/print.html | 0.639 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.656 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.656 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.656 |
 
 
-**Q16: What command do I use to redirect standard output to a file in Rust?**
-*(expects URL containing: `ch12-06-writing-to-stderr-instead-of-stdout.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.545 | doc.rust-lang.org/book/print.html | 0.509 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.494 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch12-06-writing-to-s | 0.550 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.550 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.549 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch12-06-writing-to-s | 0.550 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.550 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.549 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/stable/book/print.html | 0.553 | doc.rust-lang.org/book/print.html | 0.506 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/stable/book/ch12-06-writing-to-s | 0.553 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.553 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.553 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/book/print.html | 0.506 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/book/ch12-06-writing-to-stderr-i | 0.553 | doc.rust-lang.org/stable/book/ch12-06-writing-to-s | 0.553 |
-
-
-**Q17: How do you define a struct in Rust?**
-*(expects URL containing: `ch05-02-example-structs.html`)*
+**Q9: How do you bring a module into the scope of a function using the `use` keyword?**
+*(expects URL containing: `ch07-04-bringing-paths-into-scope-with-the-use-keyword.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #3 | doc.rust-lang.org/book/ch05-00-structs.html | 0.693 | doc.rust-lang.org/book/print.html | 0.655 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.620 |
-| crawl4ai | #19 | doc.rust-lang.org/book/print.html | 0.675 | doc.rust-lang.org/book/print.html | 0.649 | doc.rust-lang.org/book/ch05-00-structs.html | 0.630 |
-| crawl4ai-raw | #19 | doc.rust-lang.org/book/print.html | 0.675 | doc.rust-lang.org/book/print.html | 0.649 | doc.rust-lang.org/book/ch05-00-structs.html | 0.630 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.662 | doc.rust-lang.org/stable/book/print.html | 0.662 | doc.rust-lang.org/stable/book/print.html | 0.642 |
-| crawlee | #20 | doc.rust-lang.org/book/print.html | 0.662 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/book/ch05-03-method-syntax.html | 0.625 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.662 | doc.rust-lang.org/stable/book/print.html | 0.662 | doc.rust-lang.org/stable/book/print.html | 0.642 |
-| playwright | #21 | doc.rust-lang.org/book/print.html | 0.662 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/stable/book/ch05-03-method-synta | 0.625 |
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.655 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.632 | doc.rust-lang.org/book/ch07-02-defining-modules-to | 0.606 |
+| crawl4ai | #4 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.619 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.619 | doc.rust-lang.org/book/print.html | 0.618 |
+| crawl4ai-raw | #4 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.619 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.619 | doc.rust-lang.org/book/print.html | 0.618 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.634 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/stable/book/print.html | 0.553 |
+| crawlee | #4 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.598 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.598 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/stable/book/print.html | 0.634 | doc.rust-lang.org/book/print.html | 0.553 |
+| playwright | #4 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.598 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.598 |
 
 
-**Q18: What is the purpose of the `#[derive(Debug)]` attribute in a struct?**
-*(expects URL containing: `ch05-02-example-structs.html`)*
+**Q10: What is the purpose of the `pub use` statement in Rust?**
+*(expects URL containing: `ch07-04-bringing-paths-into-scope-with-the-use-keyword.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.614 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.614 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.577 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch05-02-example-stru | 0.566 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.566 | doc.rust-lang.org/book/print.html | 0.565 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch05-02-example-stru | 0.566 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.566 | doc.rust-lang.org/book/print.html | 0.565 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.568 | doc.rust-lang.org/stable/book/print.html | 0.568 | doc.rust-lang.org/book/print.html | 0.550 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.568 | doc.rust-lang.org/stable/book/ch05-02-example-stru | 0.568 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.568 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.568 | doc.rust-lang.org/stable/book/print.html | 0.568 | doc.rust-lang.org/stable/book/print.html | 0.550 |
-| playwright | #1 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.568 | doc.rust-lang.org/book/print.html | 0.568 | doc.rust-lang.org/stable/book/ch05-02-example-stru | 0.568 |
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.618 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.618 | doc.rust-lang.org/book/print.html | 0.596 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.626 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.626 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.626 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.626 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.626 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.626 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.627 | doc.rust-lang.org/stable/book/print.html | 0.627 | doc.rust-lang.org/stable/book/print.html | 0.578 |
+| crawlee | #1 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.627 | doc.rust-lang.org/book/print.html | 0.627 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.627 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.627 | doc.rust-lang.org/stable/book/print.html | 0.627 | doc.rust-lang.org/stable/book/print.html | 0.578 |
+| playwright | #1 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.627 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.627 | doc.rust-lang.org/book/print.html | 0.627 |
 
 
-**Q19: What command line tool will we build in this chapter?**
+**Q11: How do you create a directory for a Rust project?**
+*(expects URL containing: `ch01-02-hello-world.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.644 | doc.rust-lang.org/book/print.html | 0.631 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.533 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.622 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.587 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.587 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.622 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.587 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.587 |
+| scrapy+md | #1 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.641 | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/stable/book/print.html | 0.625 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.602 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.602 |
+| colly+md | #3 | doc.rust-lang.org/stable/book/print.html | 0.625 | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.588 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.602 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.602 |
+
+
+**Q12: What command do you use to compile a Rust program?**
+*(expects URL containing: `ch01-02-hello-world.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.684 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.684 | doc.rust-lang.org/book/ch01-01-installation.html | 0.566 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.678 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.678 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.678 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.678 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.678 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.678 |
+| scrapy+md | #2 | doc.rust-lang.org/stable/book/print.html | 0.684 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.684 | doc.rust-lang.org/book/print.html | 0.684 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.684 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.679 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.679 |
+| colly+md | #3 | doc.rust-lang.org/book/print.html | 0.684 | doc.rust-lang.org/stable/book/print.html | 0.684 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.679 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.684 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.679 | doc.rust-lang.org/stable/book/ch01-02-hello-world. | 0.679 |
+
+
+**Q13: What is a function pointer in Rust?**
+*(expects URL containing: `ch20-04-advanced-functions-and-closures.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.589 | doc.rust-lang.org/book/print.html | 0.572 | doc.rust-lang.org/book/ch15-00-smart-pointers.html | 0.548 |
+| crawl4ai | #1 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.575 | doc.rust-lang.org/book/print.html | 0.571 | doc.rust-lang.org/book/ch15-00-smart-pointers.html | 0.553 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.575 | doc.rust-lang.org/book/print.html | 0.571 | doc.rust-lang.org/book/ch15-00-smart-pointers.html | 0.553 |
+| scrapy+md | miss | doc.rust-lang.org/core/primitive.fn.html | 0.655 | doc.rust-lang.org/nomicon/ffi.html | 0.615 | doc.rust-lang.org/book/print.html | 0.601 |
+| crawlee | #1 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.602 | doc.rust-lang.org/book/print.html | 0.601 | doc.rust-lang.org/book/print.html | 0.531 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.601 | doc.rust-lang.org/book/print.html | 0.601 | doc.rust-lang.org/stable/book/print.html | 0.531 |
+| playwright | #1 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.602 | doc.rust-lang.org/book/print.html | 0.601 | doc.rust-lang.org/book/print.html | 0.531 |
+
+
+**Q14: How can you return a closure from a function in Rust?**
+*(expects URL containing: `ch20-04-advanced-functions-and-closures.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | doc.rust-lang.org/book/ch13-01-closures.html | 0.680 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.615 | doc.rust-lang.org/book/print.html | 0.615 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.601 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.601 | doc.rust-lang.org/book/ch13-01-closures.html | 0.582 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.601 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.601 | doc.rust-lang.org/book/ch13-01-closures.html | 0.582 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.597 | doc.rust-lang.org/stable/book/print.html | 0.597 | doc.rust-lang.org/book/print.html | 0.593 |
+| crawlee | #1 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.602 | doc.rust-lang.org/book/print.html | 0.597 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.597 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.597 | doc.rust-lang.org/book/print.html | 0.597 | doc.rust-lang.org/book/print.html | 0.593 |
+| playwright | #1 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.602 | doc.rust-lang.org/book/print.html | 0.597 | doc.rust-lang.org/book/ch20-04-advanced-functions- | 0.597 |
+
+
+**Q15: What are the three kinds of loops in Rust?**
+*(expects URL containing: `ch03-05-control-flow.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.614 | doc.rust-lang.org/book/print.html | 0.614 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.609 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.614 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.614 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.614 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.614 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.614 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.614 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.618 | doc.rust-lang.org/book/print.html | 0.618 | doc.rust-lang.org/stable/book/print.html | 0.609 |
+| crawlee | #1 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.618 | doc.rust-lang.org/book/print.html | 0.618 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.618 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.618 | doc.rust-lang.org/stable/book/print.html | 0.618 | doc.rust-lang.org/stable/book/print.html | 0.610 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.618 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.618 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.618 |
+
+
+**Q16: How can you use an `if` expression in a `let` statement?**
+*(expects URL containing: `ch03-05-control-flow.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.591 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/print.html | 0.555 |
+| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.570 | doc.rust-lang.org/book/print.html | 0.569 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.569 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.570 | doc.rust-lang.org/book/print.html | 0.569 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.569 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.580 | doc.rust-lang.org/book/print.html | 0.580 | doc.rust-lang.org/stable/book/print.html | 0.556 |
+| crawlee | #1 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.580 | doc.rust-lang.org/book/print.html | 0.580 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.580 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.580 | doc.rust-lang.org/stable/book/print.html | 0.580 | doc.rust-lang.org/book/print.html | 0.556 |
+| playwright | #1 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.580 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.580 | doc.rust-lang.org/book/print.html | 0.580 |
+
+
+**Q17: What command line tool will we build in this chapter?**
 *(expects URL containing: `ch12-00-an-io-project.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -6152,301 +6180,161 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #2 | doc.rust-lang.org/book/print.html | 0.524 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.479 | doc.rust-lang.org/stable/book/ch12-00-an-io-projec | 0.479 |
 
 
-**Q20: What features will our command line tool use from the terminal?**
+**Q18: How does the `grep` tool function in terms of its arguments and output?**
 *(expects URL containing: `ch12-00-an-io-project.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.433 | doc.rust-lang.org/book/print.html | 0.404 | doc.rust-lang.org/book/print.html | 0.397 |
-| crawl4ai | #3 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.433 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.433 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.419 |
-| crawl4ai-raw | #3 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.433 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.433 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.419 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.404 | doc.rust-lang.org/stable/book/print.html | 0.404 | doc.rust-lang.org/stable/book/print.html | 0.400 |
-| crawlee | #4 | doc.rust-lang.org/rustc/tests/index.html | 0.446 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.436 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.436 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.404 | doc.rust-lang.org/stable/book/print.html | 0.404 | doc.rust-lang.org/book/ch01-01-installation.html | 0.400 |
-| playwright | #4 | doc.rust-lang.org/rustc/tests/index.html | 0.446 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.436 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.436 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.506 | doc.rust-lang.org/book/print.html | 0.472 | doc.rust-lang.org/book/ch13-03-improving-our-io-pr | 0.404 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.471 | doc.rust-lang.org/stable/book/ch12-00-an-io-projec | 0.462 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.462 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.471 | doc.rust-lang.org/stable/book/ch12-00-an-io-projec | 0.462 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.462 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.472 | doc.rust-lang.org/stable/book/print.html | 0.472 | doc.rust-lang.org/stable/book/print.html | 0.391 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.472 | doc.rust-lang.org/stable/book/ch12-00-an-io-projec | 0.421 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.421 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.472 | doc.rust-lang.org/book/print.html | 0.472 | doc.rust-lang.org/book/print.html | 0.391 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.472 | doc.rust-lang.org/stable/book/ch12-00-an-io-projec | 0.421 | doc.rust-lang.org/book/ch12-00-an-io-project.html | 0.421 |
 
 
-**Q21: What is Cargo in Rust?**
-*(expects URL containing: `ch01-03-hello-cargo.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.651 | doc.rust-lang.org/book/print.html | 0.640 | doc.rust-lang.org/book/print.html | 0.572 |
-| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.632 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.597 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.597 |
-| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.632 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.597 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.597 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.639 | doc.rust-lang.org/book/print.html | 0.639 | doc.rust-lang.org/nightly/cargo/reference/environm | 0.588 |
-| crawlee | #3 | doc.rust-lang.org/book/print.html | 0.639 | doc.rust-lang.org/cargo/ | 0.598 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.596 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.639 | doc.rust-lang.org/book/print.html | 0.639 | doc.rust-lang.org/cargo/ | 0.582 |
-| playwright | #3 | doc.rust-lang.org/book/print.html | 0.639 | doc.rust-lang.org/cargo/ | 0.598 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.596 |
-
-
-**Q22: How do you create a new project using Cargo?**
-*(expects URL containing: `ch01-03-hello-cargo.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.726 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.726 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.656 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.729 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.729 | doc.rust-lang.org/book/print.html | 0.729 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.729 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.729 | doc.rust-lang.org/book/print.html | 0.729 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.732 | doc.rust-lang.org/stable/book/print.html | 0.732 | doc.rust-lang.org/stable/book/print.html | 0.653 |
-| crawlee | #1 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.732 | doc.rust-lang.org/book/print.html | 0.732 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.732 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.732 | doc.rust-lang.org/stable/book/print.html | 0.732 | doc.rust-lang.org/book/print.html | 0.653 |
-| playwright | #1 | doc.rust-lang.org/stable/book/ch01-03-hello-cargo. | 0.732 | doc.rust-lang.org/book/print.html | 0.732 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.732 |
-
-
-**Q23: What are the two main profiles in Cargo?**
+**Q19: What are the two main profiles in Cargo for building Rust code?**
 *(expects URL containing: `ch14-01-release-profiles.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #4 | doc.rust-lang.org/book/print.html | 0.578 | doc.rust-lang.org/book/print.html | 0.541 | doc.rust-lang.org/book/ch14-00-more-about-cargo.ht | 0.535 |
-| crawl4ai | #7 | doc.rust-lang.org/cargo/reference/profiles.html | 0.622 | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/cargo/reference/profiles.html | 0.572 |
-| crawl4ai-raw | #7 | doc.rust-lang.org/cargo/reference/profiles.html | 0.622 | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/cargo/reference/profiles.html | 0.572 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.587 | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/cargo/reference/profiles.html | 0.564 |
-| crawlee | #8 | doc.rust-lang.org/cargo/reference/profiles.html | 0.643 | doc.rust-lang.org/cargo/reference/profiles.html | 0.587 | doc.rust-lang.org/cargo/reference/profiles.html | 0.587 |
-| colly+md | miss | doc.rust-lang.org/cargo/reference/profiles.html | 0.636 | doc.rust-lang.org/stable/book/print.html | 0.587 | doc.rust-lang.org/book/print.html | 0.587 |
-| playwright | #8 | doc.rust-lang.org/cargo/reference/profiles.html | 0.643 | doc.rust-lang.org/cargo/reference/profiles.html | 0.587 | doc.rust-lang.org/cargo/reference/profiles.html | 0.587 |
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.626 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.602 | doc.rust-lang.org/book/print.html | 0.586 |
+| crawl4ai | #2 | doc.rust-lang.org/cargo/reference/profiles.html | 0.639 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.639 | doc.rust-lang.org/book/print.html | 0.635 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/cargo/reference/profiles.html | 0.639 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.639 | doc.rust-lang.org/book/print.html | 0.635 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/stable/book/print.html | 0.634 | doc.rust-lang.org/cargo/faq.html | 0.601 |
+| crawlee | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.649 | doc.rust-lang.org/cargo/reference/profiles.html | 0.636 | doc.rust-lang.org/book/print.html | 0.634 |
+| colly+md | miss | doc.rust-lang.org/cargo/reference/profiles.html | 0.636 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/stable/book/print.html | 0.634 |
+| playwright | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.649 | doc.rust-lang.org/cargo/reference/profiles.html | 0.636 | doc.rust-lang.org/book/print.html | 0.634 |
 
 
-**Q24: How can you customize the `opt-level` setting in the `dev` profile?**
+**Q20: How can you customize the `opt-level` setting for the `dev` profile in Cargo?**
 *(expects URL containing: `ch14-01-release-profiles.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.671 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.669 | doc.rust-lang.org/book/print.html | 0.646 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.684 | doc.rust-lang.org/book/print.html | 0.649 | doc.rust-lang.org/cargo/reference/profiles.html | 0.617 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.684 | doc.rust-lang.org/book/print.html | 0.649 | doc.rust-lang.org/cargo/reference/profiles.html | 0.617 |
-| scrapy+md | miss | doc.rust-lang.org/cargo/reference/profiles.html | 0.650 | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/stable/book/print.html | 0.648 |
-| crawlee | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.655 | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.585 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/stable/book/print.html | 0.648 | doc.rust-lang.org/cargo/reference/profiles.html | 0.618 |
-| playwright | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.655 | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.585 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.756 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.747 | doc.rust-lang.org/book/print.html | 0.744 |
+| crawl4ai | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.770 | doc.rust-lang.org/book/print.html | 0.747 | doc.rust-lang.org/cargo/reference/profiles.html | 0.669 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.770 | doc.rust-lang.org/book/print.html | 0.747 | doc.rust-lang.org/cargo/reference/profiles.html | 0.669 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.747 | doc.rust-lang.org/stable/book/print.html | 0.747 | doc.rust-lang.org/cargo/reference/profiles.html | 0.713 |
+| crawlee | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.750 | doc.rust-lang.org/book/print.html | 0.747 | doc.rust-lang.org/cargo/reference/profiles.html | 0.677 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.747 | doc.rust-lang.org/stable/book/print.html | 0.747 | doc.rust-lang.org/cargo/reference/profiles.html | 0.669 |
+| playwright | #1 | doc.rust-lang.org/book/ch14-01-release-profiles.ht | 0.750 | doc.rust-lang.org/book/print.html | 0.747 | doc.rust-lang.org/cargo/reference/profiles.html | 0.677 |
 
 
-**Q25: How do you bring a module into scope with the use keyword?**
-*(expects URL containing: `ch07-04-bringing-paths-into-scope-with-the-use-keyword.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #3 | doc.rust-lang.org/book/ch07-02-defining-modules-to | 0.627 | doc.rust-lang.org/book/print.html | 0.605 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.590 |
-| crawl4ai | #4 | doc.rust-lang.org/book/print.html | 0.577 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.552 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.552 |
-| crawl4ai-raw | #4 | doc.rust-lang.org/book/print.html | 0.577 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.552 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.552 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/stable/book/print.html | 0.587 | doc.rust-lang.org/book/print.html | 0.526 |
-| crawlee | #4 | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.552 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.552 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/stable/book/print.html | 0.587 | doc.rust-lang.org/book/print.html | 0.526 |
-| playwright | #4 | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.552 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.552 |
-
-
-**Q26: What is the purpose of the pub use statement in Rust?**
-*(expects URL containing: `ch07-04-bringing-paths-into-scope-with-the-use-keyword.html`)*
+**Q21: How can you extend Cargo with new subcommands?**
+*(expects URL containing: `ch14-05-extending-cargo.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #4 | doc.rust-lang.org/book/print.html | 0.560 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.560 | doc.rust-lang.org/book/print.html | 0.557 |
-| crawl4ai | #4 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.568 | doc.rust-lang.org/book/print.html | 0.568 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.568 |
-| crawl4ai-raw | #4 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.568 | doc.rust-lang.org/book/print.html | 0.568 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.568 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/stable/book/print.html | 0.564 | doc.rust-lang.org/stable/book/print.html | 0.562 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.564 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.564 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/stable/book/print.html | 0.564 | doc.rust-lang.org/book/print.html | 0.562 |
-| playwright | #1 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.564 | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.564 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch14-05-extending-cargo.htm | 0.755 | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/book/ch14-00-more-about-cargo.ht | 0.553 |
+| crawl4ai | #4 | doc.rust-lang.org/book/print.html | 0.600 | doc.rust-lang.org/cargo/reference/profiles.html | 0.555 | doc.rust-lang.org/cargo/ | 0.554 |
+| crawl4ai-raw | #4 | doc.rust-lang.org/book/print.html | 0.600 | doc.rust-lang.org/cargo/reference/profiles.html | 0.555 | doc.rust-lang.org/cargo/ | 0.554 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.606 | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/cargo/CHANGELOG.html | 0.537 |
+| crawlee | #4 | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/cargo/reference/profiles.html | 0.560 | doc.rust-lang.org/cargo/reference/publishing.html | 0.560 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.606 | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/book/print.html | 0.493 |
+| playwright | #4 | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/cargo/reference/profiles.html | 0.560 | doc.rust-lang.org/cargo/reference/publishing.html | 0.560 |
 
 
-**Q27: What are the features of Rust's module system?**
-*(expects URL containing: `ch07-00-managing-growing-projects-with-packages-crates-and-modules.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.590 | doc.rust-lang.org/book/print.html | 0.576 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.626 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.626 | doc.rust-lang.org/book/print.html | 0.617 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.626 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.626 | doc.rust-lang.org/book/print.html | 0.617 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/stable/book/print.html | 0.654 | doc.rust-lang.org/stable/book/print.html | 0.576 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.606 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.606 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.654 | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/stable/book/print.html | 0.576 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.606 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.606 |
-
-
-**Q28: How can you manage code organization in Rust?**
-*(expects URL containing: `ch07-00-managing-growing-projects-with-packages-crates-and-modules.html`)*
+**Q22: What is the benefit of using `cargo install` for extensions?**
+*(expects URL containing: `ch14-05-extending-cargo.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.643 | doc.rust-lang.org/book/ch11-03-test-organization.h | 0.559 |
-| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.682 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.633 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.633 |
-| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.682 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.633 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.633 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/stable/book/print.html | 0.657 | doc.rust-lang.org/book/print.html | 0.558 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.646 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.646 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.657 | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/book/print.html | 0.558 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.646 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.646 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch14-05-extending-cargo.htm | 0.669 | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/book/ch01-03-hello-cargo.html | 0.529 |
+| crawl4ai | #4 | doc.rust-lang.org/book/print.html | 0.604 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/book/print.html | 0.524 |
+| crawl4ai-raw | #4 | doc.rust-lang.org/book/print.html | 0.604 | doc.rust-lang.org/book/print.html | 0.553 | doc.rust-lang.org/book/print.html | 0.524 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/stable/book/print.html | 0.606 | doc.rust-lang.org/cargo/faq.html | 0.540 |
+| crawlee | #3 | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/book/print.html | 0.526 | doc.rust-lang.org/book/ch14-05-extending-cargo.htm | 0.510 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/stable/book/print.html | 0.606 | doc.rust-lang.org/book/print.html | 0.526 |
+| playwright | #3 | doc.rust-lang.org/book/print.html | 0.606 | doc.rust-lang.org/book/print.html | 0.526 | doc.rust-lang.org/book/ch14-05-extending-cargo.htm | 0.510 |
 
 
-**Q29: What is the purpose of the `search` function in the `minigrep` program?**
-*(expects URL containing: `ch12-04-testing-the-librarys-functionality.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.547 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.540 | doc.rust-lang.org/book/print.html | 0.529 |
-| crawl4ai | #17 | doc.rust-lang.org/stable/book/ch12-03-improving-er | 0.573 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.572 | doc.rust-lang.org/book/print.html | 0.572 |
-| crawl4ai-raw | #17 | doc.rust-lang.org/stable/book/ch12-03-improving-er | 0.573 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.572 | doc.rust-lang.org/book/print.html | 0.572 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.585 | doc.rust-lang.org/stable/book/print.html | 0.585 | doc.rust-lang.org/stable/book/print.html | 0.523 |
-| crawlee | #20 | doc.rust-lang.org/stable/book/ch12-03-improving-er | 0.585 | doc.rust-lang.org/book/print.html | 0.585 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.585 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.585 | doc.rust-lang.org/stable/book/print.html | 0.585 | doc.rust-lang.org/stable/book/print.html | 0.523 |
-| playwright | #20 | doc.rust-lang.org/book/print.html | 0.585 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.585 | doc.rust-lang.org/stable/book/ch12-03-improving-er | 0.585 |
-
-
-**Q30: How do you write a failing test for the `search` function?**
-*(expects URL containing: `ch12-04-testing-the-librarys-functionality.html`)*
+**Q23: What version of Rust does this book assume you are using?**
+*(expects URL containing: `book`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.626 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.609 | doc.rust-lang.org/book/print.html | 0.609 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch12-04-testing-the- | 0.636 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.635 | doc.rust-lang.org/book/print.html | 0.635 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch12-04-testing-the- | 0.636 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.635 | doc.rust-lang.org/book/print.html | 0.635 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.633 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/book/print.html | 0.616 |
-| crawlee | #1 | doc.rust-lang.org/stable/book/ch12-04-testing-the- | 0.633 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.633 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/stable/book/print.html | 0.633 | doc.rust-lang.org/stable/book/print.html | 0.616 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.633 | doc.rust-lang.org/stable/book/ch12-04-testing-the- | 0.633 |
+| markcrawl | #1 | doc.rust-lang.org/book/ | 0.680 | doc.rust-lang.org/book/print.html | 0.680 | doc.rust-lang.org/book/appendix-05-editions.html | 0.651 |
+| crawl4ai | #1 | doc.rust-lang.org/book/appendix-05-editions.html | 0.655 | doc.rust-lang.org/book/print.html | 0.655 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.636 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/appendix-05-editions.html | 0.655 | doc.rust-lang.org/book/print.html | 0.655 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.636 |
+| scrapy+md | #1 | doc.rust-lang.org/book/ | 0.680 | doc.rust-lang.org/book/title-page.html | 0.680 | doc.rust-lang.org/book/ | 0.680 |
+| crawlee | #1 | doc.rust-lang.org/book/appendix-05-editions.html | 0.656 | doc.rust-lang.org/book/appendix-05-editions.html | 0.640 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.636 |
+| colly+md | #1 | doc.rust-lang.org/stable/book/appendix-05-editions | 0.656 | doc.rust-lang.org/book/appendix-05-editions.html | 0.656 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.636 |
+| playwright | #1 | doc.rust-lang.org/book/appendix-05-editions.html | 0.656 | doc.rust-lang.org/book/appendix-05-editions.html | 0.640 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.636 |
 
 
-**Q31: What are the three collections discussed in this chapter?**
-*(expects URL containing: `ch08-00-common-collections.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch08-00-common-collections. | 0.492 | doc.rust-lang.org/book/print.html | 0.438 | doc.rust-lang.org/book/print.html | 0.344 |
-| crawl4ai | #3 | doc.rust-lang.org/book/print.html | 0.430 | doc.rust-lang.org/std/collections/index.html | 0.429 | doc.rust-lang.org/stable/book/ch08-00-common-colle | 0.427 |
-| crawl4ai-raw | #3 | doc.rust-lang.org/book/print.html | 0.430 | doc.rust-lang.org/std/collections/index.html | 0.429 | doc.rust-lang.org/stable/book/ch08-00-common-colle | 0.427 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.438 | doc.rust-lang.org/stable/book/print.html | 0.438 | doc.rust-lang.org/std/collections/index.html | 0.392 |
-| crawlee | #4 | doc.rust-lang.org/book/print.html | 0.438 | doc.rust-lang.org/std/collections/index.html | 0.418 | doc.rust-lang.org/std/collections/index.html | 0.405 |
-| colly+md | miss | doc.rust-lang.org/std/collections/index.html | 0.456 | doc.rust-lang.org/book/print.html | 0.438 | doc.rust-lang.org/stable/book/print.html | 0.438 |
-| playwright | #4 | doc.rust-lang.org/book/print.html | 0.438 | doc.rust-lang.org/std/collections/index.html | 0.418 | doc.rust-lang.org/std/collections/index.html | 0.405 |
-
-
-**Q32: How does a vector differ from built-in array and tuple types in Rust?**
-*(expects URL containing: `ch08-00-common-collections.html`)*
+**Q24: Where can I find instructions on installing or updating Rust?**
+*(expects URL containing: `book`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch08-00-common-collections. | 0.603 | doc.rust-lang.org/book/ch03-02-data-types.html | 0.597 | doc.rust-lang.org/book/print.html | 0.597 |
-| crawl4ai | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.620 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.620 | doc.rust-lang.org/book/print.html | 0.605 |
-| crawl4ai-raw | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.620 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.620 | doc.rust-lang.org/book/print.html | 0.605 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.598 | doc.rust-lang.org/stable/book/print.html | 0.598 | doc.rust-lang.org/book/print.html | 0.597 |
-| crawlee | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.605 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.605 | doc.rust-lang.org/book/print.html | 0.598 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.598 | doc.rust-lang.org/stable/book/print.html | 0.598 | doc.rust-lang.org/book/print.html | 0.597 |
-| playwright | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.605 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.605 | doc.rust-lang.org/book/print.html | 0.598 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch01-01-installation.html | 0.632 | doc.rust-lang.org/book/print.html | 0.632 | doc.rust-lang.org/book/print.html | 0.625 |
+| crawl4ai | #1 | doc.rust-lang.org/book/print.html | 0.621 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/stable/book/ch01-01-installation | 0.597 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/print.html | 0.621 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/stable/book/ch01-01-installation | 0.597 |
+| scrapy+md | #1 | doc.rust-lang.org/stable/book/ch01-01-installation | 0.633 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/book/ch01-01-installation.html | 0.633 |
+| crawlee | #1 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/book/print.html | 0.624 | doc.rust-lang.org/stable/book/ch01-01-installation | 0.605 |
+| colly+md | #1 | doc.rust-lang.org/book/ch01-01-installation.html | 0.643 | doc.rust-lang.org/stable/book/ch01-01-installation | 0.643 | doc.rust-lang.org/book/ch01-01-installation.html | 0.633 |
+| playwright | #1 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/book/print.html | 0.624 | doc.rust-lang.org/book/ch01-01-installation.html | 0.605 |
 
 
-**Q33: What is Rust's most unique feature?**
-*(expects URL containing: `ch04-00-understanding-ownership.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #5 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.533 | doc.rust-lang.org/book/print.html | 0.533 | doc.rust-lang.org/book/ch18-01-what-is-oo.html | 0.526 |
-| crawl4ai | #21 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.535 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.535 | doc.rust-lang.org/book/print.html | 0.535 |
-| crawl4ai-raw | #21 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.535 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.535 | doc.rust-lang.org/book/print.html | 0.535 |
-| scrapy+md | miss | doc.rust-lang.org/book/ch00-00-introduction.html | 0.533 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.533 | doc.rust-lang.org/stable/book/print.html | 0.533 |
-| crawlee | #13 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.546 | doc.rust-lang.org/book/ch18-01-what-is-oo.html | 0.534 | doc.rust-lang.org/book/print.html | 0.533 |
-| colly+md | miss | doc.rust-lang.org/book/ch00-00-introduction.html | 0.545 | doc.rust-lang.org/stable/book/print.html | 0.533 | doc.rust-lang.org/book/print.html | 0.533 |
-| playwright | #13 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.546 | doc.rust-lang.org/book/ch18-01-what-is-oo.html | 0.534 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.533 |
-
-
-**Q34: How does ownership in Rust enable memory safety without a garbage collector?**
-*(expects URL containing: `ch04-00-understanding-ownership.html`)*
+**Q25: What is the definition of the `Future` trait in Rust?**
+*(expects URL containing: `ch17-05-traits-for-async.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch04-00-understanding-owner | 0.672 | doc.rust-lang.org/book/ch04-01-what-is-ownership.h | 0.657 | doc.rust-lang.org/book/ch20-01-unsafe-rust.html | 0.585 |
-| crawl4ai | #21 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.584 | doc.rust-lang.org/book/print.html | 0.584 | doc.rust-lang.org/book/print.html | 0.579 |
-| crawl4ai-raw | #21 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.584 | doc.rust-lang.org/book/print.html | 0.584 | doc.rust-lang.org/book/print.html | 0.579 |
-| scrapy+md | miss | doc.rust-lang.org/nomicon/leaking.html | 0.603 | doc.rust-lang.org/stable/book/print.html | 0.579 | doc.rust-lang.org/book/print.html | 0.579 |
-| crawlee | #39 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.579 | doc.rust-lang.org/book/print.html | 0.579 | doc.rust-lang.org/book/print.html | 0.578 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.579 | doc.rust-lang.org/stable/book/print.html | 0.579 | doc.rust-lang.org/stable/book/print.html | 0.579 |
-| playwright | #39 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.579 | doc.rust-lang.org/book/print.html | 0.579 | doc.rust-lang.org/book/print.html | 0.578 |
+| markcrawl | #2 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.599 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.554 | doc.rust-lang.org/book/print.html | 0.554 |
+| crawl4ai | #1 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.578 | doc.rust-lang.org/book/print.html | 0.577 | doc.rust-lang.org/book/print.html | 0.570 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.578 | doc.rust-lang.org/book/print.html | 0.577 | doc.rust-lang.org/book/print.html | 0.570 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.561 | doc.rust-lang.org/stable/book/print.html | 0.561 | doc.rust-lang.org/book/print.html | 0.551 |
+| crawlee | #2 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.571 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.561 | doc.rust-lang.org/book/print.html | 0.561 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.562 | doc.rust-lang.org/stable/book/print.html | 0.561 | doc.rust-lang.org/book/print.html | 0.551 |
+| playwright | #2 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.571 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.561 | doc.rust-lang.org/book/print.html | 0.561 |
 
 
-**Q35: How can I enable case-insensitive searching in minigrep?**
-*(expects URL containing: `ch12-05-working-with-environment-variables.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.573 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.562 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.531 |
-| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.548 | doc.rust-lang.org/book/print.html | 0.548 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.548 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.548 | doc.rust-lang.org/book/print.html | 0.548 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.548 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.529 | doc.rust-lang.org/stable/book/print.html | 0.529 | doc.rust-lang.org/book/print.html | 0.497 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.529 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.529 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.529 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.529 | doc.rust-lang.org/book/print.html | 0.529 | doc.rust-lang.org/stable/book/print.html | 0.497 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.529 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.529 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.529 |
-
-
-**Q36: What function is used to check if the IGNORE_CASE environment variable is set?**
-*(expects URL containing: `ch12-05-working-with-environment-variables.html`)*
+**Q26: How does the `Pin` type relate to the `Unpin` trait in Rust?**
+*(expects URL containing: `ch17-05-traits-for-async.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.516 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.516 | doc.rust-lang.org/book/print.html | 0.451 |
-| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.636 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.636 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.636 |
-| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.636 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.636 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.636 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.507 | doc.rust-lang.org/book/print.html | 0.507 | doc.rust-lang.org/stable/book/print.html | 0.492 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.507 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.507 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.507 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.507 | doc.rust-lang.org/book/print.html | 0.507 | doc.rust-lang.org/book/print.html | 0.492 |
-| playwright | #1 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.507 | doc.rust-lang.org/book/print.html | 0.507 | doc.rust-lang.org/stable/book/ch12-05-working-with | 0.507 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.769 | doc.rust-lang.org/book/print.html | 0.769 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.751 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.766 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.766 | doc.rust-lang.org/book/print.html | 0.711 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.766 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.766 | doc.rust-lang.org/book/print.html | 0.711 |
+| scrapy+md | miss | doc.rust-lang.org/core/pin/index.html | 0.772 | doc.rust-lang.org/book/print.html | 0.748 | doc.rust-lang.org/stable/book/print.html | 0.748 |
+| crawlee | #1 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.748 | doc.rust-lang.org/book/print.html | 0.748 | doc.rust-lang.org/book/print.html | 0.720 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.749 | doc.rust-lang.org/stable/book/print.html | 0.748 | doc.rust-lang.org/stable/book/print.html | 0.720 |
+| playwright | #1 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.748 | doc.rust-lang.org/book/print.html | 0.748 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.720 |
 
 
-**Q37: What are atomic types used for in Rust?**
-*(expects URL containing: `atomic`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | doc.rust-lang.org/book/ch03-02-data-types.html | 0.622 | doc.rust-lang.org/book/ch03-02-data-types.html | 0.609 | doc.rust-lang.org/book/print.html | 0.609 |
-| crawl4ai | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.658 | doc.rust-lang.org/std/sync/atomic/index.html | 0.650 | doc.rust-lang.org/std/sync/atomic/index.html | 0.634 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.658 | doc.rust-lang.org/std/sync/atomic/index.html | 0.650 | doc.rust-lang.org/std/sync/atomic/index.html | 0.634 |
-| scrapy+md | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.626 | doc.rust-lang.org/std/sync/atomic/index.html | 0.616 | doc.rust-lang.org/stable/book/print.html | 0.611 |
-| crawlee | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.654 | doc.rust-lang.org/std/sync/atomic/index.html | 0.626 | doc.rust-lang.org/std/sync/atomic/index.html | 0.616 |
-| colly+md | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.644 | doc.rust-lang.org/std/sync/atomic/index.html | 0.626 | doc.rust-lang.org/std/sync/atomic/index.html | 0.616 |
-| playwright | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.654 | doc.rust-lang.org/std/sync/atomic/index.html | 0.626 | doc.rust-lang.org/std/sync/atomic/index.html | 0.616 |
-
-
-**Q38: Which atomic types are defined in the atomic module?**
-*(expects URL containing: `atomic`)*
+**Q27: What is a struct in Rust?**
+*(expects URL containing: `ch05-00-structs.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | doc.rust-lang.org/book/appendix-01-keywords.html | 0.387 | doc.rust-lang.org/book/print.html | 0.387 | doc.rust-lang.org/book/ch20-03-advanced-types.html | 0.381 |
-| crawl4ai | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.603 | doc.rust-lang.org/std/sync/atomic/index.html | 0.570 | doc.rust-lang.org/std/sync/atomic/index.html | 0.484 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.603 | doc.rust-lang.org/std/sync/atomic/index.html | 0.570 | doc.rust-lang.org/std/sync/atomic/index.html | 0.484 |
-| scrapy+md | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.546 | doc.rust-lang.org/std/sync/atomic/index.html | 0.511 | doc.rust-lang.org/std/sync/atomic/index.html | 0.485 |
-| crawlee | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.605 | doc.rust-lang.org/std/sync/atomic/index.html | 0.546 | doc.rust-lang.org/std/sync/atomic/index.html | 0.485 |
-| colly+md | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.593 | doc.rust-lang.org/std/sync/atomic/index.html | 0.546 | doc.rust-lang.org/std/sync/atomic/index.html | 0.485 |
-| playwright | #1 | doc.rust-lang.org/std/sync/atomic/index.html | 0.605 | doc.rust-lang.org/std/sync/atomic/index.html | 0.546 | doc.rust-lang.org/std/sync/atomic/index.html | 0.485 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch05-00-structs.html | 0.696 | doc.rust-lang.org/book/print.html | 0.641 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.617 |
+| crawl4ai | #3 | doc.rust-lang.org/book/print.html | 0.659 | doc.rust-lang.org/book/print.html | 0.647 | doc.rust-lang.org/book/ch05-00-structs.html | 0.646 |
+| crawl4ai-raw | #3 | doc.rust-lang.org/book/print.html | 0.659 | doc.rust-lang.org/book/print.html | 0.647 | doc.rust-lang.org/book/ch05-00-structs.html | 0.646 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/stable/book/print.html | 0.648 | doc.rust-lang.org/book/print.html | 0.638 |
+| crawlee | #8 | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/book/print.html | 0.638 | doc.rust-lang.org/book/ch05-01-defining-structs.ht | 0.631 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.648 | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/book/print.html | 0.638 |
+| playwright | #8 | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/book/print.html | 0.638 | doc.rust-lang.org/book/ch05-01-defining-structs.ht | 0.631 |
 
 
-**Q39: What is the purpose of the `trpl::block_on` function in async Rust?**
-*(expects URL containing: `ch17-02-concurrency-with-async.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #10 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.591 | doc.rust-lang.org/book/print.html | 0.564 |
-| crawl4ai | #10 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.615 | doc.rust-lang.org/book/print.html | 0.615 | doc.rust-lang.org/book/ch17-03-more-futures.html | 0.607 |
-| crawl4ai-raw | #10 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.615 | doc.rust-lang.org/book/print.html | 0.615 | doc.rust-lang.org/book/ch17-03-more-futures.html | 0.607 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.650 | doc.rust-lang.org/book/print.html | 0.650 | doc.rust-lang.org/book/print.html | 0.568 |
-| crawlee | #5 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.650 | doc.rust-lang.org/book/print.html | 0.650 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.568 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.650 | doc.rust-lang.org/book/print.html | 0.650 | doc.rust-lang.org/book/print.html | 0.568 |
-| playwright | #5 | doc.rust-lang.org/book/print.html | 0.650 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.650 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.568 |
-
-
-**Q40: How does the `trpl::join` function differ from using `await` on individual futures?**
-*(expects URL containing: `ch17-02-concurrency-with-async.html`)*
+**Q28: How do structs compare to tuples in Rust?**
+*(expects URL containing: `ch05-00-structs.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch17-02-concurrency-with-as | 0.686 | doc.rust-lang.org/book/print.html | 0.686 | doc.rust-lang.org/book/print.html | 0.593 |
-| crawl4ai | #4 | doc.rust-lang.org/book/print.html | 0.660 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.660 | doc.rust-lang.org/book/print.html | 0.642 |
-| crawl4ai-raw | #4 | doc.rust-lang.org/book/print.html | 0.660 | doc.rust-lang.org/book/ch17-05-traits-for-async.ht | 0.660 | doc.rust-lang.org/book/print.html | 0.642 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.661 | doc.rust-lang.org/book/print.html | 0.661 | doc.rust-lang.org/book/print.html | 0.652 |
-| crawlee | #1 | doc.rust-lang.org/book/ch17-02-concurrency-with-as | 0.661 | doc.rust-lang.org/book/print.html | 0.661 | doc.rust-lang.org/book/print.html | 0.652 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.661 | doc.rust-lang.org/stable/book/print.html | 0.661 | doc.rust-lang.org/book/print.html | 0.652 |
-| playwright | #1 | doc.rust-lang.org/book/ch17-02-concurrency-with-as | 0.661 | doc.rust-lang.org/book/print.html | 0.661 | doc.rust-lang.org/book/print.html | 0.652 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch05-00-structs.html | 0.645 | doc.rust-lang.org/book/ch05-01-defining-structs.ht | 0.639 | doc.rust-lang.org/book/print.html | 0.639 |
+| crawl4ai | #13 | doc.rust-lang.org/book/print.html | 0.646 | doc.rust-lang.org/stable/book/ch05-01-defining-str | 0.646 | doc.rust-lang.org/book/ch05-01-defining-structs.ht | 0.646 |
+| crawl4ai-raw | #13 | doc.rust-lang.org/book/print.html | 0.646 | doc.rust-lang.org/stable/book/ch05-01-defining-str | 0.646 | doc.rust-lang.org/book/ch05-01-defining-structs.ht | 0.646 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.642 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/book/print.html | 0.579 |
+| crawlee | #24 | doc.rust-lang.org/book/ch05-01-defining-structs.ht | 0.642 | doc.rust-lang.org/stable/book/ch05-01-defining-str | 0.642 | doc.rust-lang.org/book/print.html | 0.642 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/stable/book/print.html | 0.642 | doc.rust-lang.org/book/print.html | 0.579 |
+| playwright | #24 | doc.rust-lang.org/book/ch05-01-defining-structs.ht | 0.642 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/stable/book/ch05-01-defining-str | 0.642 |
 
 
-**Q41: What version of Rust does this book assume you are using?**
+**Q29: What version of Rust does this book assume you are using?**
 *(expects URL containing: `title-page.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -6460,46 +6348,214 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #9 | doc.rust-lang.org/book/appendix-05-editions.html | 0.656 | doc.rust-lang.org/book/appendix-05-editions.html | 0.640 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.636 |
 
 
-**Q42: Where can you find community translations of the Rust book?**
+**Q30: Where can I find community translations of the Rust book?**
 *(expects URL containing: `title-page.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | doc.rust-lang.org/book/ | 0.627 | doc.rust-lang.org/book/print.html | 0.627 | doc.rust-lang.org/book/print.html | 0.566 |
-| crawl4ai | #5 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.614 | doc.rust-lang.org/book/print.html | 0.584 | doc.rust-lang.org/stable/book/ | 0.581 |
-| crawl4ai-raw | #5 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.614 | doc.rust-lang.org/book/print.html | 0.584 | doc.rust-lang.org/stable/book/ | 0.581 |
-| scrapy+md | #3 | doc.rust-lang.org/book/ | 0.627 | doc.rust-lang.org/book/print.html | 0.627 | doc.rust-lang.org/stable/book/title-page.html | 0.627 |
-| crawlee | #4 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.632 | doc.rust-lang.org/book/print.html | 0.593 | doc.rust-lang.org/book/ | 0.592 |
-| colly+md | #13 | doc.rust-lang.org/stable/book/appendix-06-translat | 0.597 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.597 | doc.rust-lang.org/stable/book/print.html | 0.567 |
-| playwright | #5 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.632 | doc.rust-lang.org/book/print.html | 0.593 | doc.rust-lang.org/book/ | 0.592 |
+| markcrawl | miss | doc.rust-lang.org/book/ | 0.620 | doc.rust-lang.org/book/print.html | 0.620 | doc.rust-lang.org/book/print.html | 0.553 |
+| crawl4ai | #5 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.605 | doc.rust-lang.org/book/print.html | 0.575 | doc.rust-lang.org/book/print.html | 0.570 |
+| crawl4ai-raw | #5 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.605 | doc.rust-lang.org/book/print.html | 0.575 | doc.rust-lang.org/book/print.html | 0.570 |
+| scrapy+md | #2 | doc.rust-lang.org/book/ | 0.620 | doc.rust-lang.org/stable/book/title-page.html | 0.620 | doc.rust-lang.org/book/ | 0.620 |
+| crawlee | #4 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.626 | doc.rust-lang.org/book/print.html | 0.584 | doc.rust-lang.org/book/ | 0.582 |
+| colly+md | #13 | doc.rust-lang.org/stable/book/appendix-06-translat | 0.592 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.592 | doc.rust-lang.org/book/print.html | 0.562 |
+| playwright | #5 | doc.rust-lang.org/book/appendix-06-translation.htm | 0.626 | doc.rust-lang.org/book/print.html | 0.584 | doc.rust-lang.org/stable/book/ | 0.582 |
 
 
-**Q43: What is the state pattern in object-oriented design?**
-*(expects URL containing: `ch18-03-oo-design-patterns.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.616 | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.547 |
-| crawl4ai | #3 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/print.html | 0.512 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.512 |
-| crawl4ai-raw | #3 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/print.html | 0.512 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.512 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.547 |
-| crawlee | #3 | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.547 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.547 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/stable/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.547 |
-| playwright | #3 | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.547 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.547 |
-
-
-**Q44: How does the `request_review` method change a post's state?**
-*(expects URL containing: `ch18-03-oo-design-patterns.html`)*
+**Q31: What is a trait in Rust?**
+*(expects URL containing: `ch10-02-traits.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.726 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.726 | doc.rust-lang.org/book/print.html | 0.672 |
-| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.727 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.727 | doc.rust-lang.org/book/print.html | 0.668 |
-| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.727 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.727 | doc.rust-lang.org/book/print.html | 0.668 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.644 | doc.rust-lang.org/book/print.html | 0.644 | doc.rust-lang.org/book/print.html | 0.627 |
-| crawlee | #1 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.644 | doc.rust-lang.org/book/print.html | 0.644 | doc.rust-lang.org/book/print.html | 0.627 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.644 | doc.rust-lang.org/stable/book/print.html | 0.644 | doc.rust-lang.org/book/print.html | 0.627 |
-| playwright | #1 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.645 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/book/ch18-03-oo-design-patterns. | 0.627 |
+| markcrawl | #7 | doc.rust-lang.org/book/print.html | 0.593 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.591 | doc.rust-lang.org/book/print.html | 0.584 |
+| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch10-02-traits.html | 0.685 | doc.rust-lang.org/book/ch10-02-traits.html | 0.685 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.639 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch10-02-traits.html | 0.685 | doc.rust-lang.org/book/ch10-02-traits.html | 0.685 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.639 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.584 | doc.rust-lang.org/book/print.html | 0.584 | doc.rust-lang.org/book/print.html | 0.581 |
+| crawlee | #2 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.628 | doc.rust-lang.org/stable/book/ch10-02-traits.html | 0.610 | doc.rust-lang.org/book/ch10-02-traits.html | 0.610 |
+| colly+md | miss | doc.rust-lang.org/reference/items/traits.html#dyn- | 0.617 | doc.rust-lang.org/stable/book/print.html | 0.584 | doc.rust-lang.org/book/print.html | 0.584 |
+| playwright | #2 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.628 | doc.rust-lang.org/book/ch10-02-traits.html | 0.610 | doc.rust-lang.org/stable/book/ch10-02-traits.html | 0.610 |
+
+
+**Q32: How do you implement a trait on a type in Rust?**
+*(expects URL containing: `ch10-02-traits.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #4 | doc.rust-lang.org/book/print.html | 0.634 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.627 | doc.rust-lang.org/book/print.html | 0.626 |
+| crawl4ai | #3 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.638 | doc.rust-lang.org/book/ch10-02-traits.html | 0.629 |
+| crawl4ai-raw | #3 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.638 | doc.rust-lang.org/book/ch10-02-traits.html | 0.629 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.635 | doc.rust-lang.org/book/print.html | 0.635 | doc.rust-lang.org/stable/book/print.html | 0.626 |
+| crawlee | #5 | doc.rust-lang.org/book/print.html | 0.635 | doc.rust-lang.org/book/print.html | 0.626 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.625 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.635 | doc.rust-lang.org/stable/book/print.html | 0.635 | doc.rust-lang.org/book/print.html | 0.626 |
+| playwright | #5 | doc.rust-lang.org/book/print.html | 0.635 | doc.rust-lang.org/book/print.html | 0.626 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.625 |
+
+
+**Q33: What is the purpose of using a reference in the `calculate_length` function?**
+*(expects URL containing: `ch04-02-references-and-borrowing.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch04-02-references-and-borr | 0.582 | doc.rust-lang.org/book/print.html | 0.544 | doc.rust-lang.org/book/print.html | 0.442 |
+| crawl4ai | #4 | doc.rust-lang.org/stable/book/ch04-01-what-is-owne | 0.527 | doc.rust-lang.org/book/ch04-01-what-is-ownership.h | 0.527 | doc.rust-lang.org/book/print.html | 0.526 |
+| crawl4ai-raw | #4 | doc.rust-lang.org/stable/book/ch04-01-what-is-owne | 0.527 | doc.rust-lang.org/book/ch04-01-what-is-ownership.h | 0.527 | doc.rust-lang.org/book/print.html | 0.526 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.555 | doc.rust-lang.org/book/print.html | 0.555 | doc.rust-lang.org/stable/book/print.html | 0.530 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.555 | doc.rust-lang.org/stable/book/ch04-02-references-a | 0.551 | doc.rust-lang.org/book/ch04-02-references-and-borr | 0.551 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.555 | doc.rust-lang.org/stable/book/print.html | 0.555 | doc.rust-lang.org/book/print.html | 0.530 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.555 | doc.rust-lang.org/book/ch04-02-references-and-borr | 0.551 | doc.rust-lang.org/stable/book/ch04-02-references-a | 0.551 |
+
+
+**Q34: What are the rules of references in Rust?**
+*(expects URL containing: `ch04-02-references-and-borrowing.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch04-02-references-and-borr | 0.618 | doc.rust-lang.org/book/ch10-03-lifetime-syntax.htm | 0.600 | doc.rust-lang.org/book/print.html | 0.600 |
+| crawl4ai | #4 | doc.rust-lang.org/book/ch15-04-rc.html | 0.597 | doc.rust-lang.org/book/print.html | 0.597 | doc.rust-lang.org/book/ch15-02-deref.html | 0.597 |
+| crawl4ai-raw | #4 | doc.rust-lang.org/book/ch15-04-rc.html | 0.597 | doc.rust-lang.org/book/print.html | 0.597 | doc.rust-lang.org/book/ch15-02-deref.html | 0.597 |
+| scrapy+md | miss | doc.rust-lang.org/nomicon/references.html | 0.657 | doc.rust-lang.org/nomicon/lifetimes.html | 0.615 | doc.rust-lang.org/book/print.html | 0.590 |
+| crawlee | #3 | doc.rust-lang.org/book/ch15-02-deref.html | 0.590 | doc.rust-lang.org/book/print.html | 0.590 | doc.rust-lang.org/stable/book/ch04-02-references-a | 0.585 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.590 | doc.rust-lang.org/book/print.html | 0.590 | doc.rust-lang.org/book/print.html | 0.584 |
+| playwright | #3 | doc.rust-lang.org/book/print.html | 0.590 | doc.rust-lang.org/book/ch15-02-deref.html | 0.590 | doc.rust-lang.org/book/ch04-02-references-and-borr | 0.585 |
+
+
+**Q35: What is the purpose of the `search` function in the `minigrep` program?**
+*(expects URL containing: `ch12-04-testing-the-librarys-functionality.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.547 | doc.rust-lang.org/book/ch12-05-working-with-enviro | 0.540 | doc.rust-lang.org/book/print.html | 0.529 |
+| crawl4ai | #17 | doc.rust-lang.org/stable/book/ch12-03-improving-er | 0.573 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.572 | doc.rust-lang.org/book/print.html | 0.572 |
+| crawl4ai-raw | #17 | doc.rust-lang.org/stable/book/ch12-03-improving-er | 0.573 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.572 | doc.rust-lang.org/book/print.html | 0.572 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.585 | doc.rust-lang.org/stable/book/print.html | 0.585 | doc.rust-lang.org/stable/book/print.html | 0.523 |
+| crawlee | #20 | doc.rust-lang.org/stable/book/ch12-03-improving-er | 0.585 | doc.rust-lang.org/book/print.html | 0.585 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.585 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.585 | doc.rust-lang.org/stable/book/print.html | 0.585 | doc.rust-lang.org/stable/book/print.html | 0.523 |
+| playwright | #20 | doc.rust-lang.org/book/print.html | 0.585 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.585 | doc.rust-lang.org/stable/book/ch12-03-improving-er | 0.585 |
+
+
+**Q36: What are the steps to implement the `search` function using test-driven development?**
+*(expects URL containing: `ch12-04-testing-the-librarys-functionality.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.686 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/print.html | 0.543 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.662 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.590 | doc.rust-lang.org/stable/book/ch12-04-testing-the- | 0.590 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.662 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.590 | doc.rust-lang.org/stable/book/ch12-04-testing-the- | 0.590 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.664 | doc.rust-lang.org/stable/book/print.html | 0.664 | doc.rust-lang.org/book/print.html | 0.558 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.664 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.581 | doc.rust-lang.org/stable/book/ch12-04-testing-the- | 0.581 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.664 | doc.rust-lang.org/book/print.html | 0.664 | doc.rust-lang.org/stable/book/print.html | 0.558 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.664 | doc.rust-lang.org/stable/book/ch12-04-testing-the- | 0.581 | doc.rust-lang.org/book/ch12-04-testing-the-library | 0.581 |
+
+
+**Q37: What is a workspace in Cargo?**
+*(expects URL containing: `ch14-03-cargo-workspaces.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.678 | doc.rust-lang.org/book/print.html | 0.643 | doc.rust-lang.org/book/print.html | 0.596 |
+| crawl4ai | #3 | doc.rust-lang.org/book/print.html | 0.624 | doc.rust-lang.org/book/print.html | 0.594 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.594 |
+| crawl4ai-raw | #3 | doc.rust-lang.org/book/print.html | 0.624 | doc.rust-lang.org/book/print.html | 0.594 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.594 |
+| scrapy+md | miss | doc.rust-lang.org/cargo/reference/workspaces.html | 0.677 | doc.rust-lang.org/stable/book/print.html | 0.645 | doc.rust-lang.org/book/print.html | 0.645 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.610 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.595 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/stable/book/print.html | 0.645 | doc.rust-lang.org/stable/book/print.html | 0.594 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.610 | doc.rust-lang.org/book/print.html | 0.594 |
+
+
+**Q38: How do you create a new library crate in a workspace?**
+*(expects URL containing: `ch14-03-cargo-workspaces.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.660 | doc.rust-lang.org/book/print.html | 0.631 | doc.rust-lang.org/book/print.html | 0.592 |
+| crawl4ai | #3 | doc.rust-lang.org/book/print.html | 0.666 | doc.rust-lang.org/book/print.html | 0.576 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.576 |
+| crawl4ai-raw | #3 | doc.rust-lang.org/book/print.html | 0.666 | doc.rust-lang.org/book/print.html | 0.576 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.576 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.633 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/stable/book/print.html | 0.585 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.604 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.585 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/stable/book/print.html | 0.633 | doc.rust-lang.org/stable/book/print.html | 0.585 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.633 | doc.rust-lang.org/book/ch14-03-cargo-workspaces.ht | 0.604 | doc.rust-lang.org/book/print.html | 0.585 |
+
+
+**Q39: What is the purpose of the `thread::spawn` function in Rust?**
+*(expects URL containing: `ch16-01-threads.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.629 | doc.rust-lang.org/book/ch16-01-threads.html | 0.629 | doc.rust-lang.org/book/print.html | 0.604 |
+| crawl4ai | #3 | doc.rust-lang.org/std/thread/struct.Builder.html | 0.641 | doc.rust-lang.org/book/print.html | 0.632 | doc.rust-lang.org/book/ch16-01-threads.html | 0.632 |
+| crawl4ai-raw | #3 | doc.rust-lang.org/std/thread/struct.Builder.html | 0.641 | doc.rust-lang.org/book/print.html | 0.632 | doc.rust-lang.org/book/ch16-01-threads.html | 0.632 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/stable/book/print.html | 0.642 | doc.rust-lang.org/std/thread/struct.Builder.html | 0.630 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/book/ch16-01-threads.html | 0.642 | doc.rust-lang.org/book/print.html | 0.607 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/stable/book/print.html | 0.642 | doc.rust-lang.org/book/print.html | 0.607 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/book/ch16-01-threads.html | 0.642 | doc.rust-lang.org/book/ch21-02-multithreaded.html | 0.607 |
+
+
+**Q40: How can you ensure that a spawned thread finishes before the main thread exits?**
+*(expects URL containing: `ch16-01-threads.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.574 | doc.rust-lang.org/book/ch16-01-threads.html | 0.574 | doc.rust-lang.org/book/print.html | 0.530 |
+| crawl4ai | #1 | doc.rust-lang.org/book/ch16-01-threads.html | 0.536 | doc.rust-lang.org/book/print.html | 0.536 | doc.rust-lang.org/book/ch16-01-threads.html | 0.499 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch16-01-threads.html | 0.536 | doc.rust-lang.org/book/print.html | 0.536 | doc.rust-lang.org/book/ch16-01-threads.html | 0.499 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.545 | doc.rust-lang.org/stable/book/print.html | 0.545 | doc.rust-lang.org/stable/book/print.html | 0.510 |
+| crawlee | #1 | doc.rust-lang.org/book/ch16-01-threads.html | 0.545 | doc.rust-lang.org/book/print.html | 0.545 | doc.rust-lang.org/book/print.html | 0.510 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.545 | doc.rust-lang.org/book/print.html | 0.545 | doc.rust-lang.org/stable/book/print.html | 0.510 |
+| playwright | #1 | doc.rust-lang.org/book/ch16-01-threads.html | 0.545 | doc.rust-lang.org/book/print.html | 0.545 | doc.rust-lang.org/book/print.html | 0.510 |
+
+
+**Q41: What are generics in Rust?**
+*(expects URL containing: `ch10-00-generics.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch10-00-generics.html | 0.637 | doc.rust-lang.org/book/print.html | 0.629 | doc.rust-lang.org/book/print.html | 0.611 |
+| crawl4ai | #6 | doc.rust-lang.org/book/print.html | 0.638 | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/book/print.html | 0.624 |
+| crawl4ai-raw | #6 | doc.rust-lang.org/book/print.html | 0.638 | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/book/print.html | 0.624 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.629 | doc.rust-lang.org/book/print.html | 0.629 | doc.rust-lang.org/stable/book/print.html | 0.614 |
+| crawlee | #4 | doc.rust-lang.org/stable/book/ch10-01-syntax.html | 0.632 | doc.rust-lang.org/book/ch10-01-syntax.html | 0.632 | doc.rust-lang.org/book/print.html | 0.629 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.629 | doc.rust-lang.org/book/print.html | 0.629 | doc.rust-lang.org/stable/book/print.html | 0.614 |
+| playwright | #4 | doc.rust-lang.org/stable/book/ch10-01-syntax.html | 0.632 | doc.rust-lang.org/book/ch10-01-syntax.html | 0.632 | doc.rust-lang.org/book/print.html | 0.629 |
+
+
+**Q42: How do you eliminate code duplication using generics?**
+*(expects URL containing: `ch10-00-generics.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch10-00-generics.html | 0.526 | doc.rust-lang.org/book/print.html | 0.526 | doc.rust-lang.org/book/print.html | 0.513 |
+| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch10-00-generics.htm | 0.600 | doc.rust-lang.org/book/ch10-00-generics.html | 0.600 | doc.rust-lang.org/book/print.html | 0.513 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch10-00-generics.htm | 0.600 | doc.rust-lang.org/book/ch10-00-generics.html | 0.600 | doc.rust-lang.org/book/print.html | 0.513 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.542 | doc.rust-lang.org/book/print.html | 0.542 | doc.rust-lang.org/book/print.html | 0.491 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.542 | doc.rust-lang.org/book/ch10-00-generics.html | 0.531 | doc.rust-lang.org/stable/book/ch10-00-generics.htm | 0.531 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.542 | doc.rust-lang.org/book/print.html | 0.542 | doc.rust-lang.org/stable/book/print.html | 0.491 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.542 | doc.rust-lang.org/book/ch10-00-generics.html | 0.531 | doc.rust-lang.org/stable/book/ch10-00-generics.htm | 0.531 |
+
+
+**Q43: What will we build in the final project of the Rust book?**
+*(expects URL containing: `ch21-00-final-project-a-web-server.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch21-00-final-project-a-web | 0.651 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/book/print.html | 0.585 |
+| crawl4ai | #1 | doc.rust-lang.org/book/ch21-00-final-project-a-web | 0.690 | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.598 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch21-00-final-project-a-web | 0.690 | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/book/ch12-03-improving-error-han | 0.598 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.647 | doc.rust-lang.org/book/print.html | 0.647 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.586 |
+| crawlee | #1 | doc.rust-lang.org/book/ch21-00-final-project-a-web | 0.677 | doc.rust-lang.org/book/print.html | 0.647 | doc.rust-lang.org/book/ch14-04-installing-binaries | 0.596 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.647 | doc.rust-lang.org/book/print.html | 0.647 | doc.rust-lang.org/book/print.html | 0.585 |
+| playwright | #1 | doc.rust-lang.org/book/ch21-00-final-project-a-web | 0.677 | doc.rust-lang.org/book/print.html | 0.647 | doc.rust-lang.org/book/ch14-04-installing-binaries | 0.596 |
+
+
+**Q44: What method will we not be using to build the web server in this chapter?**
+*(expects URL containing: `ch21-00-final-project-a-web-server.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #3 | doc.rust-lang.org/book/ch21-01-single-threaded.htm | 0.602 | doc.rust-lang.org/book/print.html | 0.575 | doc.rust-lang.org/book/ch21-00-final-project-a-web | 0.565 |
+| crawl4ai | #2 | doc.rust-lang.org/book/print.html | 0.579 | doc.rust-lang.org/book/ch21-00-final-project-a-web | 0.520 | doc.rust-lang.org/book/print.html | 0.495 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/book/print.html | 0.579 | doc.rust-lang.org/book/ch21-00-final-project-a-web | 0.520 | doc.rust-lang.org/book/print.html | 0.495 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.575 | doc.rust-lang.org/book/print.html | 0.575 | doc.rust-lang.org/book/print.html | 0.531 |
+| crawlee | #4 | doc.rust-lang.org/book/print.html | 0.575 | doc.rust-lang.org/book/print.html | 0.531 | doc.rust-lang.org/book/ch21-01-single-threaded.htm | 0.524 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.575 | doc.rust-lang.org/book/print.html | 0.575 | doc.rust-lang.org/stable/book/print.html | 0.531 |
+| playwright | #4 | doc.rust-lang.org/book/print.html | 0.575 | doc.rust-lang.org/book/print.html | 0.531 | doc.rust-lang.org/book/ch21-01-single-threaded.htm | 0.524 |
 
 
 **Q45: What are patterns in Rust?**
@@ -6530,200 +6586,200 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #27 | doc.rust-lang.org/book/print.html | 0.472 | doc.rust-lang.org/book/print.html | 0.471 | doc.rust-lang.org/book/ch19-03-pattern-syntax.html | 0.463 |
 
 
-**Q47: What is a mutex and how does it control access to data?**
-*(expects URL containing: `ch16-03-shared-state.html`)*
+**Q47: What is the difference between iterators and the async channel receiver in Rust?**
+*(expects URL containing: `ch17-04-streams.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.589 | doc.rust-lang.org/book/print.html | 0.589 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.559 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.593 | doc.rust-lang.org/book/print.html | 0.593 | doc.rust-lang.org/book/print.html | 0.558 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.593 | doc.rust-lang.org/book/print.html | 0.593 | doc.rust-lang.org/book/print.html | 0.558 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.589 | doc.rust-lang.org/book/print.html | 0.589 | doc.rust-lang.org/stable/book/print.html | 0.541 |
-| crawlee | #1 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.589 | doc.rust-lang.org/book/print.html | 0.589 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.541 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.589 | doc.rust-lang.org/stable/book/print.html | 0.589 | doc.rust-lang.org/stable/book/print.html | 0.541 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.589 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.589 | doc.rust-lang.org/book/print.html | 0.541 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.584 | doc.rust-lang.org/book/print.html | 0.558 | doc.rust-lang.org/book/ch17-01-futures-and-syntax. | 0.546 |
+| crawl4ai | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.554 | doc.rust-lang.org/book/print.html | 0.549 | doc.rust-lang.org/book/print.html | 0.539 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.554 | doc.rust-lang.org/book/print.html | 0.549 | doc.rust-lang.org/book/print.html | 0.539 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.532 | doc.rust-lang.org/book/print.html | 0.532 | doc.rust-lang.org/stable/book/print.html | 0.531 |
+| crawlee | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.578 | doc.rust-lang.org/book/print.html | 0.532 | doc.rust-lang.org/book/print.html | 0.531 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.532 | doc.rust-lang.org/stable/book/print.html | 0.532 | doc.rust-lang.org/book/print.html | 0.531 |
+| playwright | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.578 | doc.rust-lang.org/book/print.html | 0.532 | doc.rust-lang.org/book/print.html | 0.531 |
 
 
-**Q48: Why is `Rc<T>` not safe to share across threads in Rust?**
-*(expects URL containing: `ch16-03-shared-state.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/ch15-04-rc.html | 0.659 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.649 | doc.rust-lang.org/book/print.html | 0.649 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.657 | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/book/ch15-04-rc.html | 0.620 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.657 | doc.rust-lang.org/book/print.html | 0.657 | doc.rust-lang.org/book/ch15-04-rc.html | 0.620 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.649 | doc.rust-lang.org/book/print.html | 0.649 | doc.rust-lang.org/stable/book/print.html | 0.623 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.649 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.649 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.623 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.649 | doc.rust-lang.org/book/print.html | 0.649 | doc.rust-lang.org/stable/book/print.html | 0.623 |
-| playwright | #1 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.649 | doc.rust-lang.org/book/print.html | 0.649 | doc.rust-lang.org/book/ch16-03-shared-state.html | 0.623 |
-
-
-**Q49: How do you declare a module in Rust?**
-*(expects URL containing: `ch07-02-defining-modules-to-control-scope-and-privacy.html`)*
+**Q48: How can you create a stream from an iterator in Rust?**
+*(expects URL containing: `ch17-04-streams.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #5 | doc.rust-lang.org/book/print.html | 0.608 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.588 | doc.rust-lang.org/book/print.html | 0.585 |
-| crawl4ai | #15 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.598 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.598 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.597 |
-| crawl4ai-raw | #15 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.598 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.598 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.597 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.608 | doc.rust-lang.org/book/print.html | 0.608 | doc.rust-lang.org/stable/book/print.html | 0.588 |
-| crawlee | #8 | doc.rust-lang.org/book/print.html | 0.608 | doc.rust-lang.org/book/print.html | 0.588 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.588 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.608 | doc.rust-lang.org/stable/book/print.html | 0.608 | doc.rust-lang.org/stable/book/print.html | 0.588 |
-| playwright | #8 | doc.rust-lang.org/book/print.html | 0.608 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.588 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.588 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.635 | doc.rust-lang.org/book/print.html | 0.635 | doc.rust-lang.org/book/ch17-04-streams.html | 0.635 |
+| crawl4ai | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.648 | doc.rust-lang.org/book/print.html | 0.628 | doc.rust-lang.org/book/print.html | 0.624 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.648 | doc.rust-lang.org/book/print.html | 0.628 | doc.rust-lang.org/book/print.html | 0.624 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.636 | doc.rust-lang.org/book/print.html | 0.636 | doc.rust-lang.org/book/print.html | 0.634 |
+| crawlee | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.652 | doc.rust-lang.org/book/ch17-04-streams.html | 0.650 | doc.rust-lang.org/book/ch17-04-streams.html | 0.636 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.636 | doc.rust-lang.org/stable/book/print.html | 0.636 | doc.rust-lang.org/book/print.html | 0.634 |
+| playwright | #1 | doc.rust-lang.org/book/ch17-04-streams.html | 0.652 | doc.rust-lang.org/book/ch17-04-streams.html | 0.650 | doc.rust-lang.org/book/ch17-04-streams.html | 0.636 |
 
 
-**Q50: What is the default visibility of items within a module?**
-*(expects URL containing: `ch07-02-defining-modules-to-control-scope-and-privacy.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #3 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.484 | doc.rust-lang.org/book/print.html | 0.483 | doc.rust-lang.org/book/ch07-02-defining-modules-to | 0.392 |
-| crawl4ai | #9 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.388 | doc.rust-lang.org/book/print.html | 0.388 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.388 |
-| crawl4ai-raw | #9 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.388 | doc.rust-lang.org/book/print.html | 0.388 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.388 |
-| scrapy+md | miss | doc.rust-lang.org/reference/items/traits.html | 0.383 | doc.rust-lang.org/book/print.html | 0.366 | doc.rust-lang.org/stable/book/print.html | 0.366 |
-| crawlee | #7 | doc.rust-lang.org/book/print.html | 0.366 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.366 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.366 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.366 | doc.rust-lang.org/stable/book/print.html | 0.366 | doc.rust-lang.org/reference/items/traits.html#dyn- | 0.364 |
-| playwright | #7 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.366 | doc.rust-lang.org/book/print.html | 0.366 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.366 |
-
-
-**Q51: What is a Vec in Rust?**
-*(expects URL containing: `struct.Vec.html`)*
+**Q49: How do you read a file in Rust?**
+*(expects URL containing: `ch12-02-reading-a-file.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | doc.rust-lang.org/book/print.html | 0.532 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.532 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.514 |
-| crawl4ai | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.675 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.649 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.612 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.675 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.649 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.612 |
-| scrapy+md | #2 | doc.rust-lang.org/nomicon/vec/vec.html | 0.651 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.576 | doc.rust-lang.org/stable/book/print.html | 0.557 |
-| crawlee | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.645 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.627 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.576 |
-| colly+md | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.652 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.622 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.577 |
-| playwright | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.645 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.627 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.576 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch12-02-reading-a-file.html | 0.587 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.566 | doc.rust-lang.org/book/print.html | 0.549 |
+| crawl4ai | #2 | doc.rust-lang.org/std/io/struct.Stdin.html | 0.588 | doc.rust-lang.org/stable/book/ch12-02-reading-a-fi | 0.576 | doc.rust-lang.org/book/ch12-02-reading-a-file.html | 0.576 |
+| crawl4ai-raw | #2 | doc.rust-lang.org/std/io/struct.Stdin.html | 0.588 | doc.rust-lang.org/stable/book/ch12-02-reading-a-fi | 0.576 | doc.rust-lang.org/book/ch12-02-reading-a-file.html | 0.576 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.561 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.561 | doc.rust-lang.org/std/io/struct.Stdin.html | 0.554 |
+| crawlee | #3 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.574 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.574 | doc.rust-lang.org/book/ch12-02-reading-a-file.html | 0.558 |
+| colly+md | miss | doc.rust-lang.org/book/ch00-00-introduction.html | 0.574 | doc.rust-lang.org/book/ch01-02-hello-world.html | 0.554 | doc.rust-lang.org/stable/book/print.html | 0.551 |
+| playwright | #3 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.574 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.574 | doc.rust-lang.org/stable/book/ch12-02-reading-a-fi | 0.558 |
 
 
-**Q52: How do you create a new empty Vec in Rust?**
-*(expects URL containing: `struct.Vec.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.525 | doc.rust-lang.org/book/print.html | 0.525 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.502 |
-| crawl4ai | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.625 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.611 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.608 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.625 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.611 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.608 |
-| scrapy+md | #2 | doc.rust-lang.org/nomicon/vec/vec.html | 0.625 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.571 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.537 |
-| crawlee | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.591 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.579 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.571 |
-| colly+md | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.599 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.576 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.571 |
-| playwright | #1 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.591 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.579 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.571 |
-
-
-**Q53: What does the `Debug` trait enable in Rust?**
-*(expects URL containing: `appendix-03-derivable-traits.html`)*
+**Q50: What is the content of the sample file used for testing?**
+*(expects URL containing: `ch12-02-reading-a-file.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #10 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.626 | doc.rust-lang.org/book/print.html | 0.626 | doc.rust-lang.org/book/print.html | 0.590 |
-| crawl4ai | #23 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.629 | doc.rust-lang.org/stable/book/ch05-02-example-stru | 0.629 | doc.rust-lang.org/book/print.html | 0.629 |
-| crawl4ai-raw | #23 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.629 | doc.rust-lang.org/stable/book/ch05-02-example-stru | 0.629 | doc.rust-lang.org/book/print.html | 0.629 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.646 | doc.rust-lang.org/book/print.html | 0.646 | doc.rust-lang.org/book/print.html | 0.570 |
-| crawlee | #20 | doc.rust-lang.org/stable/book/ch05-02-example-stru | 0.646 | doc.rust-lang.org/book/print.html | 0.646 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.646 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.646 | doc.rust-lang.org/stable/book/print.html | 0.646 | doc.rust-lang.org/cargo/reference/profiles.html | 0.579 |
-| playwright | #19 | doc.rust-lang.org/book/print.html | 0.646 | doc.rust-lang.org/book/ch05-02-example-structs.htm | 0.646 | doc.rust-lang.org/stable/book/ch05-02-example-stru | 0.646 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch12-02-reading-a-file.html | 0.348 | doc.rust-lang.org/book/ch11-01-writing-tests.html | 0.328 | doc.rust-lang.org/book/print.html | 0.328 |
+| crawl4ai | #16 | doc.rust-lang.org/book/print.html | 0.346 | doc.rust-lang.org/book/ch11-03-test-organization.h | 0.346 | doc.rust-lang.org/stable/book/ch11-03-test-organiz | 0.346 |
+| crawl4ai-raw | #16 | doc.rust-lang.org/book/print.html | 0.346 | doc.rust-lang.org/book/ch11-03-test-organization.h | 0.346 | doc.rust-lang.org/stable/book/ch11-03-test-organiz | 0.346 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.343 | doc.rust-lang.org/book/print.html | 0.343 | doc.rust-lang.org/stable/book/print.html | 0.338 |
+| crawlee | #7 | doc.rust-lang.org/rustc/tests/index.html | 0.382 | doc.rust-lang.org/unstable-book/library-features/t | 0.346 | doc.rust-lang.org/book/print.html | 0.343 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.343 | doc.rust-lang.org/stable/book/print.html | 0.343 | doc.rust-lang.org/book/print.html | 0.338 |
+| playwright | #7 | doc.rust-lang.org/rustc/tests/index.html | 0.382 | doc.rust-lang.org/unstable-book/library-features/t | 0.346 | doc.rust-lang.org/book/print.html | 0.343 |
 
 
-**Q54: What is the purpose of the `Default` trait in Rust?**
-*(expects URL containing: `appendix-03-derivable-traits.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #5 | doc.rust-lang.org/book/print.html | 0.576 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.576 | doc.rust-lang.org/book/print.html | 0.566 |
-| crawl4ai | #1 | doc.rust-lang.org/book/appendix-03-derivable-trait | 0.616 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.571 | doc.rust-lang.org/book/print.html | 0.571 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/appendix-03-derivable-trait | 0.616 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.571 | doc.rust-lang.org/book/print.html | 0.571 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.558 |
-| crawlee | #6 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.586 | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.558 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/stable/book/print.html | 0.558 |
-| playwright | #6 | doc.rust-lang.org/book/ch20-02-advanced-traits.htm | 0.586 | doc.rust-lang.org/book/print.html | 0.586 | doc.rust-lang.org/book/print.html | 0.558 |
-
-
-**Q55: What programming concepts are covered in this chapter?**
-*(expects URL containing: `ch03-00-common-programming-concepts.html`)*
+**Q51: How do you bring a module into scope with the use keyword?**
+*(expects URL containing: `ch07-04-bringing-paths-into-scope-with-the-use-keyword.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.551 | doc.rust-lang.org/book/print.html | 0.521 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.521 |
-| crawl4ai | #9 | doc.rust-lang.org/book/print.html | 0.523 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.523 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.523 |
-| crawl4ai-raw | #9 | doc.rust-lang.org/book/print.html | 0.523 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.523 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.523 |
-| scrapy+md | miss | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.521 | doc.rust-lang.org/book/print.html | 0.521 | doc.rust-lang.org/stable/book/print.html | 0.521 |
-| crawlee | #10 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.521 | doc.rust-lang.org/book/print.html | 0.521 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.521 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.521 | doc.rust-lang.org/book/print.html | 0.521 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.521 |
-| playwright | #10 | doc.rust-lang.org/stable/book/ch00-00-introduction | 0.521 | doc.rust-lang.org/book/ch00-00-introduction.html | 0.521 | doc.rust-lang.org/book/print.html | 0.521 |
+| markcrawl | #3 | doc.rust-lang.org/book/ch07-02-defining-modules-to | 0.627 | doc.rust-lang.org/book/print.html | 0.605 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.590 |
+| crawl4ai | #4 | doc.rust-lang.org/book/print.html | 0.577 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.552 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.552 |
+| crawl4ai-raw | #4 | doc.rust-lang.org/book/print.html | 0.577 | doc.rust-lang.org/book/ch07-05-separating-modules- | 0.552 | doc.rust-lang.org/stable/book/ch07-05-separating-m | 0.552 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/stable/book/print.html | 0.587 | doc.rust-lang.org/book/print.html | 0.526 |
+| crawlee | #4 | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.552 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.552 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/stable/book/print.html | 0.587 | doc.rust-lang.org/book/print.html | 0.526 |
+| playwright | #4 | doc.rust-lang.org/book/print.html | 0.587 | doc.rust-lang.org/book/ch07-00-managing-growing-pr | 0.552 | doc.rust-lang.org/stable/book/ch07-00-managing-gro | 0.552 |
 
 
-**Q56: What are keywords in the Rust programming language?**
-*(expects URL containing: `ch03-00-common-programming-concepts.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #2 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.684 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.683 | doc.rust-lang.org/book/print.html | 0.664 |
-| crawl4ai | #1 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.665 | doc.rust-lang.org/stable/book/ch03-00-common-progr | 0.665 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.642 |
-| crawl4ai-raw | #1 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.665 | doc.rust-lang.org/stable/book/ch03-00-common-progr | 0.665 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.642 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.666 | doc.rust-lang.org/stable/book/print.html | 0.666 | doc.rust-lang.org/stable/book/print.html | 0.628 |
-| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.666 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.660 | doc.rust-lang.org/stable/book/ch03-00-common-progr | 0.660 |
-| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.666 | doc.rust-lang.org/book/print.html | 0.666 | doc.rust-lang.org/stable/book/print.html | 0.628 |
-| playwright | #2 | doc.rust-lang.org/book/print.html | 0.666 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.660 | doc.rust-lang.org/stable/book/ch03-00-common-progr | 0.660 |
-
-
-**Q57: What are the three collections discussed in Rust's standard library?**
-*(expects URL containing: `ch08-00-common-collections.html`)*
+**Q52: What is the purpose of the pub use statement in Rust?**
+*(expects URL containing: `ch07-04-bringing-paths-into-scope-with-the-use-keyword.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch08-00-common-collections. | 0.714 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/book/appendix-00.html | 0.530 |
-| crawl4ai | #2 | doc.rust-lang.org/std/collections/index.html | 0.700 | doc.rust-lang.org/stable/book/ch08-00-common-colle | 0.634 | doc.rust-lang.org/book/ch08-00-common-collections. | 0.634 |
-| crawl4ai-raw | #2 | doc.rust-lang.org/std/collections/index.html | 0.700 | doc.rust-lang.org/stable/book/ch08-00-common-colle | 0.634 | doc.rust-lang.org/book/ch08-00-common-collections. | 0.634 |
-| scrapy+md | miss | doc.rust-lang.org/std/collections/index.html | 0.627 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/stable/book/print.html | 0.616 |
-| crawlee | #3 | doc.rust-lang.org/std/collections/index.html | 0.682 | doc.rust-lang.org/std/collections/index.html | 0.652 | doc.rust-lang.org/book/ch08-00-common-collections. | 0.623 |
-| colly+md | miss | doc.rust-lang.org/std/collections/index.html | 0.678 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/stable/book/print.html | 0.616 |
-| playwright | #3 | doc.rust-lang.org/std/collections/index.html | 0.682 | doc.rust-lang.org/std/collections/index.html | 0.652 | doc.rust-lang.org/book/ch08-00-common-collections. | 0.623 |
+| markcrawl | #4 | doc.rust-lang.org/book/print.html | 0.560 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.560 | doc.rust-lang.org/book/print.html | 0.557 |
+| crawl4ai | #4 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.568 | doc.rust-lang.org/book/print.html | 0.568 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.568 |
+| crawl4ai-raw | #4 | doc.rust-lang.org/book/ch07-03-paths-for-referring | 0.568 | doc.rust-lang.org/book/print.html | 0.568 | doc.rust-lang.org/stable/book/ch07-03-paths-for-re | 0.568 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/stable/book/print.html | 0.564 | doc.rust-lang.org/stable/book/print.html | 0.562 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.564 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.564 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/stable/book/print.html | 0.564 | doc.rust-lang.org/book/print.html | 0.562 |
+| playwright | #1 | doc.rust-lang.org/stable/book/ch07-04-bringing-pat | 0.564 | doc.rust-lang.org/book/print.html | 0.564 | doc.rust-lang.org/book/ch07-04-bringing-paths-into | 0.564 |
 
 
-**Q58: How does a vector differ from built-in array and tuple types in Rust?**
-*(expects URL containing: `ch08-00-common-collections.html`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | doc.rust-lang.org/book/ch08-00-common-collections. | 0.603 | doc.rust-lang.org/book/ch03-02-data-types.html | 0.597 | doc.rust-lang.org/book/print.html | 0.597 |
-| crawl4ai | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.620 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.620 | doc.rust-lang.org/book/print.html | 0.605 |
-| crawl4ai-raw | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.620 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.620 | doc.rust-lang.org/book/print.html | 0.605 |
-| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.598 | doc.rust-lang.org/stable/book/print.html | 0.598 | doc.rust-lang.org/book/print.html | 0.597 |
-| crawlee | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.605 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.605 | doc.rust-lang.org/book/print.html | 0.598 |
-| colly+md | miss | doc.rust-lang.org/book/print.html | 0.598 | doc.rust-lang.org/stable/book/print.html | 0.598 | doc.rust-lang.org/book/print.html | 0.597 |
-| playwright | miss | doc.rust-lang.org/book/ch08-01-vectors.html | 0.605 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.605 | doc.rust-lang.org/book/print.html | 0.598 |
-
-
-**Q59: What command do I use to upload a crate to crates.io?**
-*(expects URL containing: `publishing.html`)*
+**Q53: What are the two major categories of errors in Rust?**
+*(expects URL containing: `ch09-00-error-handling.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | doc.rust-lang.org/book/ch14-00-more-about-cargo.ht | 0.556 | doc.rust-lang.org/book/print.html | 0.518 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.518 |
-| crawl4ai | #3 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.531 | doc.rust-lang.org/book/print.html | 0.531 | doc.rust-lang.org/cargo/reference/publishing.html | 0.524 |
-| crawl4ai-raw | #3 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.531 | doc.rust-lang.org/book/print.html | 0.531 | doc.rust-lang.org/cargo/reference/publishing.html | 0.524 |
-| scrapy+md | #1 | doc.rust-lang.org/cargo/reference/publishing.html | 0.539 | doc.rust-lang.org/cargo/reference/publishing.html | 0.539 | doc.rust-lang.org/stable/book/print.html | 0.532 |
-| crawlee | #1 | doc.rust-lang.org/cargo/reference/publishing.html | 0.539 | doc.rust-lang.org/book/print.html | 0.532 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.532 |
-| colly+md | #3 | doc.rust-lang.org/book/print.html | 0.532 | doc.rust-lang.org/stable/book/print.html | 0.532 | doc.rust-lang.org/cargo/reference/publishing.html | 0.528 |
-| playwright | #1 | doc.rust-lang.org/cargo/reference/publishing.html | 0.539 | doc.rust-lang.org/book/print.html | 0.532 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.532 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.614 | doc.rust-lang.org/book/ch03-02-data-types.html | 0.557 | doc.rust-lang.org/book/print.html | 0.552 |
+| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch09-00-error-handli | 0.618 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.618 | doc.rust-lang.org/book/ch09-02-recoverable-errors- | 0.568 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch09-00-error-handli | 0.618 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.618 | doc.rust-lang.org/book/ch09-02-recoverable-errors- | 0.568 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.552 | doc.rust-lang.org/book/print.html | 0.552 | doc.rust-lang.org/stable/book/print.html | 0.549 |
+| crawlee | #1 | doc.rust-lang.org/stable/book/ch09-00-error-handli | 0.611 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.611 | doc.rust-lang.org/stable/book/ch03-02-data-types.h | 0.566 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.552 | doc.rust-lang.org/book/print.html | 0.552 | doc.rust-lang.org/stable/book/print.html | 0.549 |
+| playwright | #1 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.611 | doc.rust-lang.org/stable/book/ch09-00-error-handli | 0.611 | doc.rust-lang.org/book/ch03-02-data-types.html | 0.566 |
 
 
-**Q60: How do I revoke an API token on crates.io?**
-*(expects URL containing: `publishing.html`)*
+**Q54: How does Rust handle recoverable errors?**
+*(expects URL containing: `ch09-00-error-handling.html`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | doc.rust-lang.org/book/print.html | 0.495 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.495 | doc.rust-lang.org/book/print.html | 0.397 |
-| crawl4ai | #3 | doc.rust-lang.org/book/print.html | 0.538 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.538 | doc.rust-lang.org/cargo/reference/publishing.html | 0.472 |
-| crawl4ai-raw | #3 | doc.rust-lang.org/book/print.html | 0.538 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.538 | doc.rust-lang.org/cargo/reference/publishing.html | 0.472 |
-| scrapy+md | #3 | doc.rust-lang.org/stable/book/print.html | 0.538 | doc.rust-lang.org/book/print.html | 0.538 | doc.rust-lang.org/cargo/reference/publishing.html | 0.513 |
-| crawlee | #3 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.538 | doc.rust-lang.org/book/print.html | 0.538 | doc.rust-lang.org/cargo/reference/publishing.html | 0.459 |
-| colly+md | #3 | doc.rust-lang.org/stable/book/print.html | 0.538 | doc.rust-lang.org/book/print.html | 0.538 | doc.rust-lang.org/cargo/reference/publishing.html | 0.478 |
-| playwright | #3 | doc.rust-lang.org/book/print.html | 0.538 | doc.rust-lang.org/book/ch14-02-publishing-to-crate | 0.538 | doc.rust-lang.org/cargo/reference/publishing.html | 0.459 |
+| markcrawl | #1 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.696 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/print.html | 0.535 |
+| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch09-00-error-handli | 0.595 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.595 | doc.rust-lang.org/book/print.html | 0.579 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch09-00-error-handli | 0.595 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.595 | doc.rust-lang.org/book/print.html | 0.579 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.591 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/print.html | 0.549 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.588 | doc.rust-lang.org/stable/book/ch09-00-error-handli | 0.588 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/stable/book/print.html | 0.591 | doc.rust-lang.org/stable/book/print.html | 0.549 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.591 | doc.rust-lang.org/book/ch09-00-error-handling.html | 0.588 | doc.rust-lang.org/stable/book/ch09-00-error-handli | 0.588 |
+
+
+**Q55: How do you create a new, empty vector in Rust?**
+*(expects URL containing: `ch08-01-vectors.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #2 | doc.rust-lang.org/book/print.html | 0.610 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.610 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.579 |
+| crawl4ai | #3 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.600 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.594 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.592 |
+| crawl4ai-raw | #3 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.600 | doc.rust-lang.org/std/vec/struct.Vec.html | 0.594 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.592 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.609 | doc.rust-lang.org/stable/book/print.html | 0.609 | doc.rust-lang.org/book/print.html | 0.577 |
+| crawlee | #1 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.652 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.652 | doc.rust-lang.org/book/print.html | 0.609 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.609 | doc.rust-lang.org/stable/book/print.html | 0.609 | doc.rust-lang.org/stable/book/print.html | 0.577 |
+| playwright | #1 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.652 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.652 | doc.rust-lang.org/book/print.html | 0.609 |
+
+
+**Q56: What method is used to add elements to a vector in Rust?**
+*(expects URL containing: `ch08-01-vectors.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.648 | doc.rust-lang.org/book/print.html | 0.648 | doc.rust-lang.org/book/print.html | 0.586 |
+| crawl4ai | #1 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.652 | doc.rust-lang.org/book/print.html | 0.652 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.652 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.652 | doc.rust-lang.org/book/print.html | 0.652 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.652 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.645 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/stable/book/print.html | 0.623 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.645 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.645 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.645 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/stable/book/print.html | 0.623 |
+| playwright | #1 | doc.rust-lang.org/stable/book/ch08-01-vectors.html | 0.645 | doc.rust-lang.org/book/print.html | 0.645 | doc.rust-lang.org/book/ch08-01-vectors.html | 0.645 |
+
+
+**Q57: What is the purpose of the `if let` syntax in Rust?**
+*(expects URL containing: `ch06-03-if-let.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #4 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.605 | doc.rust-lang.org/book/print.html | 0.605 | doc.rust-lang.org/book/print.html | 0.575 |
+| crawl4ai | #6 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.600 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.600 | doc.rust-lang.org/book/print.html | 0.600 |
+| crawl4ai-raw | #6 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.600 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.600 | doc.rust-lang.org/book/print.html | 0.600 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.605 | doc.rust-lang.org/book/print.html | 0.605 | doc.rust-lang.org/stable/book/print.html | 0.556 |
+| crawlee | #4 | doc.rust-lang.org/book/print.html | 0.605 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.605 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.605 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.605 | doc.rust-lang.org/stable/book/print.html | 0.605 | doc.rust-lang.org/book/print.html | 0.556 |
+| playwright | #4 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.605 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.605 | doc.rust-lang.org/book/print.html | 0.605 |
+
+
+**Q58: How does the `let...else` syntax improve control flow in Rust?**
+*(expects URL containing: `ch06-03-if-let.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #7 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.643 | doc.rust-lang.org/book/print.html | 0.622 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.622 |
+| crawl4ai | #8 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.617 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.616 |
+| crawl4ai-raw | #8 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.617 | doc.rust-lang.org/book/print.html | 0.616 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.616 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/stable/book/print.html | 0.625 | doc.rust-lang.org/stable/book/print.html | 0.602 |
+| crawlee | #5 | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.625 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.625 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/stable/book/print.html | 0.625 | doc.rust-lang.org/stable/book/print.html | 0.602 |
+| playwright | #5 | doc.rust-lang.org/book/ch03-05-control-flow.html | 0.625 | doc.rust-lang.org/book/print.html | 0.625 | doc.rust-lang.org/stable/book/ch03-05-control-flow | 0.625 |
+
+
+**Q59: What are the keywords currently in use in Rust?**
+*(expects URL containing: `appendix-01-keywords.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.710 | doc.rust-lang.org/book/print.html | 0.641 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.641 |
+| crawl4ai | #1 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.643 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.638 | doc.rust-lang.org/stable/book/ch03-00-common-progr | 0.638 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.643 | doc.rust-lang.org/book/ch03-00-common-programming- | 0.638 | doc.rust-lang.org/stable/book/ch03-00-common-progr | 0.638 |
+| scrapy+md | miss | doc.rust-lang.org/book/print.html | 0.660 | doc.rust-lang.org/stable/book/print.html | 0.660 | doc.rust-lang.org/book/print.html | 0.641 |
+| crawlee | #2 | doc.rust-lang.org/book/print.html | 0.660 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.648 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.641 |
+| colly+md | miss | doc.rust-lang.org/stable/book/print.html | 0.660 | doc.rust-lang.org/book/print.html | 0.660 | doc.rust-lang.org/book/print.html | 0.641 |
+| playwright | #2 | doc.rust-lang.org/book/print.html | 0.660 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.648 | doc.rust-lang.org/book/print.html | 0.641 |
+
+
+**Q60: How can you use a keyword as an identifier in Rust?**
+*(expects URL containing: `appendix-01-keywords.html`)*
+
+| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
+|---|---|---|---|---|---|---|---|
+| markcrawl | #1 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.684 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.659 | doc.rust-lang.org/book/print.html | 0.659 |
+| crawl4ai | #1 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.642 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/book/print.html | 0.636 |
+| crawl4ai-raw | #1 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.642 | doc.rust-lang.org/book/print.html | 0.642 | doc.rust-lang.org/book/print.html | 0.636 |
+| scrapy+md | miss | doc.rust-lang.org/stable/book/print.html | 0.654 | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/stable/book/print.html | 0.640 |
+| crawlee | #1 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.662 | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/book/print.html | 0.640 |
+| colly+md | miss | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/stable/book/print.html | 0.654 | doc.rust-lang.org/stable/book/print.html | 0.640 |
+| playwright | #1 | doc.rust-lang.org/book/appendix-01-keywords.html | 0.663 | doc.rust-lang.org/book/print.html | 0.654 | doc.rust-lang.org/book/print.html | 0.640 |
 
 
 </details>
@@ -8144,7 +8200,7 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 ## Methodology
 
-- **Queries:** 557 across 11 sites, categorized by type (api-function, code-example, conceptual, structured-data, factual-lookup, cross-page, navigation, js-rendered)
+- **Queries:** 561 across 11 sites, categorized by type (api-function, code-example, conceptual, structured-data, factual-lookup, cross-page, navigation, js-rendered)
 - **Embedding model:** `text-embedding-3-small` (1536 dimensions)
 - **Chunking:** Markdown-aware, 400 word max, 50 word overlap
 - **Retrieval modes:** Embedding (cosine), BM25 (Okapi), Hybrid (RRF k=60), Reranked (`cross-encoder/ms-marco-MiniLM-L-6-v2`)

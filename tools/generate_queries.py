@@ -239,14 +239,19 @@ _LOCALE_SUBDOMAIN_PREFIXES = frozenset([
 # huggingface.co product UI, 30% discuss.huggingface.co forum) because
 # crawl4ai-raw on HF crawled the broader huggingface.co eTLD+1. The
 # scope filter blocks this at the sampler level.
-SCOPE_PREFIXES = {
+# Values are EITHER a string prefix OR a tuple of prefixes (when a site
+# exposes its canonical content under multiple URL paths — e.g., rust-book
+# is published at both /book/ and /stable/book/ which are the same content
+# version-pinned, both are legitimately "the book").
+SCOPE_PREFIXES: dict[str, str | tuple[str, ...]] = {
     "react-dev":               "https://react.dev",
     "stripe-docs":             "https://docs.stripe.com",
     "huggingface-transformers": "https://huggingface.co/docs/transformers",
     "kubernetes-docs":         "https://kubernetes.io/docs",
     "postgres-docs":           "https://www.postgresql.org/docs",
     "mdn-css":                 "https://developer.mozilla.org/en-US/docs/Web/CSS",
-    "rust-book":               "https://doc.rust-lang.org/book",
+    "rust-book":               ("https://doc.rust-lang.org/book",
+                                "https://doc.rust-lang.org/stable/book"),
     "newegg":                  "https://www.newegg.com",
     "ikea":                    "https://www.ikea.com",
     "smittenkitchen":          "https://smittenkitchen.com",
@@ -255,12 +260,15 @@ SCOPE_PREFIXES = {
 
 
 def is_in_site_scope(url: str, site: str) -> bool:
-    """True if url falls within the canonical scope prefix for `site`.
+    """True if url falls within the canonical scope prefix(es) for `site`.
 
     The scope is what the site name PROMISES the queries to be about —
     e.g., huggingface-transformers means "the transformers docs," not
     "the entire huggingface.co eTLD+1 including endpoints.huggingface.co
     product UI or discuss.huggingface.co forum threads."
+
+    Multiple prefixes per site are supported via tuple values (rust-book
+    accepts both /book and /stable/book — same content version-pinned).
 
     Sites without an explicit SCOPE_PREFIXES entry are permissive
     (accept any URL) so new sites don't get silently blocked before
@@ -270,7 +278,10 @@ def is_in_site_scope(url: str, site: str) -> bool:
     prefix = SCOPE_PREFIXES.get(site)
     if not prefix:
         return True
-    return url.startswith(prefix)
+    if isinstance(prefix, str):
+        return url.startswith(prefix)
+    # Tuple of prefixes — accept if URL matches any
+    return any(url.startswith(p) for p in prefix)
 
 
 def is_locale_mirror_url(url: str) -> bool:

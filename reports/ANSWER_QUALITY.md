@@ -1,7 +1,7 @@
 # End-to-End RAG Answer Quality
 <!-- style: v2, 2026-05-11 -->
 
-All crawlers produce similar LLM answer quality (3.64-4.73 out of 5). crawl4ai leads slightly at 4.73; markcrawl ranks 7th at 3.64 — a 23.0% gap from the best. The gaps are small but consistent.
+All crawlers produce similar LLM answer quality (3.68-4.72 out of 5). crawl4ai leads slightly at 4.72; markcrawl ranks 6th at 3.77 — a 20.1% gap from the best. The gaps are small but consistent.
 
 **Run:** `run_v13_merged_20260504_203748` | **Started:** 2026-05-04T13:36:42Z | **Ended:** 2026-05-05T05:41:25.381501+00:00 | **Pool:** 1.2 (sha256:caa35)
 
@@ -25,23 +25,23 @@ and sent to `gpt-4o-mini` to generate an answer. Answers are scored by
 
 **Scoring scale:** 1 = wrong/irrelevant, 2 = partially relevant, 3 = acceptable, 4 = good, 5 = excellent/complete. Scores are averaged across all queries per tool. An overall score above 4.0 indicates consistently good answers.
 
-## Summary (557 queries across 11 sites)
+## Summary (561 queries across 11 sites)
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | **Overall** | Avg tokens/query |
 |---|---|---|---|---|---|---|
-| crawl4ai | 4.74 | 4.83 | 4.64 | 4.71 | **4.73 ±0.06** | 4,346 |
-| crawl4ai-raw | 4.73 | 4.82 | 4.64 | 4.70 | **4.72 ±0.06** | 4,340 |
-| crawlee | 4.71 | 4.82 | 4.59 | 4.67 | **4.70 ±0.07** | 4,091 |
-| playwright | 4.58 | 4.60 | 4.33 | 4.45 | **4.49 ±0.08** | 4,128 |
-| colly+md | 4.55 | 4.46 | 4.19 | 4.35 | **4.39 ±0.09** | 4,205 |
-| scrapy+md | 4.04 | 3.72 | 3.33 | 3.58 | **3.67 ±0.12** | 4,151 |
-| markcrawl | 4.02 | 3.70 | 3.29 | 3.55 | **3.64 ±0.12** | 4,015 |
+| crawl4ai | 4.73 | 4.82 | 4.64 | 4.70 | **4.72 ±0.06** | 4,351 |
+| crawl4ai-raw | 4.71 | 4.81 | 4.62 | 4.68 | **4.70 ±0.06** | 4,345 |
+| crawlee | 4.69 | 4.80 | 4.58 | 4.65 | **4.68 ±0.07** | 4,101 |
+| playwright | 4.57 | 4.59 | 4.32 | 4.44 | **4.48 ±0.08** | 4,133 |
+| colly+md | 4.52 | 4.45 | 4.17 | 4.32 | **4.36 ±0.09** | 4,207 |
+| markcrawl | 4.09 | 3.84 | 3.46 | 3.70 | **3.77 ±0.11** | 4,043 |
+| scrapy+md | 4.02 | 3.74 | 3.36 | 3.60 | **3.68 ±0.12** | 4,161 |
 
 > **Column definitions:** All scores are 1-5 averages across queries, judged by `gpt-4o-mini`. **Correctness** = factual accuracy. **Relevance** = answers the question asked. **Completeness** = covers all aspects. **Usefulness** = practical value to the user. **Overall** = mean of the four dimensions (± 95% confidence interval). **Avg tokens/query** = estimated input tokens per query (chunk words x 1.33). Gaps within the ± range are not statistically significant.
 
 ## What this means in practice
 
-The quality gap between the best (crawl4ai, 4.73) and worst (markcrawl, 3.64) crawler is 1.09 points on a 5-point scale -- 23.0% relative. This gap is real but small.
+The quality gap between the best (crawl4ai, 4.72) and worst (scrapy+md, 3.68) crawler is 1.04 points on a 5-point scale -- 22.1% relative. This gap is real but small.
 
 For most use cases, your choice of crawler will not noticeably affect the quality of LLM-generated answers. All tools produce answers that score above 4.0 ("good") on average, meaning users get helpful, accurate responses regardless of which crawler feeds the pipeline.
 
@@ -1556,46 +1556,334 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| crawl4ai-raw | 4.83 | 4.95 | 4.77 | 4.87 | 4.85 ±0.11 |
-| crawlee | 4.83 | 4.97 | 4.72 | 4.83 | 4.84 ±0.11 |
-| crawl4ai | 4.80 | 4.95 | 4.73 | 4.83 | 4.83 ±0.13 |
-| playwright | 4.75 | 4.90 | 4.62 | 4.75 | 4.75 ±0.16 |
-| colly+md | 4.75 | 4.75 | 4.50 | 4.67 | 4.67 ±0.20 |
-| markcrawl | 4.22 | 4.03 | 3.67 | 3.90 | 3.95 ±0.33 |
-| scrapy+md | 3.17 | 2.50 | 1.87 | 2.22 | 2.44 ±0.18 |
+| crawl4ai | 4.75 | 4.93 | 4.77 | 4.80 | 4.81 ±0.14 |
+| crawlee | 4.75 | 4.95 | 4.75 | 4.78 | 4.81 ±0.14 |
+| playwright | 4.73 | 4.97 | 4.73 | 4.80 | 4.81 ±0.14 |
+| crawl4ai-raw | 4.72 | 4.90 | 4.70 | 4.73 | 4.76 ±0.17 |
+| colly+md | 4.57 | 4.63 | 4.38 | 4.47 | 4.51 ±0.25 |
+| markcrawl | 4.45 | 4.40 | 4.13 | 4.28 | 4.32 ±0.29 |
+| scrapy+md | 3.18 | 2.67 | 2.02 | 2.38 | 2.56 ±0.23 |
 
 > Scores are 1-5 averages. See summary table legend for dimension definitions.
 
 <details>
 <summary>Query-by-query scores for mdn-css</summary>
 
-**Q1: What is auto-placement in CSS grid layout?**
+**Q1: What is masonry layout in CSS?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Auto-placement in CSS grid layout is a feature that allows grid items to be automatically positioned... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Auto-placement in CSS grid layout is a feature that allows grid items to automatically position them... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Auto-placement in CSS grid layout is a feature that allows grid items to automatically position them... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Auto-placement in CSS grid layout is a feature that allows grid items to automatically position them... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Auto-placement in CSS grid layout is a feature that allows grid items to be automatically positioned... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Auto-placement in CSS grid layout is a feature that allows grid items to automatically position them... |
+| playwright | 4 | 5 | 4 | 5 | 4.5 | Masonry layout in CSS is a layout method where one axis uses a strict grid layout (typically columns... |
+| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | Masonry layout in CSS is a layout method where one axis uses a strict grid layout (typically columns... |
+| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | Masonry layout in CSS is a layout method where one axis uses a strict grid layout (typically columns... |
+| crawlee | 4 | 5 | 4 | 4 | 4.2 | Masonry layout in CSS is a layout method where one axis uses a strict grid layout (typically columns... |
+| markcrawl | 3 | 4 | 4 | 4 | 3.8 | Masonry layout in CSS is a layout method where one axis uses a strict grid layout (most often column... |
+| colly+md | 2 | 5 | 3 | 3 | 3.2 | Masonry layout in CSS is a layout style where items are arranged in a grid-like structure, but inste... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
 > **Corr** = correctness, **Rel** = relevance, **Comp** = completeness, **Use** = usefulness, **Avg** = average of the four dimensions (1-5).
 
-**Q2: How can you control the size of automatically created rows in the implicit grid?**
+**Q2: How do you create a masonry layout using CSS?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can control the size of automatically created rows in the implicit grid using the `grid-auto-row... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can control the size of automatically created rows in the implicit grid using the `grid-auto-row... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can control the size of automatically created rows in the implicit grid using the `grid-auto-row... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can control the size of automatically created rows in the implicit grid using the `grid-auto-row... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can control the size of automatically created rows in the implicit grid using the `grid-auto-row... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can control the size of automatically created rows in the implicit grid using the `grid-auto-row... |
+| colly+md | 2 | 5 | 3 | 3 | 3.2 | To create a masonry layout using CSS, you can use the following approach:  1. Set the container to u... |
+| playwright | 2 | 5 | 3 | 3 | 3.2 | To create a masonry layout using CSS, use `display: grid-lanes` along with `grid-template-columns` o... |
+| markcrawl | 2 | 4 | 3 | 3 | 3.0 | To create a masonry layout using CSS, use the `display: grid-lanes` property along with `grid-templa... |
+| crawl4ai | 2 | 4 | 3 | 3 | 3.0 | To create a masonry layout using CSS, use `display: grid-lanes` along with `grid-template-columns`. ... |
+| crawl4ai-raw | 2 | 4 | 3 | 3 | 3.0 | To create a masonry layout using CSS, use `display: grid-lanes` along with `grid-template-columns`. ... |
+| crawlee | 2 | 4 | 3 | 3 | 3.0 | To create a masonry layout using CSS, use `display: grid-lanes` along with `grid-template-columns`. ... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q3: What properties are used to define scroll snapping in CSS?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The properties used to define scroll snapping in CSS are:  1. `scroll-snap-type` 2. `scroll-snap-ali... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The properties used to define scroll snapping in CSS are:  1. `scroll-snap-type` 2. `scroll-snap-ali... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The properties used to define scroll snapping in CSS are:  1. `scroll-snap-type` 2. `scroll-snap-ali... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The properties used to define scroll snapping in CSS include `scroll-snap-type`, `scroll-snap-align`... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The properties used to define scroll snapping in CSS are:  1. `scroll-snap-type` 2. `scroll-snap-ali... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The properties used to define scroll snapping in CSS are:  1. `scroll-snap-type` 2. `scroll-snap-ali... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The properties used to define scroll snapping in CSS are `scroll-snap-type`, `scroll-snap-align`, `s... |
+
+**Q4: What does the scroll-snap-type property determine?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `scroll-snap-type` property determines whether or not the scrollable viewport can be snapped to ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `scroll-snap-type` property determines the axis along which scroll snapping occurs (either `x`, ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `scroll-snap-type` property determines the axis along which scroll snapping occurs (either `x`, ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `scroll-snap-type` property determines the axis along which scroll snapping happens (either `x`,... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `scroll-snap-type` property determines whether the scrollable viewport can be snapped to, whethe... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `scroll-snap-type` property determines whether the scrollable viewport can be snapped to specifi... |
 | scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q3: What does the CSS scoping module define?**
+**Q5: What are OpenType features in fonts?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | OpenType features in fonts refer to different glyphs or character styles contained within an OpenTyp... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | OpenType features in fonts refer to different glyphs or character styles contained within an OpenTyp... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | OpenType features in fonts refer to different glyphs or character styles contained within an OpenTyp... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | OpenType features in fonts refer to different glyphs or character styles contained within an OpenTyp... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | OpenType features in fonts refer to different glyphs or character styles contained within an OpenTyp... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | OpenType features in fonts refer to different glyphs or character styles contained within an OpenTyp... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q6: How can I enable ligatures in CSS?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To enable ligatures in CSS, you can use the `font-variant-ligatures` property. You can specify value... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can enable ligatures in CSS using the `font-variant-ligatures` property. You can set it to `norm... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can enable ligatures in CSS using the `font-variant-ligatures` property. You can set it to `norm... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To enable ligatures in CSS, you can use the `font-variant-ligatures` property. You can set it to `no... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To enable ligatures in CSS, you can use the `font-variant-ligatures` property. For example:  ```css ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To enable ligatures in CSS, you can use the `font-variant-ligatures` property or the `font-feature-s... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q7: What does the border-radius CSS property do?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `border-radius` CSS property rounds the corners of an element's outer border edge, allowing you ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `border-radius` CSS property rounds the corners of an element's outer border edge, allowing you ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `border-radius` CSS property rounds the corners of an element's outer border edge, allowing you ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `border-radius` CSS property rounds the corners of an element's outer border edge, allowing you ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `border-radius` CSS property rounds the corners of an element's outer border edge. You can set a... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q8: How can you specify multiple radii using the border-radius property?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can specify multiple radii using the `border-radius` property by providing one, two, three, or f... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can specify multiple radii using the `border-radius` property by providing one, two, three, or f... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can specify multiple radii using the `border-radius` property by providing one, two, three, or f... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can specify multiple radii using the `border-radius` property by providing one to four `<length>... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can specify multiple radii using the `border-radius` property by providing one to four `<length>... |
+| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q9: What properties control breaks inside boxes in a multicol layout?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The properties that control breaks inside boxes in a multicol layout are the `break-inside` property... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The properties that control breaks inside boxes in a multicol layout are the `break-inside` property... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The properties that control breaks inside boxes in a multicol layout are `break-inside`, which takes... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The properties that control breaks inside boxes in a multicol layout are the `break-inside` property... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The properties that control breaks inside boxes in a multicol layout are `break-inside`, which takes... |
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | The properties that control breaks inside boxes in a multicol layout are `column-gap` or `gap`, and ... |
+| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+
+**Q10: How can you prevent a caption from being separated from its image in a multicol layout?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can prevent a caption from being separated from its image in a multicol layout by using the `bre... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can prevent a caption from being separated from its image in a multicol layout by using the `bre... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To prevent a caption from being separated from its image in a multicol layout, you can use the `brea... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can prevent a caption from being separated from its image in a multicol layout by using the `bre... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can prevent a caption from being separated from its image in a multicol layout by using the `bre... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q11: What properties does the CSS borders and box decorations module provide?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module provides properties for adding borders, shaped corners, a... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module provides properties for adding borders, shaped corners, a... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module provides properties for adding borders, shaped corners, a... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module provides properties for adding borders, shaped corners, a... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module provides properties for adding borders, shaped corners, a... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module provides properties for adding borders, shaped corners, a... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q12: What new features does the CSS borders and box decorations module level 4 introduce?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module level 4 introduces `corner-shape` and `border-shape` prop... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module level 4 introduces the `border-shape`, `border-limit`, an... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module level 4 introduces the `border-shape`, `border-limit`, an... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module level 4 introduces the `border-shape`, `border-limit`, an... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module level 4 introduces the following new features:  1. `corne... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS borders and box decorations module level 4 introduces the `corner-shape` and `border-shape` ... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q13: What are the six keywords accepted by the <timeline-range-name> value type?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The six keywords accepted by the `<timeline-range-name>` value type are: `cover`, `contain`, `entry`... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The six keywords accepted by the `<timeline-range-name>` value type are `cover`, `contain`, `entry`,... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The six keywords accepted by the `<timeline-range-name>` value type are `cover`, `contain`, `entry`,... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The six keywords accepted by the `<timeline-range-name>` value type are `cover`, `contain`, `entry`,... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The six keywords accepted by the `<timeline-range-name>` value type are `cover`, `contain`, `entry`,... |
+| colly+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q14: How does the 'contain' named timeline range function in relation to the scrollport?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The 'contain' named timeline range represents the range of a view progress timeline where the subjec... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `contain` named timeline range fully contains the animation within the scrollport. It starts whe... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `contain` named timeline range fully contains the animation within the scrollport. It starts whe... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The 'contain' named timeline range fully contains the animation within the scrollport. It starts whe... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The 'contain' named timeline range fully contains the animation within the scrollport. It starts whe... |
+| colly+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q15: How do browsers handle CSS errors when they encounter invalid values or missing semicolons?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Browsers gracefully recover from CSS errors by ignoring the invalid content and continuing to parse ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Browsers gracefully recover from CSS errors by ignoring the invalid content and continuing to parse ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Browsers handle CSS errors by ignoring the line containing the errors and discarding the minimum amo... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Browsers handle CSS errors by ignoring the invalid property-value pairs or declarations. If a missin... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Browsers handle CSS errors by ignoring the invalid content and continuing to parse subsequent valid ... |
+| markcrawl | 4 | 5 | 4 | 4 | 4.2 | Browsers handle CSS errors by ignoring invalid values or declarations. If a single `<if-condition>` ... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q16: What happens to a CSS declaration block if it contains an invalid selector?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | If a CSS declaration block contains an invalid selector, all of the enclosed styles will be ignored.... |
+| crawlee | 4 | 5 | 4 | 4 | 4.2 | If a CSS declaration block contains an invalid selector, the entire style block is ignored.... |
+| crawl4ai | 2 | 5 | 3 | 3 | 3.2 | If a CSS declaration block contains an invalid selector, the entire style block is ignored.... |
+| crawl4ai-raw | 2 | 5 | 3 | 3 | 3.2 | If a CSS declaration block contains an invalid selector, the entire style block is ignored.... |
+| colly+md | 2 | 5 | 3 | 3 | 3.2 | If a CSS declaration block contains an invalid selector, the entire style block is ignored.... |
+| playwright | 2 | 5 | 3 | 3 | 3.2 | If a CSS declaration block contains an invalid selector, the entire style block is ignored.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q17: What is the alignment container in multi-column layout?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 3 | 4 | 3 | 3 | 3.2 | The alignment container in multi-column layout is the content box of the multicol container.... |
+| crawl4ai-raw | 3 | 4 | 3 | 3 | 3.2 | The alignment container in multi-column layout is the content box of the multicol container.... |
+| crawlee | 3 | 4 | 3 | 3 | 3.2 | The alignment container in multi-column layout is the content box of the multicol container.... |
+| playwright | 3 | 4 | 3 | 3 | 3.2 | The alignment container in multi-column layout is the content box of the multicol container.... |
+| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| colly+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q18: How does the column-gap property behave in multi-column layout?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | In a multi-column layout, the `column-gap` property sets the size of the gap (gutter) between the co... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | In multi-column layout, the `column-gap` property has an initial value of `1em`, which creates a gap... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | In multi-column layout, the `column-gap` property is initially set to `1em`, which creates a gap bet... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | In multi-column layout, the `column-gap` property is used to control the gap between columns. Its in... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `column-gap` property in multi-column layout controls the space between columns. Its initial val... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | In multi-column layout, the `column-gap` property is used to control the gap between columns. The in... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q19: What is the initial viewport?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The initial viewport refers to the window or viewing area of the user agent before user agent styles... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The initial viewport refers to the window or viewing area of the user agent before any user agent st... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The initial viewport refers to the window or viewing area of the user agent before any user agent st... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The initial viewport refers to the window or viewing area of the user agent before any user agent st... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The initial viewport refers to the window or viewing area of the user agent before any user agent st... |
+| crawlee | 4 | 5 | 4 | 4 | 4.2 | The initial viewport refers to the window or viewing area of the user agent before any user agent st... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q20: How does the viewport meta tag affect the actual viewport?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The viewport meta tag provides hints about the initial size of the viewport. The actual viewport is ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The viewport meta tag provides hints about the initial size of the viewport. If the tag is included,... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The viewport meta tag provides hints about the initial size of the viewport. If the tag is included,... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The viewport meta tag provides hints about the initial size of the viewport. If this tag is omitted,... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The viewport meta tag provides hints about the initial size of the viewport. The actual viewport is ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The viewport meta tag provides hints about the initial size of the viewport. If this tag is omitted,... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q21: What are the most commonly-used CSS data types?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The most commonly-used CSS data types are defined in the CSS Values and Units module, which includes... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The most commonly-used CSS data types are defined in the CSS Values and Units module, which includes... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The most commonly-used CSS data types are defined in the CSS Values and Units module, which includes... |
+| crawl4ai-raw | 3 | 3 | 2 | 2 | 2.5 | The most commonly-used CSS data types are defined in the CSS Values and Units module, but the contex... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| colly+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q22: How are CSS data types denoted in formal CSS syntax?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | CSS data types are denoted in formal CSS syntax using angle brackets. For example, a string is denot... |
+| scrapy+md | 2 | 5 | 3 | 3 | 3.2 | CSS data types are denoted in formal CSS syntax using angle brackets, such as `<color>`, `<number>`,... |
+| crawlee | 2 | 4 | 2 | 3 | 2.8 | CSS data types are denoted by a keyword placed between the angle brackets `<` and `>`.... |
+| colly+md | 2 | 4 | 2 | 3 | 2.8 | CSS data types are denoted by a keyword placed between the angle brackets `<` and `>`.... |
+| playwright | 2 | 4 | 2 | 3 | 2.8 | CSS data types are denoted by a keyword placed between the angle brackets `<` and `>`.... |
+| crawl4ai | 2 | 3 | 2 | 2 | 2.2 | CSS data types are denoted by a keyword placed between the angle brackets `<` and `>`.... |
+| crawl4ai-raw | 2 | 3 | 2 | 2 | 2.2 | CSS data types are denoted by a keyword placed between the angle brackets `<` and `>`.... |
+
+**Q23: What are the basic building blocks of CSS syntax?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The basic building blocks of CSS syntax are selectors and declarations. A style rule consists of a s... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The basic building blocks of CSS syntax are:  1. **Property**: An identifier that defines which feat... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The basic building blocks of CSS syntax are declarations, declaration blocks, rulesets, and statemen... |
+| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The basic building blocks of CSS syntax are: - The **property**, which is an identifier that defines... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The basic building blocks of CSS syntax are: - **Property**: An identifier that defines which featur... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | The basic building blocks of CSS syntax are:  1. **Property**: An identifier that defines which feat... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q24: What is a CSS declaration and how is it structured?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A CSS declaration consists of a property/value pair. It is structured with the syntax:  ```css selec... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A CSS declaration is a property and value pair that sets specific styles for elements in a web page.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A CSS declaration is a property and value pair that sets specific styles for elements in a web page.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | A CSS declaration is a property and value pair that sets a specific style for an element. It is stru... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | A CSS declaration is a property and value pair used to set CSS properties to specific values. It is ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | A CSS declaration is a property and value pair that sets a specific style for an element. It is stru... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q25: What property is used to set a threshold for opacity when creating shapes from images?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The property used to set a threshold for opacity when creating shapes from images is `shape-image-th... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The property used to set a threshold for opacity when creating shapes from images is `shape-image-th... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The property used to set a threshold for opacity when creating shapes from images is `shape-image-th... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The property used to set a threshold for opacity when creating shapes from images is `shape-image-th... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The property used to set a threshold for opacity when creating shapes from images is `shape-image-th... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The property used to set a threshold for opacity when creating shapes from images is `shape-image-th... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q26: How can you create shapes using a CSS gradient?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can create shapes using a CSS gradient by applying a gradient as a background image and using th... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can create shapes using a CSS gradient by applying a gradient as a background image and using th... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can create shapes using a CSS gradient by applying a gradient as a background image and using th... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can create shapes using a CSS gradient by applying a gradient as a background image and using th... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can create shapes using a CSS gradient by utilizing the `shape-outside` property along with a gr... |
+| markcrawl | 4 | 5 | 4 | 4 | 4.2 | You can create shapes using a CSS gradient by utilizing the `shape-outside` property along with the ... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q27: What does the CSS scoping module define?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -1607,7 +1895,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | colly+md | 5 | 5 | 4 | 5 | 4.8 | The CSS scoping module defines the CSS scoping and encapsulation mechanisms, focusing on the Shadow ... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q4: How do selectors behave within a shadow tree in CSS?**
+**Q28: How do selectors behave within a shadow tree in CSS?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -1615,107 +1903,107 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Selectors within a shadow tree do not select elements outside the tree, either in the global scope o... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | Selectors within a shadow tree do not select elements outside the tree, either in the global scope o... |
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | Selectors within a shadow tree can style the shadow host using the `:host` selector, and external CS... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Within a shadow tree in CSS, styles are scoped to that shadow tree, meaning selectors do not select ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Selectors within a shadow tree do not select elements outside the tree, either in the global scope o... |
 | markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
 | scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
 
-**Q5: What is the Fetch API used for?**
+**Q29: What does the CSS counter styles module allow you to define?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The Fetch API is used for making HTTP requests and processing the responses in a modern, promise-bas... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The Fetch API is used for making HTTP requests and processing the responses in a more powerful and f... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The Fetch API is used for making HTTP requests to web servers and receiving responses programmatical... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The Fetch API is used for making HTTP requests and processing the responses in a modern, promise-bas... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The Fetch API is used for making HTTP requests and processing the responses in a modern, promise-bas... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The Fetch API is used for fetching resources, including across the network, and provides a more powe... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q6: What method is used to fetch a resource with the Fetch API?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The method used to fetch a resource with the Fetch API is `fetch()`.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The method used to fetch a resource with the Fetch API is `fetch()`.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The method used to fetch a resource with the Fetch API is `fetch()`.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The method used to fetch a resource with the Fetch API is `fetch()`.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The method used to fetch a resource with the Fetch API is `fetch()`.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q7: What is the purpose of the :target pseudo-class in CSS?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `:target` CSS pseudo-class is used to select and style the target element of a document, which i... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `:target` pseudo-class in CSS is to style the target element of a document identi... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `:target` pseudo-class in CSS is to style the target element of a document identi... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `:target` pseudo-class in CSS is to style the target element of a document identi... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `:target` pseudo-class in CSS is used to style the target element of a document identified by a ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `:target` pseudo-class in CSS is used to style the target element of a document identified by a ... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS counter styles module allows you to define your own counter styles to manage the appearance ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS counter styles module allows you to define your own counter styles to manage the appearance ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS counter styles module allows you to define your own counter styles to manage the appearance ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS counter styles module allows you to define your own counter styles to manage the appearance ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS counter styles module allows you to define your own counter styles to manage the appearance ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS counter styles module allows you to define your own counter styles to manage the appearance ... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q8: How can you style all targeted elements using the universal selector?**
+**Q30: How many descriptors does the @counter-style rule define?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can style all targeted elements using the universal selector by applying styles to the universal... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can style all targeted elements by using the universal selector `*` in combination with the `:ta... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | To style all targeted elements, you can use the universal selector `*` in combination with the `:tar... |
-| crawl4ai | 2 | 4 | 3 | 3 | 3.0 | You can style all targeted elements using the universal selector by applying the `:target` pseudo-cl... |
-| colly+md | 2 | 4 | 3 | 3 | 3.0 | You can style all targeted elements using the universal selector by applying the `:target` pseudo-cl... |
-| playwright | 2 | 4 | 2 | 3 | 2.8 | You can style all targeted elements using the universal selector by applying styles to the `:target`... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q9: What types of images can be used in CSS?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | The types of images that can be used in CSS include URLs, gradients, and other types of images as de... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The types of images that can be used in CSS include URLs, gradients, and other types of images as de... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The types of images that can be used in CSS include URLs, gradients, and other types of images as de... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | The types of images that can be used in CSS include URLs, gradients, and other types of images defin... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | The types of images that can be used in CSS include URLs, gradients, and other types of images as de... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | The types of images that can be used in CSS include URLs, gradients, and other types of images defin... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `@counter-style` rule defines three descriptors: `syntax`, `inherits`, and `initial-value`.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The @counter-style rule defines nine descriptors.... |
+| crawl4ai | 2 | 5 | 3 | 3 | 3.2 | The `@counter-style` rule defines ten descriptors.... |
+| crawl4ai-raw | 2 | 5 | 2 | 2 | 2.8 | The `@counter-style` rule defines ten descriptors.... |
+| crawlee | 2 | 5 | 2 | 2 | 2.8 | The `@counter-style` rule defines ten descriptors.... |
+| playwright | 2 | 5 | 2 | 2 | 2.8 | The `@counter-style` rule defines ten descriptors.... |
 | scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q10: What is the image-resolution property in CSS?**
+**Q31: What is CSS typed arithmetic?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| colly+md | 4 | 5 | 3 | 4 | 4.0 | The `image-resolution` property in CSS is defined in the CSS images module, but currently, no browse... |
-| crawl4ai | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q11: What are the two types of CSS properties based on inheritance?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The two types of CSS properties based on inheritance are inheritable properties and non-inheritable ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The two types of CSS properties based on inheritance are **inherited properties** and **non-inherite... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The two types of CSS properties based on inheritance are **inherited properties** and **non-inherite... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The two types of CSS properties based on inheritance are **inherited properties** and **non-inherite... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The two types of CSS properties based on inheritance are **inherited properties** and **non-inherite... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The two types of CSS properties based on inheritance are **inherited properties** and **non-inherite... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | CSS typed arithmetic refers to the use of the `calc()` function in CSS to perform calculations invol... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | CSS typed arithmetic refers to permitted calculations performed with typed CSS values via functions ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | CSS typed arithmetic refers to permitted calculations performed with typed CSS values via functions ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | CSS typed arithmetic refers to permitted calculations performed with typed CSS values using function... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | CSS typed arithmetic refers to permitted calculations performed with typed CSS values using function... |
 | scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| colly+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q12: What happens when no value is specified for a non-inherited property on an element?**
+**Q32: How does division work in CSS typed arithmetic?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | When no value is specified for a non-inherited property on an element, the element gets the initial ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | When no value is specified for a non-inherited property on an element, the element gets the initial ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | When no value is specified for a non-inherited property on an element, the element gets the initial ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | When no value for a non-inherited property has been specified on an element, the element gets the in... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | When no value is specified for a non-inherited property on an element, the element gets the initial ... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | In CSS typed arithmetic, when using the `calc()` function to divide values with the `/` operator, bo... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | In CSS typed arithmetic, when dividing values, you can divide a value with a unit by a unitless valu... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | In CSS typed arithmetic, when dividing values, you can divide a value with a unit by a unitless valu... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | In CSS typed arithmetic, when dividing values, you can divide a value with a unit by a unitless valu... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | In CSS typed arithmetic, division allows you to divide a value with a unit by a unitless value, resu... |
 | scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| colly+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q13: What are at-rules in CSS?**
+**Q33: What is a replaced element in CSS?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A replaced element in CSS is an element whose representation is outside the scope of CSS; they are e... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A **replaced element** in CSS is an element whose representation is outside the scope of CSS; they a... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A **replaced element** in CSS is an element whose representation is outside the scope of CSS; they a... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | A **replaced element** in CSS is an element whose representation is outside the scope of CSS; they a... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | A replaced element in CSS is an external object whose representation is independent of the CSS forma... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | A **replaced element** in CSS is an element whose representation is outside the scope of CSS; they a... |
+| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | A replaced element in CSS refers to elements like images and videos, which have their internal layou... |
+
+**Q34: How does the object-fit property affect replaced elements?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `object-fit` property affects replaced elements by specifying how their content (such as images ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `object-fit` property specifies how the replaced element's content object should be fitted to th... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `object-fit` property specifies how the replaced element's content object should be fitted to th... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `object-fit` property resizes the image itself to fit inside the `<img>` element that is embeddi... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `object-fit` property affects replaced elements by specifying how their content should be fitted... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `object-fit` property affects replaced elements by specifying how their content should be fitted... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `object-fit` property affects replaced elements by specifying how their content should be fitted... |
+
+**Q35: What are the logical properties used for sizing elements in CSS?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The logical properties used for sizing elements in CSS include `min-inline-size`, `block-size`, `inl... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The logical properties used for sizing elements in CSS are:  - `inline-size` - `block-size` - `min-i... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The logical properties used for sizing elements in CSS are:  - `inline-size` - `block-size` - `min-i... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The logical properties used for sizing elements in CSS are:  - `inline-size` - `block-size` - `min-i... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The logical properties used for sizing elements in CSS are `inline-size`, `block-size`, `min-inline-... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The logical properties used for sizing elements in CSS are:  - `inline-size` - `block-size` - `min-i... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q36: How do inline-size and block-size relate to width and height in a horizontal writing mode?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | In a horizontal writing mode, the `inline-size` corresponds to the width of the element, while the `... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | In a horizontal writing mode, `inline-size` corresponds to `width`, controlling the size in the inli... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | In a horizontal writing mode, `inline-size` corresponds to `width`, controlling the size in the inli... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | In a horizontal writing mode, `inline-size` corresponds to `width`, controlling the size in the inli... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | In a horizontal writing mode, `inline-size` corresponds to `width`, and `block-size` corresponds to ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | In a horizontal writing mode, `inline-size` corresponds to `width`, and `block-size` corresponds to ... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q37: What are at-rules in CSS?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -1725,189 +2013,69 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | At-rules in CSS are statements that instruct CSS how to behave. They begin with an at-sign (`@`), fo... |
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | At-rules in CSS are special statements that begin with an at sign (`@`) followed by an identifier. T... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | At-rules in CSS are statements that instruct CSS how to behave. They begin with an at-sign (`@`), fo... |
-| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | At-rules in CSS are special instructions that begin with an "@" symbol and are used to define specif... |
+| scrapy+md | 3 | 5 | 4 | 4 | 4.0 | At-rules in CSS are special instructions that begin with an "@" symbol and are used to define specif... |
 
-**Q14: What is the purpose of the @import at-rule?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `@import` at-rule tells the CSS engine to include an external style sheet.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `@import` at-rule tells the CSS engine to include an external style sheet.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `@import` at-rule tells the CSS engine to include an external style sheet.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `@import` at-rule tells the CSS engine to include an external style sheet.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `@import` at-rule tells the CSS engine to include an external style sheet.... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | The `@import` at-rule tells the CSS engine to include an external style sheet.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q15: What is the purpose of the HTTP Observatory?**
+**Q38: How do at-rules begin in CSS?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the HTTP Observatory is to enhance web security by analyzing compliance with best sec... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the HTTP Observatory is to enhance web security by analyzing compliance with best sec... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the HTTP Observatory is to enhance web security by analyzing compliance with best sec... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the HTTP Observatory is to perform an in-depth assessment of a site's HTTP headers an... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the HTTP Observatory is to enhance web security by analyzing compliance with best sec... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | At-rules begin with an at-sign, `@` (U+0040 COMMERCIAL AT), followed by an identifier.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | At-rules begin with an at-sign, `@` (U+0040 COMMERCIAL AT), followed by an identifier.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | At-rules begin with an at-sign, `@` (U+0040 COMMERCIAL AT), followed by an identifier.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | At-rules in CSS begin with an at-sign, `@`, followed by an identifier.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | At-rules in CSS begin with an at-sign, `@`, followed by an identifier.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | At-rules in CSS begin with an at-sign, `@`, followed by an identifier.... |
+| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | At-rules in CSS begin with the `@` symbol, followed by the rule name (e.g., `@function`, `@mixin`, `... |
+
+**Q39: What does the Color mixer tool allow you to do?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The Color mixer tool allows you to mix two colors in any color space using the `color-mix()` functio... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The Color mixer tool allows you to mix two colors in any color space using the `color-mix()` functio... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The Color mixer tool allows you to mix two colors in any color space using the `color-mix()` functio... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The Color mixer tool allows you to mix two colors in any color space using the `color-mix()` functio... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The Color mixer tool allows you to select two colors, mix them in a specified color space, adjust th... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The Color mixer tool allows you to mix two colors in any color space using the `color-mix()` functio... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q40: How can you change the percentages of each input color in the Color mixer?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can change the percentages of each input color in the Color mixer by using sliders to adjust the... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can change the percentages of each input color in the Color mixer by using the sliders labeled f... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can change the percentages of each input color in the Color mixer by using the sliders labeled f... |
+| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | You can change the percentages of each input color in the Color mixer by using sliders to adjust the... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | You can change the percentages of each input color in the Color mixer by using sliders to adjust the... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 | scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q16: How many websites has the HTTP Observatory provided insights to?**
+**Q41: What does the `subgrid` value do in CSS grid layout?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The HTTP Observatory has provided insights to over 6.9 million websites.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The HTTP Observatory has provided insights to over 6.9 million websites.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The HTTP Observatory has provided insights to over 6.9 million websites.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The HTTP Observatory has provided insights to over 6.9 million websites.... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| colly+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q17: What properties are defined by the CSS box model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The properties defined by the CSS box model include `margin`, `padding`, `border`, `width`, `height`... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The properties defined by the CSS box model include `margin`, `padding`, `border`, `margin-top`, `ma... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The properties defined by the CSS box model include `margin`, `padding`, `border`, `width`, and `hei... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | The CSS box model defines the following properties: `margin`, `padding`, `height`, `width`, and `bor... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | The CSS box model defines the following properties: `margin`, `padding`, `height`, `width`, and `bor... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | The CSS box model defines the following properties: `margin`, `padding`, `height`, `width`, and `bor... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `subgrid` value allows a nested grid to use the track definition of its parent grid, enabling th... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `subgrid` value in CSS grid layout allows a nested grid to use the track sizing defined on its p... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `subgrid` value in CSS grid layout allows a nested grid to use the track sizing defined by its p... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `subgrid` value in CSS grid layout allows a nested grid to use the track definitions (rows and c... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `subgrid` value in CSS grid layout allows a nested grid to use the track definitions (column and... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `subgrid` value in CSS grid layout allows a nested grid to use the track definitions (column and... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q18: What does the CSS box model describe about the layout of elements?**
+**Q42: How does the `gap` property behave in a subgrid?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS box model describes how each element is represented as a rectangular box, which includes fou... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS box model describes how each visible element on a webpage is represented as a rectangular bo... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS box model describes how each visible element on a webpage is represented as a rectangular bo... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS box model describes how every visible element on a webpage is represented as a rectangular b... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS box model describes how every visible element on a webpage is represented as a box, which in... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS box model describes how every visible element on a webpage is represented as a box, which in... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q19: How does the `order` property affect the visual order of flex items?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `order` property affects the visual order of flex items by allowing them to be displayed in a sp... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `order` property affects the visual order of flex items by assigning them integer values that de... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `order` property affects the visual order of flex items by assigning them integer values that de... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `order` property affects the visual order of flex items by allowing individual items to be assig... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `order` property affects the visual order of flex items by allowing individual items to be assig... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `order` property affects the visual order of flex items by allowing individual items to be assig... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q20: What should authors avoid when using the `order` property in flexbox layouts?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Authors should avoid using the `order` property for logical reordering of content in flexbox layouts... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Authors must avoid using the `order` property for logical reordering of content. It should only be u... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Authors must avoid using the `order` property for logical reordering of content, as it can negativel... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Authors must avoid using the `order` property for logical reordering of content, as it can ruin the ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Authors must avoid using the `order` property for logical reordering of content, as it can create ac... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Authors must avoid using the `order` property as a substitute for correct source ordering, as it can... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q21: What are the types of easing functions defined in the CSS easing functions module?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | The types of easing functions defined in the CSS easing functions module are:  1. `linear()` 2. `cub... |
-| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | The types of easing functions defined in the CSS easing functions module include linear, cubic bezie... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | The types of easing functions defined in the CSS easing functions module include linear, cubic bezie... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | The types of easing functions defined in the CSS easing functions module include linear, cubic bezie... |
-| crawl4ai | 3 | 5 | 3 | 4 | 3.8 | The types of easing functions defined in the CSS easing functions module are `linear`, `cubic bezier... |
-| crawl4ai-raw | 3 | 4 | 3 | 4 | 3.5 | The types of easing functions defined in the CSS easing functions module are `linear`, `cubic bezier... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q22: How do cubic bezier easing functions enhance user interface elements?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Cubic bezier easing functions enhance user interface elements by producing intuitive behaviors that ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Cubic bezier easing functions enhance user interface elements by producing intuitive behaviors that ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Cubic bezier easing functions enhance user interface elements by allowing for control over the rate ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Cubic bezier easing functions enhance user interface elements by producing intuitive behaviors that ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Cubic bezier easing functions enhance user interface elements by allowing for more intuitive animati... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| colly+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q23: What are Uniform Resource Identifiers (URI)?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Uniform Resource Identifiers (URI) are used to identify "resources" on the web. They are commonly us... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Uniform Resource Identifiers (URI) are used to identify "resources" on the web. They are commonly us... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Uniform Resource Identifiers (URI) are used to identify "resources" on the web. They are commonly us... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Uniform Resource Identifiers (URI) are used to identify "resources" on the web. They are commonly us... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | Uniform Resource Identifiers (URIs) are used to describe and locate resources on the web and are an ... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q24: What is the purpose of the fragment in a URI?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the fragment in a URI is to point to a specific piece of a document, allowing users t... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The fragment in a URI is an optional part at the end that starts with a `#` character and is used to... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The fragment in a URI is an optional part at the end that starts with a `#` character and is used to... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the fragment in a URI is to identify a specific part of the resource, such as a secti... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The fragment in a URI is an optional part at the end, starting with a `#` character, used to identif... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the fragment in a URI is to identify a specific part of the resource, such as a secti... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q25: What problem does scroll anchoring solve?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Scroll anchoring solves the problem of page movement due to DOM changes above the visible region of ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Scroll anchoring solves the problem of content jumping on a webpage when large images or other eleme... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Scroll anchoring solves the problem of content jumping on a webpage when large images or other eleme... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Scroll anchoring solves the problem of content jumping on a webpage when large images or other eleme... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Scroll anchoring solves the problem of content jumping, which occurs when content loads in after the... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Scroll anchoring solves the problem of content jumping on a webpage when large images or other eleme... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q26: How can I disable scroll anchoring in my document?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can disable scroll anchoring in your document by using the `overflow-anchor` property. Set it to... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can disable scroll anchoring in your document by using the `overflow-anchor` property. Set it to... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can disable scroll anchoring in your document by using the `overflow-anchor` property. Set it to... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To disable scroll anchoring in your document, you can use the `overflow-anchor` property. Set it to ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To disable scroll anchoring in your document, you can use the `overflow-anchor` property. Set it to ... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q27: How can I assign names to grid lines in CSS?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can assign names to grid lines in CSS using the `grid-template-areas` property or by defining na... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can assign names to grid lines in CSS by using the `grid-template-rows` and `grid-template-colum... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can assign names to grid lines in CSS by using the `grid-template-rows` and `grid-template-colum... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can assign names to grid lines in CSS by using the `grid-template-rows` and `grid-template-colum... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can assign names to grid lines in CSS by using the `grid-template-columns` and `grid-template-ro... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | You can assign names to grid lines in CSS by using the `grid-template-rows` and `grid-template-colum... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | In a subgrid, the `gap` property does not inherit from the parent grid. The nested grid created with... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `gap` property specified on the parent grid is inherited by the subgrid, creating the same spaci... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `gap` property specified on the parent grid is inherited by the subgrid, creating the same spaci... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `gap` property in a subgrid is inherited from the parent grid, creating the same spacing between... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `gap` property in a subgrid inherits the values specified on the parent grid, creating the same ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `gap` property in a subgrid inherits the values specified on the parent grid, creating the same ... |
 | scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
 
-**Q28: What happens when I use the repeat() syntax for naming grid lines?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | When you use the repeat() syntax for naming grid lines, you will get multiple lines that have the sa... |
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | When you use the repeat() syntax for naming grid lines, you will get multiple lines that have the sa... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | When you use the repeat() syntax for naming grid lines, you will get multiple lines that have the sa... |
-| colly+md | 4 | 5 | 4 | 4 | 4.2 | When you use the repeat() syntax for naming grid lines, you will get multiple lines that have the sa... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | When you use the repeat() syntax for naming grid lines, you will get multiple lines that have the sa... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q29: What does the CSS box alignment module specify?**
+**Q43: What does the CSS box alignment module specify?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -1917,379 +2085,211 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS box alignment module specifies CSS features relating to the alignment of boxes within their ... |
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS box alignment module specifies CSS features relating to the alignment of boxes within their ... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS box alignment module specifies CSS features relating to the alignment of boxes within their ... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q30: How is alignment linked to writing modes in CSS?**
+**Q44: How is alignment linked to writing modes in CSS?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Alignment in CSS is linked to writing modes through the use of logical values for alignment properti... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Alignment in CSS is linked to writing modes through the use of logical properties, which adapt to th... |
 | crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Alignment in CSS is linked to writing modes in that when aligning an item, the alignment is describe... |
 | crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Alignment in CSS is linked to writing modes in that when aligning an item, the alignment is describe... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | Alignment in CSS is linked to writing modes in that the start of the grid or layout changes based on... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Alignment in CSS is linked to writing modes through the use of logical properties and values. When t... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Alignment in CSS is linked to writing modes through the use of logical properties and values. When a... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | Alignment in CSS is linked to writing modes through the use of logical properties and values. When t... |
 | scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
 
-**Q31: What are CSS logical properties and values?**
+**Q45: What properties control alignment in flexbox?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | CSS logical properties and values are properties that do not assume a specific text direction, allow... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | CSS logical properties and values are a module that defines properties and values to control layout ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | CSS logical properties and values are a module that defines properties and values to control layout ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | CSS logical properties and values are a module that defines properties and values that control layou... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | CSS logical properties and values do not assume a text direction. They use keywords like `start` to ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | CSS logical properties and values are a module that defines properties and values that control layou... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q32: How do logical properties define direction-relative equivalents to physical properties?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Logical properties define direction-relative equivalents to physical properties by using abstract te... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Logical properties define direction-relative equivalents to physical properties by using abstract te... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Logical properties define direction-relative equivalents to physical properties by using abstract te... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Logical properties define direction-relative equivalents to physical properties by using terms like ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Logical properties define direction-relative equivalents to physical properties by using abstract te... |
-| markcrawl | 4 | 5 | 4 | 4 | 4.2 | Logical properties define direction-relative equivalents to physical properties by using terms like ... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q33: What does the CSS view transitions module define?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS view transitions module defines the behavior of the View Transition API, which allows develo... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS view transitions module defines the behavior of the View Transition API, which allows develo... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS view transitions module defines the behavior of the View Transition API, which allows develo... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS view transitions module defines the behavior of the View Transition API, which allows develo... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS view transitions module defines the behavior of the View Transition API, which allows develo... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS view transitions module defines the behavior of the View Transition API, which allows develo... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q34: How can developers create animated transitions using the View Transition API?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Developers can create animated transitions using the View Transition API by defining the behavior of... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Developers can create animated transitions using the View Transition API by utilizing the CSS view t... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Developers can create animated transitions using the View Transition API by utilizing the CSS view t... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Developers can create animated transitions using the View Transition API by utilizing the CSS view t... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The properties that control alignment in flexbox are `justify-content`, `align-items`, and `align-se... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The properties that control alignment in flexbox are: - `justify-content`: Controls the alignment of... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The properties that control alignment in flexbox are: - `justify-content`: Controls the alignment of... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The properties that control alignment in flexbox are:  1. `justify-content`: Controls the alignment ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The properties that control alignment in flexbox are:  1. `justify-content`: Controls the alignment ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The properties that control alignment in flexbox are:  1. `justify-content`: Controls the alignment ... |
 | scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q46: How does the align-items property affect flex items on the cross axis?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `align-items` property affects flex items on the cross axis by determining how they are aligned ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `align-items` property, set on the flex container, controls the alignment of all flex items on t... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `align-items` property, set on the flex container, controls the alignment of all flex items on t... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `align-items` property affects flex items on the cross axis by controlling their alignment withi... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `align-items` property affects flex items on the cross axis by controlling their alignment withi... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `align-items` property affects flex items on the cross axis by controlling their alignment as a ... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q47: What do logical properties and values in CSS define?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Logical properties and values in CSS define layout and alignment without assuming a specific text di... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Logical properties and values in CSS define direction-relative equivalents to their corresponding ph... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Logical properties and values in CSS define direction-relative equivalents to their corresponding ph... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Logical properties and values in CSS define flow-relative mappings for layout control, allowing prop... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Logical properties and values in CSS define styles that do not assume a text direction, allowing for... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Logical properties and values in CSS define flow-relative mappings for many physical properties and ... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q48: How do logical properties help with different writing modes in CSS?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Logical properties help with different writing modes in CSS by not assuming a text direction. They a... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Logical properties help with different writing modes in CSS by providing direction-relative equivale... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Logical properties help with different writing modes in CSS by providing direction-relative equivale... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Logical properties help with different writing modes in CSS by providing flow-relative equivalents t... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Logical properties help with different writing modes in CSS by not assuming a specific text directio... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Logical properties help with different writing modes in CSS by providing direction-relative equivale... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q49: What are the logical properties for floating and positioning in CSS?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The logical properties for floating and positioning in CSS include:  - `float`:    - `inline-start` ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The logical properties for floating and positioning in CSS include:  - `float: inline-start` (maps t... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The logical properties for floating and positioning in CSS include:  - `float`: inline-start (maps t... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The logical properties for floating and positioning in CSS include:  - `float`: inline-start (equiva... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 | colly+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q35: What are the four commonly-used CSS math functions?**
+**Q50: How do the inset properties relate to positioned layout in CSS?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The four commonly-used CSS math functions are `calc()`, `min()`, `max()`, and `clamp()`.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The four commonly-used CSS math functions are `calc()`, `min()`, `max()`, and `clamp()`.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The four commonly-used CSS math functions are `calc()`, `min()`, `max()`, and `clamp()`.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The four commonly-used CSS math functions are `calc()`, `min()`, `max()`, and `clamp()`.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The four commonly-used CSS math functions are `calc()`, `min()`, `max()`, and `clamp()`.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The inset properties, including `inset`, `inset-inline`, `inset-inline-start`, and `inset-inline-end... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The inset properties in CSS are used to position elements relative to their containing block or the ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The inset properties in CSS are used to position elements relative to their containing block or the ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The inset properties in CSS allow for positioning elements relative to their containing block or the... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The inset properties in CSS are used to define the position of an element in a positioned layout. Th... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The inset properties in CSS positioned layout allow for positioning elements relative to their conta... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q51: What does the CSS basic user interface module allow you to define?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS basic user interface module allows you to define the rendering and functionality of features... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS basic user interface module allows you to define the rendering and functionality of features... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS basic user interface module allows you to define the rendering and functionality of features... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS basic user interface module allows you to define the rendering and functionality of features... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS basic user interface module allows you to define the rendering and functionality of features... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS basic user interface module allows you to define the rendering and functionality of features... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q52: How can basic user interface properties improve user experience and accessibility?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Basic user interface properties can improve user experience and accessibility by providing visual cu... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Basic user interface properties can improve user experience and accessibility by providing visual cu... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Basic user interface properties can improve user experience and accessibility by providing visual cu... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Basic user interface properties can improve user experience and accessibility by providing visual fe... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Basic user interface properties can improve user experience and accessibility by providing visual cu... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q36: How does the `calc()` function work in CSS?**
+**Q53: What is the purpose of using the `@media` at-rule in CSS for printing?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `calc()` CSS function allows you to perform calculations when specifying CSS property values. It... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `calc()` function in CSS allows you to specify property values using basic arithmetic operations... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `calc()` function in CSS allows you to specify property values using basic arithmetic operations... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `calc()` function in CSS allows you to specify CSS property values using basic math operations: ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `calc()` function in CSS performs basic arithmetic calculations on numerical values. It allows y... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `calc()` function in CSS allows you to specify CSS property values using basic mathematical oper... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of using the `@media` at-rule in CSS for printing is to set different styles for a webpa... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `@media` at-rule in CSS for printing is used to set different styles for a webpage when it is pr... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `@media` at-rule in CSS for printing is used to set different styles for a webpage when it is pr... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of using the `@media` at-rule in CSS for printing is to set different styles for a webpa... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `@media` at-rule in CSS for printing is used to set different styles for a webpage when it is pr... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of using the `@media` at-rule in CSS for printing is to set different styles for printed... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q37: What is the focus of web security?**
+**Q54: How can the `@page` at-rule be used in CSS for printed pages?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The focus of web security is to protect sensitive information, such as customer usernames, passwords... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The focus of web security is to protect sensitive information, such as customer usernames, passwords... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The focus of web security is to protect sensitive information, such as customer usernames, passwords... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The focus of web security is to protect private data and systems against unauthorized access, ensuri... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | The focus of web security is to protect sensitive information, such as customer usernames, passwords... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `@page` at-rule can be used in CSS to modify different aspects of printed pages, including the p... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `@page` at-rule can be used in CSS to modify different aspects of printed pages, including the p... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `@page` at-rule can be used in CSS to modify different aspects of printed pages, including the p... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `@page` at-rule can be used in CSS to modify different aspects of printed pages, including the p... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `@page` at-rule can be used in CSS to modify different aspects of printed pages, including the p... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `@page` at-rule can be used in CSS to modify different aspects of printed pages, including the p... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q55: What are CSS custom properties used for?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | CSS custom properties are used to define reusable values across a project, simplifying complex or re... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | CSS custom properties are used to define specific values that can be reused throughout a document, s... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | CSS custom properties are used to define specific values that can be reused throughout a document, s... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | CSS custom properties are used to create and define custom variables that can be reused throughout s... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | CSS custom properties, commonly called CSS variables, are used to represent specific values that can... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | CSS custom properties are used to define specific values that can be reused throughout a document, a... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | CSS custom properties, commonly called CSS variables, are used to define specific values that can be... |
+
+**Q56: How do custom properties simplify complex CSS rules?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Custom properties simplify complex CSS rules by allowing developers to reuse values across a project... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Custom properties simplify complex CSS rules by allowing values to be defined once and reused throug... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Custom properties simplify complex CSS rules by allowing values to be defined once and reused throug... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Custom properties simplify complex CSS rules by allowing developers to define reusable variables for... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Custom properties simplify complex CSS rules by allowing values to be defined once and reused throug... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Custom properties simplify complex CSS rules by allowing values to be defined in one place and reuse... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Custom properties simplify complex CSS rules by allowing values to be defined in one place and reuse... |
+
+**Q57: What does the CSS containment module define?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS containment module defines containment and container queries, allowing the isolation of page... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS containment module defines containment and container queries, allowing the isolation of page... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS containment module defines containment and container queries, allowing developers to specify... |
+| crawlee | 4 | 5 | 3 | 4 | 4.0 | The CSS containment module defines containment and container queries.... |
+| playwright | 4 | 5 | 3 | 4 | 4.0 | The CSS containment module defines containment and container queries.... |
+| markcrawl | 3 | 4 | 3 | 3 | 3.2 | The CSS containment module defines containment and container queries.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q58: How do container queries differ from media queries?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Container queries differ from media queries in that they apply styles based on the dimensions and at... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Container queries differ from media queries in that they apply styles based on the attributes of a c... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Container queries differ from media queries in that they apply styles to elements based on the attri... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Container queries differ from media queries in that they apply styles based on the size and style fe... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Container queries differ from media queries in that they apply styles based on the size and style fe... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Container queries differ from media queries in that they apply styles based on the size and style fe... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q59: What is the syntax for the text-shadow property in CSS?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The syntax for the `text-shadow` property in CSS is as follows:  ``` text-shadow: <horizontal-offset... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The syntax for the `text-shadow` property in CSS is as follows:  ``` text-shadow: <horizontal-offset... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The syntax for the `text-shadow` property in CSS is as follows:  ``` text-shadow: <horizontal-offset... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The syntax for the `text-shadow` property in CSS is as follows:  ``` text-shadow: <horizontal-offset... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| colly+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q38: How do modern browsers protect users' security on the web?**
+**Q60: How can you apply multiple shadows to the same text?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Modern browsers protect users' security on the web through several features, including:  1. **Same-o... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Modern browsers protect users' security on the web through several features, including:  1. **Same-o... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Modern browsers protect users' security on the web through several features, including:  1. **HTTPS ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Modern browsers protect users' security on the web through several key features:  1. **HTTPS by Defa... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Modern browsers protect users' security on the web through several features, including:  1. **HTTPS ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can apply multiple shadows to the same text by including multiple shadow values in the `text-sha... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can apply multiple shadows to the same text by including multiple shadow values in the `text-sha... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can apply multiple shadows to the same text by using the `text-shadow` property and including mu... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can apply multiple shadows to the same text by including multiple shadow values in the `text-sha... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can apply multiple shadows to the same text by using the `text-shadow` property and including mu... |
 | scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q39: What does the object-view-box property do?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `object-view-box` property defines a viewbox within replaced elements, enabling the display of j... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `object-view-box` property defines a viewbox within replaced elements, enabling the display of j... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `object-view-box` property defines a viewbox within replaced elements, enabling the display of j... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `object-view-box` property sets the viewable area (viewbox) for replaced elements, defining what... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `object-view-box` property defines a viewable area (viewbox) within replaced elements, allowing ... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q40: How does the object-view-box property differ from object-fit?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `object-view-box` property is more flexible than the `object-fit` property, allowing for croppin... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `object-view-box` property is more flexible than the `object-fit` property, allowing for croppin... |
-| crawl4ai-raw | 4 | 5 | 4 | 5 | 4.5 | The `object-view-box` property is more flexible than the `object-fit` property, as it can be used to... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | The `object-view-box` property is more flexible than the `object-fit` property, allowing for croppin... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | The `object-view-box` property is more flexible than the `object-fit` property, allowing for croppin... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q41: What are the different textual data types in CSS?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The different textual data types in CSS include:  1. **Pre-defined keywords**: Keywords with a pre-d... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The different textual data types in CSS include:  1. `<string>`: A quoted string, such as used for a... |
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | The different textual data types in CSS are `<string>`, `<ident>`, and `<url>`. A `<string>` is a qu... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The different textual data types in CSS include:  1. `<string>` - A quoted series of characters. 2. ... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The different textual data types in CSS include:  1. `<string>` - A quoted series of characters. 2. ... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | The different textual data types in CSS include:  1. `<string>`: A quoted series of characters. 2. `... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q42: What do the CSS-wide keywords represent?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS-wide keywords represent explicit defaulting behaviors for CSS properties. They include `init... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | CSS-wide keywords represent explicit defaulting behaviors for CSS properties. They include `initial`... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | CSS-wide keywords represent explicit defaulting behaviors for CSS properties. They include `initial`... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS-wide keywords represent explicit defaulting behaviors for CSS properties. They include `init... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | CSS-wide keywords represent specific defaulting behaviors for CSS properties. They include `initial`... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS-wide keywords represent specific defaulting behaviors for CSS properties. They include:  - `... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q43: What does the CSS motion path module allow authors to do?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS motion path module allows authors to animate any graphical object along a custom path.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS motion path module allows authors to animate any graphical object along a custom path.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS motion path module allows authors to animate any graphical object along a custom path.... |
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | The CSS motion path module allows authors to animate any graphical object along a custom path.... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The CSS motion path module allows authors to animate any graphical object along a custom path.... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | The CSS motion path module allows authors to animate any graphical object along a custom path.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q44: How can you animate an element along a defined path using CSS motion paths?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can animate an element along a defined path using the `offset-path` property in CSS, which accep... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can animate an element along a defined path using CSS motion paths by defining a specific path w... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can animate an element along a defined path using CSS motion paths by defining a specific path w... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can animate an element along a defined path using CSS motion paths by defining the path with the... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can animate an element along a defined path using CSS motion paths by utilizing the `offset-path... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can animate an element along a defined path using CSS motion paths by utilizing the `offset-path... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q45: What properties can be used for visual styling of scrollbars?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The properties that can be used for visual styling of scrollbars are `scrollbar-color` and `scrollba... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The properties that can be used for visual styling of scrollbars are `scrollbar-width` and `scrollba... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The properties that can be used for visual styling of scrollbars are `scrollbar-width` and `scrollba... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | The properties that can be used for visual styling of scrollbars are `scrollbar-width` and `scrollba... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | The properties that can be used for visual styling of scrollbars are `scrollbar-width` and `scrollba... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | The properties that can be used for visual styling of scrollbars are `scrollbar-width` and `scrollba... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q46: How can you customize the color of the scrollbar track and thumb?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can customize the color of the scrollbar track and thumb using the `::-webkit-scrollbar` pseudo-... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can customize the color of the scrollbar track and thumb using the `scrollbar-color` property in... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can customize the color of the scrollbar track and thumb using the `scrollbar-color` property in... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can customize the color of the scrollbar track and thumb using the `scrollbar-color` property in... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can customize the color of the scrollbar track and thumb using the `scrollbar-color` CSS propert... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can customize the color of the scrollbar track and thumb using the `scrollbar-color` property in... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q47: What can the border-radius generator tool be used for?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The border-radius generator tool can be used to generate CSS `border-radius` effects.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The border-radius generator tool can be used to generate CSS `border-radius` effects for styling ele... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The border-radius generator tool can be used to construct CSS `border-radius` effects, allowing user... |
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | The border-radius generator tool can be used to generate CSS border-radius effects.... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The border-radius generator tool can be used to generate CSS `border-radius` effects.... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | The border-radius generator tool can be used to generate CSS `border-radius` effects.... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | The border-radius generator tool can be used to generate CSS `border-radius` effects.... |
-
-**Q48: How does the border-radius generator help in generating CSS effects?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The border-radius generator helps in generating CSS `border-radius` effects by providing a tool that... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The border-radius generator helps in generating CSS `border-radius` effects by providing a tool that... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The border-radius generator helps in generating CSS `border-radius` effects by allowing users to cre... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| colly+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q49: What does the CSS round display module define?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 4 | 5 | 4 | 4 | 4.2 | The CSS round display module defines CSS extensions to support a round display, such as wrist-watche... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | The CSS round display module defines CSS extensions to support a round display, such as wrist-watche... |
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | The CSS round display module defines CSS extensions to support a round display, such as wrist-watche... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | The CSS round display module defines CSS extensions to support a round display, such as wrist-watche... |
-| colly+md | 4 | 5 | 4 | 4 | 4.2 | The CSS round display module defines CSS extensions to support a round display, such as wrist-watche... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | The CSS round display module defines CSS extensions to support a round display, such as wrist-watche... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q50: Which properties are introduced in the CSS round display module?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 2 | 5 | 3 | 3 | 3.2 | The CSS round display module introduces the `border-boundary` and `shape-inside` properties.... |
-| crawl4ai-raw | 2 | 5 | 3 | 3 | 3.2 | The CSS round display module introduces the `border-boundary` and `shape-inside` properties.... |
-| crawlee | 2 | 5 | 2 | 3 | 3.0 | The CSS round display module introduces the `border-boundary` and `shape-inside` properties.... |
-| playwright | 2 | 5 | 2 | 3 | 3.0 | The CSS round display module introduces the `border-boundary` and `shape-inside` properties.... |
-| markcrawl | 2 | 5 | 2 | 2 | 2.8 | The properties introduced in the CSS round display module are `border-boundary` and `shape-inside`.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| colly+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-
-**Q51: What is the purpose of the CSS ruby layout module?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS ruby layout module provides the rendering model and formatting controls related to the displ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the CSS ruby layout module is to provide the rendering model and formatting controls ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the CSS ruby layout module is to provide the rendering model and formatting controls ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the CSS ruby layout module is to provide the rendering model and formatting controls ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS ruby layout module provides the rendering model and formatting controls related to the displ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the CSS ruby layout module is to provide the rendering model and formatting controls ... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q52: Which properties are introduced by the CSS ruby layout module?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS ruby layout module introduces the following properties:  * `ruby-align` * `ruby-overhang` * ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS ruby layout module introduces the following properties: `ruby-align`, `ruby-position`, `ruby... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS ruby layout module introduces the following properties: `ruby-align`, `ruby-position`, `ruby... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS ruby layout module introduces the following properties: `ruby-align`, `ruby-position`, `ruby... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS ruby layout module introduces the following properties: `ruby-align`, `ruby-overhang`, and `... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS ruby layout module introduces the following properties: `ruby-align`, `ruby-position`, `ruby... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q53: What is the HTML DOM API made up of?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The HTML DOM API is made up of the interfaces that define the functionality of each of the elements ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The HTML DOM API is made up of the interfaces that define the functionality of each of the elements ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The HTML DOM API is made up of the interfaces that define the functionality of each of the elements ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The HTML DOM API is made up of the interfaces that define the functionality of each of the elements ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The HTML DOM API is made up of the interfaces that define the functionality of each of the elements ... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q54: What functionality does the HTMLElement interface provide?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `HTMLElement` interface provides functionality common to all HTML elements, including properties... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `HTMLElement` interface provides functionality common to all HTML elements, including properties... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `HTMLElement` interface provides functionality common to all HTML elements, including properties... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `HTMLElement` interface provides functionality common to all HTML elements, including properties... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | The `HTMLElement` interface provides functionality common to all HTML elements, including properties... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q55: How are grid lines numbered in CSS grid layout?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Grid lines in CSS grid layout are numbered starting from `1`, with line 1 being on the left-hand sid... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Grid lines in CSS grid layout are numbered starting from `1`, with line 1 being on the left-hand sid... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Grid lines in CSS grid layout are numbered starting from `1`, with line 1 being on the left-hand sid... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Grid lines in CSS grid layout are numbered starting from 1 at the leftmost column line and the topmo... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Grid lines in CSS grid layout are numbered starting from `1`, with lines indexed for both columns an... |
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | Grid lines in CSS grid layout are numbered according to the writing mode of the document. In a left-... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q56: What properties are used for positioning items by line number in a grid?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The properties used for positioning items by line number in a grid are `grid-column-start`, `grid-co... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The properties used for positioning items by line number in a grid are `grid-column-start`, `grid-co... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The properties used for positioning items by line number in a grid are `grid-column-start`, `grid-co... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The properties used for positioning items by line number in a grid are `grid-column-start`, `grid-co... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The properties used for positioning items by line number in a grid are `grid-column-start`, `grid-co... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The properties used for positioning items by line number in a grid are `grid-column-start`, `grid-co... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q57: What does the CSS transforms module define?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The CSS transforms module defines how elements styled with CSS can be transformed in two-dimensional... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The CSS transforms module defines how elements styled with CSS can be transformed in two-dimensional... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The CSS transforms module defines how elements styled with CSS can be transformed in two-dimensional... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The CSS transforms module defines how elements styled with CSS can be transformed in two-dimensional... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The CSS transforms module defines how elements styled with CSS can be transformed in two-dimensional... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The CSS transforms module defines how elements styled with CSS can be transformed in two-dimensional... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q58: How can the perspective property affect the view of a 3D transformed element?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The perspective property affects the view of a 3D transformed element by setting the distance from t... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The perspective property affects the view of a 3D transformed element by determining the distance be... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The perspective property affects the view of a 3D transformed element by determining the distance be... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The perspective property affects the view of a 3D transformed element by determining the distance be... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The perspective property affects the view of a 3D transformed element by determining the distance be... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The perspective property determines the distance between the viewer and the z=0 plane in a 3D space.... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q59: What is CSS masking?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | CSS masking is a technique that enables you to selectively reveal or hide parts of an element by app... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | CSS masking is a technique that allows you to selectively reveal or hide parts of an element by appl... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | CSS masking is a technique that allows you to selectively reveal or hide parts of an element by appl... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | CSS masking is a technique that allows you to selectively reveal or hide parts of an element by appl... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | CSS masking is a technique used to define areas of an element that are visible and areas that are hi... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | CSS masking is a technique that allows you to selectively reveal or hide parts of an element by appl... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q60: How do alpha masks work in CSS?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Alpha masks in CSS define the visible areas of an element based on the alpha transparency of the app... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Alpha masks in CSS work by using the alpha-transparency of the mask applied to an element. Wherever ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Alpha masks in CSS work by using the alpha-transparency of the mask applied to an element. Wherever ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Alpha masks in CSS work by using the alpha transparency of the mask applied to an element. Wherever ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Alpha masks in CSS define the visible areas of an element based on the alpha-transparency of the mas... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Alpha masks in CSS work by using the alpha transparency of the mask applied to an element to determi... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
 
 </details>
 
@@ -2837,166 +2837,214 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| playwright | 4.93 | 4.93 | 4.80 | 4.89 | 4.89 ±0.13 |
-| colly+md | 4.89 | 4.91 | 4.74 | 4.87 | 4.85 ±0.15 |
-| crawlee | 4.87 | 4.91 | 4.65 | 4.83 | 4.82 ±0.16 |
-| crawl4ai | 4.87 | 4.87 | 4.65 | 4.78 | 4.79 ±0.18 |
-| crawl4ai-raw | 4.87 | 4.87 | 4.65 | 4.78 | 4.79 ±0.18 |
-| markcrawl | 3.96 | 3.61 | 3.11 | 3.37 | 3.51 ±0.37 |
-| scrapy+md | 3.76 | 3.17 | 2.74 | 3.04 | 3.18 ±0.38 |
+| crawl4ai-raw | 4.78 | 4.86 | 4.54 | 4.72 | 4.72 ±0.17 |
+| crawl4ai | 4.76 | 4.80 | 4.54 | 4.66 | 4.69 ±0.19 |
+| playwright | 4.72 | 4.72 | 4.44 | 4.60 | 4.62 ±0.23 |
+| colly+md | 4.70 | 4.72 | 4.42 | 4.58 | 4.61 ±0.22 |
+| crawlee | 4.68 | 4.68 | 4.40 | 4.54 | 4.58 ±0.24 |
+| markcrawl | 4.26 | 4.06 | 3.68 | 3.92 | 3.98 ±0.37 |
+| scrapy+md | 3.68 | 3.28 | 2.88 | 3.14 | 3.25 ±0.35 |
 
 > Scores are 1-5 averages. See summary table legend for dimension definitions.
 
 <details>
 <summary>Query-by-query scores for postgres-docs</summary>
 
-**Q1: Who are the current committers for PostgreSQL?**
+**Q1: What does this chapter provide an overview of?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The current committers for PostgreSQL are:  1. Bruce Momjian 2. Tom Lane 3. Tatsuo Ishii 4. Peter Ei... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The current committers for PostgreSQL are:  1. Bruce Momjian 2. Tom Lane 3. Tatsuo Ishii 4. Peter Ei... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The current committers for PostgreSQL are:  * Bruce Momjian * Tom Lane * Tatsuo Ishii * Peter Eisent... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The current committers for PostgreSQL are:  * Bruce Momjian * Tom Lane * Tatsuo Ishii * Peter Eisent... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The current committers for PostgreSQL are:  * Bruce Momjian * Tom Lane * Tatsuo Ishii * Peter Eisent... |
-| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of the internal structure of the backend of PostgreSQL and the gen... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create and modify database structures, specifically focu... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create the database structures that will hold data, focu... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create and modify database structures, specifically focu... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create and modify database structures, specifically focu... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create and modify database structures, specifically focu... |
+| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | This chapter provides an overview of how to use SQL to perform simple operations.... |
 
 > **Corr** = correctness, **Rel** = relevance, **Comp** = completeness, **Use** = usefulness, **Avg** = average of the four dimensions (1-5).
 
-**Q2: What criteria are used to select new committers for PostgreSQL?**
+**Q2: What is the main topic of Chapter 66?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | New committers for PostgreSQL are selected based on the following criteria: - Several years of subst... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | New committers for PostgreSQL are selected based on the following criteria: - Several years of subst... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | New committers for PostgreSQL are selected based on the following criteria:  - Several years of subs... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | New committers for PostgreSQL are selected based on the following loose criteria:  - Several years o... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | New committers for PostgreSQL are selected based on the following loose criteria:  - Several years o... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The main topic of Chapter 66 is "Database Physical Storage."... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The main topic of Chapter 66 is "Database Physical Storage."... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The main topic of Chapter 66 is "Database Physical Storage."... |
+| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| crawlee | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| colly+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
 
-**Q3: How can I install PostgreSQL on FreeBSD?**
+**Q3: What is PostgreSQL?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 4 | 4 | 4.5 | PostgreSQL packages are available for FreeBSD from the FreeBSD Ports and Packages Collection. Please... |
-| crawl4ai-raw | 5 | 5 | 4 | 4 | 4.5 | PostgreSQL packages are available for FreeBSD from the FreeBSD Ports and Packages Collection. Please... |
-| crawlee | 5 | 5 | 4 | 4 | 4.5 | PostgreSQL packages are available for FreeBSD from the FreeBSD Ports and Packages Collection. Please... |
-| colly+md | 5 | 5 | 4 | 4 | 4.5 | PostgreSQL packages are available for FreeBSD from the FreeBSD Ports and Packages Collection. Please... |
-| playwright | 5 | 5 | 4 | 4 | 4.5 | PostgreSQL packages are available for FreeBSD from the FreeBSD Ports and Packages Collection. Please... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is a relational database management system that provides a database server, known as `pos... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is a powerful, open source object-relational database system that uses and extends the SQ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is an object-relational database management system (ORDBMS) based on the POSTGRES project... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is an object-relational database management system (ORDBMS) based on the POSTGRES project... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is a powerful, open source object-relational database system that uses and extends the SQ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is a powerful, open source object-relational database system that uses and extends the SQ... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q4: What type of database management system is PostgreSQL?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is an object-relational database management system.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is an object-relational database management system.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is an object-relational database management system.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is an object-relational database management system.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL is an object-relational database management system.... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q4: Where can I find a list of PostgreSQL packages for FreeBSD?**
+**Q5: What does this chapter provide an overview of?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A list of PostgreSQL packages for FreeBSD can be found using the Ports Search tool on the FreeBSD we... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | A list of PostgreSQL packages for FreeBSD can be found using the Ports Search tool on the FreeBSD we... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | A list of PostgreSQL packages for FreeBSD can be found using the Ports Search tool on the FreeBSD we... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | A list of PostgreSQL packages for FreeBSD can be found using the Ports Search tool on the FreeBSD we... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | A list of PostgreSQL packages for FreeBSD can be found using the Ports Search tool on the FreeBSD we... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of the internal structure of the backend of PostgreSQL and the gen... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create and modify database structures, specifically focu... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create the database structures that will hold data, focu... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create and modify database structures, specifically focu... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create and modify database structures, specifically focu... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | This chapter provides an overview of how to create and modify database structures, specifically focu... |
+| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | This chapter provides an overview of how to use SQL to perform simple operations.... |
+
+**Q6: What should you understand after reading the following sections of this chapter?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | After reading the sections of Chapter 51, you should have an understanding of the general sequence o... |
+| crawl4ai | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| crawl4ai-raw | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| colly+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| crawlee | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
+| playwright | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
+
+**Q7: What does the information schema consist of?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | The information schema consists of a set of views that contain information about the objects defined... |
+| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The information schema consists of a set of views that contain information about the objects defined... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The information schema consists of a set of views that contain information about the objects defined... |
+| crawlee | 5 | 5 | 4 | 5 | 4.8 | The information schema consists of a set of views that contain information about the objects defined... |
+| colly+md | 5 | 5 | 4 | 5 | 4.8 | The information schema consists of a set of views that contain information about the objects defined... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | The information schema consists of a set of views that contain information about the objects defined... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q8: Why might a standard-compliant query return several rows when querying for constraint information?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | A standard-compliant query that expects to return one row might return several rows because the SQL ... |
+| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | A standard-compliant query that expects to return one row might return several rows because the SQL ... |
+| crawlee | 4 | 5 | 4 | 4 | 4.2 | A standard-compliant query that expects to return one row might return several rows when querying fo... |
+| colly+md | 4 | 5 | 4 | 4 | 4.2 | A standard-compliant query that expects to return one row might return several rows when querying fo... |
+| playwright | 4 | 5 | 4 | 4 | 4.2 | A standard-compliant query that expects to return one row might return several rows when querying fo... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q5: What should be included in every bug report?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the following items:  1. The exact sequence of steps from program st... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the following items:  1. The exact sequence of steps from program st... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the exact sequence of steps from program start-up necessary to repro... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the exact sequence of steps from program start-up necessary to repro... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the exact sequence of steps from program start-up necessary to repro... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q6: Where should I send bug reports for PostgreSQL?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`. A... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`. A... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports for PostgreSQL by following the instructions on the "Submit a Bug Report... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`. A... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`, o... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`. A... |
-| markcrawl | 2 | 3 | 2 | 2 | 2.2 | You should use the provided form to report a documentation issue.... |
-
-**Q7: What is PL/Tcl?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a procedural language for PostgreSQL that allows function writers to use Tcl, offering mos... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q8: What language does PL/Tcl enable to write PostgreSQL functions and procedures?**
+**Q9: What is the customary TCP port number for servers supporting the PostgreSQL protocol?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables writing PostgreSQL functions and procedures in the Tcl programming language.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the use of the Tcl programming language to write PostgreSQL functions and procedures.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The customary TCP port number for servers supporting the PostgreSQL protocol is 5432.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The customary TCP port number for servers supporting the PostgreSQL protocol is 5432.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The customary TCP port number for servers supporting the PostgreSQL protocol is 5432.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The customary TCP port number for servers supporting the PostgreSQL protocol is 5432.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The customary TCP port number for servers supporting the PostgreSQL protocol is 5432.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The customary TCP port number for servers supporting the PostgreSQL protocol is 5432.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The customary TCP port number for servers supporting the PostgreSQL protocol is 5432.... |
 
-**Q9: What are the procedural languages available in the standard PostgreSQL distribution?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL (SQL Procedu... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-
-**Q10: How does PostgreSQL handle functions written in procedural languages?**
+**Q10: What version of the protocol was introduced in PostgreSQL version 18?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages by using a special handler that knows h... |
+| crawl4ai | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| crawl4ai-raw | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| playwright | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| colly+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
+| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| markcrawl | 1 | 5 | 1 | 1 | 2.0 | Version 3.2 of the protocol was introduced in PostgreSQL version 18.... |
+
+**Q11: What is the purpose of logical decoding in PostgreSQL?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of logical decoding in PostgreSQL is to extract all persistent changes to a database's t... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of logical decoding in PostgreSQL is to provide infrastructure to stream modifications p... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of logical decoding in PostgreSQL is to provide infrastructure to stream modifications p... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of logical decoding in PostgreSQL is to stream modifications performed via SQL to extern... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of logical decoding in PostgreSQL is to stream modifications performed via SQL to extern... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of logical decoding in PostgreSQL is to stream the modifications performed via SQL to ex... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q12: How are changes streamed in logical decoding?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Changes in logical decoding are streamed using a series of output plugin callbacks. When a transacti... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Changes in logical decoding are streamed in streams identified by logical replication slots. The for... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Changes in logical decoding are streamed in streams identified by logical replication slots. The for... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Changes are streamed in logical decoding using the `pg_logical_slot_get_changes` function, which ret... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Changes are streamed in logical decoding via streams identified by logical replication slots. The fo... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Changes are streamed in logical decoding through streams identified by logical replication slots. Th... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Changes are streamed in logical decoding via logical replication slots, and the format in which thos... |
+
+**Q13: What are the four procedural languages available in the standard PostgreSQL distribution?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The four procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The four procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The four procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The four procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The four procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The four procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The four procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl... |
+
+**Q14: How does PostgreSQL handle functions written in procedural languages?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL allows user-defined functions to be written in procedural languages (PLs) that are not bu... |
 | crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a special call handler function... |
 | crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a special call handler function... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL allows the creation of user-defined functions in various procedural languages, including ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL allows users to extend server functionality by writing functions in various procedural la... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a call handler function specifi... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a special handler called a call... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a special call handler function... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a call handler function specifi... |
 
-**Q11: What is a security vulnerability in PostgreSQL?**
+**Q15: What resources are available for PostgreSQL besides the documentation?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A security vulnerability in PostgreSQL is that functions, triggers, and row-level security policies ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A security vulnerability in PostgreSQL is an issue that allows a user to gain access to privileges o... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A security vulnerability in PostgreSQL is an issue that allows a user to gain access to privileges o... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | A security vulnerability in PostgreSQL is an issue that allows a user to gain access to privileges o... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | A security vulnerability in PostgreSQL is an issue that allows a user to gain access to privileges o... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | A security vulnerability in PostgreSQL is an issue that allows a user to gain access to privileges o... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The resources available for PostgreSQL besides the documentation include:  1. Wiki: Contains the pro... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The resources available for PostgreSQL besides the documentation include:  1. Wiki: Contains the pro... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The resources available for PostgreSQL besides the documentation include:  - Wiki: Contains the proj... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The resources available for PostgreSQL besides the documentation include mailing lists for community... |
+| crawl4ai | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q12: How can I report a PostgreSQL security vulnerability?**
+**Q16: How can I contribute to the PostgreSQL community?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To report a PostgreSQL security vulnerability, please email security@postgresql.org.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To report a PostgreSQL security vulnerability, please email security@postgresql.org.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can report a PostgreSQL security vulnerability by sending an email to security@postgresql.org.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To report a PostgreSQL security vulnerability, please email security@postgresql.org.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To report a PostgreSQL security vulnerability, please email security@postgresql.org.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To report a PostgreSQL security vulnerability, please email security@postgresql.org.... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can contribute to the PostgreSQL community by submitting a patch to a CommitFest, signing up to ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can contribute to the PostgreSQL community by submitting a patch for inclusion in a CommitFest, ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can contribute to the PostgreSQL community by submitting a patch to be included in a CommitFest,... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can contribute to the PostgreSQL community by submitting a patch to be included in a CommitFest,... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can contribute to the PostgreSQL community by submitting a patch to be included in a CommitFest,... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q13: What is the title of the book authored by Jesús Espino?**
+**Q17: What is the title of the book authored by Jesús Espino?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -3005,10 +3053,10 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | The title of the book authored by Jesús Espino is "Deep Dive Into a SQL Query: A Journey Through Pos... |
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | The title of the book authored by Jesús Espino is "Deep Dive Into a SQL Query: A Journey Through Pos... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | The title of the book authored by Jesús Espino is "Deep Dive Into a SQL Query: A Journey Through Pos... |
-| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q14: Who are the authors of the book 'PostgreSQL 16 Administration Cookbook'?**
+**Q18: Who are the authors of the book 'PostgreSQL 16 Administration Cookbook'?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -3017,34 +3065,370 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | The authors of the book 'PostgreSQL 16 Administration Cookbook' are Gianni Ciolli, Boriss Mejías, Ji... |
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | The authors of the book 'PostgreSQL 16 Administration Cookbook' are Gianni Ciolli, Boriss Mejías, Ji... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | The authors of the book 'PostgreSQL 16 Administration Cookbook' are Gianni Ciolli, Boriss Mejías, Ji... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 | scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q15: What are the procedural languages available in the standard PostgreSQL distribution?**
+**Q19: What are the facilities PostgreSQL has for evaluating mixed-type expressions?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL (SQL Procedu... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The procedural languages available in the standard PostgreSQL distribution are PL/pgSQL, PL/Tcl, PL/... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL allows the use of mixed-type expressions through its extensible type system, which is gov... |
+| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | PostgreSQL has extensive facilities for evaluating mixed-type expressions, including implicit conver... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | PostgreSQL has extensive facilities for evaluating mixed-type expressions, including implicit conver... |
+| crawlee | 5 | 5 | 4 | 5 | 4.8 | PostgreSQL has extensive facilities for evaluating mixed-type expressions, including implicit conver... |
+| colly+md | 5 | 5 | 4 | 5 | 4.8 | PostgreSQL has extensive facilities for evaluating mixed-type expressions, including implicit conver... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | PostgreSQL has extensive facilities for evaluating mixed-type expressions, including implicit conver... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q16: How does PostgreSQL handle functions written in procedural languages?**
+**Q20: How can explicit type conversion affect the results of a query in PostgreSQL?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages by using a special handler that knows h... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a special call handler function... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a special call handler function... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL allows the creation of user-defined functions in various procedural languages, including ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a call handler function specifi... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a special handler called a call... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL handles functions written in procedural languages through a call handler function specifi... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Explicit type conversion can affect the results of a query in PostgreSQL by allowing users to specif... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Explicit type conversion can tailor the results of a query in PostgreSQL by allowing users to specif... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Explicit type conversion can tailor the results of a query in PostgreSQL by allowing users to specif... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Explicit type conversion can tailor the results of a query in PostgreSQL by allowing users to specif... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Explicit type conversion can tailor the results of a query in PostgreSQL by allowing users to specif... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Explicit type conversion can tailor the results of a query in PostgreSQL by allowing users to specif... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
 
-**Q17: What is logical replication in PostgreSQL?**
+**Q21: What are the three fundamentally different approaches to backing up PostgreSQL data?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The three fundamentally different approaches to backing up PostgreSQL data are:  1. SQL dump 2. File... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The three fundamentally different approaches to backing up PostgreSQL data are:  1. SQL dump 2. File... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The three fundamentally different approaches to backing up PostgreSQL data are:  1. SQL dump 2. File... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The three fundamentally different approaches to backing up PostgreSQL data are:  1. SQL dump 2. File... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The three fundamentally different approaches to backing up PostgreSQL data are:  1. SQL dump 2. File... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The three fundamentally different approaches to backing up PostgreSQL data are:  1. SQL dump 2. File... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q22: What is the importance of backing up PostgreSQL databases regularly?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Backing up PostgreSQL databases regularly is crucial because without a recent backup, there is no ch... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Backing up PostgreSQL databases regularly is crucial because it ensures that you have a recent copy ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Backing up PostgreSQL databases regularly is crucial because it ensures that you have a recent copy ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Backing up PostgreSQL databases regularly is crucial because without a recent backup, there is no ch... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Backing up PostgreSQL databases regularly is crucial because, without a recent backup, there is no c... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Backing up PostgreSQL databases regularly is crucial because without a recent backup, there is no ch... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q23: What is the recommended way to install PostgreSQL for users of the system?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The recommended way to install PostgreSQL for users of the system is to use the package manager spec... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The recommended way to install PostgreSQL for users of the system is to use the package manager spec... |
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | The recommended way to install PostgreSQL for users of the system is to create the `postgres` user a... |
+| crawlee | 5 | 5 | 4 | 5 | 4.8 | The recommended way to install PostgreSQL for users of the system is to use the package management s... |
+| colly+md | 5 | 5 | 4 | 5 | 4.8 | The recommended way to install PostgreSQL for users of the system is to use the package management s... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | The recommended way to install PostgreSQL for users of the system is to use the package management s... |
+| scrapy+md | 2 | 4 | 3 | 3 | 3.0 | The recommended way to install PostgreSQL for users of the system is to run the following commands a... |
+
+**Q24: Where can I find an updated list of platforms providing binary packages for PostgreSQL?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can find an updated list of platforms providing binary packages for PostgreSQL in the download s... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can find an updated list of platforms providing binary packages for PostgreSQL in the download s... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can find an updated list of platforms providing binary packages for PostgreSQL in the download s... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can find an updated list of platforms providing binary packages for PostgreSQL in the download s... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can find an updated list of platforms providing binary packages for PostgreSQL in the download s... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q25: What is the process by which the database server establishes the identity of the client?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The database server establishes the identity of the client through an authentication cycle that begi... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The process by which the database server establishes the identity of the client is called _authentic... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The process by which the database server establishes the identity of the client is called _authentic... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The process by which the database server establishes the identity of the client is called *authentic... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The process by which the database server establishes the identity of the client is called *authentic... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The process by which the database server establishes the identity of the client is called *authentic... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q26: How does PostgreSQL determine which database users can connect?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL determines which database users can connect based on access rights that are managed by th... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL determines which database users can connect through the authentication process, which est... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL determines which database users can connect through the authentication process, which est... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL determines which database users can connect based on the client authentication setup, as ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL determines which database users can connect based on the active database user name specif... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL determines which database users can connect by using client authentication methods that c... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL determines which database users can connect based on the active database user name specif... |
+
+**Q27: What is the difference between a warm standby server and a hot standby server?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A warm standby server is typically used for disaster recovery and is not available for read-only que... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A warm standby server cannot be connected to until it is promoted to a primary server, while a hot s... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A warm standby server cannot be connected to until it is promoted to a primary server, while a hot s... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | A warm standby server cannot be connected to until it is promoted to a primary server, while a hot s... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | A warm standby server cannot be connected to until it is promoted to a primary server, while a hot s... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | A warm standby server cannot be connected to until it is promoted to a primary server, while a hot s... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q28: How do synchronous and asynchronous solutions differ in terms of data propagation?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Synchronous solutions require that a data-modifying transaction is not considered committed until al... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Synchronous solutions require that a data-modifying transaction is not considered committed until al... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Synchronous solutions require that a data-modifying transaction is not considered committed until al... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Synchronous solutions ensure that a data-modifying transaction is not considered committed until all... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Synchronous solutions ensure that a data-modifying transaction is not considered committed until all... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Synchronous solutions ensure that a data-modifying transaction is not considered committed until all... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q29: What are the components required for OAuth validator modules in PostgreSQL?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 4 | 5 | 3 | 4 | 4.0 | Validator modules must be implemented/obtained separately; PostgreSQL does not ship with any default... |
+| crawl4ai | 4 | 5 | 3 | 4 | 4.0 | OAuth validator modules in PostgreSQL must at least consist of an initialization function and the re... |
+| crawl4ai-raw | 4 | 5 | 3 | 4 | 4.0 | OAuth validator modules in PostgreSQL must at least consist of an initialization function and the re... |
+| crawlee | 4 | 5 | 3 | 4 | 4.0 | OAuth validator modules in PostgreSQL must at least consist of an initialization function and the re... |
+| colly+md | 4 | 5 | 3 | 4 | 4.0 | OAuth validator modules in PostgreSQL must at least consist of an initialization function and the re... |
+| playwright | 4 | 5 | 3 | 4 | 4.0 | OAuth validator modules in PostgreSQL must at least consist of an initialization function and the re... |
+| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+
+**Q30: Why is correct implementation of OAuth validator modules crucial for server safety?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | Correct implementation of OAuth validator modules is crucial for server safety because a misbehaving... |
+| crawlee | 4 | 5 | 4 | 4 | 4.2 | Correct implementation of OAuth validator modules is crucial for server safety because a misbehaving... |
+| colly+md | 4 | 5 | 4 | 4 | 4.2 | Correct implementation of OAuth validator modules is crucial for server safety because a misbehaving... |
+| crawl4ai-raw | 4 | 5 | 3 | 4 | 4.0 | Correct implementation of OAuth validator modules is crucial for server safety because a misbehaving... |
+| playwright | 4 | 5 | 3 | 4 | 4.0 | Correct implementation of OAuth validator modules is crucial for server safety because a misbehaving... |
+| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q31: What does Part IV of the PostgreSQL documentation describe?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Part IV of the PostgreSQL documentation describes the client programming interfaces distributed with... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Part IV of the PostgreSQL documentation describes the client programming interfaces distributed with... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Part IV of the PostgreSQL documentation describes the client programming interfaces distributed with... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Part IV of the PostgreSQL documentation describes the programming interfaces for PostgreSQL client p... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Part IV of the PostgreSQL documentation describes the programming interfaces for PostgreSQL client p... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Part IV of the PostgreSQL documentation describes the programming interfaces for PostgreSQL client p... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q32: What should readers of this part be familiar with?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Readers should be familiar with installation, configuration of the server, management of users and d... |
+| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | Readers of this part should be familiar with using SQL commands to manipulate and query the database... |
+| crawlee | 5 | 5 | 4 | 5 | 4.8 | Readers of this part should be familiar with using SQL to manipulate and query the database.... |
+| colly+md | 5 | 5 | 4 | 5 | 4.8 | Readers of this part should be familiar with using SQL to manipulate and query the database.... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | Readers of this part should be familiar with using SQL to manipulate and query the database.... |
+| crawl4ai | 4 | 5 | 3 | 4 | 4.0 | Readers of this part should be familiar with the general use of the PostgreSQL database system.... |
+| crawl4ai-raw | 4 | 5 | 3 | 4 | 4.0 | Readers of this part should be familiar with the general use of the PostgreSQL database system.... |
+
+**Q33: How do I set up and run the PostgreSQL database server?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To set up and run the PostgreSQL database server, follow these steps:  1. **Install PostgreSQL**: Us... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To set up and run the PostgreSQL database server, follow these steps:  1. **Install PostgreSQL**: Us... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To set up and run the PostgreSQL database server, follow these steps:  1. **Install PostgreSQL**: Us... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To set up and run the PostgreSQL database server, follow these steps:  1. **Installation**:     - Co... |
+| crawlee | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| colly+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q34: What should I do if I am using a pre-packaged version of PostgreSQL?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 4 | 4 | 4.5 | If you are using a pre-packaged or vendor-supplied version of PostgreSQL, it is likely that the pack... |
+| crawl4ai | 5 | 5 | 4 | 4 | 4.5 | If you are using a pre-packaged or vendor-supplied version of PostgreSQL, it is likely that the pack... |
+| crawl4ai-raw | 5 | 5 | 4 | 4 | 4.5 | If you are using a pre-packaged or vendor-supplied version of PostgreSQL, it is likely that the pack... |
+| scrapy+md | 5 | 5 | 4 | 4 | 4.5 | If you are using a pre-packaged version of PostgreSQL, the additional modules are typically made ava... |
+| colly+md | 3 | 4 | 3 | 3 | 3.2 | If you are using a prepackaged version of PostgreSQL, such as RPMs, you should mention this, includi... |
+| crawlee | 2 | 3 | 2 | 2 | 2.2 | If you are using a pre-packaged version of PostgreSQL, such as RPMs, you should mention this, includ... |
+| playwright | 2 | 3 | 2 | 2 | 2.2 | If you are using a pre-packaged version of PostgreSQL, such as RPMs, you should mention this, includ... |
+
+**Q35: What is the primary purpose of the backup manifest generated by pg_basebackup?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The primary purpose of the backup manifest generated by pg_basebackup is to permit the backup to be ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The primary purpose of the backup manifest generated by pg_basebackup is to permit the backup to be ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The primary purpose of the backup manifest generated by pg_basebackup is to permit the backup to be ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The primary purpose of the backup manifest generated by pg_basebackup is to permit the backup to be ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The primary purpose of the backup manifest generated by pg_basebackup is to permit the backup to be ... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q36: What format is the backup manifest encoded in?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The backup manifest is encoded as UTF-8.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The backup manifest is encoded as UTF-8.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The backup manifest is encoded as UTF-8.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The backup manifest is encoded as UTF-8.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The backup manifest is encoded as UTF-8.... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q37: What factors can affect query performance in PostgreSQL?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | Query performance in PostgreSQL can be affected by many factors, including the choice of query plan,... |
+| crawlee | 3 | 4 | 3 | 3 | 3.2 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
+| colly+md | 3 | 4 | 2 | 3 | 3.0 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q38: What does this chapter provide hints about regarding PostgreSQL performance?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | This chapter provides hints about understanding and tuning PostgreSQL performance, including factors... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | This chapter provides hints about understanding and tuning PostgreSQL performance, including factors... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | This chapter provides hints about understanding and tuning PostgreSQL performance, including factors... |
+| markcrawl | 5 | 5 | 4 | 4 | 4.5 | This chapter provides hints about understanding and tuning PostgreSQL performance.... |
+| crawl4ai | 4 | 5 | 3 | 4 | 4.0 | This chapter provides hints about understanding and tuning PostgreSQL performance.... |
+| crawl4ai-raw | 4 | 5 | 3 | 4 | 4.0 | This chapter provides hints about understanding and tuning PostgreSQL performance.... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q39: What tools are available for monitoring database activity?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Several tools are available for monitoring database activity, including PostgreSQL's cumulative stat... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Several tools are available for monitoring database activity, including PostgreSQL's cumulative stat... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Several tools are available for monitoring database activity, including PostgreSQL's cumulative stat... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Several tools are available for monitoring database activity, including PostgreSQL's cumulative stat... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Several tools are available for monitoring database activity, including PostgreSQL's cumulative stat... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Several tools are available for monitoring database activity, including PostgreSQL's cumulative stat... |
+| scrapy+md | 3 | 4 | 3 | 3 | 3.2 | The tools available for monitoring database activity are:  1. Standard Unix Tools 2. The Statistics ... |
+
+**Q40: What command can be used to investigate a poorly-performing query in PostgreSQL?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The command that can be used to investigate a poorly-performing query in PostgreSQL is `EXPLAIN`.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The command that can be used to investigate a poorly-performing query in PostgreSQL is the `EXPLAIN`... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The command that can be used to investigate a poorly-performing query in PostgreSQL is `EXPLAIN`.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The command that can be used to investigate a poorly-performing query in PostgreSQL is `EXPLAIN`.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The command that can be used to investigate a poorly-performing query in PostgreSQL is `EXPLAIN`.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The command that can be used to investigate a poorly-performing query in PostgreSQL is `EXPLAIN`.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The command that can be used to investigate a poorly-performing query in PostgreSQL is `EXPLAIN`.... |
+
+**Q41: What does PostgreSQL use for date/time input support?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support, which accepts dates an... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL accepts date and time input in almost any reasonable format, including ISO 8601, SQL-comp... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
+
+**Q42: What information does the appendix include about the parser's lookup tables?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| crawl4ai | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| colly+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| crawl4ai-raw | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q43: What was the initial implementation year of the POSTGRES project?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The initial implementation year of the POSTGRES project was 1986.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The initial implementation year of the POSTGRES project was 1986.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The initial implementation year of the POSTGRES project was 1986.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The initial implementation year of the POSTGRES project was 1986.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The initial implementation year of the POSTGRES project was 1986.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q44: What major enhancements were made in Postgres95 compared to POSTGRES, Version 4.2?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The major enhancements made in Postgres95 compared to POSTGRES, Version 4.2, include:  1. Replacemen... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The major enhancements made in Postgres95 compared to POSTGRES, Version 4.2, include:  1. Replacemen... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The major enhancements made in Postgres95 compared to POSTGRES, Version 4.2, include:  1. Replacemen... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The major enhancements made in Postgres95 compared to POSTGRES, Version 4.2, include:  1. Replacemen... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The major enhancements made in Postgres95 compared to POSTGRES, Version 4.2, include:  1. Replacemen... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q45: What is PL/Tcl?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a procedural language that allows function writers to use most of the capabilities of the ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl lan... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q46: What language does PL/Tcl enable to write PostgreSQL functions and procedures?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables writing PostgreSQL functions and procedures in the Tcl programming language.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the use of the Tcl programming language to write PostgreSQL functions and procedures.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to be used to write PostgreSQL functions and procedures.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | PL/Tcl enables the Tcl language to write PostgreSQL functions and procedures.... |
+
+**Q47: What topics are covered in Part II of the SQL Language documentation?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Part II of the SQL Language documentation covers the following topics:  1. SQL Syntax    - Lexical S... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Part II of the SQL Language documentation covers the following topics:  1. SQL Syntax    - Lexical S... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Part II of the SQL Language documentation covers the following topics:  1. SQL Syntax    - Lexical S... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Part II of the SQL Language documentation covers the following topics:  1. General syntax of SQL 2. ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Part II of the SQL Language documentation covers the following topics:  1. SQL Syntax    - Lexical S... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Part II of the SQL Language documentation covers the following topics:  1. SQL Syntax    - Lexical S... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Part II of the SQL Language documentation covers the following topics:  1. SQL Syntax    - Lexical S... |
+
+**Q48: What is the recommended way to enter SQL commands in PostgreSQL?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The recommended way to enter SQL commands in PostgreSQL is to use the PostgreSQL interactive termina... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The recommended way to enter SQL commands in PostgreSQL is using the PostgreSQL interactive terminal... |
+| crawl4ai | 5 | 5 | 4 | 4 | 4.5 | SQL commands are typically entered using the PostgreSQL interactive terminal psql, but other program... |
+| crawlee | 5 | 5 | 4 | 4 | 4.5 | SQL commands are typically entered using the PostgreSQL interactive terminal psql, but other program... |
+| colly+md | 5 | 5 | 4 | 4 | 4.5 | SQL commands are typically entered using the PostgreSQL interactive terminal psql, but other program... |
+| playwright | 5 | 5 | 4 | 4 | 4.5 | SQL commands are typically entered using the PostgreSQL interactive terminal psql, but other program... |
+| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | SQL commands are typically entered using the PostgreSQL interactive terminal psql, but other program... |
+
+**Q49: What is logical replication in PostgreSQL?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -3056,7 +3440,7 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | playwright | 5 | 5 | 5 | 5 | 5.0 | Logical replication in PostgreSQL is a method of replicating data objects and their changes based on... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q18: What are the typical use-cases for logical replication?**
+**Q50: What are the typical use-cases for logical replication?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -3067,342 +3451,6 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | The typical use-cases for logical replication are:  * Sending incremental changes in a single databa... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | The typical use-cases for logical replication are:  * Sending incremental changes in a single databa... |
 | scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q19: What is PgQue v0.1?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PgQue v0.1 is a zero-bloat Postgres event/message queue implemented in pure SQL and PL/pgSQL. It is ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PgQue v0.1 is a zero-bloat Postgres event/message queue implemented in pure SQL and PL/pgSQL. It is ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | PgQue v0.1 is a zero-bloat Postgres event/message queue implemented in pure SQL and PL/pgSQL. It bri... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PgQue v0.1 is a zero-bloat Postgres event/message queue implemented in pure SQL and PL/pgSQL. It is ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | PgQue v0.1 is a zero-bloat Postgres event/message queue implemented in pure SQL and PL/pgSQL. It is ... |
-| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-
-**Q20: What are the key features of PgQue?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The key features of PgQue include:  - Pure SQL / PL/pgSQL install: one SQL file, no C extension - Wo... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The key features of PgQue include:  - Pure SQL / PL/pgSQL install: one SQL file, no C extension - Wo... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The key features of PgQue include:  - Pure SQL / PL/pgSQL install: one SQL file, no C extension - Wo... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The key features of PgQue v0.1 include:  - Pure SQL / PL/pgSQL install: one SQL file, no C extension... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The key features of PgQue include:  - Pure SQL / PL/pgSQL install: one SQL file, no C extension - Wo... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q21: What does PostgreSQL use for date/time input support?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support, which accepts dates an... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL accepts date and time input in almost any reasonable format, including ISO 8601, SQL-comp... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | PostgreSQL uses an internal heuristic parser for all date/time input support.... |
-
-**Q22: What information does this appendix include about the parser?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The appendix includes information about the `test_parser`, which is a custom parser for full-text se... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawl4ai | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| colly+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q23: What is the contact email for press enquiries?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The contact email for press enquiries is press@postgresql.org.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The contact email for press enquiries is press@postgresql.org.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The contact email for press enquiries is press@postgresql.org.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The contact email for press enquiries is press@postgresql.org.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The contact email for press enquiries is press@postgresql.org.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-
-**Q24: Who contributed to the PostgreSQL 18 press kit?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The contributors to the PostgreSQL 18 press kit include:  - Alifia Achson - Álvaro Herrera - Andrea ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The contributors to the PostgreSQL 18 press kit include:  - Alifia Achson - Álvaro Herrera - Andrea ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The contributors to the PostgreSQL 18 press kit include:  - Alifia Achson - Álvaro Herrera - Andrea ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The contributors to the PostgreSQL 18 press kit include:  - Alifia Achson - Álvaro Herrera - Andrea ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The contributors to the PostgreSQL 18 press kit include:  - Alifia Achson - Álvaro Herrera - Andrea ... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-
-**Q25: What companies provide the servers for www.postgresql.org?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The servers for www.postgresql.org are provided by the following companies:  1. EDB 2. Amazon Web Se... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The servers for www.postgresql.org are provided by the following companies:  1. EDB 2. Amazon Web Se... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The companies that provide the servers for www.postgresql.org are:  1. EDB 2. Amazon Web Services 3.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The companies that provide the servers for www.postgresql.org are EDB, Amazon Web Services, conova c... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The companies that provide the servers for www.postgresql.org are EDB, Amazon Web Services, conova c... |
-| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-
-**Q26: What are the specifications of the server named 'arp'?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The server named 'arp' has the following specifications: 128 core, 1TB RAM, running Rocky Linux 9, l... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The server named 'arp' has the following specifications: 128 core, 1TB RAM, runs Rocky Linux 9, and ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The server named 'arp' has the following specifications: 128 core, 1TB RAM, runs Rocky Linux 9, and ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The server named 'arp' has the following specifications: 128 core, 1TB RAM, runs on Rocky Linux 9, a... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The server named 'arp' has the following specifications: 128 core, 1TB RAM, runs Rocky Linux 9, and ... |
-| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-
-**Q27: What factors can affect query performance in PostgreSQL?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | Query performance in PostgreSQL can be affected by many factors, including the choice of query plan,... |
-| colly+md | 3 | 4 | 3 | 3 | 3.2 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
-| crawlee | 3 | 4 | 2 | 3 | 3.0 | Query performance in PostgreSQL can be affected by many factors, including user-controlled settings ... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q28: What does this chapter provide hints about regarding PostgreSQL performance?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | This chapter provides hints about understanding and tuning PostgreSQL performance, including factors... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | This chapter provides hints about understanding and tuning PostgreSQL performance, including factors... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | This chapter provides hints about understanding and tuning PostgreSQL performance, including factors... |
-| markcrawl | 5 | 5 | 4 | 4 | 4.5 | This chapter provides hints about understanding and tuning PostgreSQL performance.... |
-| crawl4ai | 5 | 5 | 4 | 4 | 4.5 | This chapter provides hints about understanding and tuning PostgreSQL performance.... |
-| crawl4ai-raw | 5 | 5 | 4 | 4 | 4.5 | This chapter provides hints about understanding and tuning PostgreSQL performance.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q29: What are Recognised NPOs in relation to the PostgreSQL project?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Recognised NPOs (Non Profit Organisations) are legal entities that support the PostgreSQL project as... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Recognised NPOs (Non Profit Organisations) are legal entities that support the PostgreSQL project as... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Recognised NPOs (Nonprofit Organisations) in relation to the PostgreSQL project are organizations th... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Recognised NPOs (Non Profit Organisations) in relation to the PostgreSQL project are legal entities ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Recognised NPOs (Non Profit Organisations) are legal entities that support the PostgreSQL project as... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Recognised NPOs (Non Profit Organisations) are legal entities that support the PostgreSQL project as... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-
-**Q30: What is the goal of PostgreSQL Europe?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The goal of PostgreSQL Europe is to promote the use of PostgreSQL in Europe, primarily by assisting ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The goal of PostgreSQL Europe is to promote the use of PostgreSQL in Europe, primarily by assisting ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The goal of PostgreSQL Europe is to promote the use of PostgreSQL in Europe, primarily by assisting ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The goal of PostgreSQL Europe is to promote the use of PostgreSQL in Europe, primarily by assisting ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The goal of PostgreSQL Europe is to promote the use of PostgreSQL in Europe, primarily by assisting ... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q31: What do brackets indicate in the command synopsis?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Brackets (`[` and `]`) indicate optional parts in the command synopsis.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Brackets (`[` and `]`) indicate optional parts in the command synopsis.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Brackets (`[` and `]`) indicate optional parts in the command synopsis.... |
-| markcrawl | 2 | 3 | 2 | 2 | 2.2 | Brackets (`[]`) are used to select the elements of an array.... |
-| crawl4ai | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q32: What is the role of an administrator in PostgreSQL?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The role of an administrator in PostgreSQL includes installation, configuration of the server, manag... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The role of an administrator in PostgreSQL includes installation, configuration of the server, manag... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | An administrator in PostgreSQL is responsible for installation, configuration of the server, managem... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | An administrator in PostgreSQL is responsible for installation, configuration of the server, managem... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The role of an administrator in PostgreSQL includes installation, configuration of the server, manag... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | An administrator in PostgreSQL is responsible for installation, configuration of the server, managem... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q33: What topics are covered in the Server Administration section?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The Server Administration section covers the following topics:  1. Installation 2. Configuration of ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The Server Administration section covers the following topics:  1. Installation from Binaries 2. Ins... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The Server Administration section covers the following topics:  1. Installation from Binaries 2. Ins... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The Server Administration section covers the following topics:  1. Installation of the software 2. S... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The Server Administration section covers the following topics:  1. Installation from Binaries 2. Ins... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The Server Administration section covers the following topics:  1. Installation from Binaries 2. Ins... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The Server Administration section covers the following topics:  1. Installation from Binaries 2. Ins... |
-
-**Q34: Who should be familiar with the topics in the Server Administration part?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Anyone who runs a PostgreSQL server, even for personal use, but especially in production, should be ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Anyone running a PostgreSQL server, even for personal use, but especially in production, should be f... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Anyone running a PostgreSQL server, even for personal use, but especially in production, should be f... |
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | Anyone running a PostgreSQL server, even for personal use, but especially in production, should be f... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | Anyone running a PostgreSQL server, even for personal use, but especially in production, should be f... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | Anyone running a PostgreSQL server, even for personal use, but especially in production, should be f... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | Anyone running a PostgreSQL server, even for personal use, but especially in production, should be f... |
-
-**Q35: How do I install PL/Python in a PostgreSQL database?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q36: What does it mean that PL/Python is an 'untrusted' language?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not offer any way to restrict what u... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not provide any means to restrict wh... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not offer any way to restrict what u... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not provide any means to restrict wh... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not offer any way to restrict what u... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not offer any way of restricting wha... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q37: What information do I need to provide to sign up for a free community account?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To sign up for a free community account, you need to provide your preferred userid, first name, last... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To sign up for a free community account, you need to provide your preferred userid, first name, last... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To sign up for a free community account, you need to provide your preferred userid, first name, last... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To sign up for a free community account, you need to provide your preferred userid, first name, last... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To sign up for a free community account, you need to provide your preferred userid, first name, last... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q38: What happens after I enter my email address during the signup process?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A confirmation email will be sent to the specified address, and once confirmed, a password for the n... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A confirmation email will be sent to the specified address, and once confirmed, a password for the n... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | A confirmation email will be sent to the specified address, and once confirmed, a password for the n... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | A confirmation email will be sent to the specified address, and once confirmed, a password for the n... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | A confirmation email will be sent to the specified address, and once confirmed, a password for the n... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q39: What is the formal name of the SQL standard?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The formal name of the SQL standard is ISO/IEC 9075 “Database Language SQL”.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The formal name of the SQL standard is ISO/IEC 9075 “Database Language SQL”.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The formal name of the SQL standard is ISO/IEC 9075 “Database Language SQL”.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The formal name of the SQL standard is ISO/IEC 9075 “Database Language SQL”.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The formal name of the SQL standard is ISO/IEC 9075 “Database Language SQL”.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q40: How many mandatory features does PostgreSQL conform to for full Core conformance?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL conforms to at least 170 out of 177 mandatory features required for full Core conformance... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL conforms to at least 170 out of 177 mandatory features required for full Core conformance... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL conforms to at least 170 out of 177 mandatory features required for full Core conformance... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL conforms to at least 170 out of 177 mandatory features for full Core conformance.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | PostgreSQL conforms to at least 170 out of 177 mandatory features required for full Core conformance... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q41: How do I install PL/Python in a PostgreSQL database?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | To install PL/Python in a PostgreSQL database, use the command `CREATE EXTENSION plpython3u`.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q42: What does it mean that PL/Python is an 'untrusted' language?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not offer any way to restrict what u... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not provide any means to restrict wh... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not offer any way to restrict what u... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not provide any means to restrict wh... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not offer any way to restrict what u... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | PL/Python is considered an 'untrusted' language because it does not offer any way of restricting wha... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q43: What is the signature of a table sampling method function in PostgreSQL?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The signature of a table sampling method function in PostgreSQL must accept a single argument of typ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The signature of a table sampling method function in PostgreSQL, specifically for the `SYSTEM_ROWS` ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The signature of a table sampling method function in PostgreSQL is:  ``` method_name(internal) RETUR... |
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | The signature of a table sampling method function in PostgreSQL is:  ``` method_name(internal) RETUR... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | The signature of a table sampling method function in PostgreSQL is:  ``` method_name(internal) RETUR... |
-| crawl4ai | 4 | 5 | 3 | 4 | 4.0 | The signature of a table sampling method function in PostgreSQL is:  ``` method_name(internal) RETUR... |
-| crawlee | 4 | 5 | 3 | 4 | 4.0 | The signature of a table sampling method function in PostgreSQL is:  ``` method_name(internal) RETUR... |
-
-**Q44: What does the `repeatable_across_queries` field in the TsmRoutine struct indicate?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `repeatable_across_queries` field in the TsmRoutine struct indicates whether the sampling method... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `repeatable_across_queries` field in the TsmRoutine struct indicates whether the sampling method... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `repeatable_across_queries` field in the `TsmRoutine` struct indicates whether the sampling meth... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `repeatable_across_queries` field in the `TsmRoutine` struct indicates whether the sampling meth... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `repeatable_across_queries` field in the `TsmRoutine` struct indicates whether the sampling meth... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q45: What should be included in every bug report?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the following items:  1. The exact sequence of steps from program st... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the following items:  1. The exact sequence of steps from program st... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the exact sequence of steps from program start-up necessary to repro... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the exact sequence of steps from program start-up necessary to repro... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Every bug report should include the exact sequence of steps from program start-up necessary to repro... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q46: Where should I send bug reports for PostgreSQL?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`. A... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`. A... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports for PostgreSQL by following the instructions on the "Submit a Bug Report... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`. A... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`, o... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You should send bug reports to the bug report mailing list at `<pgsql-bugs@lists.postgresql.org>`. A... |
-| markcrawl | 2 | 3 | 2 | 2 | 2.2 | You should use the provided form to report a documentation issue.... |
 
 </details>
 
@@ -4103,262 +4151,142 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| crawl4ai-raw | 4.86 | 5.00 | 4.83 | 4.86 | 4.89 ±0.08 |
-| crawl4ai | 4.84 | 5.00 | 4.79 | 4.86 | 4.88 ±0.07 |
-| scrapy+md | 4.83 | 4.98 | 4.79 | 4.86 | 4.87 ±0.10 |
-| playwright | 4.83 | 4.98 | 4.79 | 4.86 | 4.87 ±0.09 |
-| crawlee | 4.78 | 4.97 | 4.79 | 4.83 | 4.84 ±0.11 |
-| colly+md | 4.79 | 4.98 | 4.76 | 4.83 | 4.84 ±0.11 |
-| markcrawl | 3.53 | 2.93 | 2.40 | 2.78 | 2.91 ±0.31 |
+| crawlee | 4.79 | 4.95 | 4.81 | 4.84 | 4.85 ±0.14 |
+| crawl4ai | 4.84 | 4.91 | 4.76 | 4.81 | 4.83 ±0.14 |
+| playwright | 4.79 | 4.93 | 4.78 | 4.83 | 4.83 ±0.15 |
+| colly+md | 4.79 | 4.91 | 4.78 | 4.83 | 4.83 ±0.15 |
+| scrapy+md | 4.78 | 4.90 | 4.74 | 4.79 | 4.80 ±0.16 |
+| crawl4ai-raw | 4.79 | 4.90 | 4.72 | 4.78 | 4.80 ±0.15 |
+| markcrawl | 3.67 | 3.29 | 2.86 | 3.12 | 3.24 ±0.34 |
 
 > Scores are 1-5 averages. See summary table legend for dimension definitions.
 
 <details>
 <summary>Query-by-query scores for react-dev</summary>
 
-**Q1: What is the purpose of the `addTransitionType` API?**
+**Q1: What is the purpose of the `useSyncExternalStore` hook?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `addTransitionType` API allows you to specify the cause of a transition in React. It is used wit... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `addTransitionType` API is to specify the cause of a transition, allowing develop... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `addTransitionType` API allows you to specify the cause of a transition in React. It is used wit... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `addTransitionType` API allows you to specify the cause of a transition in React. It is used wit... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | The `addTransitionType` API allows you to specify the cause of a transition in React. It is used wit... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | The `addTransitionType` API allows you to specify the cause of a transition in React. It is used wit... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useSyncExternalStore` hook is to subscribe to an external data store, such as th... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useSyncExternalStore` hook is to allow React components to subscribe to an exter... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `useSyncExternalStore` hook allows React components to subscribe to an external data store, enab... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useSyncExternalStore` hook is to allow React components to subscribe to an exter... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `useSyncExternalStore` hook is used to subscribe to an external store, allowing React components... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useSyncExternalStore` hook is to allow React components to subscribe to an exter... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `useSyncExternalStore` hook is used to subscribe to an external store, allowing React components... |
 
 > **Corr** = correctness, **Rel** = relevance, **Comp** = completeness, **Use** = usefulness, **Avg** = average of the four dimensions (1-5).
 
-**Q2: What happens to Transition Types after each commit?**
+**Q2: What functions do you need to pass as arguments to `useSyncExternalStore`?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Transition Types are reset after each commit. This means that a `<Suspense>` fallback will associate... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Transition Types are reset after each commit. This means that a `<Suspense>` fallback will associate... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | Transition Types are reset after each commit. This means that a `<Suspense>` fallback will associate... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | Transition Types are reset after each commit. This means that a `<Suspense>` fallback will associate... |
-| colly+md | 4 | 5 | 4 | 4 | 4.2 | Transition Types are reset after each commit. This means that a `<Suspense>` fallback will associate... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | Transition Types are reset after each commit. This means that a `<Suspense>` fallback will associate... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You need to pass three functions as arguments to `useSyncExternalStore`:   1. `subscribe(callback)`:... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You need to pass two functions as arguments to `useSyncExternalStore`:  1. The `subscribe` function,... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You need to pass two functions as arguments to `useSyncExternalStore`:  1. The `subscribe` function,... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You need to pass two functions as arguments to `useSyncExternalStore`:  1. The `subscribe` function,... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You need to pass two functions as arguments to `useSyncExternalStore`:   1. The `subscribe` function... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You need to pass two functions as arguments to `useSyncExternalStore`: 1. The `subscribe` function, ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You need to pass two functions as arguments to `useSyncExternalStore`:   1. The `subscribe` function... |
 
-**Q3: What do the `react-dom/static` APIs allow you to generate?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/static` APIs allow you to generate static HTML for React components.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/static` APIs allow you to generate static HTML for React components.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/static` APIs allow you to generate static HTML for React components.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/static` APIs allow you to generate static HTML for React components.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/static` APIs allow you to generate static HTML for React components.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/static` APIs allow you to generate static HTML for React components.... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q4: Which methods are available for rendering a React tree to static HTML with Node.js Streams?**
+**Q3: How do you combine a reducer with context in React?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The methods available for rendering a React tree to static HTML with Node.js Streams are:  1. `prere... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The methods available for rendering a React tree to static HTML with Node.js Streams are `prerenderT... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | The methods available for rendering a React tree to static HTML with Node.js Streams are `prerenderT... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | The methods available for rendering a React tree to static HTML with Node.js Streams are `prerenderT... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | The methods available for rendering a React tree to static HTML with Node.js Streams are `prerenderT... |
-| crawl4ai-raw | 5 | 5 | 4 | 4 | 4.5 | The methods available for rendering a React tree to static HTML with Node.js Streams are `prerenderT... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To combine a reducer with context in React, follow these steps:  1. **Create the context**: Use `cre... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To combine a reducer with context in React, follow these steps:  1. **Create the context**: Define t... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To combine a reducer with context in React, follow these steps:  1. **Create the context**: Define t... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To combine a reducer with context in React, follow these steps:  1. **Create the context**: Use `cre... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To combine a reducer with context in React, follow these steps:  1. **Create the context**: Use `cre... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To combine a reducer with context in React, follow these steps:  1. **Create the context**: Use `cre... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To combine a reducer with context in React, follow these steps:  1. **Create the context**: Use `cre... |
 
-**Q5: What is the purpose of the `taintUniqueValue` function in React?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | The purpose of the `taintUniqueValue` function in React is to prevent unique values, such as passwor... |
-| crawl4ai-raw | 2 | 5 | 3 | 3 | 3.2 | The purpose of the `taintUniqueValue` function in React is to prevent unique values, such as passwor... |
-| scrapy+md | 2 | 5 | 3 | 3 | 3.2 | The purpose of the `taintUniqueValue` function in React is to prevent unique values, such as passwor... |
-| crawlee | 2 | 5 | 3 | 3 | 3.2 | The purpose of the `taintUniqueValue` function in React is to prevent unique values, such as passwor... |
-| colly+md | 2 | 5 | 3 | 3 | 3.2 | The purpose of the `taintUniqueValue` function in React is to prevent unique values, such as passwor... |
-| playwright | 2 | 5 | 3 | 3 | 3.2 | The purpose of the `taintUniqueValue` function in React is to prevent unique values, such as passwor... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q6: What parameters does the `taintUniqueValue` function accept?**
+**Q4: What are the steps to create a context for managing tasks?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `taintUniqueValue` function accepts the following parameters:  1. `message`: The message to disp... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `taintUniqueValue` function accepts the following parameters:  1. `message`: The message to disp... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `taintUniqueValue` function accepts three parameters: `message`, `lifetime`, and `value`.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `taintUniqueValue` function accepts the following parameters:  1. `message`: The message to disp... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `taintUniqueValue` function accepts the following parameters:  1. `message`: The message to disp... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `taintUniqueValue` function accepts the following parameters:  1. `message`: The message to disp... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | 1. **Create the context**: Use `createContext` to create two contexts, one for the tasks and one for... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | 1. **Create the context**: Use `createContext` to create two contexts, one for the tasks and one for... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | 1. **Create the context**: Use `createContext` to create `TasksContext` and `TasksDispatchContext`. ... |
+| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | 1. **Create the context**: Use `createContext` to create two contexts, `TasksContext` for the curren... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | 1. **Create the context**: Use `createContext` to create two contexts, `TasksContext` for the curren... |
+| colly+md | 5 | 5 | 4 | 5 | 4.8 | 1. **Create the context**: Use `createContext` to create two contexts, `TasksContext` for the task l... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | 1. **Create the context**: Use `createContext` to create two contexts, `TasksContext` for the task l... |
+
+**Q5: What new features will React 18 include?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | React 18 will include out-of-the-box improvements like automatic batching, new APIs such as `startTr... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | React 18 will include out-of-the-box improvements like automatic batching, new APIs such as `startTr... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | React 18 will include out-of-the-box improvements like automatic batching, new APIs such as `startTr... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | React 18 will include out-of-the-box improvements like automatic batching, new APIs such as `startTr... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | React 18 will include out-of-the-box improvements like automatic batching, new APIs such as `startTr... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | React 18 will include out-of-the-box improvements like automatic batching, new APIs such as `startTr... |
 | markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
 
-**Q7: What are React components?**
+**Q6: How can I try React 18 Alpha today?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | React components are isolated pieces of the user interface (UI) that are built using JavaScript func... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | React components are isolated pieces of UI that are built using JavaScript functions. They can be as... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | React components are isolated pieces of UI that are built using JavaScript functions. They can be as... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | React components are isolated pieces of UI that are built using JavaScript functions. They can retur... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | React components are isolated pieces of UI built from JavaScript functions that can include markup. ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | React components are isolated pieces of UI that are built using JavaScript functions. They can be co... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | React components are isolated pieces of UI that are built as JavaScript functions. They can be combi... |
-
-**Q8: How does React handle data updates in components?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | React handles data updates in components by using a state management system. When a component's stat... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | React handles data updates in components through a mechanism called _state_. State allows components... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | React handles data updates in components through a mechanism called _state_. State allows components... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | React handles data updates in components through a mechanism called state. When a component's state ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | React handles data updates in components through the `setState` method, which enqueues changes to th... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | React handles data updates in components through the `setState` method, which enqueues changes to th... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | React handles data updates in components through the `setState` function, which enqueues changes to ... |
-
-**Q9: How many languages is react.dev being translated into?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | React.dev is being translated into **38** languages.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | React.dev is being translated into **38** languages.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | React docs are being translated into 6 full languages and 40 in-progress languages.... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | React docs are translated into multiple languages, including full translations in French, Japanese, ... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | React docs are translated into multiple languages, including full translations in French, Japanese, ... |
-| colly+md | 4 | 4 | 3 | 4 | 3.8 | React docs are translated into many languages, including full translations in six languages and in-p... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-
-**Q10: Which languages have completed translations for both core and other content?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The completed translations for both core and other content are in French (Français), Japanese (日本語),... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The completed translations for both core and other content are French (Français), Japanese (日本語), Ko... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The completed translations for both core and other content are French (Français), Japanese (日本語), Ko... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The completed translations for both core and other content are French (Français), Japanese (日本語), Ko... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | The languages that have completed translations for both core and other content are:  - French (Franç... |
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | The languages that have completed translations for both core and other content are:  - French (Franç... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q11: What is the purpose of using `<Fragment>` in React?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of using `<Fragment>` in React is to group multiple elements without adding an extra nod... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of using `<Fragment>` in React is to group multiple elements together without adding an ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of using `<Fragment>` in React is to group multiple elements together without adding an ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of using `<Fragment>` in React is to group multiple JSX elements together without adding... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of using `<Fragment>` in React is to group multiple elements together without adding an ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of using `<Fragment>` in React is to group multiple elements together without adding ext... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of using `<Fragment>` in React is to group multiple elements together without adding an ... |
-
-**Q12: How can you pass a `key` to a Fragment?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You cannot pass a `key` to a Fragment using the short `<>...</>` syntax. Instead, you should use the... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To pass a `key` to a Fragment, you need to explicitly import `Fragment` from `'react'` and render it... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To pass a `key` to a Fragment, you need to explicitly import `Fragment` from `'react'` and render it... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To pass a `key` to a Fragment, you need to explicitly import `Fragment` from `'react'` and render it... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To pass a `key` to a Fragment, you cannot use the shorthand syntax `<>...</>`. Instead, you must exp... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To pass a `key` to a Fragment, you cannot use the `<>...</>` syntax. Instead, you must explicitly im... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To pass a `key` to a Fragment, you cannot use the shorthand syntax `<>...</>`. Instead, you must exp... |
-
-**Q13: What does <StrictMode> do in React?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | <StrictMode> in React helps identify components that may have side effects or impure functions by ca... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `<StrictMode>` in React enables additional development-only checks and warnings for the component tr... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `<StrictMode>` in React enables additional development-only checks and warnings for the component tr... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `<StrictMode>` in React enables additional development-only checks for the component tree inside it.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | `<StrictMode>` in React enables additional development behaviors and warnings for the component tree... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | `<StrictMode>` in React enables additional development behaviors and warnings for the component tree... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | `<StrictMode>` in React enables additional development behaviors and warnings for the component tree... |
-
-**Q14: How can you enable Strict Mode for a part of your application?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To enable Strict Mode for a part of your application, you can wrap your root component in `<React.St... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can enable Strict Mode for a part of your application by wrapping the specific section of your c... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can enable Strict Mode for a part of your application by wrapping the desired components with th... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can enable Strict Mode for a part of your application by wrapping the specific section of your c... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can enable Strict Mode for a part of your application by wrapping the desired components with th... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can enable Strict Mode for a part of your application by wrapping the desired component tree wit... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can enable Strict Mode for a part of your application by wrapping the desired components with th... |
-
-**Q15: What does memo do in React?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `memo` in React is a higher-order component that allows you to skip re-rendering a component when it... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `memo` in React is a higher-order component that allows you to skip re-rendering a component when it... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `memo` in React creates a memoized component that prevents unnecessary re-renders. It only re-render... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | `memo` in React allows you to skip re-rendering a component when its props have not changed. It crea... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | `memo` in React allows you to skip re-rendering a component when its props have not changed. It crea... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | `memo` in React allows you to skip re-rendering a component when its props have not changed. It crea... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q16: How can you specify a custom comparison function for memo?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can specify a custom comparison function for memo by providing it as the second argument to the ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can specify a custom comparison function for memo by providing it as the second argument to the ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can specify a custom comparison function for `memo` by passing it as the second argument to the ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can specify a custom comparison function for memo by passing it as a second argument to the `mem... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can specify a custom comparison function for `memo` by passing it as a second argument to the `m... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To specify a custom comparison function for `memo`, you can provide it as a second argument to the `... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can try React 18 Alpha today by installing it from npm using the `@alpha` tag. New alphas are re... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can try React 18 Alpha today by installing it from npm using the `@alpha` tag. New alphas are re... |
+| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | You can try React 18 Alpha today by installing it from npm using the `@alpha` tag. The command to do... |
+| crawlee | 5 | 5 | 4 | 5 | 4.8 | New alphas are regularly published to npm using the `@alpha` tag. These releases are built using the... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | New alphas are regularly published to npm using the `@alpha` tag. These releases are built using the... |
+| colly+md | 3 | 4 | 3 | 4 | 3.5 | You can try React 18 Alpha today by regularly publishing new alphas to npm using the `@alpha` tag. T... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q17: What does cloneElement do in React?**
+**Q7: How do you specify the title of the document using the `<title>` component?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `cloneElement` in React creates a new React element using an existing element as a starting point, a... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `cloneElement` in React creates a new React element using an existing element as a starting point, a... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `cloneElement` in React lets you create a new React element using another element as a starting poin... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | `cloneElement` in React creates a new React element using another element as a starting point, allow... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | `cloneElement` in React creates a new React element using another element as a starting point, allow... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | `cloneElement` in React creates a new React element using an existing element as a starting point, a... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To specify the title of the document using the `<title>` component, render the `<title>` component w... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To specify the title of the document using the `<title>` component, render the `<title>` component w... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To specify the title of the document using the `<title>` component, render it with text as its child... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To specify the title of the document using the `<title>` component, render the `<title>` component f... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To specify the title of the document using the `<title>` component, render the `<title>` component f... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To specify the title of the document using the `<title>` component, render the `<title>` component f... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q18: What are the parameters required for cloneElement?**
+**Q8: What special rendering behavior does React have for the `<title>` component?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The parameters required for `cloneElement` are:  1. `element`: A valid React element (e.g., a JSX no... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The parameters required for `cloneElement` are:  1. `element`: A valid React element (e.g., a JSX no... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The parameters required for `cloneElement` are:  1. `element`: A valid React element. 2. `props`: An... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The parameters required for `cloneElement` are:  1. `element`: A valid React element (e.g., a JSX no... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The parameters required for `cloneElement` are:  1. `element`: A valid React element (e.g., a JSX no... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The parameters required for `cloneElement` are:  1. `element`: A valid React element (e.g., a JSX no... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | React will always place the DOM element corresponding to the `<title>` component within the document... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | React will always place the DOM element corresponding to the `<title>` component within the document... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | React will always place the DOM element corresponding to the `<title>` component within the document... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | React will always place the DOM element corresponding to the `<title>` component within the document... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | React will always place the DOM element corresponding to the `<title>` component within the document... |
+| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | React will always place the DOM element corresponding to the `<title>` component within the document... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q19: How do you share state between components in React?**
+**Q9: What are Server Functions used for in React?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To share state between components in React, you need to lift the state up to their closest common pa... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To share state between components in React, you remove the state from both components, move it to th... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To share state between components in React, you remove the state from both components, move it to th... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To share state between components in React, you remove the state from the individual components and ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To share state between components in React, you should remove the state from the individual componen... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To share state between components in React, you need to lift the state up to their closest common pa... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To share state between components in React, you need to lift the state up to their closest common pa... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Server Functions in React are used to allow Client Components to call asynchronous functions that ar... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Server Functions in React are used to allow Client Components to call asynchronous functions that ar... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Server Functions in React are used to allow Client Components to call asynchronous functions that ar... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Server Functions in React are used to allow Client Components to call asynchronous functions that ar... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Server Functions in React are used to allow Client Components to call asynchronous functions that ar... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Server Functions in React are used to allow Client Components to call asynchronous functions that ar... |
+| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
 
-**Q20: What is the difference between controlled and uncontrolled components?**
+**Q10: How do you create a Server Function from a Server Component?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Controlled components are driven by props, meaning their state is managed by the parent component, a... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Controlled components are driven by props, allowing the parent component to fully specify their beha... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Controlled components are driven by props, allowing the parent component to fully specify their beha... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Controlled components are those whose important information is driven by props, allowing the parent ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Controlled components are driven by props, meaning their behavior is fully specified by the parent c... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Controlled components are driven by props, meaning their behavior is fully specified by the parent c... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Controlled components are driven by props, meaning their behavior is fully specified by the parent c... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To create a Server Function from a Server Component, you define the function with the `"use server"`... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To create a Server Function from a Server Component, you define the function with the `"use server"`... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To create a Server Function from a Server Component, you define the function within the Server Compo... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To create a Server Function from a Server Component, you define the function with the `"use server"`... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To create a Server Function from a Server Component, you define the function within the Server Compo... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To create a Server Function from a Server Component, you define the function with the `"use server"`... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q21: What is the new domain for the React documentation site?**
+**Q11: What is the new domain for the React documentation site?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -4370,115 +4298,163 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | playwright | 5 | 5 | 5 | 5 | 5.0 | The new domain for the React documentation site is react.dev.... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q22: How does the new documentation teach React differently than before?**
+**Q12: How does the new documentation teach React differently than the previous version?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, rather than assuming familiarity ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, rather than assuming familiarity ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, whereas the previous documentatio... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, rather than assuming the reader i... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, rather than assuming familiarity ... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | The new documentation teaches React with Hooks from the beginning, rather than assuming familiarity ... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q23: What is the mission of the React Foundation?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The mission of the React Foundation is to support the React community and ecosystem.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The mission of the React Foundation is to support the React community and ecosystem.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The mission of the React Foundation is to support the React community and ecosystem.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The mission of the React Foundation is to support the React community and ecosystem.... |
-| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | The mission of the React Foundation is to support the React community and ecosystem.... |
-| playwright | 5 | 5 | 4 | 5 | 4.8 | The mission of the React Foundation is to support the React community and ecosystem.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-
-**Q24: Who will serve as the executive director of the React Foundation?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Seth Webster will serve as the executive director of the React Foundation.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Seth Webster will serve as the executive director of the React Foundation.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Seth Webster will serve as the executive director of the React Foundation.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Seth Webster will serve as the executive director of the React Foundation.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Seth Webster will serve as the executive director of the React Foundation.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Seth Webster will serve as the executive director of the React Foundation.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-
-**Q25: What does 'use memo' do in React?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 4 | 5 | 4 | 5 | 4.5 | `"use memo"` marks a function for React Compiler optimization, allowing the compiler to analyze and ... |
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | `"use memo"` marks a function for React Compiler optimization, allowing the compiler to analyze and ... |
-| playwright | 3 | 4 | 3 | 4 | 3.5 | `"use memo"` marks a function for React Compiler optimization, allowing the compiler to analyze and ... |
-| colly+md | 2 | 5 | 3 | 3 | 3.2 | `"use memo"` marks a function for optimization by the React Compiler, allowing it to analyze and opt... |
-| scrapy+md | 2 | 4 | 3 | 3 | 3.0 | `"use memo"` marks a function for optimization by the React Compiler, allowing it to analyze and opt... |
-| crawlee | 2 | 4 | 3 | 3 | 3.0 | `"use memo"` marks a function for React Compiler optimization, allowing the compiler to analyze and ... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q26: When should you consider using 'use memo'?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You should consider using 'use memo' when you want to cache (or "memoize") an expensive calculation ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You should consider using `"use memo"` when you are using annotation mode and want to optimize a fun... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You should consider using `"use memo"` when you are using annotation mode and want to optimize a fun... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You should consider using `"use memo"` when you’re using `annotation` mode, as the directive is requ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You should consider using `"use memo"` when you’re using `annotation` mode, as the directive is requ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You should consider using `"use memo"` when you’re using annotation mode, as it is required for any ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You should consider using `"use memo"` when you’re using `annotation mode`, as the directive is requ... |
-
-**Q27: What does renderToStaticMarkup do?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `renderToStaticMarkup` renders a non-interactive React tree to an HTML string.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `renderToStaticMarkup` renders a non-interactive React tree to an HTML string.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `renderToStaticMarkup` renders a non-interactive React tree to an HTML string.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | `renderToStaticMarkup` renders a non-interactive React tree to an HTML string.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | `renderToStaticMarkup` renders a non-interactive React tree to an HTML string.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | `renderToStaticMarkup` renders a non-interactive React tree to an HTML string.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q28: What are the parameters for renderToStaticMarkup?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The parameters for `renderToStaticMarkup` are:  1. `reactNode`: A React node you want to render to H... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The parameters for `renderToStaticMarkup` are:  1. `reactNode`: A React node you want to render to H... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The parameters for `renderToStaticMarkup` are:  1. `reactNode`: A React node you want to render to H... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The parameters for `renderToStaticMarkup` are:  1. `reactNode`: A React node you want to render to H... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The parameters for `renderToStaticMarkup` are:  1. `reactNode`: A React node you want to render to H... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The parameters for `renderToStaticMarkup` are:  1. `reactNode`: A React node you want to render to H... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q29: What does the globals rule validate against in React?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The globals rule validates against assignment/mutation of globals during render, ensuring that side ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The globals rule validates against assignment/mutation of globals during render, ensuring that side ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The globals rule validates against assignment/mutation of globals during render, ensuring that side ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The globals rule validates against assignment/mutation of globals during render, ensuring that side ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The globals rule validates against assignment/mutation of globals during render, ensuring that side ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The globals rule validates against assignment/mutation of globals during render, ensuring that side ... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q30: What are examples of invalid code for the globals rule?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Examples of invalid code for the globals rule include:  1. Mutating a global counter:    ```javascri... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Examples of invalid code for the globals rule include:  1. Mutating a global counter:    ```javascri... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Examples of invalid code for the globals rule include:  1. **Mutating a global counter:**    ```java... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Examples of incorrect code for the globals rule include:  ```javascript // ❌ Global counter let rend... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Examples of incorrect code for the globals rule include:  ```javascript // ❌ Global counter let rend... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Examples of incorrect code for the globals rule include:  ```javascript // ❌ Global counter let rend... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, whereas the previous version assu... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, whereas the previous version assu... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, whereas the previous version assu... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, whereas the previous version assu... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, whereas the previous version assu... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The new documentation teaches React with Hooks from the beginning, whereas the previous version assu... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q31: What does the `preconnect` function do?**
+**Q13: What does the `startTransition` function do?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `startTransition` function lets you mark a state update as a non-blocking Transition, allowing t... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `startTransition` function lets you mark a state update as a non-blocking Transition, allowing t... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `startTransition` function lets you mark a state update as a Transition, allowing the UI to rema... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `startTransition` function lets you mark a state update as a Transition, allowing React to rende... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `startTransition` function lets you mark a state update as a Transition, allowing React to rende... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `startTransition` function lets you mark a state update as a Transition, allowing the UI to rema... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q14: How do you mark a state update as a Transition in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can mark a state update as a Transition in React by wrapping it in a `startTransition` call. For... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can mark a state update as a Transition in React by wrapping it in a `startTransition` call. For... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can mark a state update as a Transition in React by wrapping it in a `startTransition` call. For... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can mark a state update as a Transition in React by wrapping it in a `startTransition` call. For... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can mark a state update as a Transition in React by wrapping it in a `startTransition` call. For... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can mark a state update as a Transition in React by wrapping it in a `startTransition` call. For... |
+| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q15: What are the characteristics of a pure component or hook in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A pure component or hook in React has the following characteristics:  1. **It minds its own business... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A pure component or hook in React is characterized by the following:  1. **Idempotent**: It always r... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A pure component or hook in React is characterized by the following:  1. **Idempotent**: It always r... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A pure component or hook in React is characterized by the following:  1. **Idempotent**: It always r... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | A pure component or hook in React is characterized by the following:  1. **Idempotent**: It always r... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | A pure component or hook in React is characterized by the following:  1. **Idempotent**: It always r... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | A pure component or hook in React is characterized by the following:  1. **Idempotent**: It always r... |
+
+**Q16: Why should side effects run outside of render in React components?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Side effects should run outside of render in React components because rendering must remain pure; it... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Side effects should run outside of render in React components to keep the rendering process pure. Th... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Side effects should run outside of render in React components to keep the rendering process pure. Th... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Side effects should run outside of render in React components because React can render components mu... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Side effects should run outside of render in React components because React can render components mu... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Side effects should run outside of render in React components because React can render components mu... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Side effects should run outside of render in React components because React can render components mu... |
+
+**Q17: What does `prerenderToNodeStream` return upon successful rendering?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `prerenderToNodeStream` returns a Promise that resolves to an object containing: - `prelude`: a Node... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `prerenderToNodeStream` returns a Promise that resolves to an object containing: - `prelude`: a Node... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `prerenderToNodeStream` returns a Promise that resolves to an object containing: - `prelude`: a Node... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | `prerenderToNodeStream` returns a Promise that resolves to an object containing: - `prelude`: a Node... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | `prerenderToNodeStream` returns a Promise that resolves to an object containing: - `prelude`: a Node... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | `prerenderToNodeStream` returns a Promise that, upon successful rendering, resolves to an object con... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q18: When should I use `prerenderToNodeStream` instead of `renderToString`?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You should use `prerenderToNodeStream` instead of `renderToString` when you need to generate static ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You should use `prerenderToNodeStream` instead of `renderToString` when you need to generate static ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You should use `prerenderToNodeStream` instead of `renderToString` when you need to wait for all dat... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You should use `prerenderToNodeStream` instead of `renderToString` when you need to wait for all dat... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You should use `prerenderToNodeStream` instead of `renderToString` when you need to wait for all dat... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You should use `prerenderToNodeStream` instead of `renderToString` when you need to wait for all dat... |
+| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+
+**Q19: What are the built-in React DOM Hooks?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
+| crawlee | 2 | 4 | 2 | 3 | 2.8 | The built-in React DOM Hooks include:  1. `useFormStatus` - allows you to make updates to the UI bas... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| crawl4ai-raw | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| colly+md | 2 | 3 | 2 | 2 | 2.2 | The built-in React DOM Hooks include:  1. `useFormStatus` - allows you to make updates to the UI bas... |
+| playwright | 2 | 3 | 2 | 2 | 2.2 | The built-in React DOM Hooks include:  1. `useFormStatus` - allows you to make updates to the UI bas... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q20: What does the useFormStatus hook do?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `useFormStatus` hook provides status information of the last form submission, including whether ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `useFormStatus` hook provides status information of the last form submission, including whether ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `useFormStatus` hook provides status information about the last form submission, including wheth... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `useFormStatus` hook provides status information of the last form submission, including whether ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `useFormStatus` hook provides status information of the last form submission, including whether ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `useFormStatus` hook provides status information of the last form submission, including whether ... |
+| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+
+**Q21: What is the purpose of useLayoutEffect?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of `useLayoutEffect` is to let your component use layout information for rendering by al... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of `useLayoutEffect` is to let your component use layout information for rendering by al... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of `useLayoutEffect` is to perform layout measurements before the browser repaints the s... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of `useLayoutEffect` is to let your component use layout information for rendering by me... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of `useLayoutEffect` is to let your component use layout information for rendering by me... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of `useLayoutEffect` is to let your component use layout information for rendering by me... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q22: How does useLayoutEffect differ from useEffect?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `useLayoutEffect` differs from `useEffect` in that it blocks the browser from repainting the screen ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `useLayoutEffect` differs from `useEffect` in that it blocks the browser from repainting the screen ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `useLayoutEffect` fires before the browser repaints the screen, allowing for layout measurements, wh... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | `useLayoutEffect` differs from `useEffect` in that it fires before the browser repaints the screen, ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | `useLayoutEffect` differs from `useEffect` in that it fires before the browser repaints the screen, ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | `useLayoutEffect` differs from `useEffect` in that it fires before the browser repaints the screen, ... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q23: How do you pass a string attribute to JSX?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To pass a string attribute to JSX, you put it in single or double quotes. For example, `className="a... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To pass a string attribute to JSX, you put it in single or double quotes. For example: `src="image.j... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To pass a string attribute to JSX, you put it in single or double quotes. For example: `src="image.j... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To pass a string attribute to JSX, you put it in single or double quotes. For example, `className="a... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You pass a string attribute to JSX by putting it in single or double quotes. For example, `className... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To pass a string attribute to JSX, you put it in single or double quotes. For example, you can use `... |
+| scrapy+md | 4 | 5 | 3 | 4 | 4.0 | To pass a string attribute to JSX, you put it in single or double quotes.... |
+
+**Q24: What is the purpose of using curly braces in JSX?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of using curly braces in JSX is to allow the embedding of JavaScript expressions directl... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of using curly braces in JSX is to allow the embedding of JavaScript expressions within ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Curly braces in JSX allow you to embed JavaScript expressions directly within the markup, enabling t... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Curly braces in JSX allow you to embed JavaScript expressions directly within the markup. They enabl... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Curly braces in JSX are used to embed JavaScript expressions within the markup. They allow you to in... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Curly braces in JSX allow you to embed JavaScript expressions, such as variables, function calls, an... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Curly braces in JSX are used to embed JavaScript expressions within the markup. They allow you to in... |
+
+**Q25: What does the `preconnect` function do?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -4490,328 +4466,400 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | playwright | 5 | 5 | 5 | 5 | 5.0 | The `preconnect` function provides the browser with a hint to eagerly connect to a server that is ex... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q32: How can you call `preconnect` in an event handler?**
+**Q26: How can you call `preconnect` in an event handler?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can call `preconnect` in an event handler by defining a function that calls `preconnect` before ... |
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can call `preconnect` in an event handler by defining a function that calls `preconnect` before ... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | You can call `preconnect` in an event handler by defining a function that invokes `preconnect` befor... |
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | You can call `preconnect` in an event handler by defining a function that invokes `preconnect` befor... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | You can call `preconnect` in an event handler by defining a function that invokes `preconnect` befor... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | You can call `preconnect` in an event handler by invoking it before transitioning to a page or state... |
 | crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | You can call `preconnect` in an event handler by invoking it before transitioning to a page or state... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q33: What are the special React props supported for all built-in components?**
+**Q27: What does `renderToReadableStream` do in React?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The special React props supported for all built-in components are:  1. `children`: A React node spec... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The special React props supported for all built-in components are:  1. `children`: A React node spec... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The special React props supported for all built-in components are:  1. `children` 2. `dangerouslySet... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The special React props supported for all built-in components are:  1. `children`: Specifies the con... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The special React props supported for all built-in components are:  * `children`: Specifies the cont... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The special React props supported for all built-in components are:  1. `children`: Specifies the con... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q34: What does the `dangerouslySetInnerHTML` prop do in React components?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `dangerouslySetInnerHTML` prop in React components allows you to pass a raw HTML string to an el... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `dangerouslySetInnerHTML` prop in React components allows you to pass a raw HTML string to an el... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `dangerouslySetInnerHTML` prop in React components allows you to set the inner HTML of a DOM nod... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `dangerouslySetInnerHTML` prop in React components allows you to pass a raw HTML string to an el... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `dangerouslySetInnerHTML` prop in React components allows you to pass a raw HTML string to an el... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `dangerouslySetInnerHTML` prop in React components allows you to pass a raw HTML string to an el... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q35: Who leads the React development team?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 4 | 5 | 3 | 4 | 4.0 | React development is led by a dedicated team working full time at Meta.... |
-| crawl4ai-raw | 4 | 5 | 3 | 4 | 4.0 | React development is led by a dedicated team working full time at Meta.... |
-| scrapy+md | 4 | 5 | 3 | 4 | 4.0 | The React development team is led by a dedicated team working full time at Meta.... |
-| colly+md | 4 | 5 | 3 | 4 | 4.0 | The React development team is led by a dedicated team working full time at Meta.... |
-| playwright | 4 | 5 | 3 | 4 | 4.0 | The React development team is led by a dedicated team working full time at Meta.... |
-| crawlee | 3 | 4 | 3 | 4 | 3.5 | The React development team is led by a dedicated team working full time at Meta.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q36: What roles do the current members of the React Core team work on?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The current members of the React Core team work full time on the core component APIs, the engine tha... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The current members of the React Core team work full time on the core component APIs, the engine tha... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The current members of the React Core team work on the core component APIs, the engine that powers R... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The current members of the React Core team work full time on the core component APIs, the engine tha... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The current members of the React Core team work full time on the core component APIs, the engine tha... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The current members of the React Core team work full time on the core component APIs, the engine tha... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q37: What does renderToReadableStream do?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `renderToReadableStream` renders a React tree to a Readable Web Stream, allowing for streaming more ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `renderToReadableStream` renders a React tree to a Readable Web Stream, allowing for streaming more ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `renderToReadableStream` renders a React tree as HTML into a Readable Web Stream, allowing for strea... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `renderToReadableStream` renders a React tree as HTML into a Readable Web Stream, allowing for strea... |
 | scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `renderToReadableStream` renders a React tree to a Readable Web Stream, allowing for streaming conte... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | `renderToReadableStream` renders a React tree to a Readable Web Stream, allowing for streaming conte... |
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | `renderToReadableStream` renders a React tree to a Readable Web Stream, allowing for streaming conte... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | `renderToReadableStream` renders a React tree to a Readable Web Stream, allowing for streaming conte... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q28: What parameters can be passed to the `renderToReadableStream` function?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `renderToReadableStream` function are:  1. `reactNode`: A R... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `renderToReadableStream` function are:  1. `reactNode`: A R... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `renderToReadableStream` function are:  1. `reactNode`: A R... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `renderToReadableStream` function are:  1. `reactNode`: A R... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `renderToReadableStream` function are:  1. `reactNode`: A R... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `renderToReadableStream` function are:  1. `reactNode`: A R... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q38: What parameters can be passed to renderToReadableStream?**
+**Q29: What is the recommended way to start building a new app or website with React?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to `renderToReadableStream` are:  1. `reactNode`: A React node you... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to `renderToReadableStream` are:  1. `reactNode`: A React node you... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to `renderToReadableStream` are:  1. `reactNode`: A React node you... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to `renderToReadableStream` are:  1. `reactNode`: A React node you... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to `renderToReadableStream` are:  1. `reactNode`: A React node you... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to `renderToReadableStream` are:  1. `reactNode`: A React node you... |
+| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | The recommended way to start building a new app or website with React is to use a framework that pro... |
+| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | The recommended way to start building a new app or website with React is to use a framework that pro... |
+| markcrawl | 2 | 3 | 2 | 2 | 2.2 | The recommended way to start building a new app or website with React is to use a framework.... |
+| scrapy+md | 2 | 3 | 2 | 2 | 2.2 | The recommended way to start building a new app or website with React is to use a framework.... |
+| crawlee | 2 | 3 | 2 | 2 | 2.2 | The recommended way to start building a new app or website with React is to use a framework.... |
+| colly+md | 2 | 3 | 2 | 2 | 2.2 | The recommended way to start building a new app or website with React is to start with a framework.... |
+| playwright | 2 | 3 | 2 | 2 | 2.2 | The recommended way to start building a new app or website with React is to use a framework.... |
+
+**Q30: What command is used to create a new Expo project?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | ``` npx create-expo-app@latest ```... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To create a new Expo project, run:   ``` npx create-expo-app ```... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To create a new Expo project, run:   ``` npx create-expo-app ```... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The command used to create a new Expo project is:  ``` npx create-expo-app@latest ```... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To create a new Expo project, run:   ``` npx create-expo-app@latest ```... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To create a new Expo project, run:   ``` npx create-expo-app@latest ```... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To create a new Expo project, run:   ``` npx create-expo-app@latest ```... |
+
+**Q31: What is the purpose of the `useDebugValue` hook?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useDebugValue` hook is to add a label to a custom Hook in React DevTools, allowi... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useDebugValue` hook is to add a label to a custom Hook in React DevTools, allowi... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useDebugValue` hook is to add a label to a custom Hook in React DevTools, allowi... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `useDebugValue` hook is used to add a label to a custom Hook in React DevTools, allowing develop... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `useDebugValue` hook is used to add a label to a custom Hook in React DevTools, allowing develop... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `useDebugValue` hook is used to add a label to a custom Hook in React DevTools, allowing develop... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q39: What do the `react-dom/server` APIs do?**
+**Q32: How do you use the optional formatting function with `useDebugValue`?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/server` APIs let you server-side render React components to HTML. They are used at th... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/server` APIs let you server-side render React components to HTML. They are used at th... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/server` APIs let you server-side render React components to HTML. These APIs are only... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/server` APIs let you server-side render React components to HTML. These APIs are only... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `react-dom/server` APIs let you server-side render React components to HTML. These APIs are only... |
-| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | The `react-dom/server` APIs let you server-side render React components to HTML. They are used at th... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can use the optional formatting function with `useDebugValue` by passing it as the second argume... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can use the optional formatting function with `useDebugValue` by passing it as the second argume... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can use the optional formatting function with `useDebugValue` by passing it as the second argume... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can use the optional formatting function with `useDebugValue` by passing it as the second argume... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can use the optional formatting function with `useDebugValue` by passing it as the second argume... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can use the optional formatting function with `useDebugValue` by passing it as the second argume... |
+| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
 
-**Q40: What methods are available for Node.js Streams in the `react-dom/server` APIs?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The methods available for Node.js Streams in the `react-dom/server` APIs are:  1. `renderToPipeableS... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The methods available for Node.js Streams in the `react-dom/server` APIs are:  1. `renderToPipeableS... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The methods available for Node.js Streams in the `react-dom/server` APIs are:  1. `renderToPipeableS... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The methods available for Node.js Streams in the `react-dom/server` APIs are: - `renderToPipeableStr... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The methods available for Node.js Streams in the `react-dom/server` APIs are: - `renderToPipeableStr... |
-| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | The methods available for Node.js Streams in the `react-dom/server` APIs are:  1. `renderToPipeableS... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q41: What does the `preinit` function do?**
+**Q33: What does createContext return?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function provides the browser with a hint to start downloading and executing a stylesh... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function provides the browser with a hint to start downloading and executing a stylesh... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function provides the browser with a hint to start downloading and executing a specifi... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function provides the browser with a hint to start downloading and executing a specifi... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function provides the browser with a hint to start downloading and executing a specifi... |
-| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | The `preinit` function lets you eagerly fetch and evaluate a stylesheet or external script, providin... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | createContext returns a context object that contains a Provider and a Consumer component, which can ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `createContext` returns a context object.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `createContext` returns a context object.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `createContext` returns a context object.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | `createContext` returns a context object that components can use to provide or read context values.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | `createContext` returns a context object.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | `createContext` returns a context object.... |
 
-**Q42: What parameters does the `preinit` function accept?**
+**Q34: How do you specify the value of a context in a provider?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function accepts the following parameters:  1. `href`: a string. The URL of the resour... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function accepts the following parameters:  1. `href`: a string. The URL of the resour... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function accepts the following parameters:  1. `href`: a string. The URL of the resour... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function accepts the following parameters:  1. `href`: a string. The URL of the resour... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function accepts the following parameters:  1. `href`: a string. The URL of the resour... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `preinit` function accepts the following parameters:  1. `href`: a string. The URL of the resour... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You specify the value of a context in a provider by wrapping the children components with the contex... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To specify the value of a context in a provider, you use the `value` prop on the context provider co... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To specify the value of a context in a provider, you use the `value` prop on the context provider co... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You specify the value of a context in a provider by using the `value` prop on the context provider c... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You specify the value of a context in a provider by using the `value` prop on the context provider c... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You specify the value of a context in a provider by using the `value` prop on the context provider c... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You specify the value of a context in a provider by using the `value` prop on the context provider c... |
+
+**Q35: What does the `compilationMode` option control in the React Compiler?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `compilationMode` option controls how the React Compiler compiles components and hooks. Specific... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `compilationMode` option controls how the React Compiler selects which functions to compile. It ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `compilationMode` option controls how the React Compiler selects which functions to compile. It ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `compilationMode` option controls the strategy for selecting which functions the React Compiler ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `compilationMode` option controls the strategy for selecting which functions the React Compiler ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `compilationMode` option controls the strategy for selecting which functions the React Compiler ... |
+| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | The `compilationMode` option controls how the React Compiler selects which functions to compile.... |
+
+**Q36: What are the different options available for `compilationMode`?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The different options available for `compilationMode` are:  1. **`'infer'`**: The compiler uses inte... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The different options available for `compilationMode` are:  1. **`'infer'`**: The compiler uses inte... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The different options available for `compilationMode` are:  1. `'infer'` - The default mode where th... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The different options available for `compilationMode` are:  1. **`'infer'`** (default): The compiler... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The different options available for `compilationMode` are:  1. `'infer'` (default): The compiler use... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The different options available for `compilationMode` are:  1. **`'infer'`** (default): The compiler... |
+| markcrawl | 3 | 4 | 2 | 3 | 3.0 | The different options available for `compilationMode` are:  1. `'annotation'` - This mode compiles c... |
+
+**Q37: What is the purpose of the `cache` function in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `cache` function in React is used to cache the result of a data fetch or computation, allowing c... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `cache` function in React is used to cache the result of a data fetch or computation, allowing c... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `cache` function in React is used to cache the result of a data fetch or computation specificall... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `cache` function in React is used to cache the result of a data fetch or computation, allowing c... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `cache` function in React is used to cache the result of a data fetch or computation, allowing f... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `cache` function in React is used to cache the result of a data fetch or computation, allowing f... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q43: What is the main topic of the videos dedicated to React?**
+**Q38: How does `cache` handle errors when a memoized function throws an error?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The main topic of the videos dedicated to React is the discussion of React and the React ecosystem.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The main topic of the videos dedicated to React is the discussion of React and the React ecosystem.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The main topic of the videos dedicated to React is the discussion of React and the React ecosystem, ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The main topic of the videos dedicated to React is the discussion of React and the React ecosystem, ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The main topic of the videos dedicated to React is the discussion of React and the React ecosystem, ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The main topic of the videos dedicated to React is the discussion of React and the React ecosystem, ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `cache` will cache errors. If the memoized function throws an error for certain arguments, that erro... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `cache` will cache errors. If the memoized function throws an error for certain arguments, that erro... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `cache` will cache errors. If the memoized function throws an error for certain arguments, that erro... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | If `fn` throws an error for certain arguments, that error will be cached, and the same error is re-t... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | If a memoized function throws an error for certain arguments, that error will be cached, and the sam... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | If `fn` throws an error for certain arguments, that error will be cached, and the same error is re-t... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q44: Who shared a welcome message at React Conf 2024?**
+**Q39: What are the differences between event handlers and Effects in React?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Seth Webster and Eli White shared a welcome message at React Conf 2024.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Seth Webster and Eli White shared a welcome message at React Conf 2024.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Meta CTO Andrew “Boz” Bosworth shared a welcome message at React Conf 2024.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Meta CTO Andrew “Boz” Bosworth shared a welcome message at React Conf 2024.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Meta CTO Andrew “Boz” Bosworth shared a welcome message at React Conf 2024.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Meta CTO Andrew “Boz” Bosworth shared a welcome message at React Conf 2024.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Event handlers are nested functions inside React components that execute in response to specific use... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Event handlers run in response to specific interactions, such as user actions like clicks, while Eff... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Event handlers in React run in response to specific user interactions, such as clicks or form submis... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Event handlers run in response to specific user interactions, such as clicking a button, and are des... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Event handlers run in response to specific interactions, such as a user clicking a button, and are n... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Event handlers in React run in response to specific user interactions, such as clicking a button, an... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Event handlers run in response to specific interactions, such as user actions like clicking a button... |
 
-**Q45: What is React Compiler?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | React Compiler is a build-time tool that automatically optimizes React applications by handling memo... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | React Compiler is an optimizing compiler that automatically optimizes components and hooks in React ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | React Compiler is an optimizing compiler that automatically optimizes components and hooks in React ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | React Compiler is a build-time tool that automatically optimizes React applications by handling memo... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | React Compiler is a build-time tool that automatically optimizes React applications through automati... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | React Compiler is a build-time tool that automatically optimizes React applications through automati... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | React Compiler is a build-time tool that automatically optimizes React applications through automati... |
-
-**Q46: How does React Compiler optimize re-renders?**
+**Q40: How can you extract non-reactive logic from Effects using Effect Events?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | React Compiler optimizes re-renders by automatically applying memoization, ensuring that components ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | React Compiler optimizes re-renders by automatically applying memoization to components and hooks at... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | React Compiler optimizes re-renders by automatically applying memoization to components and hooks at... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | React Compiler optimizes re-renders by automatically applying memoization to components and hooks, e... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | React Compiler optimizes re-renders by automatically applying memoization to components and values a... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | React Compiler optimizes re-renders by automatically applying memoization to components and values a... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | React Compiler optimizes re-renders by automatically applying memoization to components and values a... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can extract non-reactive logic from Effects using Effect Events by declaring an Effect Event wit... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can extract non-reactive logic from Effects using Effect Events by declaring an Effect Event wit... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can extract non-reactive logic from Effects using Effect Events by declaring an Effect Event wit... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can extract non-reactive logic from Effects using Effect Events by utilizing the `useEffectEvent... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can extract non-reactive logic from Effects using Effect Events by utilizing the `useEffectEvent... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can extract non-reactive logic from Effects using Effect Events by declaring an Effect Event dir... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can extract non-reactive logic from Effects using Effect Events by utilizing the `useEffectEvent... |
 
-**Q47: What does the `prerender` function do?**
+**Q41: What are directives used for in React Server Components?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `prerender` function renders a React tree to a static HTML string using a Web Stream, waiting fo... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `prerender` function renders a React tree to a static HTML string using a Web Stream, waiting fo... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `prerender` function renders a React tree to a static HTML string using a Web Stream. It waits f... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `prerender` function renders a React tree to a static HTML string using a Web Stream. It waits f... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `prerender` function renders a React tree to a static HTML string using a Web Stream. It waits f... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `prerender` function renders a React tree to a static HTML string using a Web Stream. It waits f... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Directives in React Server Components provide instructions to bundlers compatible with React Server ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Directives in React Server Components provide instructions to bundlers compatible with React Server ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Directives in React Server Components provide instructions to bundlers on how to handle code executi... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Directives in React Server Components provide instructions to bundlers compatible with React Server ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Directives in React Server Components provide instructions to bundlers compatible with React Server ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Directives in React Server Components provide instructions to bundlers compatible with React Server ... |
 | markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
 
-**Q48: What parameters can be passed to the `prerender` function?**
+**Q42: What does the directive 'use client' do?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `prerender` function are:  1. `reactNode`: A React node you... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `prerender` function are:  1. `reactNode`: A React node you... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `prerender` function include:  - `reactNode`: The React nod... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `prerender` function are:  1. `reactNode`: The React node t... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `prerender` function are:  1. `reactNode`: The React node t... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The parameters that can be passed to the `prerender` function are:  1. `reactNode`: The React node t... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The directive `'use client'` marks a module and its transitive dependencies as client code, indicati... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The directive `'use client'` marks a module and its transitive dependencies as client code in a Reac... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The directive `'use client'` marks a module and its transitive dependencies to run on the client sid... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The directive `'use client'` marks a module and its transitive dependencies as client code, indicati... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The directive `'use client'` marks a module and its transitive dependencies as client code, indicati... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The directive `'use client'` marks a module and its transitive dependencies as client code, indicati... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q49: What does the built-in browser `<meta>` component do?**
+**Q43: What does eslint-plugin-react-hooks help you catch?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The built-in browser `<meta>` component lets you add metadata to the document, such as keywords, a s... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The built-in browser `<meta>` component lets you add metadata to the document, such as keywords, a s... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The built-in browser `<meta>` component lets you add metadata to the document, such as keywords, a s... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The built-in browser `<meta>` component lets you add metadata to the document, such as keywords, a s... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The built-in browser `<meta>` component lets you add metadata to the document, such as keywords, a s... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The built-in browser `<meta>` component lets you add metadata to the document, such as keywords, a s... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | eslint-plugin-react-hooks helps you catch violations of the Rules of React, shows which components c... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `eslint-plugin-react-hooks` helps you catch violations of React’s rules at build time, ensuring your... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `eslint-plugin-react-hooks` helps you catch violations of React’s rules at build time, ensuring your... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `eslint-plugin-react-hooks` helps you catch violations of React’s rules at build time, ensuring your... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | `eslint-plugin-react-hooks` helps you catch violations of React’s rules at build time, ensuring your... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | `eslint-plugin-react-hooks` helps you catch violations of React’s rules at build time, ensuring your... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | `eslint-plugin-react-hooks` helps you catch violations of React’s rules at build time, ensuring your... |
+
+**Q44: What are the recommended rules included in eslint-plugin-react-hooks?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| scrapy+md | 2 | 5 | 4 | 3 | 3.5 | The recommended rules included in `eslint-plugin-react-hooks` are:  1. `exhaustive-deps` - Validates... |
+| crawlee | 2 | 5 | 4 | 3 | 3.5 | The recommended rules included in `eslint-plugin-react-hooks` are:  1. `exhaustive-deps` - Validates... |
+| crawl4ai | 2 | 5 | 3 | 3 | 3.2 | The recommended rules included in `eslint-plugin-react-hooks` are:  1. `exhaustive-deps` - Validates... |
+| crawl4ai-raw | 2 | 5 | 3 | 3 | 3.2 | The recommended rules included in `eslint-plugin-react-hooks` are:  1. `exhaustive-deps` - Validates... |
+| colly+md | 2 | 5 | 3 | 3 | 3.2 | The recommended rules included in `eslint-plugin-react-hooks` are:  1. `exhaustive-deps` - Validates... |
+| playwright | 2 | 5 | 3 | 3 | 3.2 | The recommended rules included in `eslint-plugin-react-hooks` are:  1. `exhaustive-deps` - Validates... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q50: What props does the `<meta>` component support?**
+**Q45: What is the purpose of the React Compiler Beta release?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `<meta>` component supports the following props:  1. `name`: a string that specifies the kind of... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `<meta>` component supports the following props:  1. `name`: a string that specifies the kind of... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `<meta>` component supports the following props:  1. `name`: a string specifying the kind of met... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `<meta>` component supports the following props:  1. `name`: a string that specifies the kind of... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `<meta>` component supports the following props:  1. `name`: a string specifying the kind of met... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `<meta>` component supports the following props:  1. `name`: a string that specifies the kind of... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q51: What is the purpose of forwardRef in React?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of `forwardRef` in React is to allow a component to receive a `ref` from its parent and ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of `forwardRef` in React is to allow a component to receive a `ref` from its parent and ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of `forwardRef` in React is to allow a component to receive a `ref` from its parent and ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of `forwardRef` in React is to allow a component to receive a `ref` from its parent and ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of `forwardRef` in React is to allow a component to receive a `ref` from its parent and ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of `forwardRef` in React is to allow a component to receive a `ref` from its parent and ... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q52: How do you expose a DOM node to the parent component using forwardRef?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To expose a DOM node to the parent component using `forwardRef`, you wrap your component definition ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To expose a DOM node to the parent component using `forwardRef`, you wrap your component definition ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To expose a DOM node to the parent component using `forwardRef`, you wrap your component definition ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To expose a DOM node to the parent component using `forwardRef`, you wrap your component definition ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To expose a DOM node to the parent component using `forwardRef`, you wrap your component definition ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To expose a DOM node to the parent component using `forwardRef`, you wrap your component definition ... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q53: What is the reason for deprecating Create React App?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Create React App is being deprecated because it currently has no active maintainers and there are ma... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Create React App is being deprecated because it currently has no active maintainers and has several ... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | Create React App is being deprecated because it currently has no active maintainers and there are ma... |
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | Create React App is being deprecated because it currently has no active maintainers and there are ma... |
-| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | Create React App is being deprecated because it currently has no active maintainers and has several ... |
-| colly+md | 4 | 5 | 4 | 4 | 4.2 | Create React App is being deprecated because it currently has no active maintainers and has several ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the React Compiler Beta release is to allow early adopters and library maintainers to... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the React Compiler Beta release is to allow early adopters and library maintainers to... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the React Compiler Beta release is to allow early adopters and library maintainers to... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the React Compiler Beta release is to allow early adopters and library maintainers to... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the React Compiler Beta release is to allow early adopters and library maintainers to... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the React Compiler Beta release is to allow early adopters and library maintainers to... |
 | markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q54: What are the recommended frameworks for creating new React apps?**
+**Q46: How can developers install the React Compiler ESLint plugin?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The recommended frameworks for creating new React apps are:  1. **Next.js (App Router)** - A full-st... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The recommended frameworks for creating new React apps are:  1. **Next.js (App Router)** - A full-st... |
-| markcrawl | 4 | 5 | 4 | 4 | 4.2 | The recommended frameworks for creating new React apps are:  1. Next.js (App Router) 2. React Router... |
-| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | The recommended frameworks for creating new React apps are Next.js, React Router, and Expo.... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | The recommended frameworks for creating new React apps are Next.js, React Router (v7), and Expo.... |
-| colly+md | 4 | 5 | 4 | 4 | 4.2 | The recommended frameworks for creating new React apps are Next.js, React Router, and Expo.... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | The recommended frameworks for creating new React apps are Next.js, React Router, and Expo.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Developers can install the React Compiler ESLint plugin by running the following command:  ``` npm i... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Developers can install the React Compiler ESLint plugin by running the following command:  ``` npm i... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Developers can install the React Compiler ESLint plugin by running the following command in the term... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Developers can install the React Compiler ESLint plugin by running the following command in the term... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Developers can install the React Compiler ESLint plugin by running the following command in the term... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Developers can install the React Compiler ESLint plugin by running the following command in the term... |
+| markcrawl | 2 | 5 | 2 | 3 | 3.0 | Developers can install the React Compiler ESLint plugin by running the following command in the term... |
 
-**Q55: What is the purpose of the useEffectEvent hook?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useEffectEvent` hook is to create non-reactive "pieces" of Effect code that can ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useEffectEvent` hook is to separate event logic from Effects in React components... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useEffectEvent` hook is to separate event logic from Effects in React components... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useEffectEvent` hook is to allow developers to separate non-reactive logic from ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useEffectEvent` hook is to separate events from Effects in React, allowing you t... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useEffectEvent` hook is to separate events from Effects in React, allowing you t... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `useEffectEvent` hook is to separate events from Effects in React, allowing you t... |
-
-**Q56: How does useEffectEvent handle the latest values from render?**
+**Q47: Who are some of the contributors to the React documentation?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | `useEffectEvent` allows you to read the latest values from the render without causing the surroundin... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `useEffectEvent` always “sees” the latest values from render (like props and state) without re-synch... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `useEffectEvent` always “sees” the latest values from render (like props and state) without re-synch... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `useEffectEvent` handles the latest values from render by allowing the callback function to access t... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | `useEffectEvent` always accesses the latest values from render (like props and state) at the time of... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | `useEffectEvent` always accesses the latest committed values from render at the time of the call, wi... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | `useEffectEvent` always accesses the latest committed values from render (like props and state) at t... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Some contributors to the React documentation include Almero Steyn, Andreas Svensson, Alex Krolick, A... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Some contributors to the React documentation include Almero Steyn, Andreas Svensson, Alex Krolick, A... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Some contributors to the React documentation include Rachel Nabors, Dan Abramov, Sylwia Vargas, Rick... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Some contributors to the React documentation include:  - Rachel Nabors: editing, writing, illustrati... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Some contributors to the React documentation include:  - Rachel Nabors: editing, writing, illustrati... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Some contributors to the React documentation include:  - Rachel Nabors: editing, writing, illustrati... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
 
-**Q57: What does `Children.count(children)` do?**
+**Q48: What types of contributions did Rachel Nabors make to the React documentation?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `Children.count(children)` counts the number of nodes inside the `children` data structure received ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `Children.count(children)` counts the number of nodes inside the `children` data structure received ... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | `Children.count(children)` counts the number of nodes inside the `children` data structure received ... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | `Children.count(children)` counts the number of nodes inside the `children` data structure received ... |
-| colly+md | 4 | 5 | 4 | 4 | 4.2 | `Children.count(children)` counts the number of nodes inside the `children` data structure received ... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | `Children.count(children)` counts the number of nodes inside the `children` data structure received ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Rachel Nabors contributed by editing, writing, and illustrating the React documentation.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Rachel Nabors contributed by editing, writing, and illustrating for the React documentation.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Rachel Nabors contributed by editing, writing, and illustrating the React documentation.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Rachel Nabors contributed by editing, writing, and illustrating for the React documentation.... |
+| crawl4ai | 4 | 5 | 3 | 4 | 4.0 | Rachel Nabors led the project and provided the illustrations for the React documentation.... |
+| crawl4ai-raw | 4 | 5 | 3 | 4 | 4.0 | Rachel Nabors led the project and provided the illustrations for the React documentation.... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q49: How do you make a select box controlled in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To make a select box controlled in React, you need to pass a `value` prop to the `<select>` element ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To make a select box controlled in React, you need to pass a `value` prop to the `<select>` element ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To make a select box controlled in React, you need to pass a `value` prop to the `<select>` element ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To make a select box controlled in React, pass a `value` prop to the `<select>` element and provide ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To make a select box controlled in React, pass a `value` prop to the `<select>` element that corresp... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To make a select box controlled in React, pass a `value` prop to the `<select>` element that corresp... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q58: How can you transform the children JSX received by a component?**
+**Q50: What prop do you use to specify the initially selected option in a select box?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To transform the children JSX received by a component, you can use the `Children.map` method from Re... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To transform the children JSX received by a component, you can use the `Children.map` method from Re... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can transform the children JSX received by a component by using the `Children.map` method from R... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can transform the children JSX received by a component by using the `Children.map` method from R... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can transform the children JSX received by a component by using the `Children.map` method from R... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can transform the children JSX received by a component by using the `Children.map` method from R... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You use the `defaultValue` prop to specify the initially selected option in a select box.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You use the `defaultValue` prop to specify the initially selected option in a select box.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You use the `defaultValue` prop to specify the initially selected option in a select box.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You use the `defaultValue` prop to specify the initially selected option in a select box.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You use the `defaultValue` prop to specify the initially selected option in a select box.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You use the `defaultValue` prop to specify the initially selected option in a select box.... |
+| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q51: What are the three steps involved in displaying a component on screen in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | 1. **Trigger a render**: This occurs when a state change or an event happens that requires the compo... |
+| crawlee | 2 | 5 | 3 | 3 | 3.2 | The three steps involved in displaying a component on screen in React are:  1. **Triggering** a rend... |
+| playwright | 2 | 5 | 3 | 3 | 3.2 | The three steps involved in displaying a component on screen in React are:  1. **Triggering** a rend... |
+| markcrawl | 2 | 4 | 3 | 3 | 3.0 | The three steps involved in displaying a component on screen in React are:  1. **Triggering** a rend... |
+| scrapy+md | 2 | 4 | 3 | 3 | 3.0 | The three steps involved in displaying a component on screen in React are:  1. **Triggering** a rend... |
+| crawl4ai | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| crawl4ai-raw | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q52: What triggers a re-render of a component in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | A re-render of a component in React is triggered by updating its state with the `set` function. This... |
+| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | A re-render of a component in React is triggered when the component's state is updated with the `set... |
+| crawlee | 5 | 5 | 4 | 5 | 4.8 | A re-render of a component in React is triggered when the component's state has been updated or when... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | A re-render of a component in React is triggered when the component's state has been updated or when... |
+| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | A re-render of a component in React is triggered when the component's state is updated using the `se... |
+| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | A re-render of a component in React is triggered when the component's state is updated using the `se... |
+| colly+md | 4 | 5 | 3 | 4 | 4.0 | A re-render of a component in React is triggered by a state update.... |
+
+**Q53: What is state in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | State in React is a component's memory that allows it to keep track of information and change it in ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | State in React is a local and private data structure that holds information about a component's curr... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | State in React is a local and private data structure that holds information about a component's curr... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | State in React is a local and private data structure that holds information about a component's curr... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | State in React is a component's memory that allows it to keep track of information that can change o... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | State in React is a component's memory that allows it to keep track of information that can change o... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | State in React is a component's memory that allows it to keep track of information and change it in ... |
+
+**Q54: How do you add event handlers to JSX in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To add event handlers to JSX in React, you first define a function that contains the event handling ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To add event handlers to JSX in React, you first define a function that contains the event handling ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To add event handlers to JSX in React, you first define a function that contains the event handling ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To add event handlers to JSX in React, you first define a function that contains the event handling ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To add event handlers to JSX in React, you first define a function that contains the event handling ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To add event handlers to JSX in React, you first define a function that contains the event handling ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To add event handlers to JSX in React, you first define a function that contains the event handling ... |
+
+**Q55: What is state in React?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | State in React is a component's memory that allows it to keep track of information and change it in ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | State in React is a local and private data structure that holds information about a component's curr... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | State in React is a local and private data structure that holds information about a component's curr... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | State in React is a local and private data structure that holds information about a component's curr... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | State in React is a component's memory that allows it to keep track of information that can change o... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | State in React is a component's memory that allows it to keep track of information that can change o... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | State in React is a component's memory that allows it to keep track of information and change it in ... |
+
+**Q56: How do you add a state variable using the useState Hook?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To add a state variable using the `useState` Hook, import `useState` from React, and then declare th... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To add a state variable using the `useState` Hook, import `useState` from React at the top of your f... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To add a state variable using the `useState` Hook, import `useState` from React at the top of your f... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To add a state variable using the `useState` Hook, import `useState` from React at the top of your f... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To add a state variable using the `useState` Hook, import `useState` from React at the top of your f... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To add a state variable using the `useState` Hook, import `useState` from React at the top of your f... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To add a state variable using the `useState` Hook, import `useState` from React at the top of your f... |
+
+**Q57: What does createRef return?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `createRef` returns an object with a single property: `current`, which is initially set to `null`.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `createRef` returns an object with a single property: `current`, which is initially set to `null`.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `createRef` returns an object with a single property: `current`, which is initially set to `null`.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | `createRef` returns an object with a single property: `current`, which is initially set to `null`. Y... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | `createRef` returns an object with a single property: `current`, which is initially set to `null`.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | `createRef` returns an object with a single property: `current`, which is initially set to `null`.... |
+| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+
+**Q58: How do you declare a ref in a class component using createRef?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To declare a ref in a class component using `createRef`, call `createRef` and assign its result to a... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To declare a ref in a class component using `createRef`, call `createRef` and assign its result to a... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To declare a ref in a class component using `createRef`, you call `createRef()` and assign its resul... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To declare a ref in a class component using `createRef`, you call `createRef` and assign its result ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To declare a ref in a class component using `createRef`, you call `createRef` and assign its result ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To declare a ref in a class component using `createRef`, you call `createRef` and assign its result ... |
 | markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
 </details>
@@ -4820,238 +4868,214 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| colly+md | 4.88 | 4.85 | 4.80 | 4.83 | 4.84 ±0.16 |
-| playwright | 4.80 | 4.88 | 4.83 | 4.80 | 4.83 ±0.16 |
-| scrapy+md | 4.83 | 4.85 | 4.80 | 4.80 | 4.82 ±0.17 |
-| markcrawl | 4.80 | 4.87 | 4.80 | 4.78 | 4.81 ±0.16 |
-| crawlee | 4.75 | 4.90 | 4.80 | 4.77 | 4.80 ±0.16 |
-| crawl4ai | 4.77 | 4.85 | 4.77 | 4.75 | 4.78 ±0.17 |
-| crawl4ai-raw | 4.77 | 4.85 | 4.77 | 4.75 | 4.78 ±0.17 |
+| colly+md | 4.98 | 5.00 | 4.95 | 4.98 | 4.98 ±0.03 |
+| playwright | 4.83 | 4.97 | 4.90 | 4.85 | 4.89 ±0.10 |
+| crawlee | 4.82 | 4.95 | 4.88 | 4.83 | 4.87 ±0.13 |
+| crawl4ai-raw | 4.82 | 4.95 | 4.87 | 4.83 | 4.87 ±0.13 |
+| crawl4ai | 4.78 | 4.95 | 4.88 | 4.83 | 4.86 ±0.13 |
+| markcrawl | 4.80 | 4.97 | 4.85 | 4.82 | 4.86 ±0.12 |
+| scrapy+md | 4.78 | 4.92 | 4.83 | 4.78 | 4.83 ±0.15 |
 
 > Scores are 1-5 averages. See summary table legend for dimension definitions.
 
 <details>
 <summary>Query-by-query scores for rust-book</summary>
 
-**Q1: What is a slice in Rust?**
+**Q1: What is the conventional style for function and variable names in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A slice in Rust is a reference to a contiguous sequence of elements in a collection, such as a strin... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A slice in Rust is a reference to a contiguous sequence of elements in a collection. It does not hav... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A slice in Rust is a reference to a contiguous sequence of elements in a collection. It does not hav... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A slice in Rust is a reference to a contiguous sequence of elements from a collection, such as a `St... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | A slice in Rust is a reference to a contiguous sequence of elements from a collection, such as a `St... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | A slice in Rust is a reference to a contiguous sequence of elements from a collection, such as a `St... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | A slice in Rust is a reference to a contiguous sequence of elements from a collection, such as a `St... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The conventional style for function and variable names in Rust is *snake case*, where all letters ar... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The conventional style for function and variable names in Rust is _snake case_, where all letters ar... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The conventional style for function and variable names in Rust is _snake case_, where all letters ar... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The conventional style for function and variable names in Rust is *snake case*, where all letters ar... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The conventional style for function and variable names in Rust is *snake case*, where all letters ar... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The conventional style for function and variable names in Rust is *snake case*, where all letters ar... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The conventional style for function and variable names in Rust is *snake case*, where all letters ar... |
 
 > **Corr** = correctness, **Rel** = relevance, **Comp** = completeness, **Use** = usefulness, **Avg** = average of the four dimensions (1-5).
 
-**Q2: How do you create a string slice using a range?**
+**Q2: How do you define a function in Rust that returns a value?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You create a string slice using a range by specifying the starting and ending indices within square ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You create a string slice using a range by specifying the starting and ending indices within square ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You create a string slice using a range by specifying the starting and ending indices within square ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You create a string slice using a range by specifying the starting and ending indices within square ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You create a string slice using a range by specifying the starting and ending indices within square ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You create a string slice using a range by specifying the starting and ending indices within square ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You create a string slice using a range by specifying the starting and ending indices within square ... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To define a function in Rust that returns a value, you use the `fn` keyword followed by the function... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To define a function in Rust that returns a value, you use the `fn` keyword followed by the function... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To define a function in Rust that returns a value, you use the `fn` keyword followed by the function... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To define a function in Rust that returns a value, you use the `fn` keyword followed by the function... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To define a function in Rust that returns a value, you use the `fn` keyword followed by the function... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To define a function in Rust that returns a value, you use the `fn` keyword followed by the function... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To define a function in Rust that returns a value, you use the `fn` keyword followed by the function... |
 
-**Q3: What advanced features are covered in this chapter?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The advanced features covered in this chapter are:  1. Unsafe Rust 2. Advanced traits (including ass... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The advanced features covered in this chapter are:  1. Unsafe Rust: How to opt out of some of Rust’s... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The advanced features covered in this chapter are:  1. Unsafe Rust: How to opt out of some of Rust’s... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The advanced features covered in this chapter include:  * Unsafe Rust * Advanced traits (associated ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The advanced features covered in this chapter are:  1. Unsafe Rust 2. Advanced traits (associated ty... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The advanced features covered in this chapter include:  * Unsafe Rust * Advanced traits (associated ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The advanced features covered in this chapter are:  1. Unsafe Rust 2. Advanced traits: Associated ty... |
-
-**Q4: What is Unsafe Rust in the context of this chapter?**
+**Q3: What does the `cargo install` command do?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Unsafe Rust is a subset of the Rust programming language that allows developers to opt out of Rust's... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Unsafe Rust is a subset of the Rust programming language that allows developers to bypass Rust's mem... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Unsafe Rust is a subset of the Rust programming language that allows developers to bypass Rust's mem... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Unsafe Rust is a subset of the Rust programming language that allows developers to bypass Rust's mem... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Unsafe Rust is a subset of the Rust programming language that allows developers to bypass Rust's mem... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Unsafe Rust is a subset of the Rust programming language that allows developers to bypass Rust's mem... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Unsafe Rust is a subset of the Rust programming language that allows developers to bypass Rust's mem... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `cargo install` command allows you to install and use binary crates locally, providing a conveni... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `cargo install` command allows you to install and use binary crates locally. It is intended for ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `cargo install` command allows you to install and use binary crates locally. It is intended for ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `cargo install` command allows you to install and use binary crates locally. It is intended for ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `cargo install` command allows you to install and use binary crates locally. It is intended for ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `cargo install` command allows you to install and use binary crates locally. It is intended for ... |
+| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q5: When should you call `panic!` instead of returning a `Result`?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You should call `panic!` instead of returning a `Result` when your code could end up in a bad state ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You should call `panic!` instead of returning a `Result` in situations such as examples, prototype c... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You should call `panic!` instead of returning a `Result` in situations such as examples, prototype c... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You should call `panic!` instead of returning a `Result` when your code could end up in a bad state ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You should call `panic!` instead of returning a `Result` when your code could end up in a bad state ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You should call `panic!` instead of returning a `Result` when your code could end up in a bad state ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You should call `panic!` instead of returning a `Result` when your code could end up in a bad state ... |
-
-**Q6: What is the purpose of the `Guess` struct in the context of error handling?**
+**Q4: Where are binaries installed with `cargo install` stored?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Guess` struct in the context of error handling is to ensure that instances of `G... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Guess` struct in the context of error handling is to ensure that only valid valu... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Guess` struct in the context of error handling is to ensure that only valid valu... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Guess` struct in the context of error handling is to encapsulate a value that mu... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Guess` struct in the context of error handling is to encapsulate a value that mu... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Guess` struct in the context of error handling is to encapsulate a value that mu... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Guess` struct in the context of error handling is to encapsulate a value that mu... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Binaries installed with `cargo install` are stored in the installation root’s *bin* folder, which is... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Binaries installed with `cargo install` are stored in the installation root’s _bin_ folder, which is... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Binaries installed with `cargo install` are stored in the installation root’s _bin_ folder, which is... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Binaries installed with `cargo install` are stored in the installation root’s *bin* folder, which is... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Binaries installed with `cargo install` are stored in the installation root’s *bin* folder, which is... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Binaries installed with `cargo install` are stored in the installation root’s *bin* folder, which is... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Binaries installed with `cargo install` are stored in the installation root’s *bin* folder, which is... |
 
-**Q7: What are the three kinds of procedural macros in Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The three kinds of procedural macros in Rust are:  1. Custom `derive` macros 2. Attribute-like macro... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The three kinds of procedural macros in Rust are custom `derive`, attribute-like, and function-like ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The three kinds of procedural macros in Rust are custom `derive` macros, attribute-like macros, and ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The three kinds of procedural macros in Rust are custom `derive`, attribute-like, and function-like ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The three kinds of procedural macros in Rust are custom `derive`, attribute-like, and function-like ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The three kinds of procedural macros in Rust are custom `derive`, attribute-like, and function-like ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The three kinds of procedural macros in Rust are custom `derive`, attribute-like, and function-like ... |
-
-**Q8: How do declarative macros compare to functions in Rust?**
+**Q5: How do I run tests in parallel using cargo test?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Declarative macros in Rust are more flexible than functions because they can take a variable number ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Declarative macros in Rust are more flexible than functions because they can take a variable number ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Declarative macros in Rust are a way of writing code that writes other code, known as metaprogrammin... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Declarative macros in Rust are a way of writing code that writes other code, known as metaprogrammin... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Declarative macros in Rust are a way of writing code that writes other code, known as metaprogrammin... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Declarative macros in Rust are a way of writing code that writes other code, known as metaprogrammin... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Declarative macros in Rust are a way of writing code that writes other code, known as metaprogrammin... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | By default, `cargo test` runs tests in parallel using threads. You do not need to specify any additi... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | By default, when you run `cargo test`, the tests are executed in parallel using threads. You do not ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | By default, tests run in parallel when you use the command `cargo test`. You do not need to specify ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | By default, when you run `cargo test`, the tests run in parallel using threads. You do not need to s... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | By default, tests run in parallel when you use the command `cargo test`. You do not need to specify ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | By default, when you run `cargo test`, the tests run in parallel using threads. You do not need to s... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | By default, `cargo test` runs tests in parallel using threads. You can simply run the command:  ``` ... |
 
-**Q9: How do I set up a Crates.io account to publish my crate?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To set up a Crates.io account to publish your crate, follow these steps:  1. Visit the home page at ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To set up a Crates.io account to publish your crate, follow these steps:  1. Visit the home page at ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To set up a Crates.io account to publish your crate, follow these steps:  1. Visit the home page at ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To set up a Crates.io account to publish your crate, follow these steps:  1. Visit the home page at ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To set up a Crates.io account to publish your crate, follow these steps:  1. Visit the home page at ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To set up a Crates.io account to publish your crate, follow these steps:  1. Visit the home page at ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To set up a Crates.io account to publish your crate, follow these steps:  1. Visit the home page at ... |
-
-**Q10: What command do I run to generate HTML documentation from documentation comments in Rust?**
+**Q6: What command do I use to see output from passing tests?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You run the command `cargo doc` to generate HTML documentation from documentation comments in Rust.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You run the command `cargo doc` to generate HTML documentation from documentation comments in Rust.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You run the command `cargo doc` to generate HTML documentation from documentation comments in Rust.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You run the command `cargo doc`.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You run the command `cargo doc` to generate HTML documentation from documentation comments in Rust.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You run the command `cargo doc` to generate HTML documentation from documentation comments in Rust.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You run the command `cargo doc`.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can use the command `cargo test -- --show-output` to see output from passing tests.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can use the command `cargo test -- --show-output` to see output from passing tests.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can use the command `cargo test -- --show-output` to see output from passing tests.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can use the command `cargo test -- --show-output` to see output from passing tests.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can use the command `cargo test -- --show-output` to see output from passing tests.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can use the command `cargo test -- --show-output` to see output from passing tests.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can use the command `cargo test -- --show-output` to see output from passing tests.... |
 
-**Q11: What are enums in Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Enums in Rust are a way to define a type by enumerating its possible variants. They allow you to spe... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Enums in Rust are a way to define a type by enumerating its possible variants. They allow you to spe... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Enums in Rust are a way to define a type by enumerating its possible variants. They allow you to spe... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Enums in Rust are a way to define a type by enumerating its possible variants. They allow you to exp... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Enums in Rust are a way to define a type by enumerating its possible variants. They allow you to exp... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Enums in Rust are a way to define a type by enumerating its possible variants. They allow you to exp... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Enums in Rust are a way to define a type by enumerating its possible variants. They allow you to exp... |
-
-**Q12: What is the purpose of the `Option` enum?**
+**Q7: How do you extract the `front_of_house` module to its own file?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Option` enum is to encode the concept of a value being present or absent, allowi... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Option` enum is to encode the scenario where a value could be something (represe... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Option` enum is to encode the scenario where a value could be something (represe... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Option` enum is to encode the scenario in which a value could be something (repr... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Option` enum is to encode the scenario in which a value could be something (repr... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Option` enum is to encode the scenario where a value could be something (represe... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `Option` enum is to encode the scenario in which a value could be something (repr... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To extract the `front_of_house` module to its own file, follow these steps:  1. In the crate root fi... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To extract the `front_of_house` module to its own file, follow these steps:  1. Change the existing ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To extract the `front_of_house` module to its own file, follow these steps:  1. Change the existing ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To extract the `front_of_house` module to its own file, follow these steps:  1. In the crate root fi... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To extract the `front_of_house` module to its own file, follow these steps:  1. In the crate root fi... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To extract the `front_of_house` module to its own file, follow these steps:  1. In the crate root fi... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To extract the `front_of_house` module to its own file, follow these steps:  1. In the crate root fi... |
 
-**Q13: What are the tradeoffs of using threads for concurrency?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Using threads for concurrency has several tradeoffs:  1. **Memory Usage**: Threads typically use a s... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The tradeoffs of using threads for concurrency include:  1. **Memory Usage**: Threads use a fair bit... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Using threads for concurrency has several tradeoffs:  1. **Memory Usage**: Threads typically use a f... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Using threads for concurrency has several tradeoffs:  1. **Performance Improvement vs. Complexity**:... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Using threads for concurrency has several tradeoffs:  1. **Memory Usage**: Threads typically use a s... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Using threads for concurrency has several tradeoffs:  1. **Memory Usage**: Threads can use a signifi... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The tradeoffs of using threads for concurrency include:  1. **Memory Usage**: Threads use a fair bit... |
-
-**Q14: When should I choose async over threads for concurrent operations?**
+**Q8: What are the file paths the Rust compiler looks for a module named `front_of_house`?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The choice between async and threads for concurrent operations depends on the specific use case and ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The choice between async and threads for concurrent operations depends on the specific use case and ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | It depends on the specific use case, as both async and threads have their tradeoffs. In many cases, ... |
-| crawlee | 5 | 5 | 4 | 5 | 4.8 | It depends on the specific use case, as both async and threads have their tradeoffs. In many cases, ... |
-| markcrawl | 4 | 5 | 4 | 4 | 4.2 | You should choose async over threads for concurrent operations when the work is *very concurrent* (I... |
-| crawl4ai | 4 | 5 | 4 | 4 | 4.2 | You should choose async over threads for concurrent operations when the work is very concurrent (I/O... |
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | You should choose async over threads for concurrent operations when the work is very concurrent (I/O... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The Rust compiler looks for a module named `front_of_house` in the following file paths:  1. *src/fr... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The Rust compiler looks for a module named `front_of_house` in the following file paths:   * _src/fr... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The Rust compiler looks for a module named `front_of_house` in the following file paths:   * _src/fr... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The Rust compiler looks for a module named `front_of_house` in the following file paths:  1. *src/fr... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The Rust compiler looks for a module named `front_of_house` in the following file paths:  1. *src/fr... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The Rust compiler looks for a module named `front_of_house` in the following file paths:  1. *src/fr... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The Rust compiler looks for a module named `front_of_house` in the following file paths:  1. *src/fr... |
 
-**Q15: How do I print error messages to standard error in Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To print error messages to standard error in Rust, you can use the `eprintln!` macro instead of `pri... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To print error messages to standard error in Rust, you can use the `eprintln!` macro instead of `pri... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To print error messages to standard error in Rust, you can use the `eprintln!` macro instead of `pri... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To print error messages to standard error in Rust, you can use the `eprintln!` macro instead of `pri... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To print error messages to standard error in Rust, you can use the `eprintln!` macro. This macro sen... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To print error messages to standard error in Rust, you can use the `eprintln!` macro instead of `pri... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To print error messages to standard error in Rust, you can use the `eprintln!` macro. This macro sen... |
-
-**Q16: What command do I use to redirect standard output to a file in Rust?**
+**Q9: How do you bring a module into the scope of a function using the `use` keyword?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You use the `>` syntax followed by the file path, for example: `$ cargo run > output.txt`.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You use the `>` syntax followed by the file path, for example: `$ cargo run > output.txt`.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You use the `>` syntax to redirect standard output to a file in Rust. For example:   ``` $ cargo run... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You use the `>` syntax to redirect standard output to a file in Rust. For example:   ``` $ cargo run... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You use the `>` syntax to redirect standard output to a file, like this: `$ cargo run > output.txt`.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You use the `>` syntax to redirect standard output to a file in Rust.... |
-| markcrawl | 4 | 5 | 4 | 4 | 4.2 | You use the `>` syntax followed by the file path, like this: `cargo run > output.txt`.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To bring a module into the scope of a function using the `use` keyword, you can add a `use` statemen... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To bring a module into the scope of a function using the `use` keyword, you specify the path to the ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To bring a module into the scope of a function using the `use` keyword, you specify the path to the ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To bring a module into the scope of a function using the `use` keyword, you can declare the module w... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To bring a module into the scope of a function using the `use` keyword, you declare the `use` statem... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To bring a module into the scope of a function using the `use` keyword, you can declare the module w... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To bring a module into the scope of a function using the `use` keyword, you declare the `use` statem... |
 
-**Q17: How do you define a struct in Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To define a struct in Rust, you use the keyword `struct`, followed by the name of the struct. Inside... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To define a struct in Rust, you use the `struct` keyword followed by the name of the struct. Inside ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To define a struct in Rust, you use the `struct` keyword followed by the name of the struct. Inside ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To define a struct in Rust, you use the `struct` keyword followed by the name of the struct. Inside ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To define a struct in Rust, you use the keyword `struct` followed by the name of the struct. Inside ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To define a struct in Rust, you use the `struct` keyword followed by the name of the struct and then... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To define a struct in Rust, you use the keyword `struct` followed by the name of the struct. Inside ... |
-
-**Q18: What is the purpose of the `#[derive(Debug)]` attribute in a struct?**
+**Q10: What is the purpose of the `pub use` statement in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `#[derive(Debug)]` attribute in a struct allows the struct to implement the `Debug` trait, enabl... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `#[derive(Debug)]` attribute in a struct allows the struct to implement the `Debug` trait, enabl... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `#[derive(Debug)]` attribute in a struct allows the struct to implement the `Debug` trait, enabl... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `#[derive(Debug)]` attribute in a struct allows the struct to implement the `Debug` trait, enabl... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `#[derive(Debug)]` attribute in a struct allows the struct to implement the `Debug` trait, enabl... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `#[derive(Debug)]` attribute in a struct allows the struct to implement the `Debug` trait, enabl... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `#[derive(Debug)]` attribute in a struct allows the struct to implement the `Debug` trait, enabl... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `pub use` statement in Rust is used to re-export names, making them available for external code ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export an item, making it available for exte... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export names from a module, making them avai... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
 
-**Q19: What command line tool will we build in this chapter?**
+**Q11: How do you create a directory for a Rust project?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To create a directory for a Rust project, open a terminal and enter the following commands:  For Lin... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To create a directory for a Rust project, open a terminal and enter the following commands:  For Lin... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To create a directory for a Rust project, open a terminal and enter the following commands:  For Lin... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To create a directory for a Rust project, open a terminal and enter the following commands:  For Lin... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To create a directory for a Rust project, open a terminal and enter the following commands:  For Lin... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To create a directory for a Rust project, open a terminal and enter the following commands:  For Lin... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To create a directory for a Rust project, open a terminal and enter the following commands:  For Lin... |
+
+**Q12: What command do you use to compile a Rust program?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You use the command `rustc` followed by the name of your source file, like this: `$ rustc main.rs`.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You use the command `rustc` followed by the name of your source file, like this: `$ rustc main.rs`.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You use the command `rustc` followed by the name of your source file, like this: `$ rustc main.rs`.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You use the command `rustc main.rs` to compile a Rust program.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You use the `rustc` command followed by the name of your source file, like this: `$ rustc main.rs`.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You use the `rustc` command followed by the name of your source file, like this: `$ rustc main.rs`.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You use the `rustc` command followed by the name of your source file, like this: `$ rustc main.rs`.... |
+
+**Q13: What is a function pointer in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A function pointer in Rust is a type denoted as `fn` (with a lowercase *f*) that allows you to pass ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A function pointer in Rust is a type that allows you to pass regular functions as arguments to other... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A function pointer in Rust is a type that allows you to pass regular functions as arguments to other... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A function pointer in Rust is a pointer that points to code, allowing it to be called like a functio... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | A function pointer in Rust is a type that allows you to pass regular functions as arguments to other... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | A function pointer in Rust is a type that represents a reference to a function. It allows you to pas... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | A function pointer in Rust is a type that allows you to pass regular functions as arguments to other... |
+
+**Q14: How can you return a closure from a function in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can return a closure from a function in Rust using the `impl Trait` syntax. Specifically, you ca... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can return a closure from a function in Rust using the `impl Trait` syntax. For example, you can... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can return a closure from a function in Rust using the `impl Trait` syntax. For example, you can... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can return a closure from a function in Rust using the `impl Trait` syntax. For example, you can... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can return a closure from a function in Rust by using the `impl Trait` syntax or by returning a ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can return a closure from a function in Rust using the `impl Trait` syntax. For example:  ```rus... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can return a closure from a function in Rust using the `impl Trait` syntax or by using a trait o... |
+
+**Q15: What are the three kinds of loops in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The three kinds of loops in Rust are `loop`, `while`, and `for`.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The three kinds of loops in Rust are `loop`, `while`, and `for`.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The three kinds of loops in Rust are `loop`, `while`, and `for`.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The three kinds of loops in Rust are `loop`, `while`, and `for`.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The three kinds of loops in Rust are `loop`, `while`, and `for`.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The three kinds of loops in Rust are `loop`, `while`, and `for`.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The three kinds of loops in Rust are `loop`, `while`, and `for`.... |
+
+**Q16: How can you use an `if` expression in a `let` statement?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can use an `if` expression in a `let` statement by assigning the outcome of the `if` expression ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can use an `if` expression in a `let` statement by assigning the outcome of the `if` expression ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can use an `if` expression in a `let` statement by assigning the outcome of the `if` expression ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can use an `if` expression in a `let` statement by assigning the outcome of the `if` expression ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can use an `if` expression in a `let` statement by assigning the result of the `if` expression t... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can use an `if` expression in a `let` statement by assigning the outcome of the `if` expression ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can use an `if` expression in a `let` statement by assigning the result of the `if` expression t... |
+
+**Q17: What command line tool will we build in this chapter?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -5063,115 +5087,211 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | We will build our own version of the classic command line search tool `grep`.... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | We will build our own version of the classic command line search tool `grep`.... |
 
-**Q20: What features will our command line tool use from the terminal?**
+**Q18: How does the `grep` tool function in terms of its arguments and output?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Our command line tool will use the following features from the terminal:  1. Command line arguments ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Our command line tool will use the following features from the terminal:  1. Command line arguments ... |
-| markcrawl | 5 | 5 | 4 | 5 | 4.8 | Our command line tool will use the following features from the terminal:  1. Reading the value of an... |
-| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | Our command line tool will use the terminal features of reading the value of an environment variable... |
-| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | Our command line tool will use the terminal features of reading the value of an environment variable... |
-| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | The command line tool will use the following features from the terminal:  1. Reading the value of an... |
-| colly+md | 5 | 5 | 4 | 5 | 4.8 | Our command line tool will use the following features from the terminal:  1. Reading the value of an... |
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | The `grep` tool searches a specified file for a specified string. It takes as its arguments a file p... |
+| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The `grep` tool searches a specified file for a specified string. It takes as its arguments a file p... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The `grep` tool searches a specified file for a specified string. It takes as its arguments a file p... |
+| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | The `grep` tool searches a specified file for a specified string. It takes as its arguments a file p... |
+| crawlee | 5 | 5 | 4 | 5 | 4.8 | The `grep` tool searches a specified file for a specified string. It takes as its arguments a file p... |
+| colly+md | 5 | 5 | 4 | 5 | 4.8 | The `grep` tool searches a specified file for a specified string. It takes as its arguments a file p... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | The `grep` tool functions by taking as its arguments a file path and a string. It reads the specifie... |
 
-**Q21: What is Cargo in Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Cargo is Rust’s build system and package manager that helps manage Rust projects by handling tasks s... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Cargo is Rust’s build system and package manager that helps manage Rust projects by handling tasks s... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Cargo is Rust’s build system and package manager that helps manage Rust projects by handling tasks s... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Cargo is Rust’s build system and package manager that helps manage Rust projects by handling tasks s... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Cargo is Rust’s build system and package manager that helps manage Rust projects by handling tasks s... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Cargo is Rust’s build system and package manager that helps manage Rust projects by handling tasks s... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Cargo is Rust’s build system and package manager that helps manage Rust projects by handling tasks s... |
-
-**Q22: How do you create a new project using Cargo?**
+**Q19: What are the two main profiles in Cargo for building Rust code?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To create a new project using Cargo, navigate to your desired directory and run the following comman... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To create a new project using Cargo, navigate to your desired directory and run the following comman... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To create a new project using Cargo, navigate to your desired directory and run the following comman... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To create a new project using Cargo, navigate to your desired directory and run the following comman... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To create a new project using Cargo, navigate to your desired directory and run the following comman... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To create a new project using Cargo, navigate to your desired directory and run the following comman... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To create a new project using Cargo, navigate to your desired directory and run the following comman... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo for building Rust code are the `dev` profile and the `release` profil... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo for building Rust code are the `dev` profile and the `release` profil... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo for building Rust code are the `dev` profile and the `release` profil... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo for building Rust code are the `dev` profile and the `release` profil... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo for building Rust code are the `dev` profile and the `release` profil... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo for building Rust code are the `dev` profile and the `release` profil... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo for building Rust code are the `dev` profile and the `release` profil... |
 
-**Q23: What are the two main profiles in Cargo?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo are the `dev` profile and the `release` profile.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo are the `dev` profile and the `release` profile.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo are the `dev` profile and the `release` profile.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo are the `dev` profile and the `release` profile.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo are the `dev` profile and the `release` profile.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo are the `dev` profile and the `release` profile.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The two main profiles in Cargo are the `dev` profile and the `release` profile.... |
-
-**Q24: How can you customize the `opt-level` setting in the `dev` profile?**
+**Q20: How can you customize the `opt-level` setting for the `dev` profile in Cargo?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting in the `dev` profile by adding a `[profile.dev]` section t... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting in the `dev` profile by adding the following lines to your... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting in the `dev` profile by adding the following lines to your... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting in the `dev` profile by adding a section in your project's... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting in the `dev` profile by adding the following lines to your... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting in the `dev` profile by adding the following lines to your... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting in the `dev` profile by adding the following lines to your... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting for the `dev` profile in Cargo by adding the following lin... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting for the `dev` profile in Cargo by adding the following lin... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting for the `dev` profile in Cargo by adding the following lin... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting for the `dev` profile in Cargo by adding the following lin... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting for the `dev` profile in Cargo by adding the following lin... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting for the `dev` profile in Cargo by adding the following lin... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can customize the `opt-level` setting for the `dev` profile in Cargo by adding the following lin... |
 
-**Q25: How do you bring a module into scope with the use keyword?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module you want t... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module you want t... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
-
-**Q26: What is the purpose of the pub use statement in Rust?**
+**Q21: How can you extend Cargo with new subcommands?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export names, making them available for exte... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export names, making them available for exte... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export names, making them available for exte... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can extend Cargo with new subcommands by creating a binary in your `$PATH` named `cargo-somethin... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can extend Cargo with new subcommands by creating a binary in your `$PATH` named `cargo-somethin... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can extend Cargo with new subcommands by installing a binary named `cargo-something` in your `$P... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can extend Cargo with new subcommands by creating a binary in your `$PATH` named `cargo-somethin... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can extend Cargo with new subcommands by installing a binary in your `$PATH` that is named `carg... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can extend Cargo with new subcommands by creating a binary in your `$PATH` named `cargo-somethin... |
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | You can extend Cargo with new subcommands by creating a binary in your `$PATH` named `cargo-somethin... |
 
-**Q27: What are the features of Rust's module system?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The features of Rust's module system include:  * **Packages**: A Cargo feature that lets you build, ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The features of Rust's module system include:  1. **Packages**: A Cargo feature that lets you build,... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The features of Rust's module system include:  1. **Packages**: A Cargo feature that lets you build,... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The features of Rust's module system include:  * **Packages**: A Cargo feature that lets you build, ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The features of Rust's module system include:  1. **Packages**: A Cargo feature that lets you build,... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The features of Rust's module system include:  1. **Packages**: A Cargo feature that lets you build,... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The features of Rust's module system include:  1. **Packages**: A Cargo feature that lets you build,... |
-
-**Q28: How can you manage code organization in Rust?**
+**Q22: What is the benefit of using `cargo install` for extensions?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can manage code organization in Rust by using packages, crates, and modules. As your project gro... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can manage code organization in Rust by using features such as packages, crates, and modules. Th... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can manage code organization in Rust by using features such as packages, crates, and modules. Th... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can manage code organization in Rust by using packages, crates, and modules. As your project gro... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can manage code organization in Rust by using packages, crates, and modules. As your project gro... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can manage code organization in Rust by using packages, crates, and modules. As your project gro... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can manage code organization in Rust by using packages, crates, and modules. As your project gro... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The benefit of using `cargo install` for extensions is that it allows Rust developers to install and... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The benefit of using `cargo install` for extensions is that it allows Rust developers to install and... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The benefit of using `cargo install` for extensions is that it allows Rust developers to install and... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The benefit of using `cargo install` for extensions is that it allows you to install custom commands... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The benefit of using `cargo install` for extensions is that it allows Rust developers to convenientl... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The benefit of using `cargo install` for extensions is that it allows Rust developers to convenientl... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The benefit of using `cargo install` for extensions is that it allows Rust developers to convenientl... |
 
-**Q29: What is the purpose of the `search` function in the `minigrep` program?**
+**Q23: What version of Rust does this book assume you are using?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | This book assumes you are using Rust 2024 edition idioms.... |
+| markcrawl | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
+| crawl4ai | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
+| crawl4ai-raw | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
+| scrapy+md | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later.... |
+| crawlee | 1 | 5 | 5 | 2 | 3.2 | This book assumes you’re using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` in... |
+| playwright | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
+
+**Q24: Where can I find instructions on installing or updating Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can find instructions on installing or updating Rust at <https://www.rust-lang.org/tools/install... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can find instructions on installing or updating Rust at <https://www.rust-lang.org/tools/install... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can find instructions on installing Rust at <https://www.rust-lang.org/tools/install>. For updat... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can find instructions on installing or updating Rust at <https://www.rust-lang.org/tools/install... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can find instructions on installing or updating Rust at <https://www.rust-lang.org/tools/install... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can find instructions on installing or updating Rust at <https://www.rust-lang.org/tools/install... |
+| markcrawl | 4 | 5 | 3 | 4 | 4.0 | You can find instructions on installing or updating Rust in the "Installation" section of Chapter 1.... |
+
+**Q25: What is the definition of the `Future` trait in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `Future` trait in Rust is defined as follows:  ```rust pub trait Future {     type Output;      ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `Future` trait in Rust is defined as follows:  ```rust pub trait Future {     type Output;      ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `Future` trait in Rust is defined as follows:  ```rust pub trait Future {     type Output;      ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `Future` trait in Rust is defined as follows:  ```rust pub trait Future {     type Output;      ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `Future` trait in Rust is defined as follows:  ```rust pub trait Future {     type Output;      ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `Future` trait in Rust is defined as follows:  ```rust pub trait Future {     type Output;      ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `Future` trait in Rust is defined as follows:  ```rust pub trait Future {     type Output;      ... |
+
+**Q26: How does the `Pin` type relate to the `Unpin` trait in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `Pin` type is a wrapper for pointer-like types that guarantees the values it points to cannot be... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `Pin` type is a wrapper that ensures a value cannot be moved once it is pinned, providing safety... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `Pin` type is a wrapper that ensures a value cannot be moved once it is pinned, providing safety... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `Pin` type in Rust is used to ensure that a value cannot be moved in memory, which is crucial fo... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `Pin` type is used to ensure that a value cannot be moved in memory, which is crucial for types ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `Pin` type is used to ensure that a value cannot be moved in memory, which is crucial for types ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `Pin` type is used to ensure that a value cannot be moved in memory, which is crucial for types ... |
+
+**Q27: What is a struct in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A struct in Rust is a custom data type that allows you to package together and name multiple related... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A struct in Rust is a custom data type that allows you to package together and name multiple related... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A struct in Rust is a custom data type that allows you to package together and name multiple related... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A struct in Rust is a custom data type that allows you to package together and name multiple related... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | A struct in Rust is a custom data type that allows you to package together and name multiple related... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | A struct in Rust is a custom data type that allows you to package together and name multiple related... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | A struct in Rust is a custom data type that allows you to package together and name multiple related... |
+
+**Q28: How do structs compare to tuples in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Structs are similar to tuples in that both can hold multiple related values of different types. Howe... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Structs in Rust allow you to package together and name multiple related values, making them more mea... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Structs in Rust allow you to package together and name multiple related values, making them more mea... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Structs in Rust allow you to package together and name multiple related values, making them more mea... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Structs in Rust allow you to package together and name multiple related values, making them more mea... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Structs are similar to tuples in that both can hold multiple related values of different types. Howe... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Structs in Rust allow you to package together and name multiple related values, making them more mea... |
+
+**Q29: What version of Rust does this book assume you are using?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | This book assumes you are using Rust 2024 edition idioms.... |
+| markcrawl | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
+| crawl4ai | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
+| crawl4ai-raw | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
+| scrapy+md | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later.... |
+| crawlee | 1 | 5 | 5 | 2 | 3.2 | This book assumes you’re using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` in... |
+| playwright | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
+
+**Q30: Where can I find community translations of the Rust book?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Community translations of the Rust book can be found in Appendix F, which lists resources in languag... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Community translations of the Rust book can be found in Appendix F: Translations of the Book.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Community translations of the Rust book can be found in Appendix F: Translations of the Book.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can find community translations of the Rust book in the "Appendix F: Translations of the Book" s... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can find community translations of the Rust book in Appendix F: Translations of the Book.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can find community translations of the Rust book in the "Translations of the Book" section, whic... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can find community translations of the Rust book in Appendix F: Translations of the Book.... |
+
+**Q31: What is a trait in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A trait in Rust defines the functionality a particular type has and can share with other types, allo... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A trait in Rust defines the functionality a particular type has and can share with other types. It a... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A trait in Rust defines the functionality a particular type has and can share with other types. It a... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A trait in Rust defines the functionality a particular type has and can share with other types. It s... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | A trait in Rust defines the functionality a particular type has and can share with other types. It a... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | A trait in Rust describes an abstract interface that types can implement, consisting of associated i... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | A trait in Rust defines the functionality a particular type has and can share with other types. It a... |
+
+**Q32: How do you implement a trait on a type in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To implement a trait on a type in Rust, you must ensure that either the trait or the type, or both, ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To implement a trait on a type in Rust, you must ensure that either the trait or the type, or both, ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To implement a trait on a type in Rust, you must ensure that either the trait or the type, or both, ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To implement a trait on a type in Rust, you define the trait and then use an `impl` block to specify... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To implement a trait on a type in Rust, you define an `impl` block for the type and specify the trai... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To implement a trait on a type in Rust, you define the trait and then use an `impl` block to specify... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To implement a trait on a type in Rust, you can use an `impl` block. You can implement a trait on a ... |
+
+**Q33: What is the purpose of using a reference in the `calculate_length` function?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of using a reference in the `calculate_length` function is to allow the function to acce... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of using a reference in the `calculate_length` function is to allow the function to acce... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of using a reference in the `calculate_length` function is to allow the function to acce... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of using a reference in the `calculate_length` function is to allow the function to acce... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of using a reference in the `calculate_length` function is to allow the function to acce... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of using a reference in the `calculate_length` function is to allow the function to acce... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of using a reference in the `calculate_length` function is to allow the function to acce... |
+
+**Q34: What are the rules of references in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 4 | 5 | 4.8 | At any given time, you can have either one mutable reference or any number of immutable references. ... |
+| crawl4ai | 5 | 5 | 4 | 5 | 4.8 | The rules of references in Rust are: 1. At any given time, you can have either one mutable reference... |
+| crawl4ai-raw | 5 | 5 | 4 | 5 | 4.8 | The rules of references in Rust are: 1. At any given time, you can have either one mutable reference... |
+| scrapy+md | 5 | 5 | 4 | 5 | 4.8 | The rules of references in Rust are:  1. At any given time, you can have either one mutable referenc... |
+| crawlee | 5 | 5 | 4 | 5 | 4.8 | The rules of references in Rust are:  * At any given time, you can have either one mutable reference... |
+| colly+md | 5 | 5 | 4 | 5 | 4.8 | The rules of references in Rust are:  1. At any given time, you can have either one mutable referenc... |
+| playwright | 5 | 5 | 4 | 5 | 4.8 | The rules of references in Rust are:  * At any given time, you can have either one mutable reference... |
+
+**Q35: What is the purpose of the `search` function in the `minigrep` program?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
@@ -5183,185 +5303,113 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `search` function in the `minigrep` program is to search for a query string withi... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `search` function in the `minigrep` program is to search for a specified query st... |
 
-**Q30: How do you write a failing test for the `search` function?**
+**Q36: What are the steps to implement the `search` function using test-driven development?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To write a failing test for the `search` function, you need to create a test that specifies the expe... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To write a failing test for the `search` function, you need to create a test function within a `test... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To write a failing test for the `search` function, you need to create a test function within a `test... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To write a failing test for the `search` function, you can add a test function in the `tests` module... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To write a failing test for the `search` function, you can create a test function within a `tests` m... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To write a failing test for the `search` function, you can add a test function in the `tests` module... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To write a failing test for the `search` function, you create a test function within a `tests` modul... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The steps to implement the `search` function using test-driven development (TDD) are:  1. Write a te... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The steps to implement the `search` function using test-driven development (TDD) are as follows:  1.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The steps to implement the `search` function using test-driven development (TDD) are as follows:  1.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The steps to implement the `search` function using test-driven development (TDD) are:  1. Write a te... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The steps to implement the `search` function using test-driven development (TDD) are:  1. Write a te... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The steps to implement the `search` function using test-driven development (TDD) are:  1. Write a te... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The steps to implement the `search` function using test-driven development (TDD) are:  1. Write a te... |
 
-**Q31: What are the three collections discussed in this chapter?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in this chapter are:  1. Vector (`Vec<T>`) 2. String (`String`) 3. H... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in this chapter are:  1. Vector (`Vec`) 2. String (`String`) 3. Hash... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in this chapter are:  1. A *vector* (Vec) 2. A *string* (String) 3. ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in this chapter are:  1. Vector (`Vec`) 2. String (`String`) 3. Hash... |
-| crawl4ai | 2 | 5 | 3 | 3 | 3.2 | The three collections discussed in this chapter are: a vector, a string, and a hash map.... |
-| crawl4ai-raw | 2 | 5 | 3 | 3 | 3.2 | The three collections discussed in this chapter are: a vector, a string, and a hash map.... |
-| crawlee | 2 | 5 | 3 | 3 | 3.2 | The three collections discussed in this chapter are:  1. Vector 2. String 3. Hash Map... |
-
-**Q32: How does a vector differ from built-in array and tuple types in Rust?**
+**Q37: What is a workspace in Cargo?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A vector differs from built-in array and tuple types in Rust in that it allows for a variable number... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A vector in Rust differs from built-in array and tuple types in the following ways:  1. **Size Flexi... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A vector in Rust differs from built-in array and tuple types in the following ways:  1. **Size Flexi... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A vector in Rust differs from built-in array and tuple types in the following ways:  1. **Size Flexi... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | A vector differs from built-in array and tuple types in Rust in the following ways:  1. **Size Flexi... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | A vector in Rust differs from built-in array and tuple types in the following ways:  1. **Size Flexi... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | A vector differs from built-in array and tuple types in Rust in the following ways:  1. **Size Flexi... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A workspace in Cargo is a set of packages that share the same *Cargo.lock* and output directory, all... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A workspace in Cargo is a set of packages that share the same _Cargo.lock_ and output directory, all... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A workspace in Cargo is a set of packages that share the same _Cargo.lock_ and output directory, all... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A workspace in Cargo is a collection of one or more packages, called workspace members, that are man... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | A workspace in Cargo is a set of packages that share the same *Cargo.lock* and output directory, all... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | A workspace in Cargo is a set of packages that share the same *Cargo.lock* and output directory, all... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | A workspace in Cargo is a set of packages that share the same *Cargo.lock* and output directory, all... |
 
-**Q33: What is Rust's most unique feature?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Rust's most unique feature is ownership, which enables it to make memory safety guarantees without n... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Rust's most unique feature is its ability to provide memory safety guarantees at compile time, allow... |
-| crawl4ai | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q34: How does ownership in Rust enable memory safety without a garbage collector?**
+**Q38: How do you create a new library crate in a workspace?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Ownership in Rust enables memory safety without a garbage collector by using a set of rules that gov... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Ownership in Rust enables memory safety without a garbage collector through its strict ownership rul... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| crawl4ai | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| colly+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To create a new library crate in a workspace, run the following command within the workspace directo... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To create a new library crate in a workspace, run the following command within the workspace directo... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To create a new library crate in a workspace, run the following command within the workspace directo... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To create a new library crate in a workspace, run the following command within the workspace directo... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To create a new library crate in a workspace, run the following command within the workspace directo... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To create a new library crate in a workspace, run the following command within the workspace directo... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To create a new library crate in a workspace, run the following command within the workspace directo... |
 
-**Q35: How can I enable case-insensitive searching in minigrep?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can enable case-insensitive searching in `minigrep` by setting an environment variable named `IG... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can enable case-insensitive searching in minigrep by setting the environment variable `IGNORE_CA... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can enable case-insensitive searching in minigrep by setting the environment variable `IGNORE_CA... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can enable case-insensitive searching in minigrep by setting the `IGNORE_CASE` environment varia... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can enable case-insensitive searching in minigrep by setting the `IGNORE_CASE` environment varia... |
-| crawlee | 4 | 5 | 4 | 4 | 4.2 | You can enable case-insensitive searching in minigrep by setting an environment variable that the pr... |
-| playwright | 4 | 5 | 4 | 4 | 4.2 | You can enable case-insensitive searching in minigrep by setting an environment variable that the pr... |
-
-**Q36: What function is used to check if the IGNORE_CASE environment variable is set?**
+**Q39: What is the purpose of the `thread::spawn` function in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The function used to check if the IGNORE_CASE environment variable is set is `env::var`.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The function used to check if the IGNORE_CASE environment variable is set is `env::var`.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The function used to check if the IGNORE_CASE environment variable is set is `env::var`.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The function used to check if the `IGNORE_CASE` environment variable is set is `env::var("IGNORE_CAS... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The function used to check if the IGNORE_CASE environment variable is set is `env::var`.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The function used to check if the IGNORE_CASE environment variable is set is `env::var("IGNORE_CASE"... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The function used to check if the IGNORE_CASE environment variable is set is `env::var`.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `thread::spawn` function in Rust is to create a new thread and run a specified cl... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `thread::spawn` function in Rust is used to create a new thread by taking ownership of a closure... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `thread::spawn` function in Rust is used to create a new thread by taking ownership of a closure... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `thread::spawn` function in Rust is used to create a new thread and run a specified closure in t... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `thread::spawn` function in Rust is used to create a new thread by taking a closure as an argume... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `thread::spawn` function in Rust is used to create a new thread and run a specified closure in t... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `thread::spawn` function in Rust is used to create a new thread by taking a closure as an argume... |
 
-**Q37: What are atomic types used for in Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Atomic types in Rust provide primitive shared-memory communication between threads and are the build... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Atomic types in Rust provide primitive shared-memory communication between threads and are the build... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Atomic types in Rust provide primitive shared-memory communication between threads and are the build... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Atomic types in Rust provide primitive shared-memory communication between threads and are the build... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Atomic types in Rust provide primitive shared-memory communication between threads and are the build... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Atomic types in Rust provide primitive shared-memory communication between threads and are the build... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q38: Which atomic types are defined in the atomic module?**
+**Q40: How can you ensure that a spawned thread finishes before the main thread exits?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The atomic module defines the following atomic types: `AtomicBool`, `AtomicIsize`, `AtomicUsize`, `A... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The atomic module defines the following atomic types: `AtomicBool`, `AtomicIsize`, `AtomicUsize`, `A... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The atomic types defined in the atomic module include `AtomicBool`, `AtomicIsize`, `AtomicUsize`, `A... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The atomic module defines the following atomic types: `AtomicBool`, `AtomicIsize`, `AtomicUsize`, `A... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The atomic module defines the following atomic types: `AtomicBool`, `AtomicIsize`, `AtomicUsize`, `A... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The atomic module defines the following atomic types: `AtomicBool`, `AtomicIsize`, `AtomicUsize`, `A... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can ensure that a spawned thread finishes before the main thread exits by saving the return valu... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can ensure that a spawned thread finishes before the main thread exits by saving the return valu... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can ensure that a spawned thread finishes before the main thread exits by saving the return valu... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can ensure that a spawned thread finishes before the main thread exits by saving the return valu... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can ensure that a spawned thread finishes before the main thread exits by saving the return valu... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can ensure that a spawned thread finishes before the main thread exits by saving the return valu... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can ensure that a spawned thread finishes before the main thread exits by saving the return valu... |
 
-**Q39: What is the purpose of the `trpl::block_on` function in async Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `trpl::block_on` function in async Rust is to set up a runtime that executes a fu... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `trpl::block_on` function in async Rust is to set up a runtime and run a future t... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `trpl::block_on` function in async Rust is to set up a runtime and run a future t... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `trpl::block_on` function in async Rust is used to take a future as an argument and block the cu... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `trpl::block_on` function in async Rust is used to take a future as an argument and block the cu... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `trpl::block_on` function in async Rust is used to take a future as an argument and block the cu... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `trpl::block_on` function in async Rust is used to take a future as an argument and block the cu... |
-
-**Q40: How does the `trpl::join` function differ from using `await` on individual futures?**
+**Q41: What are generics in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `trpl::join` function differs from using `await` on individual futures in that it produces a sin... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `trpl::join` function differs from using `await` on individual futures in that it takes two futu... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `trpl::join` function differs from using `await` on individual futures in that it takes two futu... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `trpl::join` function differs from using `await` on individual futures in that it takes multiple... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `trpl::join` function differs from using `await` on individual futures in that it takes multiple... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `trpl::join` function differs from using `await` on individual futures in that it takes multiple... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `trpl::join` function differs from using `await` on individual futures in that it takes multiple... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Generics in Rust are abstract stand-ins for concrete types or other properties that allow functions,... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Generics in Rust are abstract stand-ins for concrete types or other properties that allow functions,... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Generics in Rust are abstract stand-ins for concrete types or other properties that allow functions,... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Generics in Rust are abstract stand-ins for concrete types or other properties that allow functions,... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Generics in Rust are abstract stand-ins for concrete types or other properties that allow functions,... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Generics in Rust are abstract stand-ins for concrete types or other properties that allow functions,... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Generics in Rust are abstract stand-ins for concrete types or other properties that allow functions,... |
 
-**Q41: What version of Rust does this book assume you are using?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | This book assumes you are using Rust 2024 edition idioms.... |
-| markcrawl | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
-| crawl4ai | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
-| crawl4ai-raw | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
-| scrapy+md | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later.... |
-| crawlee | 1 | 5 | 5 | 2 | 3.2 | This book assumes you are using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` i... |
-| playwright | 1 | 5 | 5 | 2 | 3.2 | This book assumes you’re using Rust 1.90.0 (released 2025-09-18) or later with `edition = "2024"` in... |
-
-**Q42: Where can you find community translations of the Rust book?**
+**Q42: How do you eliminate code duplication using generics?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can find community translations of the Rust book in Appendix F, which lists various languages su... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Community translations of the Rust book can be found in Appendix F: Translations of the Book.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Community translations of the Rust book can be found in Appendix F: Translations of the Book.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can find community translations of the Rust book in the "Translations" section of Appendix F, wh... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can find community translations of the Rust book in Appendix F: Translations of the Book.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You can find community translations of the Rust book in Appendix F: Translations of the Book.... |
-| colly+md | 4 | 5 | 4 | 4 | 4.2 | Community translations of the Rust book can be found in the "Translations" label mentioned in Append... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To eliminate code duplication using generics, you can define a single function that operates on a ge... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You eliminate code duplication using generics by defining a single function that can operate on mult... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You eliminate code duplication using generics by defining a single function that can operate on mult... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You eliminate code duplication using generics by creating a generic function that can operate on mul... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You eliminate code duplication using generics by creating a single function or type definition that ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You eliminate code duplication using generics by creating a single function or type definition that ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You eliminate code duplication using generics by creating a single function or type definition that ... |
 
-**Q43: What is the state pattern in object-oriented design?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The state pattern in object-oriented design is a design pattern that defines a set of states a value... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The state pattern in object-oriented design is a design pattern that defines a set of states a value... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The state pattern in object-oriented design is a design pattern that defines a set of states a value... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The state pattern in object-oriented design is a design pattern that defines a set of states a value... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The state pattern in object-oriented design is a design pattern that defines a set of states a value... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The state pattern in object-oriented design is a design pattern that defines a set of states a value... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The state pattern in object-oriented design is a design pattern that defines a set of states a value... |
-
-**Q44: How does the `request_review` method change a post's state?**
+**Q43: What will we build in the final project of the Rust book?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `request_review` method changes a post's state by consuming the current state (e.g., `Draft`) an... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `request_review` method changes a post's state by consuming the current state and returning a ne... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `request_review` method changes a post's state by consuming the current state and returning a ne... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `request_review` method changes a post's state by consuming the current state (if it exists) and... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `request_review` method changes a post's state by consuming the current state and transitioning ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `request_review` method changes a post's state by consuming the current state (if it exists) and... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `request_review` method changes a post's state by consuming the current state and transitioning ... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | In the final project of the Rust book, we will build a web server that says “Hello!” and looks like ... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | In the final project of the Rust book, we will build a multithreaded web server that says "Hello!" a... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | In the final project of the Rust book, we will build a multithreaded web server that says "Hello!" a... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | In the final project of the Rust book, we will build a multithreaded web server that says “Hello!” a... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | In the final project of the Rust book, we will build a multithreaded web server that says “Hello!” a... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | In the final project of the Rust book, we will build a multithreaded web server that says “Hello!” a... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | In the final project of the Rust book, we will build a multithreaded web server that says “Hello!” a... |
+
+**Q44: What method will we not be using to build the web server in this chapter?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | We will not be using async and await to build the web server in this chapter.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | We will not be using async and await to build the web server in this chapter.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | We will not be using async and await to build the web server in this chapter.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | We will not be using async and await to build the web server in this chapter.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | We will not be using async and await to build the web server in this chapter.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | We will not be using async and await to build the web server in this chapter.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | We will not be using async and await to build the web server in this chapter.... |
 
 **Q45: What are patterns in Rust?**
 
@@ -5387,173 +5435,173 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 | colly+md | 5 | 5 | 5 | 5 | 5.0 | A pattern can consist of the following components:  * Literals * Destructured arrays, enums, structs... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | A pattern can consist of the following components:  * Literals * Destructured arrays, enums, structs... |
 
-**Q47: What is a mutex and how does it control access to data?**
+**Q47: What is the difference between iterators and the async channel receiver in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A mutex, short for mutual exclusion, is a concurrency primitive that allows only one thread to acces... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A mutex, short for mutual exclusion, is a concurrency primitive that allows only one thread to acces... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A mutex, short for mutual exclusion, is a concurrency primitive that allows only one thread to acces... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A mutex, short for mutual exclusion, is a concurrency primitive that allows only one thread to acces... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | A mutex, short for mutual exclusion, is a concurrency primitive that allows only one thread to acces... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | A mutex, short for mutual exclusion, is a concurrency primitive that allows only one thread to acces... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | A mutex, short for mutual exclusion, is a concurrency primitive that allows only one thread to acces... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The difference between iterators and the async channel receiver in Rust is twofold:   1. **Time**: I... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The difference between iterators and the async channel receiver in Rust is that iterators are synchr... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The difference between iterators and the async channel receiver in Rust is that iterators are synchr... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The difference between iterators and the async channel receiver in Rust is twofold:   1. **Time**: I... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The difference between iterators and the async channel receiver in Rust is twofold:   1. **Time**: I... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The difference between iterators and the async channel receiver in Rust is twofold:   1. **Time**: I... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The difference between iterators and the async channel receiver in Rust is twofold:   1. **Time**: I... |
 
-**Q48: Why is `Rc<T>` not safe to share across threads in Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | `Rc<T>` is not safe to share across threads because it does not use concurrency primitives to manage... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | `Rc<T>` is not safe to share across threads in Rust because it does not implement the `Send` trait, ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | `Rc<T>` is not safe to share across threads in Rust because it does not implement the `Send` trait, ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | `Rc<T>` is not safe to share across threads in Rust because it does not use concurrency primitives t... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | `Rc<T>` is not safe to share across threads in Rust because it does not use any concurrency primitiv... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | `Rc<T>` is not safe to share across threads in Rust because it does not use concurrency primitives t... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | `Rc<T>` is not safe to share across threads in Rust because it does not use concurrency primitives t... |
-
-**Q49: How do you declare a module in Rust?**
+**Q48: How can you create a stream from an iterator in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You declare a module in Rust using the `mod` keyword followed by the name of the module. For example... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You declare a module in Rust using the `mod` keyword followed by the module name. For example: `mod ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You declare a module in Rust using the `mod` keyword followed by the module name. For example: `mod ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To declare a module in Rust, you use the `mod` keyword followed by the module name. For example:  ``... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You declare a module in Rust using the `mod` keyword followed by the module name. For example: `mod ... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | To declare a module in Rust, you use the `mod` keyword followed by the module name. For example:  ``... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You declare a module in Rust using the `mod` keyword followed by the module name. For example: `mod ... |
+| markcrawl | 4 | 5 | 4 | 4 | 4.2 | You can create a stream from an iterator in Rust by converting the iterator into a stream using the ... |
+| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | You can create a stream from an iterator in Rust by using the `trpl::stream_from_iter` function. Fir... |
+| scrapy+md | 4 | 5 | 4 | 4 | 4.2 | You can create a stream from an iterator in Rust by using the `trpl::stream_from_iter` function. Fir... |
+| crawlee | 4 | 5 | 4 | 4 | 4.2 | You can create a stream from an iterator in Rust by using the `trpl::stream_from_iter` function. Fir... |
+| colly+md | 4 | 5 | 4 | 4 | 4.2 | You can create a stream from an iterator in Rust by using the `trpl::stream_from_iter` function. Fir... |
+| playwright | 4 | 5 | 4 | 4 | 4.2 | You can create a stream from an iterator in Rust by using the `trpl::stream_from_iter` function. Fir... |
+| crawl4ai | 2 | 5 | 4 | 4 | 3.8 | You can create a stream from an iterator in Rust by using the `trpl::stream_from_iter` function. Fir... |
 
-**Q50: What is the default visibility of items within a module?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The default visibility of items within a module is private to parent modules.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The default visibility of items within a module is private.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The default visibility of items within a module is private.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The default visibility of items within a module is private.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The default visibility of items within a module is private to parent modules.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The default visibility of items within a module is private.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The default visibility of items within a module is private to parent modules.... |
-
-**Q51: What is a Vec in Rust?**
+**Q49: How do you read a file in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A `Vec<T>`, also known as a vector, is a collection type in Rust that allows you to store more than ... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A `Vec` in Rust is a contiguous growable array type, allowing you to store multiple values of the sa... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A `Vec<T>` in Rust is a contiguous growable array type that allows you to store multiple values of t... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A `Vec<T>` in Rust is a contiguous growable array type that allows for dynamic storage of elements o... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | A Vec in Rust is a contiguous growable array type, represented as `Vec<T>`, where `T` is the type of... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | A `Vec` in Rust is a contiguous growable array type, written as `Vec<T>`, where `T` is the type of e... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | A Vec in Rust is a contiguous growable array type, represented as `Vec<T>`, where `T` is the type of... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | To read a file in Rust, you can use the `std::fs` module. Specifically, you can use the `fs::read_to... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To read a file in Rust, you can use the `std::fs::read_to_string` function. Here’s an example:  ```r... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To read a file in Rust, you can use the `std::fs::read_to_string` function. Here’s an example:  ```r... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To read a file in Rust, you can use the `fs::read_to_string` function from the `std::fs` module. Her... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To read a file in Rust, you can use the `fs::read_to_string` function from the standard library. Her... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To read a file in Rust, you can use the `std::fs` module. Here’s a basic example:  1. Import the nec... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To read a file in Rust, you can use the `std::fs::read_to_string` function. Here’s a basic example: ... |
 
-**Q52: How do you create a new empty Vec in Rust?**
+**Q50: What is the content of the sample file used for testing?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The content of the sample file used for testing is the poem "I'm Nobody! Who are you?" by Emily Dick... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The content of the sample file used for testing is:  ``` I'm nobody! Who are you? Are you nobody, to... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The content of the sample file used for testing is:  ``` I'm nobody! Who are you? Are you nobody, to... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The content of the sample file used for testing, *poem.txt*, is:  ``` I'm nobody! Who are you? Are y... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The content of the sample file used for testing, named *poem.txt*, is:  ``` I'm nobody! Who are you?... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The content of the sample file used for testing is the poem by Emily Dickinson:  ``` I'm nobody! Who... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The content of the sample file used for testing, named *poem.txt*, is:  ``` I'm nobody! Who are you?... |
+
+**Q51: How do you bring a module into scope with the use keyword?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module you want t... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module you want t... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You bring a module into scope with the `use` keyword by specifying the path to the module. For examp... |
+
+**Q52: What is the purpose of the pub use statement in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export names, making them available for exte... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export names, making them available for exte... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export names, making them available for exte... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The purpose of the `pub use` statement in Rust is to re-export a name, making it available for exter... |
+
+**Q53: What are the two major categories of errors in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The two major categories of errors in Rust are recoverable errors and unrecoverable errors.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The two major categories of errors in Rust are recoverable errors and unrecoverable errors.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The two major categories of errors in Rust are recoverable errors and unrecoverable errors.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The two major categories of errors in Rust are recoverable errors and unrecoverable errors.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The two major categories of errors in Rust are recoverable errors and unrecoverable errors.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The two major categories of errors in Rust are recoverable errors and unrecoverable errors.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The two major categories of errors in Rust are recoverable errors and unrecoverable errors.... |
+
+**Q54: How does Rust handle recoverable errors?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Rust handles recoverable errors using the `Result<T, E>` type. This type has two variants: `Ok`, whi... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Rust handles recoverable errors using the `Result<T, E>` type, which has two variants: `Ok` for succ... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Rust handles recoverable errors using the `Result<T, E>` type, which has two variants: `Ok` for succ... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Rust handles recoverable errors using the `Result<T, E>` type. This type allows functions to return ... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Rust handles recoverable errors using the `Result<T, E>` type. This type allows functions to return ... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | Rust handles recoverable errors using the `Result<T, E>` type. This type allows functions to return ... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Rust handles recoverable errors using the `Result<T, E>` type. This type allows functions to return ... |
+
+**Q55: How do you create a new, empty vector in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
 | markcrawl | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you call the `Vec::new` function.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can create a new empty `Vec` in Rust using the following code:  ```rust let mut vec: Vec<i32> = ... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can create a new empty `Vec` in Rust using the following code:  ```rust let mut vec: Vec<i32> = ... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can create a new empty `Vec` in Rust using the following code:  ```rust let mut vec: Vec<i32> = ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you can use the `Vec::new` function:  ```rust let v: Vec<i32>... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can create a new empty `Vec` in Rust using the following code:  ```rust let mut vec: Vec<i32> = ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you can use the `Vec::new` function:  ```rust let v: Vec<i32>... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you can call the `Vec::new` function, as shown below:  ```rus... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you can call the `Vec::new` function, as shown below:  ```rus... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you can call the `Vec::new` function, as shown below:  ```rus... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you call the `Vec::new` function, as shown in the following c... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you can call the `Vec::new` function, as shown below:  ```rus... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | To create a new, empty vector in Rust, you call the `Vec::new` function, as shown in the following c... |
 
-**Q53: What does the `Debug` trait enable in Rust?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `Debug` trait enables debug formatting in format strings, allowing you to print instances of a t... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `Debug` trait enables printing a struct in a way that is useful for developers, allowing them to... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `Debug` trait enables printing a struct in a way that is useful for developers, allowing them to... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `Debug` trait enables the ability to print out debugging information for a struct in a way that ... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `Debug` trait in Rust enables the ability to print a struct in a way that is useful for develope... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `Debug` trait in Rust enables the functionality to print out debugging information for a struct ... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `Debug` trait in Rust enables the ability to print a struct in a way that is useful for develope... |
-
-**Q54: What is the purpose of the `Default` trait in Rust?**
+**Q56: What method is used to add elements to a vector in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `Default` trait in Rust allows you to create a default value for a type. It provides the `defaul... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `Default` trait in Rust allows you to create a default value for a type. Deriving `Default` impl... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `Default` trait in Rust allows you to create a default value for a type. Deriving `Default` impl... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `Default` trait in Rust allows you to create a default value for a type. Deriving `Default` impl... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The `Default` trait in Rust allows you to create a default value for a type. Deriving `Default` impl... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| colly+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The method used to add elements to a vector in Rust is the `push` method.... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The method used to add elements to a vector in Rust is the `push` method.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The method used to add elements to a vector in Rust is the `push` method.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The method used to add elements to a vector in Rust is the `push` method.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The method used to add elements to a vector in Rust is the `push` method.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The method used to add elements to a vector in Rust is the `push` method.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The method used to add elements to a vector in Rust is the `push` method.... |
 
-**Q55: What programming concepts are covered in this chapter?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The chapter covers variables, basic types, functions, comments, and control flow.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The chapter covers concepts such as variables, basic types, functions, comments, and control flow.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The chapter covers concepts such as variables, basic types, functions, comments, and control flow.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The chapter covers concepts such as variables, basic types, functions, comments, and control flow.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The chapter covers the following programming concepts:   1. Variables and Mutability 2. Data Types 3... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The chapter covers variables, basic types, functions, comments, and control flow.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The chapter covers the following programming concepts: Variables and Mutability, Data Types, Functio... |
-
-**Q56: What are keywords in the Rust programming language?**
+**Q57: What is the purpose of the `if let` syntax in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Keywords in the Rust programming language are reserved words that cannot be used as identifiers (exc... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | Keywords in the Rust programming language are reserved words that cannot be used as names for variab... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Keywords in the Rust programming language are reserved words that cannot be used as names for variab... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Keywords in the Rust programming language are reserved words that cannot be used as identifiers (suc... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | Keywords in the Rust programming language are reserved words that cannot be used as identifiers (suc... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | Keywords in the Rust programming language are reserved words that cannot be used as identifiers (suc... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | Keywords in the Rust programming language are reserved words that cannot be used as identifiers (suc... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The `if let` syntax in Rust allows you to combine `if` and `let` into a less verbose way to handle v... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The `if let` syntax in Rust allows you to combine `if` and `let` into a less verbose way to handle v... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The `if let` syntax in Rust allows you to combine `if` and `let` into a less verbose way to handle v... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The `if let` syntax in Rust allows you to combine `if` and `let` into a less verbose way to handle v... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The `if let` syntax in Rust allows you to combine `if` and `let` into a less verbose way to handle v... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `if let` syntax in Rust allows you to combine `if` and `let` into a less verbose way to handle v... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The `if let` syntax in Rust allows you to combine `if` and `let` into a less verbose way to handle v... |
 
-**Q57: What are the three collections discussed in Rust's standard library?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in Rust's standard library are vectors, strings, and hash maps.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in Rust's standard library are: 1. A vector (`Vec`), which allows yo... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in Rust's standard library are: 1. A vector (`Vec`), which allows yo... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in Rust's standard library are:  1. Vector (`Vec`) 2. String (`Strin... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in Rust's standard library are:  1. A *vector* (`Vec`), which allows... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in Rust's standard library are:  1. Vector (`Vec`) 2. String (`Strin... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The three collections discussed in Rust's standard library are:  1. A *vector* (`Vec`), which allows... |
-
-**Q58: How does a vector differ from built-in array and tuple types in Rust?**
+**Q58: How does the `let...else` syntax improve control flow in Rust?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | A vector differs from built-in array and tuple types in Rust in that it allows for a variable number... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | A vector in Rust differs from built-in array and tuple types in the following ways:  1. **Size Flexi... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | A vector in Rust differs from built-in array and tuple types in the following ways:  1. **Size Flexi... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | A vector in Rust differs from built-in array and tuple types in the following ways:  1. **Size Flexi... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | A vector differs from built-in array and tuple types in Rust in the following ways:  1. **Size Flexi... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | A vector in Rust differs from built-in array and tuple types in the following ways:  1. **Size Flexi... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | A vector differs from built-in array and tuple types in Rust in the following ways:  1. **Size Flexi... |
-
-**Q59: What command do I use to upload a crate to crates.io?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You use the `cargo publish` command to upload a crate to crates.io.... |
-| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You use the `cargo publish` command to upload a crate to crates.io.... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You use the `cargo publish` command to upload a crate to crates.io.... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You use the `cargo publish` command to upload a crate to crates.io.... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | You use the `cargo publish` command to upload a crate to crates.io.... |
-| colly+md | 5 | 5 | 5 | 5 | 5.0 | You use the `cargo publish` command to upload a crate to crates.io.... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | You use the `cargo publish` command to upload a crate to crates.io.... |
-
-**Q60: How do I revoke an API token on crates.io?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawlee | 2 | 4 | 3 | 3 | 3.0 | To revoke an API token on crates.io, visit your account settings at <https://crates.io/me/>, and gen... |
-| playwright | 2 | 4 | 3 | 3 | 3.0 | To revoke an API token on crates.io, visit your account settings at <https://crates.io/me/>, and gen... |
-| colly+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The `let...else` syntax improves control flow in Rust by providing a more concise way to handle case... |
+| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
+| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
 | crawl4ai | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 | crawl4ai-raw | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| crawlee | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+
+**Q59: What are the keywords currently in use in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | The keywords currently in use in Rust are:  * `as` * `async` * `await` * `break` * `const` * `contin... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | The keywords currently in use in Rust are: - `as` - `async` - `await` - `break` - `const` - `continu... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The keywords currently in use in Rust are: - `as` - `async` - `await` - `break` - `const` - `continu... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The keywords currently in use in Rust are:  - `as` - `async` - `await` - `break` - `const` - `contin... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | The keywords currently in use in Rust are:  - `as` - `async` - `await` - `break` - `const` - `contin... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | The keywords currently in use in Rust are:  - `as` - `async` - `await` - `break` - `const` - `contin... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | The keywords currently in use in Rust are:  - `as` - `async` - `await` - `break` - `const` - `contin... |
+
+**Q60: How can you use a keyword as an identifier in Rust?**
+
+| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
+|---|---|---|---|---|---|---|
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | You can use a keyword as an identifier in Rust by using the raw identifier syntax, which involves pr... |
+| crawl4ai | 5 | 5 | 5 | 5 | 5.0 | You can use a keyword as an identifier in Rust by prefixing it with `r#`, creating a raw identifier.... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You can use a keyword as an identifier in Rust by prefixing it with `r#`, creating a raw identifier.... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | You can use a keyword as an identifier in Rust by prefixing it with `r#`, creating a raw identifier.... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | You can use a keyword as an identifier in Rust by prefixing it with `r#`, which allows you to create... |
+| colly+md | 5 | 5 | 5 | 5 | 5.0 | You can use a keyword as an identifier in Rust by prefixing it with `r#`, creating a raw identifier.... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | You can use a keyword as an identifier in Rust by prefixing it with `r#`, which allows you to create... |
 
 </details>
 

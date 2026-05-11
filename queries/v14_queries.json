@@ -1096,22 +1096,238 @@
   ],
   "mdn-css": [
     {
-      "query": "What is auto-placement in CSS grid layout?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Auto-placement",
-      "url_match": "Auto-placement",
+      "query": "What is masonry layout in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Masonry_layout",
+      "url_match": "Masonry_layout",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly defines auto-placement as the method by which grid items automatically position themselves in a grid when no explicit placement is provided."
+      "verifier_rationale": "The page clearly defines masonry layout as a layout method where one axis uses a strict grid layout and the other a stacking layout."
     },
     {
-      "query": "How can you control the size of automatically created rows in the implicit grid?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Auto-placement",
-      "url_match": "Auto-placement",
+      "query": "How do you create a masonry layout using CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Masonry_layout",
+      "url_match": "Masonry_layout",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content explicitly states that the size of automatically created rows can be controlled using the property `grid-auto-rows`."
+      "verifier_rationale": "The page clearly explains how to create a masonry layout using CSS with specific properties."
+    },
+    {
+      "query": "What properties are used to define scroll snapping in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll_snap/Basic_concepts",
+      "url_match": "Basic_concepts",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The properties used to define scroll snapping in CSS are clearly listed in the content."
+    },
+    {
+      "query": "What does the scroll-snap-type property determine?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll_snap/Basic_concepts",
+      "url_match": "Basic_concepts",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The scroll-snap-type property determines whether the scrollable viewport can be snapped to, whether snapping is required or optional, and the axis on which the snapping should occur."
+    },
+    {
+      "query": "What are OpenType features in fonts?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fonts/OpenType_fonts",
+      "url_match": "OpenType_fonts",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "OpenType features refer to different glyphs or character styles contained within an OpenType font, including ligatures, kerning, fractions, and numeral styles."
+    },
+    {
+      "query": "How can I enable ligatures in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Fonts/OpenType_fonts",
+      "url_match": "OpenType_fonts",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page provides information on how to enable ligatures using the CSS property 'font-variant-ligatures'."
+    },
+    {
+      "query": "What does the border-radius CSS property do?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-radius",
+      "url_match": "border-radius",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly states that the border-radius property rounds the corners of an element's outer border edge."
+    },
+    {
+      "query": "How can you specify multiple radii using the border-radius property?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-radius",
+      "url_match": "border-radius",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains that you can specify one, two, three, or four values to set multiple radii using the border-radius property."
+    },
+    {
+      "query": "What properties control breaks inside boxes in a multicol layout?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Multicol_layout/Handling_content_breaks",
+      "url_match": "Handling_content_breaks",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The properties that control breaks inside boxes in a multicol layout are clearly listed as `break-inside`, which takes values of `auto`, `avoid`, `avoid-page`, `avoid-column`, and `avoid-region`."
+    },
+    {
+      "query": "How can you prevent a caption from being separated from its image in a multicol layout?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Multicol_layout/Handling_content_breaks",
+      "url_match": "Handling_content_breaks",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page explains that you can use the 'break-inside' property to prevent a caption from being separated from its image."
+    },
+    {
+      "query": "What properties does the CSS borders and box decorations module provide?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Borders_and_box_decorations",
+      "url_match": "Borders_and_box_decorations",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The properties provided by the CSS borders and box decorations module are clearly listed in the content."
+    },
+    {
+      "query": "What new features does the CSS borders and box decorations module level 4 introduce?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Borders_and_box_decorations",
+      "url_match": "Borders_and_box_decorations",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly lists the new features introduced in the CSS borders and box decorations module level 4."
+    },
+    {
+      "query": "What are the six keywords accepted by the <timeline-range-name> value type?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations/Timeline_range_names",
+      "url_match": "Timeline_range_names",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The six keywords are clearly listed as 'cover', 'contain', 'entry', 'exit', 'entry-crossing', and 'exit-crossing'."
+    },
+    {
+      "query": "How does the 'contain' named timeline range function in relation to the scrollport?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations/Timeline_range_names",
+      "url_match": "Timeline_range_names",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains that the 'contain' named timeline range starts when the animated element is fully visible and ends when it ceases to be fully visible within the scrollport."
+    },
+    {
+      "query": "How do browsers handle CSS errors when they encounter invalid values or missing semicolons?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Syntax/Error_handling",
+      "url_match": "Error_handling",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains that browsers ignore invalid content and continue parsing valid styles."
+    },
+    {
+      "query": "What happens to a CSS declaration block if it contains an invalid selector?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Syntax/Error_handling",
+      "url_match": "Error_handling",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The entire declaration block is ignored if it contains an invalid selector."
+    },
+    {
+      "query": "What is the alignment container in multi-column layout?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Box_alignment/In_multi-column_layout",
+      "url_match": "In_multi-column_layout",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The alignment container in multi-column layout is the content box of the multicol container."
+    },
+    {
+      "query": "How does the column-gap property behave in multi-column layout?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Box_alignment/In_multi-column_layout",
+      "url_match": "In_multi-column_layout",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains that the column-gap property is treated as 1em in multi-column layout."
+    },
+    {
+      "query": "What is the initial viewport?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/CSSOM_view/Viewport_concepts",
+      "url_match": "Viewport_concepts",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The initial viewport is defined as the window or viewing area of the user agent before any styles have overridden its size."
+    },
+    {
+      "query": "How does the viewport meta tag affect the actual viewport?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/CSSOM_view/Viewport_concepts",
+      "url_match": "Viewport_concepts",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content clearly explains that the actual viewport is defined by the viewport meta tag's content attribute."
+    },
+    {
+      "query": "What are the most commonly-used CSS data types?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/Data_types",
+      "url_match": "Data_types",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page explicitly lists the most commonly-used CSS data types."
+    },
+    {
+      "query": "How are CSS data types denoted in formal CSS syntax?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/Data_types",
+      "url_match": "Data_types",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "CSS data types are denoted by a keyword placed between the angle brackets `<` and `>`."
+    },
+    {
+      "query": "What are the basic building blocks of CSS syntax?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Syntax/Introduction",
+      "url_match": "Introduction",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The basic building blocks of CSS syntax are properties, values, declarations, declaration blocks, rulesets, and statements."
+    },
+    {
+      "query": "What is a CSS declaration and how is it structured?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Syntax/Introduction",
+      "url_match": "Introduction",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "A CSS declaration is a property and value pair, structured with a property name followed by a colon and a value."
+    },
+    {
+      "query": "What property is used to set a threshold for opacity when creating shapes from images?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Shapes/From_images",
+      "url_match": "From_images",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The property used to set a threshold for opacity when creating shapes from images is 'shape-image-threshold'."
+    },
+    {
+      "query": "How can you create shapes using a CSS gradient?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Shapes/From_images",
+      "url_match": "From_images",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to create shapes using a CSS gradient."
     },
     {
       "query": "What does the CSS scoping module define?",
@@ -1132,220 +1348,130 @@
       "verifier_rationale": "The page clearly explains that within the CSS of a shadow tree, selectors don't select elements outside the tree."
     },
     {
-      "query": "What is the Fetch API used for?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API",
-      "url_match": "Fetch_API",
+      "query": "What does the CSS counter styles module allow you to define?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Counter_styles",
+      "url_match": "Counter_styles",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The Fetch API is used for fetching resources, including across the network."
+      "verifier_rationale": "The content clearly states that the CSS counter styles module lets you define your own counter styles to manage the appearance of markers in lists and counters in generated content."
     },
     {
-      "query": "What method is used to fetch a resource with the Fetch API?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API",
-      "url_match": "Fetch_API",
+      "query": "How many descriptors does the @counter-style rule define?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Counter_styles",
+      "url_match": "Counter_styles",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The method used to fetch a resource with the Fetch API is `fetch()`."
+      "verifier_rationale": "The @counter-style rule defines ten descriptors."
     },
     {
-      "query": "What is the purpose of the :target pseudo-class in CSS?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors/Using_:target",
-      "url_match": "Using_:target",
+      "query": "What is CSS typed arithmetic?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Values_and_units/Using_typed_arithmetic",
+      "url_match": "Using_typed_arithmetic",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The purpose of the :target pseudo-class is to style the target element of the document identified using the URL fragment identifier."
+      "verifier_rationale": "CSS typed arithmetic refers to permitted calculations performed with typed CSS values via functions such as calc(), enabling relationships between different values on a page."
     },
     {
-      "query": "How can you style all targeted elements using the universal selector?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors/Using_:target",
-      "url_match": "Using_:target",
+      "query": "How does division work in CSS typed arithmetic?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Values_and_units/Using_typed_arithmetic",
+      "url_match": "Using_typed_arithmetic",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page provides a clear explanation of using the universal selector to style all targeted elements."
+      "verifier_rationale": "The page clearly explains how division works in CSS typed arithmetic."
     },
     {
-      "query": "What types of images can be used in CSS?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Images",
-      "url_match": "Images",
+      "query": "What is a replaced element in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Images/Replaced_element_properties",
+      "url_match": "Replaced_element_properties",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that the CSS images module defines the types of images that can be used, including URLs, gradients, and other types of images."
+      "verifier_rationale": "A replaced element is defined as an element whose representation is outside the scope of CSS, independent of the CSS formatting model."
     },
     {
-      "query": "What is the image-resolution property in CSS?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Images",
-      "url_match": "Images",
+      "query": "How does the object-fit property affect replaced elements?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Images/Replaced_element_properties",
+      "url_match": "Replaced_element_properties",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly defines the image-resolution property in CSS."
+      "verifier_rationale": "The page clearly explains how the object-fit property specifies how the replaced element's content object should be fitted to the containing element's box."
     },
     {
-      "query": "What are the two types of CSS properties based on inheritance?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Inheritance",
-      "url_match": "Inheritance",
+      "query": "What are the logical properties used for sizing elements in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values/Sizing",
+      "url_match": "Sizing",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The two types of CSS properties based on inheritance are inherited properties and non-inherited properties."
+      "verifier_rationale": "The page clearly lists and explains the logical properties used for sizing elements in CSS."
     },
     {
-      "query": "What happens when no value is specified for a non-inherited property on an element?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Inheritance",
-      "url_match": "Inheritance",
+      "query": "How do inline-size and block-size relate to width and height in a horizontal writing mode?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values/Sizing",
+      "url_match": "Sizing",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content clearly states that the element gets the initial value of the property when no value for a non-inherited property is specified."
+      "verifier_rationale": "The page clearly explains that in a horizontal writing mode, width maps to inline-size and height maps to block-size."
     },
     {
       "query": "What are at-rules in CSS?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Syntax/At-rules",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules",
       "url_match": "At-rules",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "At-rules are CSS statements that instruct CSS how to behave, beginning with an at-sign followed by an identifier."
+      "verifier_rationale": "The definition of at-rules in CSS is clearly stated in the content."
     },
     {
-      "query": "What is the purpose of the @import at-rule?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Syntax/At-rules",
+      "query": "How do at-rules begin in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules",
       "url_match": "At-rules",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The purpose of the @import at-rule is to tell the CSS engine to include an external style sheet."
+      "verifier_rationale": "The content states that at-rules begin with an at-sign, `@`."
     },
     {
-      "query": "What is the purpose of the HTTP Observatory?",
-      "url": "https://developer.mozilla.org/en-US/observatory",
-      "url_match": "observatory",
+      "query": "What does the Color mixer tool allow you to do?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Colors/Color_mixer",
+      "url_match": "Color_mixer",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The purpose of the HTTP Observatory is to enhance web security by analyzing compliance with best security practices."
+      "verifier_rationale": "The Color mixer tool allows you to mix two colors in any color space using the color-mix() function."
     },
     {
-      "query": "How many websites has the HTTP Observatory provided insights to?",
-      "url": "https://developer.mozilla.org/en-US/observatory",
-      "url_match": "observatory",
+      "query": "How can you change the percentages of each input color in the Color mixer?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Colors/Color_mixer",
+      "url_match": "Color_mixer",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page states that the HTTP Observatory has provided insights to over 6.9 million websites."
+      "verifier_rationale": "The page states that you can use the sliders to change the percentages of each input color included in the mix."
     },
     {
-      "query": "What properties are defined by the CSS box model?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Box_model",
-      "url_match": "Box_model",
+      "query": "What does the `subgrid` value do in CSS grid layout?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Subgrid",
+      "url_match": "Subgrid",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The properties defined by the CSS box model include margin, padding, height, width, and border properties."
+      "verifier_rationale": "The page clearly explains that the `subgrid` value allows a nested grid to use the tracks defined on the parent grid."
     },
     {
-      "query": "What does the CSS box model describe about the layout of elements?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Box_model",
-      "url_match": "Box_model",
+      "query": "How does the `gap` property behave in a subgrid?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Subgrid",
+      "url_match": "Subgrid",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The CSS box model describes how CSS lays out elements, including their content, padding, border, and margin areas."
-    },
-    {
-      "query": "How does the `order` property affect the visual order of flex items?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout/Ordering_items",
-      "url_match": "Ordering_items",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly explains that the `order` property changes the visual order of flex items based on assigned integer values."
-    },
-    {
-      "query": "What should authors avoid when using the `order` property in flexbox layouts?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout/Ordering_items",
-      "url_match": "Ordering_items",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explicitly states that authors must not use the order property as a substitute for correct source ordering."
-    },
-    {
-      "query": "What are the types of easing functions defined in the CSS easing functions module?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Easing_functions",
-      "url_match": "Easing_functions",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly lists linear, cubic bezier, and step easing functions as the types defined."
-    },
-    {
-      "query": "How do cubic bezier easing functions enhance user interface elements?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Easing_functions",
-      "url_match": "Easing_functions",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explains that cubic bezier easing functions can produce intuitive user interface elements."
-    },
-    {
-      "query": "What are Uniform Resource Identifiers (URI)?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/URI",
-      "url_match": "URI",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The definition of Uniform Resource Identifiers (URI) is clearly stated in the content."
-    },
-    {
-      "query": "What is the purpose of the fragment in a URI?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/URI",
-      "url_match": "URI",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content clearly states that the fragment is used to identify a specific part of the resource."
-    },
-    {
-      "query": "What problem does scroll anchoring solve?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll_anchoring/Overview",
-      "url_match": "Overview",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content clearly states that scroll anchoring solves the problem of content jumping when large images or elements load while a user is scrolling."
-    },
-    {
-      "query": "How can I disable scroll anchoring in my document?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll_anchoring/Overview",
-      "url_match": "Overview",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page provides clear instructions on how to disable scroll anchoring using the overflow-anchor property."
-    },
-    {
-      "query": "How can I assign names to grid lines in CSS?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Named_grid_lines",
-      "url_match": "Named_grid_lines",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly explains how to assign names to grid lines using the grid-template-rows and grid-template-columns properties."
-    },
-    {
-      "query": "What happens when I use the repeat() syntax for naming grid lines?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Named_grid_lines",
-      "url_match": "Named_grid_lines",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explains that using the repeat() syntax can result in multiple lines having the same name."
+      "verifier_rationale": "The page clearly explains that gap properties specified on the parent are passed into the subgrid."
     },
     {
       "query": "What does the CSS box alignment module specify?",
@@ -1366,274 +1492,148 @@
       "verifier_rationale": "The content explicitly states that alignment is linked to writing modes by describing how alignment is defined in terms of the start and end of the particular dimension."
     },
     {
-      "query": "What are CSS logical properties and values?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values",
-      "url_match": "Logical_properties_and_values",
+      "query": "What properties control alignment in flexbox?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout/Aligning_items",
+      "url_match": "Aligning_items",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly defines CSS logical properties and values as those that control layout through logical rather than physical direction and dimension mappings."
+      "verifier_rationale": "The properties that control alignment in flexbox are listed in the content."
     },
     {
-      "query": "How do logical properties define direction-relative equivalents to physical properties?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values",
-      "url_match": "Logical_properties_and_values",
+      "query": "How does the align-items property affect flex items on the cross axis?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout/Aligning_items",
+      "url_match": "Aligning_items",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains that logical properties define direction-relative equivalents to their corresponding physical properties."
+      "verifier_rationale": "The page clearly explains that the align-items property controls the alignment of all items on the cross axis."
     },
     {
-      "query": "What does the CSS view transitions module define?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/View_transitions",
-      "url_match": "View_transitions",
+      "query": "What do logical properties and values in CSS define?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values/Basic_concepts",
+      "url_match": "Basic_concepts",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The CSS view transitions module defines the behavior of the View Transition API and the CSS properties and pseudo-elements for styling these transitions."
+      "verifier_rationale": "The page clearly states that logical properties and values define flow-relative mappings for many physical properties and values in CSS."
     },
     {
-      "query": "How can developers create animated transitions using the View Transition API?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/View_transitions",
-      "url_match": "View_transitions",
+      "query": "How do logical properties help with different writing modes in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values/Basic_concepts",
+      "url_match": "Basic_concepts",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page explains how to create animated transitions using the View Transition API."
+      "verifier_rationale": "The page clearly explains how logical properties allow for consistent layout across different writing modes."
     },
     {
-      "query": "What are the four commonly-used CSS math functions?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Values_and_units/Using_math_functions",
-      "url_match": "Using_math_functions",
+      "query": "What are the logical properties for floating and positioning in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values/Floating_and_positioning",
+      "url_match": "Floating_and_positioning",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The four commonly-used CSS math functions are `calc()`, `min()`, `max()`, and `clamp()`."
+      "verifier_rationale": "The page provides a detailed explanation of logical properties for floating and positioning in CSS."
     },
     {
-      "query": "How does the `calc()` function work in CSS?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Values_and_units/Using_math_functions",
-      "url_match": "Using_math_functions",
+      "query": "How do the inset properties relate to positioned layout in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values/Floating_and_positioning",
+      "url_match": "Floating_and_positioning",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains that the `calc()` function lets you specify CSS property values using addition, subtraction, multiplication, and division."
+      "verifier_rationale": "The page clearly explains how inset properties are used for positioned layout in CSS."
     },
     {
-      "query": "What is the focus of web security?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/Security",
-      "url_match": "Security",
+      "query": "What does the CSS basic user interface module allow you to define?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Basic_user_interface",
+      "url_match": "Basic_user_interface",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The focus of web security is to protect sensitive information from unauthorized access."
+      "verifier_rationale": "The CSS basic user interface module allows you to define the rendering and functionality of features related to the user interface."
     },
     {
-      "query": "How do modern browsers protect users' security on the web?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/Security",
-      "url_match": "Security",
+      "query": "How can basic user interface properties improve user experience and accessibility?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Basic_user_interface",
+      "url_match": "Basic_user_interface",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page explicitly discusses features that modern browsers use to protect users' security on the web."
+      "verifier_rationale": "The content explicitly states that basic user interface properties can improve user experience and accessibility by providing visual cues."
     },
     {
-      "query": "What does the object-view-box property do?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Images/Using_object-view-box",
-      "url_match": "Using_object-view-box",
+      "query": "What is the purpose of using the `@media` at-rule in CSS for printing?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Printing",
+      "url_match": "Printing",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains that the object-view-box property defines a viewbox within replaced elements, enabling the display of just a section of the replaced content."
+      "verifier_rationale": "The page clearly states that the `@media` at-rule is used to set different styles for printed media."
     },
     {
-      "query": "How does the object-view-box property differ from object-fit?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Images/Using_object-view-box",
-      "url_match": "Using_object-view-box",
+      "query": "How can the `@page` at-rule be used in CSS for printed pages?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Printing",
+      "url_match": "Printing",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains the differences between the object-view-box and object-fit properties."
+      "verifier_rationale": "The page explains that the `@page` at-rule can be used to modify different aspects of printed pages including dimensions, orientation, and margins."
     },
     {
-      "query": "What are the different textual data types in CSS?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Values_and_units/Textual_data_types",
-      "url_match": "Textual_data_types",
+      "query": "What are CSS custom properties used for?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascading_variables",
+      "url_match": "Cascading_variables",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly lists and describes the different textual data types in CSS."
+      "verifier_rationale": "The page clearly states that CSS custom properties are used to define variables that can be reused in stylesheets."
     },
     {
-      "query": "What do the CSS-wide keywords represent?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Values_and_units/Textual_data_types",
-      "url_match": "Textual_data_types",
+      "query": "How do custom properties simplify complex CSS rules?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascading_variables",
+      "url_match": "Cascading_variables",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly defines the CSS-wide keywords and their meanings."
+      "verifier_rationale": "The content explains that custom properties allow for the reuse of common values, simplifying complex or repetitive rules."
     },
     {
-      "query": "What does the CSS motion path module allow authors to do?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Motion_path",
-      "url_match": "Motion_path",
+      "query": "What does the CSS containment module define?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment",
+      "url_match": "Containment",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The CSS motion path module allows authors to animate any graphical object along a custom path."
+      "verifier_rationale": "The CSS containment module defines containment and container queries."
     },
     {
-      "query": "How can you animate an element along a defined path using CSS motion paths?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Motion_path",
-      "url_match": "Motion_path",
+      "query": "How do container queries differ from media queries?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment",
+      "url_match": "Containment",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains how to animate an element along a defined path using the 'offset-path' and 'offset-distance' properties."
+      "verifier_rationale": "The page explains that container queries are based on the dimensions of a specific container element, unlike media queries which are based on the viewport dimensions."
     },
     {
-      "query": "What properties can be used for visual styling of scrollbars?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scrollbars_styling",
-      "url_match": "Scrollbars_styling",
+      "query": "What is the syntax for the text-shadow property in CSS?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Text_decoration/Text_shadows",
+      "url_match": "Text_shadows",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that the CSS scrollbars styling module defines properties for visual styling of scrollbars."
+      "verifier_rationale": "The syntax for the text-shadow property is clearly described in the content."
     },
     {
-      "query": "How can you customize the color of the scrollbar track and thumb?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scrollbars_styling",
-      "url_match": "Scrollbars_styling",
+      "query": "How can you apply multiple shadows to the same text?",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Text_decoration/Text_shadows",
+      "url_match": "Text_shadows",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that you can customize the color of the scrollbar track and thumb."
-    },
-    {
-      "query": "What can the border-radius generator tool be used for?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Backgrounds_and_borders/Border-radius_generator",
-      "url_match": "Border-radius_generator",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page states that the tool can be used to generate CSS border-radius effects."
-    },
-    {
-      "query": "How does the border-radius generator help in generating CSS effects?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Backgrounds_and_borders/Border-radius_generator",
-      "url_match": "Border-radius_generator",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page states that the border-radius generator can be used to generate CSS border-radius effects."
-    },
-    {
-      "query": "What does the CSS round display module define?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Round_display",
-      "url_match": "Round_display",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The CSS round display module defines CSS extensions to support a round display, such as wrist-watches."
-    },
-    {
-      "query": "Which properties are introduced in the CSS round display module?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Round_display",
-      "url_match": "Round_display",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The properties introduced in the CSS round display module are `border-boundary` and `shape-inside`."
-    },
-    {
-      "query": "What is the purpose of the CSS ruby layout module?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ruby_layout",
-      "url_match": "Ruby_layout",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The purpose of the CSS ruby layout module is to provide the rendering model and formatting controls related to the display of ruby annotations."
-    },
-    {
-      "query": "Which properties are introduced by the CSS ruby layout module?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Ruby_layout",
-      "url_match": "Ruby_layout",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The properties introduced by the CSS ruby layout module are clearly listed in the content."
-    },
-    {
-      "query": "What is the HTML DOM API made up of?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API",
-      "url_match": "HTML_DOM_API",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The HTML DOM API is made up of the interfaces that define the functionality of each of the elements in HTML, as well as any supporting types and interfaces they rely upon."
-    },
-    {
-      "query": "What functionality does the HTMLElement interface provide?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API",
-      "url_match": "HTML_DOM_API",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The HTMLElement interface provides properties and methods common to all HTML elements, such as the element's ID and coordinates."
-    },
-    {
-      "query": "How are grid lines numbered in CSS grid layout?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Line-based_placement",
-      "url_match": "Line-based_placement",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content clearly explains that grid lines are numbered for columns and rows, indexed from 1."
-    },
-    {
-      "query": "What properties are used for positioning items by line number in a grid?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Line-based_placement",
-      "url_match": "Line-based_placement",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The properties used for positioning items by line number in a grid are `grid-column-start`, `grid-column-end`, `grid-row-start`, and `grid-row-end`."
-    },
-    {
-      "query": "What does the CSS transforms module define?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Transforms",
-      "url_match": "Transforms",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The CSS transforms module defines how elements styled with CSS can be transformed in two-dimensional or three-dimensional space."
-    },
-    {
-      "query": "How can the perspective property affect the view of a 3D transformed element?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Transforms",
-      "url_match": "Transforms",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explains how the perspective property determines the distance between the viewer and the z=0 plane, affecting the view of 3D transformed elements."
-    },
-    {
-      "query": "What is CSS masking?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Masking/Introduction",
-      "url_match": "Introduction",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly defines CSS masking as a method to reveal or hide parts of an element using mask images."
-    },
-    {
-      "query": "How do alpha masks work in CSS?",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Masking/Introduction",
-      "url_match": "Introduction",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly explains that with alpha masks, the opacity of the masked element matches the opacity of the mask applied."
+      "verifier_rationale": "The page clearly explains how to apply multiple shadows to the same text using the text-shadow property."
     }
   ],
   "newegg": [
@@ -2162,85 +2162,121 @@
   ],
   "postgres-docs": [
     {
-      "query": "Who are the current committers for PostgreSQL?",
-      "url": "https://www.postgresql.org/developer/committers/",
-      "url_match": "committers",
+      "query": "What does this chapter provide an overview of?",
+      "url": "https://www.postgresql.org/docs/current/storage.html",
+      "url_match": "storage.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The names of the current committers for PostgreSQL are clearly listed on the page."
+      "verifier_rationale": "The chapter provides an overview of the physical storage format used by PostgreSQL databases."
     },
     {
-      "query": "What criteria are used to select new committers for PostgreSQL?",
-      "url": "https://www.postgresql.org/developer/committers/",
-      "url_match": "committers",
+      "query": "What is the main topic of Chapter 66?",
+      "url": "https://www.postgresql.org/docs/current/storage.html",
+      "url_match": "storage.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The criteria for selecting new committers are clearly listed in the content."
+      "verifier_rationale": "The main topic of Chapter 66 is the physical storage format used by PostgreSQL databases."
     },
     {
-      "query": "How can I install PostgreSQL on FreeBSD?",
-      "url": "https://www.postgresql.org/download/freebsd/",
-      "url_match": "freebsd",
+      "query": "What is PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/17/intro-whatis.html",
+      "url_match": "intro-whatis.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page provides information on how to install PostgreSQL on FreeBSD through the FreeBSD Ports and Packages Collection."
+      "verifier_rationale": "The definition of PostgreSQL is clearly stated in the content."
     },
     {
-      "query": "Where can I find a list of PostgreSQL packages for FreeBSD?",
-      "url": "https://www.postgresql.org/download/freebsd/",
-      "url_match": "freebsd",
+      "query": "What type of database management system is PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/17/intro-whatis.html",
+      "url_match": "intro-whatis.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page provides a link to a list of PostgreSQL packages for FreeBSD."
+      "verifier_rationale": "The content clearly states that PostgreSQL is an object-relational database management system (ORDBMS)."
     },
     {
-      "query": "What should be included in every bug report?",
-      "url": "https://www.postgresql.org/docs/17/bug-reporting.html",
-      "url_match": "bug-reporting.html",
+      "query": "What does this chapter provide an overview of?",
+      "url": "https://www.postgresql.org/docs/18/overview.html",
+      "url_match": "overview.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly lists the items that should be contained in every bug report."
+      "verifier_rationale": "The chapter provides an overview of the internal structure of the backend of PostgreSQL."
     },
     {
-      "query": "Where should I send bug reports for PostgreSQL?",
-      "url": "https://www.postgresql.org/docs/17/bug-reporting.html",
-      "url_match": "bug-reporting.html",
+      "query": "What should you understand after reading the following sections of this chapter?",
+      "url": "https://www.postgresql.org/docs/18/overview.html",
+      "url_match": "overview.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states to send bug reports to the bug report mailing list at <pgsql-bugs@lists.postgresql.org>."
+      "verifier_rationale": "The content states that you should have an idea of how a query is processed after reading the sections."
     },
     {
-      "query": "What is PL/Tcl?",
-      "url": "https://www.postgresql.org/docs/18/pltcl.html",
-      "url_match": "pltcl.html",
+      "query": "What does the information schema consist of?",
+      "url": "https://www.postgresql.org/docs/17/information-schema.html",
+      "url_match": "information-schema.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl language to be used to write PostgreSQL functions and procedures."
+      "verifier_rationale": "The information schema consists of a set of views that contain information about the objects defined in the current database."
     },
     {
-      "query": "What language does PL/Tcl enable to write PostgreSQL functions and procedures?",
-      "url": "https://www.postgresql.org/docs/18/pltcl.html",
-      "url_match": "pltcl.html",
+      "query": "Why might a standard-compliant query return several rows when querying for constraint information?",
+      "url": "https://www.postgresql.org/docs/17/information-schema.html",
+      "url_match": "information-schema.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content clearly states that PL/Tcl enables the Tcl language to be used to write PostgreSQL functions and procedures."
+      "verifier_rationale": "The page explains that the SQL standard requires constraint names to be unique within a schema, but PostgreSQL does not enforce this restriction, leading to multiple rows."
     },
     {
-      "query": "What are the procedural languages available in the standard PostgreSQL distribution?",
+      "query": "What is the customary TCP port number for servers supporting the PostgreSQL protocol?",
+      "url": "https://www.postgresql.org/docs/current/protocol.html",
+      "url_match": "protocol.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The customary TCP port number for servers supporting the PostgreSQL protocol is 5432."
+    },
+    {
+      "query": "What version of the protocol was introduced in PostgreSQL version 18?",
+      "url": "https://www.postgresql.org/docs/current/protocol.html",
+      "url_match": "protocol.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content clearly states that version 3.2 of the protocol was introduced in PostgreSQL version 18."
+    },
+    {
+      "query": "What is the purpose of logical decoding in PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/18/logicaldecoding.html",
+      "url_match": "logicaldecoding.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The purpose of logical decoding in PostgreSQL is to stream modifications performed via SQL to external consumers for various purposes, including replication solutions and auditing."
+    },
+    {
+      "query": "How are changes streamed in logical decoding?",
+      "url": "https://www.postgresql.org/docs/18/logicaldecoding.html",
+      "url_match": "logicaldecoding.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly states that changes are streamed via logical replication slots."
+    },
+    {
+      "query": "What are the four procedural languages available in the standard PostgreSQL distribution?",
       "url": "https://www.postgresql.org/docs/17/xplang.html",
       "url_match": "xplang.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page lists PL/pgSQL, PL/Tcl, PL/Perl, and PL/Python as the procedural languages available in the standard PostgreSQL distribution."
+      "verifier_rationale": "The four procedural languages are PL/pgSQL, PL/Tcl, PL/Perl, and PL/Python."
     },
     {
       "query": "How does PostgreSQL handle functions written in procedural languages?",
@@ -2249,25 +2285,25 @@
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains that PostgreSQL uses a special handler to interpret functions written in procedural languages."
+      "verifier_rationale": "The page clearly explains that PostgreSQL uses special handlers to interpret functions written in procedural languages."
     },
     {
-      "query": "What is a security vulnerability in PostgreSQL?",
-      "url": "https://www.postgresql.org/support/security/",
-      "url_match": "security",
+      "query": "What resources are available for PostgreSQL besides the documentation?",
+      "url": "https://www.postgresql.org/docs/18/resources.html",
+      "url_match": "resources.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The definition of a security vulnerability in PostgreSQL is clearly stated in the content."
+      "verifier_rationale": "The page lists various resources available for PostgreSQL besides the documentation."
     },
     {
-      "query": "How can I report a PostgreSQL security vulnerability?",
-      "url": "https://www.postgresql.org/support/security/",
-      "url_match": "security",
+      "query": "How can I contribute to the PostgreSQL community?",
+      "url": "https://www.postgresql.org/docs/18/resources.html",
+      "url_match": "resources.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page provides clear instructions on how to report a PostgreSQL security vulnerability."
+      "verifier_rationale": "The page clearly states that users can contribute their knowledge back to the PostgreSQL community."
     },
     {
       "query": "What is the title of the book authored by Jes\u00fas Espino?",
@@ -2288,58 +2324,202 @@
       "verifier_rationale": "The authors of 'PostgreSQL 16 Administration Cookbook' are Gianni Ciolli, Boriss Mej\u00edas, Jimmy Angelakos, Vibhor Kumar, and Simon Riggs."
     },
     {
-      "query": "What are the procedural languages available in the standard PostgreSQL distribution?",
-      "url": "https://www.postgresql.org/docs/current/xplang.html",
-      "url_match": "xplang.html",
+      "query": "What are the facilities PostgreSQL has for evaluating mixed-type expressions?",
+      "url": "https://www.postgresql.org/docs/current/typeconv.html",
+      "url_match": "typeconv.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page lists the procedural languages available in the standard PostgreSQL distribution."
+      "verifier_rationale": "The page discusses PostgreSQL's extensive facilities for evaluating mixed-type expressions."
     },
     {
-      "query": "How does PostgreSQL handle functions written in procedural languages?",
-      "url": "https://www.postgresql.org/docs/current/xplang.html",
-      "url_match": "xplang.html",
+      "query": "How can explicit type conversion affect the results of a query in PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/current/typeconv.html",
+      "url_match": "typeconv.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains that PostgreSQL uses special handlers to interpret functions written in procedural languages."
+      "verifier_rationale": "The content states that implicit conversions can affect the results of a query and that explicit type conversion can tailor these results."
     },
     {
-      "query": "What is logical replication in PostgreSQL?",
-      "url": "https://www.postgresql.org/docs/18/logical-replication.html",
-      "url_match": "logical-replication.html",
+      "query": "What are the three fundamentally different approaches to backing up PostgreSQL data?",
+      "url": "https://www.postgresql.org/docs/current/backup.html",
+      "url_match": "backup.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The definition of logical replication in PostgreSQL is clearly provided in the content."
+      "verifier_rationale": "The three approaches are SQL dump, file system level backup, and continuous archiving."
     },
     {
-      "query": "What are the typical use-cases for logical replication?",
-      "url": "https://www.postgresql.org/docs/18/logical-replication.html",
-      "url_match": "logical-replication.html",
+      "query": "What is the importance of backing up PostgreSQL databases regularly?",
+      "url": "https://www.postgresql.org/docs/current/backup.html",
+      "url_match": "backup.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The typical use-cases for logical replication are clearly listed in the content."
+      "verifier_rationale": "The content explicitly states that PostgreSQL databases should be backed up regularly because they contain valuable data."
     },
     {
-      "query": "What is PgQue v0.1?",
-      "url": "https://www.postgresql.org/about/news/pgque-v01-zero-bloat-postgres-queue-3284/",
-      "url_match": "pgque-v01-zero-bloat-postgres-queue-3284",
+      "query": "What is the recommended way to install PostgreSQL for users of the system?",
+      "url": "https://www.postgresql.org/docs/current/install-binaries.html",
+      "url_match": "install-binaries.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "PgQue v0.1 is a zero-bloat Postgres event/message queue implemented in pure SQL and PL/pgSQL."
+      "verifier_rationale": "The recommended way to install PostgreSQL for users of the system is through binary packages."
     },
     {
-      "query": "What are the key features of PgQue?",
-      "url": "https://www.postgresql.org/about/news/pgque-v01-zero-bloat-postgres-queue-3284/",
-      "url_match": "pgque-v01-zero-bloat-postgres-queue-3284",
+      "query": "Where can I find an updated list of platforms providing binary packages for PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/current/install-binaries.html",
+      "url_match": "install-binaries.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The key features of PgQue are clearly listed in the content."
+      "verifier_rationale": "The page clearly states to visit the download section on the PostgreSQL website for an updated list of platforms providing binary packages."
+    },
+    {
+      "query": "What is the process by which the database server establishes the identity of the client?",
+      "url": "https://www.postgresql.org/docs/17/client-authentication.html",
+      "url_match": "client-authentication.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The process is called authentication."
+    },
+    {
+      "query": "How does PostgreSQL determine which database users can connect?",
+      "url": "https://www.postgresql.org/docs/17/client-authentication.html",
+      "url_match": "client-authentication.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content explains that PostgreSQL restricts which database users can connect based on the authentication process and the specified database user name."
+    },
+    {
+      "query": "What is the difference between a warm standby server and a hot standby server?",
+      "url": "https://www.postgresql.org/docs/18/high-availability.html",
+      "url_match": "high-availability.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "A warm standby server cannot be connected to until promoted, while a hot standby server can accept connections and serve read-only queries."
+    },
+    {
+      "query": "How do synchronous and asynchronous solutions differ in terms of data propagation?",
+      "url": "https://www.postgresql.org/docs/18/high-availability.html",
+      "url_match": "high-availability.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains that synchronous solutions ensure all servers commit a transaction before it is considered complete, while asynchronous solutions allow delays in data propagation."
+    },
+    {
+      "query": "What are the components required for OAuth validator modules in PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/18/oauth-validators.html",
+      "url_match": "oauth-validators.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly states that OAuth validator modules must consist of an initialization function and a required callback for performing validation."
+    },
+    {
+      "query": "Why is correct implementation of OAuth validator modules crucial for server safety?",
+      "url": "https://www.postgresql.org/docs/18/oauth-validators.html",
+      "url_match": "oauth-validators.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content states that a misbehaving validator might let unauthorized users into the database, making correct implementation crucial for server safety."
+    },
+    {
+      "query": "What does Part IV of the PostgreSQL documentation describe?",
+      "url": "https://www.postgresql.org/docs/18/client-interfaces.html",
+      "url_match": "client-interfaces.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "Part IV describes the client programming interfaces distributed with PostgreSQL."
+    },
+    {
+      "query": "What should readers of this part be familiar with?",
+      "url": "https://www.postgresql.org/docs/18/client-interfaces.html",
+      "url_match": "client-interfaces.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "Readers should be familiar with using SQL to manipulate and query the database and the programming language of their choice."
+    },
+    {
+      "query": "How do I set up and run the PostgreSQL database server?",
+      "url": "https://www.postgresql.org/docs/17/runtime.html",
+      "url_match": "runtime.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page discusses how to set up and run the PostgreSQL database server."
+    },
+    {
+      "query": "What should I do if I am using a pre-packaged version of PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/17/runtime.html",
+      "url_match": "runtime.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content clearly states to consult the package-level documentation for details."
+    },
+    {
+      "query": "What is the primary purpose of the backup manifest generated by pg_basebackup?",
+      "url": "https://www.postgresql.org/docs/18/backup-manifest-format.html",
+      "url_match": "backup-manifest-format.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The primary purpose of the backup manifest generated by pg_basebackup is to permit the backup to be verified using pg_verifybackup."
+    },
+    {
+      "query": "What format is the backup manifest encoded in?",
+      "url": "https://www.postgresql.org/docs/18/backup-manifest-format.html",
+      "url_match": "backup-manifest-format.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The backup manifest is encoded as UTF-8."
+    },
+    {
+      "query": "What factors can affect query performance in PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/current/performance-tips.html",
+      "url_match": "performance-tips.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page states that query performance can be affected by many things."
+    },
+    {
+      "query": "What does this chapter provide hints about regarding PostgreSQL performance?",
+      "url": "https://www.postgresql.org/docs/current/performance-tips.html",
+      "url_match": "performance-tips.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The chapter provides hints about understanding and tuning PostgreSQL performance."
+    },
+    {
+      "query": "What tools are available for monitoring database activity?",
+      "url": "https://www.postgresql.org/docs/17/monitoring.html",
+      "url_match": "monitoring.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page lists several tools for monitoring database activity, including `ps`, `top`, `iostat`, and `vmstat`."
+    },
+    {
+      "query": "What command can be used to investigate a poorly-performing query in PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/17/monitoring.html",
+      "url_match": "monitoring.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page mentions using PostgreSQL's `EXPLAIN` command to investigate poorly-performing queries."
     },
     {
       "query": "What does PostgreSQL use for date/time input support?",
@@ -2351,229 +2531,85 @@
       "verifier_rationale": "The content clearly states that PostgreSQL uses an internal heuristic parser for all date/time input support."
     },
     {
-      "query": "What information does this appendix include about the parser?",
+      "query": "What information does the appendix include about the parser's lookup tables?",
       "url": "https://www.postgresql.org/docs/current/datetime-appendix.html",
       "url_match": "datetime-appendix.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The appendix includes information on the content of the lookup tables and describes the steps used by the parser to decode dates and times."
+      "verifier_rationale": "The appendix includes information on the content of the lookup tables used by the parser."
     },
     {
-      "query": "What is the contact email for press enquiries?",
-      "url": "https://www.postgresql.org/about/press/",
-      "url_match": "press",
+      "query": "What was the initial implementation year of the POSTGRES project?",
+      "url": "https://www.postgresql.org/docs/18/history.html",
+      "url_match": "history.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The contact email for press enquiries is clearly stated as press@postgresql.org."
+      "verifier_rationale": "The initial implementation of the POSTGRES project began in 1986."
     },
     {
-      "query": "Who contributed to the PostgreSQL 18 press kit?",
-      "url": "https://www.postgresql.org/about/press/",
-      "url_match": "press",
+      "query": "What major enhancements were made in Postgres95 compared to POSTGRES, Version 4.2?",
+      "url": "https://www.postgresql.org/docs/18/history.html",
+      "url_match": "history.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page lists the contributors to the PostgreSQL 18 press kit."
+      "verifier_rationale": "The major enhancements made in Postgres95 compared to POSTGRES, Version 4.2, are clearly listed in the content."
     },
     {
-      "query": "What companies provide the servers for www.postgresql.org?",
-      "url": "https://www.postgresql.org/about/servers/",
-      "url_match": "servers",
+      "query": "What is PL/Tcl?",
+      "url": "https://www.postgresql.org/docs/current/pltcl.html",
+      "url_match": "pltcl.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page lists various companies that provide servers for www.postgresql.org."
+      "verifier_rationale": "PL/Tcl is a loadable procedural language for the PostgreSQL database system that enables the Tcl language to be used to write PostgreSQL functions and procedures."
     },
     {
-      "query": "What are the specifications of the server named 'arp'?",
-      "url": "https://www.postgresql.org/about/servers/",
-      "url_match": "servers",
+      "query": "What language does PL/Tcl enable to write PostgreSQL functions and procedures?",
+      "url": "https://www.postgresql.org/docs/current/pltcl.html",
+      "url_match": "pltcl.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The specifications of the server named 'arp' are clearly listed in the content."
+      "verifier_rationale": "The content clearly states that PL/Tcl enables the Tcl language to be used for writing PostgreSQL functions and procedures."
     },
     {
-      "query": "What factors can affect query performance in PostgreSQL?",
-      "url": "https://www.postgresql.org/docs/17/performance-tips.html",
-      "url_match": "performance-tips.html",
+      "query": "What topics are covered in Part II of the SQL Language documentation?",
+      "url": "https://www.postgresql.org/docs/current/sql.html",
+      "url_match": "sql.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content explicitly states that query performance can be affected by many things."
+      "verifier_rationale": "The topics covered in Part II include general syntax of SQL, creating tables, populating the database, querying, available data types, functions, and database tuning."
     },
     {
-      "query": "What does this chapter provide hints about regarding PostgreSQL performance?",
-      "url": "https://www.postgresql.org/docs/17/performance-tips.html",
-      "url_match": "performance-tips.html",
+      "query": "What is the recommended way to enter SQL commands in PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/current/sql.html",
+      "url_match": "sql.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The chapter provides hints about understanding and tuning PostgreSQL performance."
+      "verifier_rationale": "The page states that SQL commands are typically entered using the PostgreSQL interactive terminal psql."
     },
     {
-      "query": "What are Recognised NPOs in relation to the PostgreSQL project?",
-      "url": "https://www.postgresql.org/community/recognised-npos/",
-      "url_match": "recognised-npos",
+      "query": "What is logical replication in PostgreSQL?",
+      "url": "https://www.postgresql.org/docs/current/logical-replication.html",
+      "url_match": "logical-replication.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "Recognised NPOs are legal entities that support the PostgreSQL project as their primary objective."
+      "verifier_rationale": "The definition of logical replication is clearly provided in the content."
     },
     {
-      "query": "What is the goal of PostgreSQL Europe?",
-      "url": "https://www.postgresql.org/community/recognised-npos/",
-      "url_match": "recognised-npos",
+      "query": "What are the typical use-cases for logical replication?",
+      "url": "https://www.postgresql.org/docs/current/logical-replication.html",
+      "url_match": "logical-replication.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The goal of PostgreSQL Europe is to promote the use of PostgreSQL in Europe by assisting local user groups."
-    },
-    {
-      "query": "What do brackets indicate in the command synopsis?",
-      "url": "https://www.postgresql.org/docs/current/notation.html",
-      "url_match": "notation.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "Brackets indicate optional parts in the command synopsis."
-    },
-    {
-      "query": "What is the role of an administrator in PostgreSQL?",
-      "url": "https://www.postgresql.org/docs/current/notation.html",
-      "url_match": "notation.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content clearly defines an administrator as a person in charge of installing and running the server."
-    },
-    {
-      "query": "What topics are covered in the Server Administration section?",
-      "url": "https://www.postgresql.org/docs/17/admin.html",
-      "url_match": "admin.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page explicitly states that the Server Administration section covers installation, configuration of the server, management of users and databases, and maintenance tasks."
-    },
-    {
-      "query": "Who should be familiar with the topics in the Server Administration part?",
-      "url": "https://www.postgresql.org/docs/17/admin.html",
-      "url_match": "admin.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content states that anyone running PostgreSQL server, especially in production, should be familiar with these topics."
-    },
-    {
-      "query": "How do I install PL/Python in a PostgreSQL database?",
-      "url": "https://www.postgresql.org/docs/current/plpython.html",
-      "url_match": "plpython.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly states to install PL/Python, use `CREATE EXTENSION plpython3u`."
-    },
-    {
-      "query": "What does it mean that PL/Python is an 'untrusted' language?",
-      "url": "https://www.postgresql.org/docs/current/plpython.html",
-      "url_match": "plpython.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explains that PL/Python is untrusted because it does not restrict what users can do, allowing full access as if they were a database administrator."
-    },
-    {
-      "query": "What information do I need to provide to sign up for a free community account?",
-      "url": "https://www.postgresql.org/account/signup/",
-      "url_match": "signup",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly lists the required information for signing up for a free community account."
-    },
-    {
-      "query": "What happens after I enter my email address during the signup process?",
-      "url": "https://www.postgresql.org/account/signup/",
-      "url_match": "signup",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "A confirmation email will be sent to the specified address after entering it."
-    },
-    {
-      "query": "What is the formal name of the SQL standard?",
-      "url": "https://www.postgresql.org/docs/18/features.html",
-      "url_match": "features.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The formal name of the SQL standard is ISO/IEC 9075 'Database Language SQL'."
-    },
-    {
-      "query": "How many mandatory features does PostgreSQL conform to for full Core conformance?",
-      "url": "https://www.postgresql.org/docs/18/features.html",
-      "url_match": "features.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "PostgreSQL conforms to at least 170 out of 177 mandatory features required for full Core conformance."
-    },
-    {
-      "query": "How do I install PL/Python in a PostgreSQL database?",
-      "url": "https://www.postgresql.org/docs/17/plpython.html",
-      "url_match": "plpython.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly states to install PL/Python, use `CREATE EXTENSION plpython3u`."
-    },
-    {
-      "query": "What does it mean that PL/Python is an 'untrusted' language?",
-      "url": "https://www.postgresql.org/docs/17/plpython.html",
-      "url_match": "plpython.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explains that PL/Python is an 'untrusted' language, meaning it does not restrict what users can do."
-    },
-    {
-      "query": "What is the signature of a table sampling method function in PostgreSQL?",
-      "url": "https://www.postgresql.org/docs/18/tablesample-method.html",
-      "url_match": "tablesample-method.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The signature of a table sampling method function in PostgreSQL is 'method_name(internal) RETURNS tsm_handler'."
-    },
-    {
-      "query": "What does the `repeatable_across_queries` field in the TsmRoutine struct indicate?",
-      "url": "https://www.postgresql.org/docs/18/tablesample-method.html",
-      "url_match": "tablesample-method.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly states that the `repeatable_across_queries` field indicates whether the sampling method can deliver identical samples across successive queries with the same parameters."
-    },
-    {
-      "query": "What should be included in every bug report?",
-      "url": "https://www.postgresql.org/docs/current/bug-reporting.html",
-      "url_match": "bug-reporting.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly lists the items that should be contained in every bug report."
-    },
-    {
-      "query": "Where should I send bug reports for PostgreSQL?",
-      "url": "https://www.postgresql.org/docs/current/bug-reporting.html",
-      "url_match": "bug-reporting.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly states to send bug reports to the bug report mailing list at <pgsql-bugs@lists.postgresql.org>."
+      "verifier_rationale": "The typical use-cases for logical replication are clearly listed in the content."
     }
   ],
   "propublica": [
@@ -3084,184 +3120,94 @@
   ],
   "react-dev": [
     {
-      "query": "What is the purpose of the `addTransitionType` API?",
-      "url": "https://react.dev/reference/react/addTransitionType",
-      "url_match": "addTransitionType",
+      "query": "What is the purpose of the `useSyncExternalStore` hook?",
+      "url": "https://react.dev/reference/react/useSyncExternalStore",
+      "url_match": "useSyncExternalStore",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The purpose of the `addTransitionType` API is to specify the cause of a transition."
+      "verifier_rationale": "The purpose of the `useSyncExternalStore` hook is clearly stated as allowing components to subscribe to an external store."
     },
     {
-      "query": "What happens to Transition Types after each commit?",
-      "url": "https://react.dev/reference/react/addTransitionType",
-      "url_match": "addTransitionType",
+      "query": "What functions do you need to pass as arguments to `useSyncExternalStore`?",
+      "url": "https://react.dev/reference/react/useSyncExternalStore",
+      "url_match": "useSyncExternalStore",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "Transition Types are reset after each commit."
+      "verifier_rationale": "The page clearly states that you need to pass the `subscribe` and `getSnapshot` functions as arguments to `useSyncExternalStore`."
     },
     {
-      "query": "What do the `react-dom/static` APIs allow you to generate?",
-      "url": "https://react.dev/reference/react-dom/static",
-      "url_match": "static",
+      "query": "How do you combine a reducer with context in React?",
+      "url": "https://react.dev/learn/scaling-up-with-reducer-and-context",
+      "url_match": "scaling-up-with-reducer-and-context",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The `react-dom/static` APIs let you generate static HTML for React components."
+      "verifier_rationale": "The page provides a clear explanation of how to combine a reducer with context in React."
     },
     {
-      "query": "Which methods are available for rendering a React tree to static HTML with Node.js Streams?",
-      "url": "https://react.dev/reference/react-dom/static",
-      "url_match": "static",
+      "query": "What are the steps to create a context for managing tasks?",
+      "url": "https://react.dev/learn/scaling-up-with-reducer-and-context",
+      "url_match": "scaling-up-with-reducer-and-context",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The methods `prerenderToNodeStream` and `resumeAndPrerenderToNodeStream` are clearly listed for rendering a React tree to static HTML with Node.js Streams."
+      "verifier_rationale": "The steps to create a context for managing tasks are clearly outlined in the content."
     },
     {
-      "query": "What is the purpose of the `taintUniqueValue` function in React?",
-      "url": "https://react.dev/reference/react/experimental_taintUniqueValue",
-      "url_match": "experimental_taintUniqueValue",
+      "query": "What new features will React 18 include?",
+      "url": "https://react.dev/blog/2021/06/08/the-plan-for-react-18",
+      "url_match": "the-plan-for-react-18",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The purpose of the `taintUniqueValue` function is to prevent unique values from being passed to Client Components, such as passwords or tokens."
+      "verifier_rationale": "The page clearly lists new features such as automatic batching, new APIs like startTransition, and a new streaming server renderer."
     },
     {
-      "query": "What parameters does the `taintUniqueValue` function accept?",
-      "url": "https://react.dev/reference/react/experimental_taintUniqueValue",
-      "url_match": "experimental_taintUniqueValue",
+      "query": "How can I try React 18 Alpha today?",
+      "url": "https://react.dev/blog/2021/06/08/the-plan-for-react-18",
+      "url_match": "the-plan-for-react-18",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The parameters accepted by the `taintUniqueValue` function are clearly listed in the content."
+      "verifier_rationale": "The page provides clear instructions on how to try React 18 Alpha today."
     },
     {
-      "query": "What are React components?",
-      "url": "https://18.react.dev/",
-      "url_match": "",
+      "query": "How do you specify the title of the document using the `<title>` component?",
+      "url": "https://react.dev/reference/react-dom/components/title",
+      "url_match": "title",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly defines React components as individual pieces that can be combined to create user interfaces."
+      "verifier_rationale": "The page clearly explains how to specify the title of the document using the `<title>` component."
     },
     {
-      "query": "How does React handle data updates in components?",
-      "url": "https://18.react.dev/",
-      "url_match": "",
+      "query": "What special rendering behavior does React have for the `<title>` component?",
+      "url": "https://react.dev/reference/react-dom/components/title",
+      "url_match": "title",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "React components receive data and return what should appear on the screen, updating the display in response to interactions."
+      "verifier_rationale": "The page clearly states that React will always place the DOM element corresponding to the `<title>` component within the document\u2019s `<head>`."
     },
     {
-      "query": "How many languages is react.dev being translated into?",
-      "url": "https://translations.react.dev/",
-      "url_match": "",
+      "query": "What are Server Functions used for in React?",
+      "url": "https://react.dev/reference/rsc/server-functions",
+      "url_match": "server-functions",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page states that react.dev is being translated into 38 languages."
+      "verifier_rationale": "Server Functions allow Client Components to call async functions executed on the server."
     },
     {
-      "query": "Which languages have completed translations for both core and other content?",
-      "url": "https://translations.react.dev/",
-      "url_match": "",
+      "query": "How do you create a Server Function from a Server Component?",
+      "url": "https://react.dev/reference/rsc/server-functions",
+      "url_match": "server-functions",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page lists languages with completed translations for both core and other content."
-    },
-    {
-      "query": "What is the purpose of using `<Fragment>` in React?",
-      "url": "https://react.dev/reference/react/Fragment",
-      "url_match": "Fragment",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "<Fragment> is used to group elements without adding extra wrapper nodes."
-    },
-    {
-      "query": "How can you pass a `key` to a Fragment?",
-      "url": "https://react.dev/reference/react/Fragment",
-      "url_match": "Fragment",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly states that to pass a `key` to a Fragment, you must explicitly import `Fragment` from 'react' and render `<Fragment key={yourKey}>...</Fragment>`."
-    },
-    {
-      "query": "What does <StrictMode> do in React?",
-      "url": "https://react.dev/reference/react/StrictMode",
-      "url_match": "StrictMode",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "<StrictMode> helps find common bugs in your components early during development by enabling additional development behaviors and warnings."
-    },
-    {
-      "query": "How can you enable Strict Mode for a part of your application?",
-      "url": "https://react.dev/reference/react/StrictMode",
-      "url_match": "StrictMode",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page provides a clear example of how to enable Strict Mode for a part of your application."
-    },
-    {
-      "query": "What does memo do in React?",
-      "url": "https://react.dev/reference/react/memo",
-      "url_match": "memo",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "`memo` lets you skip re-rendering a component when its props are unchanged."
-    },
-    {
-      "query": "How can you specify a custom comparison function for memo?",
-      "url": "https://react.dev/reference/react/memo",
-      "url_match": "memo",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly explains how to specify a custom comparison function for memo."
-    },
-    {
-      "query": "What does cloneElement do in React?",
-      "url": "https://react.dev/reference/react/cloneElement",
-      "url_match": "cloneElement",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "`cloneElement` lets you create a new React element using another element as a starting point."
-    },
-    {
-      "query": "What are the parameters required for cloneElement?",
-      "url": "https://react.dev/reference/react/cloneElement",
-      "url_match": "cloneElement",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The parameters for cloneElement are clearly listed in the page content."
-    },
-    {
-      "query": "How do you share state between components in React?",
-      "url": "https://react.dev/learn/sharing-state-between-components",
-      "url_match": "sharing-state-between-components",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly explains that you share state between components by lifting it up to their closest common parent and passing it down via props."
-    },
-    {
-      "query": "What is the difference between controlled and uncontrolled components?",
-      "url": "https://react.dev/learn/sharing-state-between-components",
-      "url_match": "sharing-state-between-components",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly explains that controlled components are driven by props while uncontrolled components maintain their own local state."
+      "verifier_rationale": "The page provides a clear example of creating a Server Function from a Server Component."
     },
     {
       "query": "What is the new domain for the React documentation site?",
@@ -3273,7 +3219,7 @@
       "verifier_rationale": "The new domain for the React documentation site is react.dev."
     },
     {
-      "query": "How does the new documentation teach React differently than before?",
+      "query": "How does the new documentation teach React differently than the previous version?",
       "url": "https://react.dev/blog/2023/03/16/introducing-react-dev",
       "url_match": "introducing-react-dev",
       "page_match": "",
@@ -3282,76 +3228,112 @@
       "verifier_rationale": "The new documentation teaches React with Hooks from the beginning, unlike the previous version which assumed familiarity with class components."
     },
     {
-      "query": "What is the mission of the React Foundation?",
-      "url": "https://react.dev/blog/2025/10/07/introducing-the-react-foundation",
-      "url_match": "introducing-the-react-foundation",
+      "query": "What does the `startTransition` function do?",
+      "url": "https://react.dev/reference/react/startTransition",
+      "url_match": "startTransition",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The mission of the React Foundation is to support the React community and ecosystem."
+      "verifier_rationale": "`startTransition` lets you render a part of the UI in the background."
     },
     {
-      "query": "Who will serve as the executive director of the React Foundation?",
-      "url": "https://react.dev/blog/2025/10/07/introducing-the-react-foundation",
-      "url_match": "introducing-the-react-foundation",
+      "query": "How do you mark a state update as a Transition in React?",
+      "url": "https://react.dev/reference/react/startTransition",
+      "url_match": "startTransition",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "Seth Webster will serve as the executive director of the React Foundation."
+      "verifier_rationale": "The page clearly explains how to mark a state update as a Transition using the `startTransition` function."
     },
     {
-      "query": "What does 'use memo' do in React?",
-      "url": "https://react.dev/reference/react-compiler/directives/use-memo",
-      "url_match": "use-memo",
+      "query": "What are the characteristics of a pure component or hook in React?",
+      "url": "https://react.dev/reference/rules/components-and-hooks-must-be-pure",
+      "url_match": "components-and-hooks-must-be-pure",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "'use memo' marks a function for React Compiler optimization."
+      "verifier_rationale": "The characteristics of a pure component or hook in React are clearly listed in the content."
     },
     {
-      "query": "When should you consider using 'use memo'?",
-      "url": "https://react.dev/reference/react-compiler/directives/use-memo",
-      "url_match": "use-memo",
+      "query": "Why should side effects run outside of render in React components?",
+      "url": "https://react.dev/reference/rules/components-and-hooks-must-be-pure",
+      "url_match": "components-and-hooks-must-be-pure",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "'use memo' should be considered when using annotation mode or when gradually adopting React Compiler."
+      "verifier_rationale": "The page explains that side effects should not run in render to allow React to render components multiple times for optimal user experience."
     },
     {
-      "query": "What does renderToStaticMarkup do?",
-      "url": "https://react.dev/reference/react-dom/server/renderToStaticMarkup",
-      "url_match": "renderToStaticMarkup",
+      "query": "What does `prerenderToNodeStream` return upon successful rendering?",
+      "url": "https://react.dev/reference/react-dom/static/prerenderToNodeStream",
+      "url_match": "prerenderToNodeStream",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that `renderToStaticMarkup` renders a non-interactive React tree to an HTML string."
+      "verifier_rationale": "`prerenderToNodeStream` returns a Promise that resolves to an object containing `prelude` and `postponed`."
     },
     {
-      "query": "What are the parameters for renderToStaticMarkup?",
-      "url": "https://react.dev/reference/react-dom/server/renderToStaticMarkup",
-      "url_match": "renderToStaticMarkup",
+      "query": "When should I use `prerenderToNodeStream` instead of `renderToString`?",
+      "url": "https://react.dev/reference/react-dom/static/prerenderToNodeStream",
+      "url_match": "prerenderToNodeStream",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The parameters for renderToStaticMarkup are clearly listed in the page content."
+      "verifier_rationale": "`prerenderToNodeStream` is used for static server-side generation (SSG) and waits for all data to load before resolving, unlike `renderToString`."
     },
     {
-      "query": "What does the globals rule validate against in React?",
-      "url": "https://react.dev/reference/eslint-plugin-react-hooks/lints/globals",
-      "url_match": "globals",
+      "query": "What are the built-in React DOM Hooks?",
+      "url": "https://react.dev/reference/react-dom/hooks",
+      "url_match": "hooks",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page states that the globals rule validates against assignment/mutation of globals during render."
+      "verifier_rationale": "The page lists and describes the built-in React DOM Hooks."
     },
     {
-      "query": "What are examples of invalid code for the globals rule?",
-      "url": "https://react.dev/reference/eslint-plugin-react-hooks/lints/globals",
-      "url_match": "globals",
+      "query": "What does the useFormStatus hook do?",
+      "url": "https://react.dev/reference/react-dom/hooks",
+      "url_match": "hooks",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page provides specific examples of invalid code for the globals rule."
+      "verifier_rationale": "The page clearly states that useFormStatus allows you to make updates to the UI based on the status of a form."
+    },
+    {
+      "query": "What is the purpose of useLayoutEffect?",
+      "url": "https://react.dev/reference/react/useLayoutEffect",
+      "url_match": "useLayoutEffect",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The purpose of useLayoutEffect is to perform layout measurements before the browser repaints the screen."
+    },
+    {
+      "query": "How does useLayoutEffect differ from useEffect?",
+      "url": "https://react.dev/reference/react/useLayoutEffect",
+      "url_match": "useLayoutEffect",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page explicitly compares useLayoutEffect and useEffect, stating that useLayoutEffect blocks the browser from repainting while useEffect does not."
+    },
+    {
+      "query": "How do you pass a string attribute to JSX?",
+      "url": "https://react.dev/learn/javascript-in-jsx-with-curly-braces",
+      "url_match": "javascript-in-jsx-with-curly-braces",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to pass a string attribute to JSX using quotes."
+    },
+    {
+      "query": "What is the purpose of using curly braces in JSX?",
+      "url": "https://react.dev/learn/javascript-in-jsx-with-curly-braces",
+      "url_match": "javascript-in-jsx-with-curly-braces",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page explains that curly braces in JSX allow you to embed JavaScript expressions and variables directly within the markup."
     },
     {
       "query": "What does the `preconnect` function do?",
@@ -3372,441 +3354,459 @@
       "verifier_rationale": "The page provides a clear example of calling `preconnect` in an event handler."
     },
     {
-      "query": "What are the special React props supported for all built-in components?",
-      "url": "https://react.dev/reference/react-dom/components/common",
-      "url_match": "common",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page lists the special React props supported for all built-in components."
-    },
-    {
-      "query": "What does the `dangerouslySetInnerHTML` prop do in React components?",
-      "url": "https://react.dev/reference/react-dom/components/common",
-      "url_match": "common",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "`dangerouslySetInnerHTML` allows you to set raw HTML inside a React component, but should be used with caution to avoid XSS vulnerabilities."
-    },
-    {
-      "query": "Who leads the React development team?",
-      "url": "https://react.dev/community/team",
-      "url_match": "team",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content states that React development is led by a dedicated team working full time at Meta."
-    },
-    {
-      "query": "What roles do the current members of the React Core team work on?",
-      "url": "https://react.dev/community/team",
-      "url_match": "team",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page lists the current members of the React Core team along with their roles."
-    },
-    {
-      "query": "What does renderToReadableStream do?",
+      "query": "What does `renderToReadableStream` do in React?",
       "url": "https://react.dev/reference/react-dom/server/renderToReadableStream",
       "url_match": "renderToReadableStream",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that renderToReadableStream renders a React tree to a Readable Web Stream."
+      "verifier_rationale": "`renderToReadableStream` renders a React tree to a Readable Web Stream."
     },
     {
-      "query": "What parameters can be passed to renderToReadableStream?",
+      "query": "What parameters can be passed to the `renderToReadableStream` function?",
       "url": "https://react.dev/reference/react-dom/server/renderToReadableStream",
       "url_match": "renderToReadableStream",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The parameters for renderToReadableStream are clearly listed in the page content."
+      "verifier_rationale": "The parameters for the `renderToReadableStream` function are clearly listed in the page content."
     },
     {
-      "query": "What do the `react-dom/server` APIs do?",
-      "url": "https://react.dev/reference/react-dom/server",
-      "url_match": "server",
+      "query": "What is the recommended way to start building a new app or website with React?",
+      "url": "https://react.dev/learn/creating-a-react-app",
+      "url_match": "creating-a-react-app",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that the `react-dom/server` APIs let you server-side render React components to HTML."
+      "verifier_rationale": "The page clearly states that starting with a framework is recommended for building a new app or website with React."
     },
     {
-      "query": "What methods are available for Node.js Streams in the `react-dom/server` APIs?",
-      "url": "https://react.dev/reference/react-dom/server",
-      "url_match": "server",
+      "query": "What command is used to create a new Expo project?",
+      "url": "https://react.dev/learn/creating-a-react-app",
+      "url_match": "creating-a-react-app",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The methods available for Node.js Streams are clearly listed in the content."
+      "verifier_rationale": "The command to create a new Expo project is clearly stated as 'npx create-expo-app@latest'."
     },
     {
-      "query": "What does the `preinit` function do?",
-      "url": "https://react.dev/reference/react-dom/preinit",
-      "url_match": "preinit",
+      "query": "What is the purpose of the `useDebugValue` hook?",
+      "url": "https://react.dev/reference/react/useDebugValue",
+      "url_match": "useDebugValue",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "`preinit` lets you eagerly fetch and evaluate a stylesheet or external script."
+      "verifier_rationale": "The purpose of the `useDebugValue` hook is clearly stated as allowing you to add a label to a custom Hook in React DevTools."
     },
     {
-      "query": "What parameters does the `preinit` function accept?",
-      "url": "https://react.dev/reference/react-dom/preinit",
-      "url_match": "preinit",
+      "query": "How do you use the optional formatting function with `useDebugValue`?",
+      "url": "https://react.dev/reference/react/useDebugValue",
+      "url_match": "useDebugValue",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The parameters for the `preinit` function are clearly listed in the content."
+      "verifier_rationale": "The page clearly explains how to use the optional formatting function with `useDebugValue`."
     },
     {
-      "query": "What is the main topic of the videos dedicated to React?",
-      "url": "https://react.dev/community/videos",
-      "url_match": "videos",
+      "query": "What does createContext return?",
+      "url": "https://react.dev/reference/react/createContext",
+      "url_match": "createContext",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that the videos are dedicated to the discussion of React and the React ecosystem."
+      "verifier_rationale": "The page states that `createContext` returns a context object."
     },
     {
-      "query": "Who shared a welcome message at React Conf 2024?",
-      "url": "https://react.dev/community/videos",
-      "url_match": "videos",
+      "query": "How do you specify the value of a context in a provider?",
+      "url": "https://react.dev/reference/react/createContext",
+      "url_match": "createContext",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "Andrew 'Boz' Bosworth shared a welcome message at React Conf 2024."
+      "verifier_rationale": "The page clearly explains how to specify the value of a context in a provider."
     },
     {
-      "query": "What is React Compiler?",
-      "url": "https://react.dev/learn/react-compiler/introduction",
-      "url_match": "introduction",
+      "query": "What does the `compilationMode` option control in the React Compiler?",
+      "url": "https://react.dev/reference/react-compiler/compilationMode",
+      "url_match": "compilationMode",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly defines React Compiler as a build-time tool that optimizes React apps."
+      "verifier_rationale": "The page clearly states that the `compilationMode` option controls how the React Compiler selects which functions to compile."
     },
     {
-      "query": "How does React Compiler optimize re-renders?",
-      "url": "https://react.dev/learn/react-compiler/introduction",
-      "url_match": "introduction",
+      "query": "What are the different options available for `compilationMode`?",
+      "url": "https://react.dev/reference/react-compiler/compilationMode",
+      "url_match": "compilationMode",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains that React Compiler optimizes re-renders by automatically applying memoization to ensure components only re-render when necessary."
+      "verifier_rationale": "The page clearly lists the different options available for `compilationMode`."
     },
     {
-      "query": "What does the `prerender` function do?",
-      "url": "https://react.dev/reference/react-dom/static/prerender",
-      "url_match": "prerender",
+      "query": "What is the purpose of the `cache` function in React?",
+      "url": "https://react.dev/reference/react/cache",
+      "url_match": "cache",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "`prerender` renders a React tree to a static HTML string using a Web Stream."
+      "verifier_rationale": "The purpose of the `cache` function is to cache the result of a data fetch or computation for use with React Server Components."
     },
     {
-      "query": "What parameters can be passed to the `prerender` function?",
-      "url": "https://react.dev/reference/react-dom/static/prerender",
-      "url_match": "prerender",
+      "query": "How does `cache` handle errors when a memoized function throws an error?",
+      "url": "https://react.dev/reference/react/cache",
+      "url_match": "cache",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The parameters for the `prerender` function are clearly listed in the page content."
+      "verifier_rationale": "`cache` will cache errors, and if `fn` throws an error for certain arguments, it will be cached and re-thrown when called with those same arguments."
     },
     {
-      "query": "What does the built-in browser `<meta>` component do?",
-      "url": "https://react.dev/reference/react-dom/components/meta",
-      "url_match": "meta",
+      "query": "What are the differences between event handlers and Effects in React?",
+      "url": "https://react.dev/learn/separating-events-from-effects",
+      "url_match": "separating-events-from-effects",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that the built-in browser `<meta>` component lets you add metadata to the document."
+      "verifier_rationale": "The page clearly explains the differences between event handlers and Effects in React."
     },
     {
-      "query": "What props does the `<meta>` component support?",
-      "url": "https://react.dev/reference/react-dom/components/meta",
-      "url_match": "meta",
+      "query": "How can you extract non-reactive logic from Effects using Effect Events?",
+      "url": "https://react.dev/learn/separating-events-from-effects",
+      "url_match": "separating-events-from-effects",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly lists the props supported by the `<meta>` component."
+      "verifier_rationale": "You can extract non-reactive logic from Effects using Effect Events by defining a special Hook called useEffectEvent to encapsulate the non-reactive logic."
     },
     {
-      "query": "What is the purpose of forwardRef in React?",
-      "url": "https://react.dev/reference/react/forwardRef",
-      "url_match": "forwardRef",
+      "query": "What are directives used for in React Server Components?",
+      "url": "https://react.dev/reference/rsc/directives",
+      "url_match": "directives",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that forwardRef lets your component expose a DOM node to the parent component with a ref."
+      "verifier_rationale": "Directives provide instructions to bundlers compatible with React Server Components."
     },
     {
-      "query": "How do you expose a DOM node to the parent component using forwardRef?",
-      "url": "https://react.dev/reference/react/forwardRef",
-      "url_match": "forwardRef",
+      "query": "What does the directive 'use client' do?",
+      "url": "https://react.dev/reference/rsc/directives",
+      "url_match": "directives",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains how to expose a DOM node to the parent component using forwardRef."
+      "verifier_rationale": "'use client' lets you mark what code runs on the client."
     },
     {
-      "query": "What is the reason for deprecating Create React App?",
-      "url": "https://react.dev/blog/2025/02/14/sunsetting-create-react-app",
-      "url_match": "sunsetting-create-react-app",
+      "query": "What does eslint-plugin-react-hooks help you catch?",
+      "url": "https://react.dev/reference/eslint-plugin-react-hooks",
+      "url_match": "eslint-plugin-react-hooks",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page states that Create React App is being deprecated because it currently has no active maintainers and there are existing frameworks that solve its limitations."
+      "verifier_rationale": "The content clearly states that the plugin helps catch violations of React\u2019s rules at build time."
     },
     {
-      "query": "What are the recommended frameworks for creating new React apps?",
-      "url": "https://react.dev/blog/2025/02/14/sunsetting-create-react-app",
-      "url_match": "sunsetting-create-react-app",
+      "query": "What are the recommended rules included in eslint-plugin-react-hooks?",
+      "url": "https://react.dev/reference/eslint-plugin-react-hooks",
+      "url_match": "eslint-plugin-react-hooks",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page explicitly lists recommended frameworks for creating new React apps."
+      "verifier_rationale": "The recommended rules are clearly listed in the content."
     },
     {
-      "query": "What is the purpose of the useEffectEvent hook?",
-      "url": "https://react.dev/reference/react/useEffectEvent",
-      "url_match": "useEffectEvent",
+      "query": "What is the purpose of the React Compiler Beta release?",
+      "url": "https://react.dev/blog/2024/10/21/react-compiler-beta-release",
+      "url_match": "react-compiler-beta-release",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The purpose of the useEffectEvent hook is to separate events from Effects, allowing event handlers to access the latest values from render without re-synchronizing the Effect."
+      "verifier_rationale": "The purpose of the React Compiler Beta release is to allow early adopters and library maintainers to try it and provide feedback."
     },
     {
-      "query": "How does useEffectEvent handle the latest values from render?",
-      "url": "https://react.dev/reference/react/useEffectEvent",
-      "url_match": "useEffectEvent",
+      "query": "How can developers install the React Compiler ESLint plugin?",
+      "url": "https://react.dev/blog/2024/10/21/react-compiler-beta-release",
+      "url_match": "react-compiler-beta-release",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that Effect Events always see the latest values from render without re-synchronizing the Effect."
+      "verifier_rationale": "The page provides clear instructions on how to install the React Compiler ESLint plugin."
     },
     {
-      "query": "What does `Children.count(children)` do?",
-      "url": "https://react.dev/reference/react/Children",
-      "url_match": "Children",
+      "query": "Who are some of the contributors to the React documentation?",
+      "url": "https://react.dev/community/docs-contributors",
+      "url_match": "docs-contributors",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "`Children.count(children)` counts the number of children in the `children` data structure."
+      "verifier_rationale": "The page lists several contributors to the React documentation."
     },
     {
-      "query": "How can you transform the children JSX received by a component?",
-      "url": "https://react.dev/reference/react/Children",
-      "url_match": "Children",
+      "query": "What types of contributions did Rachel Nabors make to the React documentation?",
+      "url": "https://react.dev/community/docs-contributors",
+      "url_match": "docs-contributors",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains how to use `Children.map` to transform the children JSX received by a component."
+      "verifier_rationale": "Rachel Nabors contributed by editing, writing, and illustrating."
+    },
+    {
+      "query": "How do you make a select box controlled in React?",
+      "url": "https://react.dev/reference/react-dom/components/select",
+      "url_match": "select",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to make a select box controlled by passing a value prop and an onChange handler."
+    },
+    {
+      "query": "What prop do you use to specify the initially selected option in a select box?",
+      "url": "https://react.dev/reference/react-dom/components/select",
+      "url_match": "select",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The prop to specify the initially selected option in a select box is `defaultValue`."
+    },
+    {
+      "query": "What are the three steps involved in displaying a component on screen in React?",
+      "url": "https://react.dev/learn/render-and-commit",
+      "url_match": "render-and-commit",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The three steps are Triggering, Rendering, and Committing."
+    },
+    {
+      "query": "What triggers a re-render of a component in React?",
+      "url": "https://react.dev/learn/render-and-commit",
+      "url_match": "render-and-commit",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly states that a re-render is triggered when the component's state has been updated."
+    },
+    {
+      "query": "What is state in React?",
+      "url": "https://react.dev/learn/adding-interactivity",
+      "url_match": "adding-interactivity",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page defines state as component-specific memory that changes over time in response to user interactions."
+    },
+    {
+      "query": "How do you add event handlers to JSX in React?",
+      "url": "https://react.dev/learn/adding-interactivity",
+      "url_match": "adding-interactivity",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to add event handlers to JSX in React."
+    },
+    {
+      "query": "What is state in React?",
+      "url": "https://react.dev/learn/state-a-components-memory",
+      "url_match": "state-a-components-memory",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly defines state as component-specific memory that allows components to remember information between renders."
+    },
+    {
+      "query": "How do you add a state variable using the useState Hook?",
+      "url": "https://react.dev/learn/state-a-components-memory",
+      "url_match": "state-a-components-memory",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to add a state variable using the useState Hook."
+    },
+    {
+      "query": "What does createRef return?",
+      "url": "https://react.dev/reference/react/createRef",
+      "url_match": "createRef",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page states that createRef returns an object with a single property 'current', initially set to null."
+    },
+    {
+      "query": "How do you declare a ref in a class component using createRef?",
+      "url": "https://react.dev/reference/react/createRef",
+      "url_match": "createRef",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to declare a ref in a class component using createRef."
     }
   ],
   "rust-book": [
     {
-      "query": "What is a slice in Rust?",
-      "url": "https://doc.rust-lang.org/stable/book/ch04-03-slices.html",
-      "url_match": "ch04-03-slices.html",
+      "query": "What is the conventional style for function and variable names in Rust?",
+      "url": "https://doc.rust-lang.org/stable/book/ch03-03-how-functions-work.html",
+      "url_match": "ch03-03-how-functions-work.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "A slice in Rust is a reference to a contiguous sequence of elements in a collection."
+      "verifier_rationale": "The page states that Rust code uses _snake case_ as the conventional style for function and variable names."
     },
     {
-      "query": "How do you create a string slice using a range?",
-      "url": "https://doc.rust-lang.org/stable/book/ch04-03-slices.html",
-      "url_match": "ch04-03-slices.html",
+      "query": "How do you define a function in Rust that returns a value?",
+      "url": "https://doc.rust-lang.org/stable/book/ch03-03-how-functions-work.html",
+      "url_match": "ch03-03-how-functions-work.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains how to create a string slice using a range with examples."
+      "verifier_rationale": "The page clearly explains how to define a function in Rust that returns a value."
     },
     {
-      "query": "What advanced features are covered in this chapter?",
-      "url": "https://doc.rust-lang.org/book/ch20-00-advanced-features.html",
-      "url_match": "ch20-00-advanced-features.html",
+      "query": "What does the `cargo install` command do?",
+      "url": "https://doc.rust-lang.org/book/ch14-04-installing-binaries.html",
+      "url_match": "ch14-04-installing-binaries.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The advanced features covered in this chapter are clearly listed in the content."
+      "verifier_rationale": "The page clearly explains that the `cargo install` command allows you to install and use binary crates locally."
     },
     {
-      "query": "What is Unsafe Rust in the context of this chapter?",
-      "url": "https://doc.rust-lang.org/book/ch20-00-advanced-features.html",
-      "url_match": "ch20-00-advanced-features.html",
+      "query": "Where are binaries installed with `cargo install` stored?",
+      "url": "https://doc.rust-lang.org/book/ch14-04-installing-binaries.html",
+      "url_match": "ch14-04-installing-binaries.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content explicitly defines Unsafe Rust as opting out of some of Rust\u2019s guarantees and taking responsibility for manually upholding those guarantees."
+      "verifier_rationale": "The page clearly states that all binaries installed with `cargo install` are stored in the installation root\u2019s _bin_ folder."
     },
     {
-      "query": "When should you call `panic!` instead of returning a `Result`?",
-      "url": "https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html",
-      "url_match": "ch09-03-to-panic-or-not-to-panic.html",
+      "query": "How do I run tests in parallel using cargo test?",
+      "url": "https://doc.rust-lang.org/book/ch11-02-running-tests.html",
+      "url_match": "ch11-02-running-tests.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content clearly explains the situations in which you should call `panic!` instead of returning a `Result`."
+      "verifier_rationale": "The page clearly explains that tests run in parallel by default when using cargo test."
     },
     {
-      "query": "What is the purpose of the `Guess` struct in the context of error handling?",
-      "url": "https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html",
-      "url_match": "ch09-03-to-panic-or-not-to-panic.html",
+      "query": "What command do I use to see output from passing tests?",
+      "url": "https://doc.rust-lang.org/book/ch11-02-running-tests.html",
+      "url_match": "ch11-02-running-tests.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The `Guess` struct is designed to ensure that its value is always between 1 and 100, enforcing validation and preventing invalid states."
+      "verifier_rationale": "The command to see output from passing tests is `cargo test -- --show-output`."
     },
     {
-      "query": "What are the three kinds of procedural macros in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch20-05-macros.html",
-      "url_match": "ch20-05-macros.html",
+      "query": "How do you extract the `front_of_house` module to its own file?",
+      "url": "https://doc.rust-lang.org/stable/book/ch07-05-separating-modules-into-different-files.html",
+      "url_match": "ch07-05-separating-modules-into-different-files.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The three kinds of procedural macros in Rust are custom `#[derive]` macros, attribute-like macros, and function-like macros."
+      "verifier_rationale": "The page provides a clear explanation of how to extract the `front_of_house` module to its own file."
     },
     {
-      "query": "How do declarative macros compare to functions in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch20-05-macros.html",
-      "url_match": "ch20-05-macros.html",
+      "query": "What are the file paths the Rust compiler looks for a module named `front_of_house`?",
+      "url": "https://doc.rust-lang.org/stable/book/ch07-05-separating-modules-into-different-files.html",
+      "url_match": "ch07-05-separating-modules-into-different-files.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content clearly explains the differences between declarative macros and functions in Rust."
+      "verifier_rationale": "The file paths for the `front_of_house` module are explicitly listed in the content."
     },
     {
-      "query": "How do I set up a Crates.io account to publish my crate?",
-      "url": "https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html",
-      "url_match": "ch14-02-publishing-to-crates-io.html",
+      "query": "How do you bring a module into the scope of a function using the `use` keyword?",
+      "url": "https://doc.rust-lang.org/stable/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html",
+      "url_match": "ch07-04-bringing-paths-into-scope-with-the-use-keyword.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page provides clear instructions on how to create an account on crates.io and retrieve an API token."
+      "verifier_rationale": "The page clearly explains how to bring a module into the scope of a function using the `use` keyword."
     },
     {
-      "query": "What command do I run to generate HTML documentation from documentation comments in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html",
-      "url_match": "ch14-02-publishing-to-crates-io.html",
+      "query": "What is the purpose of the `pub use` statement in Rust?",
+      "url": "https://doc.rust-lang.org/stable/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html",
+      "url_match": "ch07-04-bringing-paths-into-scope-with-the-use-keyword.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The command to generate HTML documentation from documentation comments in Rust is 'cargo doc'."
+      "verifier_rationale": "The `pub use` statement re-exports a name, making it available for external code to use as if it had been defined in the current scope."
     },
     {
-      "query": "What are enums in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch06-00-enums.html",
-      "url_match": "ch06-00-enums.html",
+      "query": "How do you create a directory for a Rust project?",
+      "url": "https://doc.rust-lang.org/book/ch01-02-hello-world.html",
+      "url_match": "ch01-02-hello-world.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly defines enums as a type that allows you to enumerate its possible variants."
+      "verifier_rationale": "The page provides clear instructions on creating a directory for a Rust project."
     },
     {
-      "query": "What is the purpose of the `Option` enum?",
-      "url": "https://doc.rust-lang.org/book/ch06-00-enums.html",
-      "url_match": "ch06-00-enums.html",
+      "query": "What command do you use to compile a Rust program?",
+      "url": "https://doc.rust-lang.org/book/ch01-02-hello-world.html",
+      "url_match": "ch01-02-hello-world.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content explicitly states that the `Option` enum expresses that a value can be either something or nothing."
+      "verifier_rationale": "The command to compile a Rust program is 'rustc main.rs'."
     },
     {
-      "query": "What are the tradeoffs of using threads for concurrency?",
-      "url": "https://doc.rust-lang.org/book/ch17-06-futures-tasks-threads.html",
-      "url_match": "ch17-06-futures-tasks-threads.html",
+      "query": "What is a function pointer in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch20-04-advanced-functions-and-closures.html",
+      "url_match": "ch20-04-advanced-functions-and-closures.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page discusses the tradeoffs of using threads for concurrency, including memory usage and operating system support."
+      "verifier_rationale": "The page clearly defines a function pointer as a type that allows passing regular functions to functions."
     },
     {
-      "query": "When should I choose async over threads for concurrent operations?",
-      "url": "https://doc.rust-lang.org/book/ch17-06-futures-tasks-threads.html",
-      "url_match": "ch17-06-futures-tasks-threads.html",
+      "query": "How can you return a closure from a function in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch20-04-advanced-functions-and-closures.html",
+      "url_match": "ch20-04-advanced-functions-and-closures.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that async is a better choice for very concurrent (I/O-bound) work."
+      "verifier_rationale": "The page clearly explains how to return a closure using the 'impl Trait' syntax."
     },
     {
-      "query": "How do I print error messages to standard error in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch12-06-writing-to-stderr-instead-of-stdout.html",
-      "url_match": "ch12-06-writing-to-stderr-instead-of-stdout.html",
+      "query": "What are the three kinds of loops in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch03-05-control-flow.html",
+      "url_match": "ch03-05-control-flow.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains how to use the `eprintln!` macro to print error messages to standard error."
+      "verifier_rationale": "The page clearly states that Rust has three kinds of loops: loop, while, and for."
     },
     {
-      "query": "What command do I use to redirect standard output to a file in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch12-06-writing-to-stderr-instead-of-stdout.html",
-      "url_match": "ch12-06-writing-to-stderr-instead-of-stdout.html",
+      "query": "How can you use an `if` expression in a `let` statement?",
+      "url": "https://doc.rust-lang.org/book/ch03-05-control-flow.html",
+      "url_match": "ch03-05-control-flow.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The command to redirect standard output to a file in Rust is `cargo run > output.txt`."
-    },
-    {
-      "query": "How do you define a struct in Rust?",
-      "url": "https://doc.rust-lang.org/stable/book/ch05-02-example-structs.html",
-      "url_match": "ch05-02-example-structs.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page provides a clear example of defining a struct in Rust with the `struct` keyword."
-    },
-    {
-      "query": "What is the purpose of the `#[derive(Debug)]` attribute in a struct?",
-      "url": "https://doc.rust-lang.org/stable/book/ch05-02-example-structs.html",
-      "url_match": "ch05-02-example-structs.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The `#[derive(Debug)]` attribute allows the struct to implement the `Debug` trait, enabling it to be printed in a useful format for debugging."
+      "verifier_rationale": "The page clearly explains how to use an `if` expression in a `let` statement with an example."
     },
     {
       "query": "What command line tool will we build in this chapter?",
-      "url": "https://doc.rust-lang.org/book/ch12-00-an-io-project.html",
+      "url": "https://doc.rust-lang.org/stable/book/ch12-00-an-io-project.html",
       "url_match": "ch12-00-an-io-project.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly states that we will build a command line tool that interacts with file and command line input/output, specifically a version of the classic command line search tool `grep`."
+      "verifier_rationale": "The page clearly states that we will build our own version of the classic command line search tool `grep`."
     },
     {
-      "query": "What features will our command line tool use from the terminal?",
-      "url": "https://doc.rust-lang.org/book/ch12-00-an-io-project.html",
+      "query": "How does the `grep` tool function in terms of its arguments and output?",
+      "url": "https://doc.rust-lang.org/stable/book/ch12-00-an-io-project.html",
       "url_match": "ch12-00-an-io-project.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page explicitly mentions that the command line tool will use terminal features such as reading the value of an environment variable and printing error messages to standard error."
+      "verifier_rationale": "The page clearly explains that `grep` takes a file path and a string as arguments, reads the file, finds lines containing the string, and prints those lines."
     },
     {
-      "query": "What is Cargo in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch01-03-hello-cargo.html",
-      "url_match": "ch01-03-hello-cargo.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "Cargo is Rust\u2019s build system and package manager that handles tasks like building code and managing dependencies."
-    },
-    {
-      "query": "How do you create a new project using Cargo?",
-      "url": "https://doc.rust-lang.org/book/ch01-03-hello-cargo.html",
-      "url_match": "ch01-03-hello-cargo.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly explains how to create a new project using Cargo."
-    },
-    {
-      "query": "What are the two main profiles in Cargo?",
+      "query": "What are the two main profiles in Cargo for building Rust code?",
       "url": "https://doc.rust-lang.org/book/ch14-01-release-profiles.html",
       "url_match": "ch14-01-release-profiles.html",
       "page_match": "",
@@ -3815,13 +3815,283 @@
       "verifier_rationale": "The two main profiles in Cargo are the 'dev' profile and the 'release' profile."
     },
     {
-      "query": "How can you customize the `opt-level` setting in the `dev` profile?",
+      "query": "How can you customize the `opt-level` setting for the `dev` profile in Cargo?",
       "url": "https://doc.rust-lang.org/book/ch14-01-release-profiles.html",
       "url_match": "ch14-01-release-profiles.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page provides clear instructions on how to customize the `opt-level` setting in the `dev` profile."
+      "verifier_rationale": "The page provides clear instructions on how to customize the `opt-level` setting for the `dev` profile in Cargo."
+    },
+    {
+      "query": "How can you extend Cargo with new subcommands?",
+      "url": "https://doc.rust-lang.org/book/ch14-05-extending-cargo.html",
+      "url_match": "ch14-05-extending-cargo.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to extend Cargo with new subcommands."
+    },
+    {
+      "query": "What is the benefit of using `cargo install` for extensions?",
+      "url": "https://doc.rust-lang.org/book/ch14-05-extending-cargo.html",
+      "url_match": "ch14-05-extending-cargo.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The benefit of using `cargo install` for extensions is that it allows you to install extensions and run them just like the built-in Cargo tools."
+    },
+    {
+      "query": "What version of Rust does this book assume you are using?",
+      "url": "https://doc.rust-lang.org/book/",
+      "url_match": "book",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly states that this version of the text assumes you\u2019re using Rust 1.90.0."
+    },
+    {
+      "query": "Where can I find instructions on installing or updating Rust?",
+      "url": "https://doc.rust-lang.org/book/",
+      "url_match": "book",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "Instructions on installing or updating Rust are found in the 'Installation' section of Chapter 1."
+    },
+    {
+      "query": "What is the definition of the `Future` trait in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch17-05-traits-for-async.html",
+      "url_match": "ch17-05-traits-for-async.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The definition of the `Future` trait is clearly presented in the content."
+    },
+    {
+      "query": "How does the `Pin` type relate to the `Unpin` trait in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch17-05-traits-for-async.html",
+      "url_match": "ch17-05-traits-for-async.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains the relationship between the `Pin` type and the `Unpin` trait in Rust."
+    },
+    {
+      "query": "What is a struct in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch05-00-structs.html",
+      "url_match": "ch05-00-structs.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "A struct is a custom data type that lets you package together and name multiple related values."
+    },
+    {
+      "query": "How do structs compare to tuples in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch05-00-structs.html",
+      "url_match": "ch05-00-structs.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content explicitly states that the chapter will compare and contrast tuples with structs."
+    },
+    {
+      "query": "What version of Rust does this book assume you are using?",
+      "url": "https://doc.rust-lang.org/stable/book/title-page.html",
+      "url_match": "title-page.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly states that this version of the text assumes you\u2019re using Rust 1.90.0."
+    },
+    {
+      "query": "Where can I find community translations of the Rust book?",
+      "url": "https://doc.rust-lang.org/stable/book/title-page.html",
+      "url_match": "title-page.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page explicitly mentions that several community translations are available."
+    },
+    {
+      "query": "What is a trait in Rust?",
+      "url": "https://doc.rust-lang.org/stable/book/ch10-02-traits.html",
+      "url_match": "ch10-02-traits.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "A trait in Rust defines the functionality a particular type has and can share with other types."
+    },
+    {
+      "query": "How do you implement a trait on a type in Rust?",
+      "url": "https://doc.rust-lang.org/stable/book/ch10-02-traits.html",
+      "url_match": "ch10-02-traits.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to implement a trait on a type in Rust."
+    },
+    {
+      "query": "What is the purpose of using a reference in the `calculate_length` function?",
+      "url": "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html",
+      "url_match": "ch04-02-references-and-borrowing.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The purpose of using a reference in the `calculate_length` function is to allow access to the `String` value without taking ownership of it."
+    },
+    {
+      "query": "What are the rules of references in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html",
+      "url_match": "ch04-02-references-and-borrowing.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The rules of references in Rust are clearly stated in the content."
+    },
+    {
+      "query": "What is the purpose of the `search` function in the `minigrep` program?",
+      "url": "https://doc.rust-lang.org/book/ch12-04-testing-the-librarys-functionality.html",
+      "url_match": "ch12-04-testing-the-librarys-functionality.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The purpose of the `search` function is to take a query and the text to search, returning only the lines that contain the query."
+    },
+    {
+      "query": "What are the steps to implement the `search` function using test-driven development?",
+      "url": "https://doc.rust-lang.org/book/ch12-04-testing-the-librarys-functionality.html",
+      "url_match": "ch12-04-testing-the-librarys-functionality.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The steps to implement the `search` function using test-driven development are clearly outlined in the content."
+    },
+    {
+      "query": "What is a workspace in Cargo?",
+      "url": "https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html",
+      "url_match": "ch14-03-cargo-workspaces.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "A workspace is a set of packages that share the same Cargo.lock and output directory."
+    },
+    {
+      "query": "How do you create a new library crate in a workspace?",
+      "url": "https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html",
+      "url_match": "ch14-03-cargo-workspaces.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page provides a clear step-by-step process for creating a new library crate in a workspace."
+    },
+    {
+      "query": "What is the purpose of the `thread::spawn` function in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch16-01-threads.html",
+      "url_match": "ch16-01-threads.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains that `thread::spawn` is used to create a new thread and run code in it."
+    },
+    {
+      "query": "How can you ensure that a spawned thread finishes before the main thread exits?",
+      "url": "https://doc.rust-lang.org/book/ch16-01-threads.html",
+      "url_match": "ch16-01-threads.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "You can ensure that a spawned thread finishes before the main thread exits by calling the `join` method on the `JoinHandle` returned by `thread::spawn`."
+    },
+    {
+      "query": "What are generics in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch10-00-generics.html",
+      "url_match": "ch10-00-generics.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "Generics in Rust are abstract stand-ins for concrete types or other properties that allow functions to take parameters of a generic type."
+    },
+    {
+      "query": "How do you eliminate code duplication using generics?",
+      "url": "https://doc.rust-lang.org/book/ch10-00-generics.html",
+      "url_match": "ch10-00-generics.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page explains that generics allow code to operate on abstract types, which helps eliminate code duplication."
+    },
+    {
+      "query": "What will we build in the final project of the Rust book?",
+      "url": "https://doc.rust-lang.org/book/ch21-00-final-project-a-web-server.html",
+      "url_match": "ch21-00-final-project-a-web-server.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content clearly states that we will build a web server that says 'Hello!'."
+    },
+    {
+      "query": "What method will we not be using to build the web server in this chapter?",
+      "url": "https://doc.rust-lang.org/book/ch21-00-final-project-a-web-server.html",
+      "url_match": "ch21-00-final-project-a-web-server.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The method we will not be using is async and await."
+    },
+    {
+      "query": "What are patterns in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch19-00-patterns.html",
+      "url_match": "ch19-00-patterns.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "Patterns are a special syntax in Rust for matching against the structure of types."
+    },
+    {
+      "query": "What components can a pattern consist of?",
+      "url": "https://doc.rust-lang.org/book/ch19-00-patterns.html",
+      "url_match": "ch19-00-patterns.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content clearly lists the components that a pattern can consist of."
+    },
+    {
+      "query": "What is the difference between iterators and the async channel receiver in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch17-04-streams.html",
+      "url_match": "ch17-04-streams.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly states that iterators are synchronous while the async channel receiver is asynchronous."
+    },
+    {
+      "query": "How can you create a stream from an iterator in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch17-04-streams.html",
+      "url_match": "ch17-04-streams.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page clearly explains how to create a stream from an iterator using the `trpl::stream_from_iter` function."
+    },
+    {
+      "query": "How do you read a file in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch12-02-reading-a-file.html",
+      "url_match": "ch12-02-reading-a-file.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The page provides a clear example of how to read a file in Rust using the `fs::read_to_string` function."
+    },
+    {
+      "query": "What is the content of the sample file used for testing?",
+      "url": "https://doc.rust-lang.org/book/ch12-02-reading-a-file.html",
+      "url_match": "ch12-02-reading-a-file.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "The content of the sample file is clearly provided in the page."
     },
     {
       "query": "How do you bring a module into scope with the use keyword?",
@@ -3839,313 +4109,79 @@
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page explains that the `pub use` statement makes a name available for any code to use from a new scope."
+      "verifier_rationale": "The page explains that `pub use` makes a name available for any code to use from a new scope."
     },
     {
-      "query": "What are the features of Rust's module system?",
-      "url": "https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
-      "url_match": "ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
+      "query": "What are the two major categories of errors in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch09-00-error-handling.html",
+      "url_match": "ch09-00-error-handling.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The features of Rust's module system are clearly listed in the content."
+      "verifier_rationale": "The two major categories of errors in Rust are recoverable and unrecoverable errors."
     },
     {
-      "query": "How can you manage code organization in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
-      "url_match": "ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
+      "query": "How does Rust handle recoverable errors?",
+      "url": "https://doc.rust-lang.org/book/ch09-00-error-handling.html",
+      "url_match": "ch09-00-error-handling.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly explains techniques for managing code organization in Rust."
+      "verifier_rationale": "The page clearly explains that Rust uses the type `Result<T, E>` for recoverable errors."
     },
     {
-      "query": "What is the purpose of the `search` function in the `minigrep` program?",
-      "url": "https://doc.rust-lang.org/stable/book/ch12-04-testing-the-librarys-functionality.html",
-      "url_match": "ch12-04-testing-the-librarys-functionality.html",
+      "query": "How do you create a new, empty vector in Rust?",
+      "url": "https://doc.rust-lang.org/stable/book/ch08-01-vectors.html",
+      "url_match": "ch08-01-vectors.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The purpose of the `search` function is to take a query and the text to search, returning only the lines that contain the query."
+      "verifier_rationale": "The page clearly explains how to create a new, empty vector using the `Vec::new` function."
     },
     {
-      "query": "How do you write a failing test for the `search` function?",
-      "url": "https://doc.rust-lang.org/stable/book/ch12-04-testing-the-librarys-functionality.html",
-      "url_match": "ch12-04-testing-the-librarys-functionality.html",
+      "query": "What method is used to add elements to a vector in Rust?",
+      "url": "https://doc.rust-lang.org/stable/book/ch08-01-vectors.html",
+      "url_match": "ch08-01-vectors.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page clearly describes the steps to write a failing test for the `search` function."
+      "verifier_rationale": "The method used to add elements to a vector in Rust is the `push` method."
     },
     {
-      "query": "What are the three collections discussed in this chapter?",
-      "url": "https://doc.rust-lang.org/stable/book/ch08-00-common-collections.html",
-      "url_match": "ch08-00-common-collections.html",
+      "query": "What is the purpose of the `if let` syntax in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch06-03-if-let.html",
+      "url_match": "ch06-03-if-let.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The three collections discussed are vectors, strings, and hash maps."
+      "verifier_rationale": "The page clearly explains that the `if let` syntax combines `if` and `let` to handle values that match one pattern while ignoring the rest."
     },
     {
-      "query": "How does a vector differ from built-in array and tuple types in Rust?",
-      "url": "https://doc.rust-lang.org/stable/book/ch08-00-common-collections.html",
-      "url_match": "ch08-00-common-collections.html",
+      "query": "How does the `let...else` syntax improve control flow in Rust?",
+      "url": "https://doc.rust-lang.org/book/ch06-03-if-let.html",
+      "url_match": "ch06-03-if-let.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content clearly states that vectors can store a variable number of values, while arrays and tuples have fixed sizes."
+      "verifier_rationale": "The content explains that `let...else` clarifies the flow through a function by avoiding significantly different control flow for two branches."
     },
     {
-      "query": "What is Rust's most unique feature?",
-      "url": "https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html",
-      "url_match": "ch04-00-understanding-ownership.html",
+      "query": "What are the keywords currently in use in Rust?",
+      "url": "https://doc.rust-lang.org/book/appendix-01-keywords.html",
+      "url_match": "appendix-01-keywords.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The content clearly states that ownership is Rust\u2019s most unique feature."
+      "verifier_rationale": "The page contains a list of keywords currently in use in Rust."
     },
     {
-      "query": "How does ownership in Rust enable memory safety without a garbage collector?",
-      "url": "https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html",
-      "url_match": "ch04-00-understanding-ownership.html",
+      "query": "How can you use a keyword as an identifier in Rust?",
+      "url": "https://doc.rust-lang.org/book/appendix-01-keywords.html",
+      "url_match": "appendix-01-keywords.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "The page explains that ownership is Rust\u2019s unique feature that enables memory safety guarantees without a garbage collector."
-    },
-    {
-      "query": "How can I enable case-insensitive searching in minigrep?",
-      "url": "https://doc.rust-lang.org/book/ch12-05-working-with-environment-variables.html",
-      "url_match": "ch12-05-working-with-environment-variables.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "You can enable case-insensitive searching in minigrep by setting the environment variable named `IGNORE_CASE`."
-    },
-    {
-      "query": "What function is used to check if the IGNORE_CASE environment variable is set?",
-      "url": "https://doc.rust-lang.org/book/ch12-05-working-with-environment-variables.html",
-      "url_match": "ch12-05-working-with-environment-variables.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The function used to check if the IGNORE_CASE environment variable is set is env::var."
-    },
-    {
-      "query": "What are atomic types used for in Rust?",
-      "url": "https://doc.rust-lang.org/std/sync/atomic/index.html",
-      "url_match": "atomic",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly states that atomic types provide primitive shared-memory communication between threads."
-    },
-    {
-      "query": "Which atomic types are defined in the atomic module?",
-      "url": "https://doc.rust-lang.org/std/sync/atomic/index.html",
-      "url_match": "atomic",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page lists several atomic types defined in the atomic module."
-    },
-    {
-      "query": "What is the purpose of the `trpl::block_on` function in async Rust?",
-      "url": "https://doc.rust-lang.org/book/ch17-02-concurrency-with-async.html",
-      "url_match": "ch17-02-concurrency-with-async.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page explains that `trpl::block_on` allows you to choose where to block on some set of async code."
-    },
-    {
-      "query": "How does the `trpl::join` function differ from using `await` on individual futures?",
-      "url": "https://doc.rust-lang.org/book/ch17-02-concurrency-with-async.html",
-      "url_match": "ch17-02-concurrency-with-async.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explicitly explains that `trpl::join` allows waiting for multiple futures to complete simultaneously, while awaiting individual futures in sequence results in a linear execution flow."
-    },
-    {
-      "query": "What version of Rust does this book assume you are using?",
-      "url": "https://doc.rust-lang.org/book/title-page.html",
-      "url_match": "title-page.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content clearly states that this version of the text assumes you\u2019re using Rust 1.90.0."
-    },
-    {
-      "query": "Where can you find community translations of the Rust book?",
-      "url": "https://doc.rust-lang.org/book/title-page.html",
-      "url_match": "title-page.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page explicitly mentions that several community translations are available."
-    },
-    {
-      "query": "What is the state pattern in object-oriented design?",
-      "url": "https://doc.rust-lang.org/book/ch18-03-oo-design-patterns.html",
-      "url_match": "ch18-03-oo-design-patterns.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly defines the state pattern as an object-oriented design pattern that involves defining a set of states a value can have internally."
-    },
-    {
-      "query": "How does the `request_review` method change a post's state?",
-      "url": "https://doc.rust-lang.org/book/ch18-03-oo-design-patterns.html",
-      "url_match": "ch18-03-oo-design-patterns.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explains that the `request_review` method changes a post's state from `Draft` to `PendingReview`."
-    },
-    {
-      "query": "What are patterns in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch19-00-patterns.html",
-      "url_match": "ch19-00-patterns.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly defines patterns as a special syntax in Rust for matching against the structure of types."
-    },
-    {
-      "query": "What components can a pattern consist of?",
-      "url": "https://doc.rust-lang.org/book/ch19-00-patterns.html",
-      "url_match": "ch19-00-patterns.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly lists the components that a pattern can consist of."
-    },
-    {
-      "query": "What is a mutex and how does it control access to data?",
-      "url": "https://doc.rust-lang.org/book/ch16-03-shared-state.html",
-      "url_match": "ch16-03-shared-state.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly defines a mutex as a mutual exclusion mechanism that allows only one thread to access data at a time."
-    },
-    {
-      "query": "Why is `Rc<T>` not safe to share across threads in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch16-03-shared-state.html",
-      "url_match": "ch16-03-shared-state.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "`Rc<T>` is not safe to share across threads because it does not use concurrency primitives to manage its reference count, which can lead to subtle bugs."
-    },
-    {
-      "query": "How do you declare a module in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html",
-      "url_match": "ch07-02-defining-modules-to-control-scope-and-privacy.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly explains how to declare a module in Rust using the `mod` keyword."
-    },
-    {
-      "query": "What is the default visibility of items within a module?",
-      "url": "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html",
-      "url_match": "ch07-02-defining-modules-to-control-scope-and-privacy.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "Code within a module is private from its parent modules by default."
-    },
-    {
-      "query": "What is a Vec in Rust?",
-      "url": "https://doc.rust-lang.org/std/vec/struct.Vec.html",
-      "url_match": "struct.Vec.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "A Vec is a contiguous growable array type in Rust."
-    },
-    {
-      "query": "How do you create a new empty Vec in Rust?",
-      "url": "https://doc.rust-lang.org/std/vec/struct.Vec.html",
-      "url_match": "struct.Vec.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page provides an example of creating a new empty Vec using `Vec::new()`."
-    },
-    {
-      "query": "What does the `Debug` trait enable in Rust?",
-      "url": "https://doc.rust-lang.org/book/appendix-03-derivable-traits.html",
-      "url_match": "appendix-03-derivable-traits.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The `Debug` trait enables debug formatting in format strings for printing instances of a type."
-    },
-    {
-      "query": "What is the purpose of the `Default` trait in Rust?",
-      "url": "https://doc.rust-lang.org/book/appendix-03-derivable-traits.html",
-      "url_match": "appendix-03-derivable-traits.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The purpose of the `Default` trait is to create a default value for a type."
-    },
-    {
-      "query": "What programming concepts are covered in this chapter?",
-      "url": "https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html",
-      "url_match": "ch03-00-common-programming-concepts.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page explicitly lists the programming concepts covered in the chapter."
-    },
-    {
-      "query": "What are keywords in the Rust programming language?",
-      "url": "https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html",
-      "url_match": "ch03-00-common-programming-concepts.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly defines keywords in the Rust programming language."
-    },
-    {
-      "query": "What are the three collections discussed in Rust's standard library?",
-      "url": "https://doc.rust-lang.org/book/ch08-00-common-collections.html",
-      "url_match": "ch08-00-common-collections.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The three collections discussed are vectors, strings, and hash maps."
-    },
-    {
-      "query": "How does a vector differ from built-in array and tuple types in Rust?",
-      "url": "https://doc.rust-lang.org/book/ch08-00-common-collections.html",
-      "url_match": "ch08-00-common-collections.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The content explicitly states that vectors can store a variable number of values, while arrays and tuples have fixed sizes."
-    },
-    {
-      "query": "What command do I use to upload a crate to crates.io?",
-      "url": "https://doc.rust-lang.org/cargo/reference/publishing.html",
-      "url_match": "publishing.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The command to upload a crate to crates.io is `cargo publish`."
-    },
-    {
-      "query": "How do I revoke an API token on crates.io?",
-      "url": "https://doc.rust-lang.org/cargo/reference/publishing.html",
-      "url_match": "publishing.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "The page clearly states that you can revoke an API token using the `cargo logout` command."
+      "verifier_rationale": "The page explains how to use raw identifiers to use keywords as identifiers in Rust."
     }
   ],
   "smittenkitchen": [

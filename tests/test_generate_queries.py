@@ -329,14 +329,16 @@ def test_is_in_site_scope_rejects_off_path_within_same_host():
                                     "huggingface-transformers")
 
 
-def test_is_in_site_scope_rejects_rust_reference_out_of_book_scope():
-    """rust-book scope is /book; /reference, /std, /stable should not count
-    as rust-book content. v1.3 leakage that the filter now catches."""
+def test_is_in_site_scope_rust_book_multi_prefix():
+    """rust-book scope accepts both /book and /stable/book (same content
+    version-pinned at two URLs). /reference and /std are not the book."""
+    assert gq.is_in_site_scope("https://doc.rust-lang.org/book/ch04-01.html",
+                                "rust-book")
+    assert gq.is_in_site_scope("https://doc.rust-lang.org/stable/book/ch04-01.html",
+                                "rust-book")
     assert not gq.is_in_site_scope("https://doc.rust-lang.org/reference/items.html",
                                     "rust-book")
     assert not gq.is_in_site_scope("https://doc.rust-lang.org/std/result/enum.Result.html",
-                                    "rust-book")
-    assert not gq.is_in_site_scope("https://doc.rust-lang.org/stable/book/ch04-01.html",
                                     "rust-book")
 
 

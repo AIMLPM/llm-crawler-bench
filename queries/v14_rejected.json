@@ -14,26 +14,7 @@
   ],
   "mdn-css": [],
   "newegg": [],
-  "postgres-docs": [
-    {
-      "query": "How do I retrieve data from the database?",
-      "url": "https://www.postgresql.org/docs/17/queries.html",
-      "url_match": "queries.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The page does not provide specific instructions on how to retrieve data from the database."
-    },
-    {
-      "query": "What topics are covered in Chapter 7 of the PostgreSQL documentation?",
-      "url": "https://www.postgresql.org/docs/17/queries.html",
-      "url_match": "queries.html",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The specific topics covered in Chapter 7 are not listed in the provided content."
-    }
-  ],
+  "postgres-docs": [],
   "propublica": [
     {
       "query": "What is the main focus of ProPublica during Donald Trump's second presidency?",
