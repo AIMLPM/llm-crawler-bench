@@ -2,7 +2,7 @@
 
 ## TL;DR
 
-v1.4 ships four simultaneous methodology fixes addressing chunk-density gaming, COI in query authorship, substring false positives, and off-topic URL sampling. The leaderboard re-ranks: high-coverage tools (crawl4ai, crawlee, playwright) gain meaningfully on retrieval; **markcrawl drops to 7th on both retrieval MRR and answer quality**. Markcrawl's drop decomposes as **86% scope-narrowing trade-off** (intentional design choice quantified for the first time), 14% retrieval-rank weakness on pages it does have. The bench is now publicly reproducible end-to-end via `make benchmark`.
+v1.4 ships four simultaneous methodology fixes addressing chunk-density gaming, COI in query authorship, substring false positives, and off-topic URL sampling. The leaderboard re-ranks: high-coverage tools (crawl4ai, crawlee, playwright) gain meaningfully on retrieval; **markcrawl drops to 7th on both retrieval MRR and answer quality, and is 3rd on cost under the OpenAI fairness contract** (crawl4ai-raw 1st at $3,787/yr, markcrawl 3rd at $4,755/yr, mid-scale). Markcrawl's retrieval drop decomposes as **86% scope-narrowing trade-off** (intentional design choice quantified for the first time), 14% retrieval-rank weakness on pages it does have. The product reframe that survives v1.4: markcrawl ranks **higher** on retrieval MRR under its shipping default embedder (`mxbai-embed-large-v1`), per the PUBLISH-BOTH asymmetric-bias finding. The bench is now publicly reproducible end-to-end via `make benchmark`.
 
 ## What changed
 
@@ -47,12 +47,22 @@ Decomposition is computed over the **499-query common subset** (9 sites where al
 
 The 14% is **retrieval-pipeline-bounded only** — chunks went into the retrieval index but didn't surface at the top of the ranked list. The answer-quality LLM-judge scores (the 3.77 column above) are **measured separately at the leaderboard level**, not bucketed into this decomposition. We didn't try to split "answer-judge scored low" into its own bucket because the question we're answering here is "where did the retrieval pipeline lose?", which is the more actionable diagnostic for a maintainer.
 
-This is the **documented quality-vs-coverage trade-off** quantified for the first time. Markcrawl produces 99% content signal at $0 embedding cost on the mxbai secondary, but ranks lower on retrieval-recall benchmarks against tools that index broader page sets:
+This is the **documented quality-vs-coverage trade-off** quantified for the first time. Markcrawl produces 99% content signal under its shipping local-embedder default ($0 embedding cost — the mxbai-embed-large-v1 model runs on CPU/MPS), but ranks lower on retrieval-recall benchmarks against tools that index broader page sets:
 
-- **Users benchmarking for content quality + cost-of-ownership** should weigh markcrawl's 99% signal + lowest annual storage cost differently than users benchmarking for retrieval recall.
 - **Users benchmarking for retrieval recall over broad topic surfaces** should weigh crawl4ai / crawl4ai-raw / crawlee — they crawled 60-300x more pages on average, and that scope-broadness is the recall advantage v1.4 surfaces honestly.
+- **Users benchmarking for content quality + retrieval rank under markcrawl's shipping default** should consider the PUBLISH-BOTH secondary leaderboard: under `mxbai-embed-large-v1` (markcrawl's default since v0.10.1), markcrawl ranks higher on retrieval MRR (asymmetric-bias finding: +0.043 MRR while every other tool drops −0.007 to −0.077). See `reports/RETRIEVAL_COMPARISON_LOCAL.md`.
 
 A future cycle (v1.5) may add a `scope=narrow` vs `scope=broad` mode selector to make this trade-off a published dimension rather than a methodology footnote.
+
+## Cost methodology note
+
+The cost figures in the deltas table above are computed under the **fairness contract**: OpenAI text-embedding-3-small for every tool, uniformly. This is the same comparable basis we used for retrieval MRR — the embedder choice is held constant so chunk count is the only varying input. Under this fairness contract, markcrawl is 3rd ($4,755/yr at 100K pages × 1K queries/day) vs crawl4ai-raw 1st ($3,787) and crawl4ai 2nd ($3,824).
+
+The ranking inverts versus v1.3 because tool versions shifted between cycles (notably: crawl4ai's chunker reducing chunks/page on docs sites; markcrawl 0.10.0's Track D chunker default flip raising chunks/page from 10.1 to 12.19). The v1.4 calculator refresh uses current empirical chunk counts; the prior v1.3 numbers were stale w.r.t. these tool-version shifts.
+
+Users running markcrawl with its shipping default (local mxbai-embed-large-v1 since v0.10.1) pay **$0 embedding cost** — embedding runs locally on CPU/MPS, no API charge. At 100K pages × 1K queries/day the embedding savings are marginal ($7/yr; vector-DB hosting dominates the storage line), so markcrawl remains 3rd in total cost ($4,748/yr with local embedder vs $3,781 for crawl4ai-raw under the same configuration). The honest reframe is **retrieval ranking, not cost**: under PUBLISH-BOTH's mxbai secondary, markcrawl ranks higher on retrieval MRR — the asymmetric-bias finding is documented in METHODOLOGY's "Embedder choice and PUBLISH-BOTH decision" section. Markcrawl is the only tool in the pool that ships with a free local embedder as default; PUBLISH-BOTH makes that scenario directly comparable across all 7 tools rather than asserted in vendor marketing.
+
+Run `python tools/cost_calculator.py --embedder=local-mxbai --sensitivity` for the mxbai breakdown + ±50% pricing sensitivity.
 
 ## What survived from v1.3 vs what didn't
 

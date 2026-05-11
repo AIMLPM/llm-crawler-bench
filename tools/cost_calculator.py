@@ -215,14 +215,29 @@ def main():
                         help="$/1M input tokens for LLM judge (default 3.00 = Claude Sonnet)")
     parser.add_argument("--tokens-per-chunk", type=int, default=300,
                         help="Tokens per chunk (default 300)")
+    parser.add_argument("--embedder",
+                        choices=["openai-3-small", "local-mxbai"],
+                        default="openai-3-small",
+                        help="Embedder choice: openai-3-small (fairness contract, $0.02/1M tokens) "
+                             "or local-mxbai (markcrawl's shipping default since v0.10.1, $0 marginal "
+                             "embedding cost — runs locally on CPU/MPS). Choice applies UNIFORMLY "
+                             "across all tools to preserve apples-to-apples comparison.")
     parser.add_argument("--sensitivity", action="store_true",
                         help="Run ±50% sweep on each input and report ranking shifts")
     parser.add_argument("--json", action="store_true",
                         help="Output JSON instead of markdown")
     args = parser.parse_args()
 
+    # --embedder=local-mxbai zeros the embedding line. Vector-DB hosting
+    # is unaffected (still a real cost for any cloud DB). Users running
+    # local vector DBs (e.g., SQLite + sqlite-vec, pgvector local) can
+    # additionally pass --vector-db-price 0.
+    embedding_price = args.embedding_price
+    if args.embedder == "local-mxbai":
+        embedding_price = 0.0
+
     p = PricingInputs(
-        embedding_price_per_1m_tokens=args.embedding_price,
+        embedding_price_per_1m_tokens=embedding_price,
         vector_db_price_per_1k_vectors_month=args.vector_db_price,
         llm_input_price_per_1m_tokens=args.llm_input_price,
         tokens_per_chunk=args.tokens_per_chunk,
