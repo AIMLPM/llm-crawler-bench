@@ -258,3 +258,59 @@ def test_strip_nav_chrome_does_not_touch_pure_prose():
     """Idempotency on prose-only text."""
     text = "This is a paragraph.\n\nThis is another paragraph with no links at all."
     assert gq.strip_nav_chrome(text) == text
+
+
+# --- is_locale_mirror_url tests ---------------------------------------------
+# v1.4 sampler is English-only-by-design. Locale-mirror URLs must be
+# filtered from the pool before sampling — otherwise the LLM generates
+# queries in the page's native language, creating a per-tool fairness
+# confound (tools that crawl locale mirrors get asymmetric advantage on
+# multilingual queries).
+
+def test_is_locale_mirror_url_iso639():
+    assert gq.is_locale_mirror_url("https://he.react.dev/learn/state")
+    assert gq.is_locale_mirror_url("https://ar.react.dev/learn/state")
+    assert gq.is_locale_mirror_url("https://ko.react.dev/learn/state")
+    assert gq.is_locale_mirror_url("https://ja.react.dev/learn/state")
+
+
+def test_is_locale_mirror_url_bcp47_region():
+    assert gq.is_locale_mirror_url("https://zh-cn.react.dev/learn/state")
+    assert gq.is_locale_mirror_url("https://pt-br.react.dev/learn/state")
+    assert gq.is_locale_mirror_url("https://en-us.react.dev/learn/state")
+
+
+def test_is_locale_mirror_url_canonical_is_kept():
+    """Canonical (no locale prefix) and content-subdomain URLs must NOT
+    be filtered."""
+    assert not gq.is_locale_mirror_url("https://react.dev/learn/state")
+    assert not gq.is_locale_mirror_url("https://docs.stripe.com/api/webhooks")
+    assert not gq.is_locale_mirror_url("https://api.openai.com/v1/embed")
+    assert not gq.is_locale_mirror_url("https://www.newegg.com/product")
+
+
+def test_is_locale_mirror_url_malformed():
+    """Non-URL inputs return False rather than raising."""
+    assert not gq.is_locale_mirror_url("")
+    assert not gq.is_locale_mirror_url(None)  # type: ignore[arg-type]
+    assert not gq.is_locale_mirror_url(123)  # type: ignore[arg-type]
+
+
+def test_load_pages_filters_locale_mirrors(tmp_path):
+    """Integration: load_pages_for_site must drop locale-mirror URLs."""
+    site_dir = tmp_path / "tool" / "site"
+    site_dir.mkdir(parents=True)
+    pages_path = site_dir / "pages.jsonl"
+    pages_path.write_text(
+        json.dumps({"url": "https://react.dev/learn/state", "markdown": "x"}) + "\n"
+        + json.dumps({"url": "https://he.react.dev/learn/state", "markdown": "x"}) + "\n"
+        + json.dumps({"url": "https://react.dev/learn/effects", "markdown": "x"}) + "\n"
+        + json.dumps({"url": "https://ar.react.dev/learn/effects", "markdown": "x"}) + "\n"
+        + json.dumps({"url": "https://zh-cn.react.dev/learn/state", "markdown": "x"}) + "\n"
+    )
+    pages = gq.load_pages_for_site(tmp_path, "tool", "site")
+    urls = {p["url"] for p in pages}
+    assert urls == {
+        "https://react.dev/learn/state",
+        "https://react.dev/learn/effects",
+    }, f"Locale mirrors should be filtered. Got: {urls}"

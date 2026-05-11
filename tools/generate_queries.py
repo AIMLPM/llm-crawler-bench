@@ -208,21 +208,73 @@ def strip_nav_chrome(text: str, min_run: int = 5) -> str:
     return "\n".join(out_lines)
 
 
+# Locale subdomain prefixes that mark a URL as a translated mirror of an
+# English canonical. Synced with benchmark_retrieval.py:_LOCALE_SUBDOMAIN_PREFIXES;
+# duplicated here to avoid a circular import (generate_queries.py is a sibling
+# script, not a benchmark_retrieval consumer).
+_LOCALE_SUBDOMAIN_PREFIXES = frozenset([
+    "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el",
+    "en", "eo", "es", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi",
+    "hr", "hu", "hy", "id", "is", "it", "ja", "ka", "kk", "km", "kn", "ko",
+    "ky", "la", "lt", "lv", "mk", "ml", "mn", "mr", "ms", "mt", "my", "nb",
+    "ne", "nl", "nn", "no", "pa", "pl", "ps", "pt", "ro", "ru", "sa", "si",
+    "sk", "sl", "sq", "sr", "sv", "sw", "ta", "te", "th", "tl", "tr", "uk",
+    "ur", "uz", "vi", "zh",
+    "zh-cn", "zh-tw", "zh-hk", "zh-hans", "zh-hant",
+    "en-us", "en-gb", "en-ca", "en-au",
+    "pt-br", "pt-pt",
+    "es-mx", "es-ar", "es-es", "es-419",
+    "fr-ca", "fr-fr",
+    "de-de", "de-at", "de-ch",
+])
+
+
+def is_locale_mirror_url(url: str) -> bool:
+    """True if the URL's leftmost subdomain is a known locale prefix
+    (ar.react.dev, ko.react.dev, zh-cn.react.dev, etc.).
+
+    Used by `load_pages_for_site` to filter out locale-mirror URLs
+    before sampling. v1.4 sampler is English-only-by-design — keeping
+    locale mirrors in the sample pool would produce queries in the
+    page's native language, creating a per-tool fairness confound
+    (tools that crawl locale mirrors get asymmetric advantage on
+    multilingual queries). Multilingual RAG evaluation deferred to
+    v1.5 as an explicit, opt-in evaluation dimension."""
+    if not isinstance(url, str):
+        return False
+    try:
+        netloc = urlsplit(url).netloc.lower()
+    except (ValueError, AttributeError):
+        return False
+    if "." not in netloc:
+        return False
+    first = netloc.partition(".")[0]
+    return first in _LOCALE_SUBDOMAIN_PREFIXES
+
+
 def load_pages_for_site(run_dir: Path, tool: str, site: str) -> list[dict]:
-    """Load pages.jsonl for a (tool, site) combination, skipping malformed lines."""
+    """Load pages.jsonl for a (tool, site) combination, skipping malformed
+    lines AND filtering out locale-mirror URLs (v1.4 English-only sampler)."""
     path = run_dir / tool / site / "pages.jsonl"
     if not path.exists():
         return []
     pages = []
+    locale_filtered = 0
     with open(path) as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
             try:
-                pages.append(json.loads(line))
+                page = json.loads(line)
             except json.JSONDecodeError:
                 continue
+            if is_locale_mirror_url(page.get("url", "")):
+                locale_filtered += 1
+                continue
+            pages.append(page)
+    if locale_filtered:
+        logger.info(f"  filtered {locale_filtered} locale-mirror URLs from {site} pool")
     return pages
 
 
