@@ -140,3 +140,121 @@ def test_load_pages_skips_malformed_lines(tmp_path):
 def test_load_pages_missing_file_returns_empty(tmp_path):
     pages = gq.load_pages_for_site(tmp_path, "nope", "nope")
     assert pages == []
+
+
+# --- strip_nav_chrome tests --------------------------------------------------
+# Generic chrome stripper that runs before MAX_PAGE_CHARS. Crucial for
+# kubernetes-docs-style pages where 6K+ chars of nav prepend the actual
+# content. Tests lock the heuristic so a future regression is loud.
+
+def test_link_dominated_detects_toc_entry():
+    """Standard TOC entry: indented bullet + link."""
+    assert gq._is_link_dominated("  * [Chapter 1: Introduction](https://x.com/ch01)")
+    assert gq._is_link_dominated("[Spanish](https://x.com/es)")
+    assert gq._is_link_dominated("[v1.36](url) | [v1.35](url) | [v1.34](url)")
+
+
+def test_link_dominated_does_not_flag_prose_with_inline_links():
+    """Prose with one inline link should NOT be flagged — most chars are non-link."""
+    line = "The borrow checker, described in [Chapter 4](url), prevents dangling references."
+    assert not gq._is_link_dominated(line)
+
+
+def test_link_dominated_blank_line_neutral():
+    assert not gq._is_link_dominated("")
+    assert not gq._is_link_dominated("   ")
+
+
+def test_strip_nav_chrome_removes_long_toc():
+    """5+ consecutive link-dominated lines get dropped."""
+    text = """\
+Some real prose introducing the topic.
+
+  * [Chapter 1](url1)
+  * [Chapter 2](url2)
+  * [Chapter 3](url3)
+  * [Chapter 4](url4)
+  * [Chapter 5](url5)
+  * [Chapter 6](url6)
+
+The borrow checker prevents dangling references."""
+    out = gq.strip_nav_chrome(text)
+    assert "Some real prose" in out
+    assert "borrow checker" in out
+    assert "Chapter 1" not in out
+    assert "Chapter 6" not in out
+
+
+def test_strip_nav_chrome_preserves_short_link_clusters():
+    """A run of <5 link-dominated lines (likely inline link cluster in prose)
+    is preserved — we don't want to strip 2-3 references."""
+    text = """\
+Header paragraph.
+
+[Reference 1](url)
+[Reference 2](url)
+[Reference 3](url)
+
+Footer paragraph."""
+    out = gq.strip_nav_chrome(text)
+    assert "Reference 1" in out
+    assert "Reference 3" in out
+
+
+def test_strip_nav_chrome_drops_locale_block():
+    """Sequences of (LangName) link entries common at page footers."""
+    text = """\
+This page documents the foo feature.
+
+[English](url)
+[Chinese](url)
+[Japanese](url)
+[Korean](url)
+[Spanish](url)
+[French](url)
+[German](url)
+[Italian](url)
+
+End of page."""
+    out = gq.strip_nav_chrome(text)
+    assert "documents the foo feature" in out
+    assert "End of page" in out
+    assert "Chinese" not in out
+    assert "Korean" not in out
+
+
+def test_strip_nav_chrome_pure_nav_page_collapses():
+    """A page that is 100% nav should reduce to mostly empty — exactly
+    what we want for sitemap pages so the LLM correctly returns []."""
+    text = "\n".join(f"  * [Item {i}](url{i})" for i in range(20))
+    out = gq.strip_nav_chrome(text)
+    # All 20 nav lines stripped; result is just blank-ish
+    assert "Item 1" not in out
+    assert "Item 19" not in out
+
+
+def test_strip_nav_chrome_handles_blank_lines_inside_run():
+    """Blanks interleaved with nav lines shouldn't break the run — they
+    get dropped along with the surrounding nav."""
+    text = """\
+Real content here.
+
+  * [A](url)
+  * [B](url)
+
+  * [C](url)
+  * [D](url)
+  * [E](url)
+
+More real content."""
+    out = gq.strip_nav_chrome(text)
+    assert "Real content" in out
+    assert "More real content" in out
+    assert "[A](url)" not in out
+    assert "[E](url)" not in out
+
+
+def test_strip_nav_chrome_does_not_touch_pure_prose():
+    """Idempotency on prose-only text."""
+    text = "This is a paragraph.\n\nThis is another paragraph with no links at all."
+    assert gq.strip_nav_chrome(text) == text

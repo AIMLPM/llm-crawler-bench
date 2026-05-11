@@ -136,6 +136,78 @@ is ambiguous between the two cases.
 ## Verdict JSON"""
 
 
+_LINK_PATTERN = re.compile(r"\[([^\]]*)\]\(([^)]*)\)")
+
+
+def _is_link_dominated(line: str, threshold: float = 0.30) -> bool:
+    """Heuristic: a line is "link-dominated" (nav chrome) if removing all
+    markdown links leaves less than `threshold` of its non-whitespace text.
+
+    Catches TOC entries (`* [Chapter 1](url)`), locale-link blocks
+    (`[Spanish](url)`), version selectors (`[v1.36](url) | [v1.35](url)`),
+    nav lists. Doesn't flag prose with inline links — those keep most of
+    their non-whitespace text after link removal.
+
+    Blank lines return False (neutral)."""
+    stripped = line.strip()
+    if not stripped:
+        return False
+    raw_nonws = sum(1 for c in stripped if not c.isspace())
+    if raw_nonws == 0:
+        return False
+    without_links = _LINK_PATTERN.sub("", line).strip()
+    rem_nonws = sum(1 for c in without_links if not c.isspace())
+    return (rem_nonws / raw_nonws) < threshold
+
+
+def strip_nav_chrome(text: str, min_run: int = 5) -> str:
+    """Strip runs of ≥ `min_run` consecutive link-dominated lines from
+    page text BEFORE it reaches the MAX_PAGE_CHARS cap. Generic across
+    sites (no per-site config) — designed to attack the common pattern
+    where documentation sites prepend ~5K-50K chars of site nav, locale
+    links, version selectors, and recursive TOC before substantive
+    content begins.
+
+    Blank lines inside a nav block are treated as neutral (don't count
+    toward `min_run`, don't break the run). The whole run including
+    interleaved blanks is dropped together.
+
+    Short nav runs (< `min_run`) are preserved — those are likely
+    inline link clusters in prose, not a chrome block."""
+    lines = text.split("\n")
+    out_lines: list[str] = []
+    pending: list[str] = []
+    nav_count_in_run = 0
+
+    for line in lines:
+        if not line.strip():
+            # Blank line — neutral. Add to pending IF a run is forming.
+            if nav_count_in_run > 0:
+                pending.append(line)
+            else:
+                out_lines.append(line)
+        elif _is_link_dominated(line):
+            pending.append(line)
+            nav_count_in_run += 1
+        else:
+            # Non-nav line — flush pending
+            if nav_count_in_run >= min_run:
+                pass  # drop the entire run
+            else:
+                out_lines.extend(pending)
+            pending = []
+            nav_count_in_run = 0
+            out_lines.append(line)
+
+    # Tail: same flush logic
+    if nav_count_in_run >= min_run:
+        pass
+    else:
+        out_lines.extend(pending)
+
+    return "\n".join(out_lines)
+
+
 def load_pages_for_site(run_dir: Path, tool: str, site: str) -> list[dict]:
     """Load pages.jsonl for a (tool, site) combination, skipping malformed lines."""
     path = run_dir / tool / site / "pages.jsonl"
@@ -272,7 +344,11 @@ def generate_for_site(
         if not content:
             logger.info(f"[{site}] {i}/{sample_n}: skip (empty page content) {url}")
             continue
-        content_capped = content[:MAX_PAGE_CHARS]
+        # Strip nav/locale/TOC chrome BEFORE applying the char cap so the
+        # cap captures substantive content, not chrome. Generic heuristic;
+        # no per-site tuning. See strip_nav_chrome docstring.
+        content_clean = strip_nav_chrome(content)
+        content_capped = content_clean[:MAX_PAGE_CHARS]
 
         gen_response = call_llm(
             client,
