@@ -42,6 +42,8 @@ Multi-trial measurement (running each (tool, site) pair N times to compute both 
 
 For per-site numbers within ~5% of each other across tools, treat them as effectively tied. The 5% threshold is a **conservative rule of thumb based on observed jitter from prior re-runs, not a formally measured noise floor** — multi-trial work in v1.5 will replace it with a measured value. Aggregate metrics (overall MRR, content signal averaged across sites) are more stable than individual per-site numbers.
 
+**On model determinism:** gpt-4o-mini at temperature=0 is mostly-but-not-100% deterministic — OpenAI returns slightly different responses across calls even with identical inputs. This noise is **symmetric across primary and PUBLISH-BOTH secondary runs** (both draw from the same model with the same params), so it's absorbed by the single-trial caveat above and doesn't confound the leaderboard delta between the two embedder choices. Asymmetric confounds (e.g., one run using gpt-4o-mini and the other using gpt-4o) are blocked at startup by the `models_manifest.json` assertion described in the Reproducibility section.
+
 ## Goal
 
 Compare MarkCrawl against Crawl4AI, FireCrawl (self-hosted), Scrapy, Crawlee, Playwright, and Colly on the same sites with equivalent settings, measuring what matters for the "crawl a documentation site for RAG" use case.
@@ -503,6 +505,8 @@ format and replay one-liners.
 make benchmark-quick   # ~5 min, single site, ~$0 spend (cached query embeddings) — verifies the pipeline runs
 make benchmark         # ~24 hours, all 11 sites, ~$3 spend — produces the canonical reports
 ```
+
+**Models manifest (DS-13a defense-in-depth):** every benchmark run writes `runs/<run_id>/models_manifest.json` capturing the resolved values of `ANSWER_MODEL`, `JUDGE_MODEL`, `EMBEDDING_MODEL`, answer/judge temperatures, the git commit, and any environment overrides detected. Both `benchmark_retrieval.py` and `benchmark_answer_quality.py` assert these resolve to the canonical defaults at startup and **refuse to spend API credits if drift is detected** (raising `SystemExit` before the first API call). This closes the JUDGE_MODEL / ANSWER_MODEL drift surface completely — future cycles can't silently desync across two dimensions even if an operator forgets the runbook hygiene before firing a PUBLISH-BOTH secondary run. The PUBLISH-BOTH expansion explicitly allows `EMBEDDING_MODEL` to be either `text-embedding-3-small` (OpenAI primary) or `mixedbread-ai/mxbai-embed-large-v1` (mxbai secondary); anything else is methodology drift and the assertion fires. A `--dry-run` flag on `benchmark_answer_quality.py` runs the assertion + manifest write then exits, useful as a pre-flight gate before topping up credits.
 
 `benchmark-quick` is the smoke target — it runs `benchmark_retrieval.py` against the most recent merged run dir on a single site (`rust-book` by default; override with `SMOKE_SITE=...`) without the cross-encoder reranker. Useful for verifying the pipeline runs after methodology or code changes, before committing to a 24-hour cycle. Output goes to `reports/RETRIEVAL_QUICK_SMOKE.md` so it doesn't disrupt the canonical `RETRIEVAL_COMPARISON.md`.
 

@@ -2333,6 +2333,20 @@ def main():
         logger.error(f"No benchmark run found at {run_dir}")
         sys.exit(1)
 
+    # DS-13a defense-in-depth: assert embedding-model invariant + write
+    # per-phase models_manifest.json BEFORE any API spend. PUBLISH-BOTH
+    # allows EMBEDDING_MODEL to be either the OpenAI default or the
+    # mxbai secondary; anything else is methodology drift and the
+    # assertion fires here, before query embeddings get billed.
+    from models_manifest import assert_embedding_model, write_models_manifest
+    assert_embedding_model(EMBEDDING_MODEL)
+    manifest_path = write_models_manifest(
+        run_dir,
+        "retrieval",
+        embedding_model=EMBEDDING_MODEL,
+    )
+    logger.info(f"Wrote models manifest section to {manifest_path}")
+
     logger.info(f"Using benchmark run: {run_dir.name}")
 
     # Determine sites and tools to test.
