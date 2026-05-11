@@ -296,6 +296,82 @@ def test_is_locale_mirror_url_malformed():
     assert not gq.is_locale_mirror_url(123)  # type: ignore[arg-type]
 
 
+# --- is_in_site_scope tests ------------------------------------------------
+# v1.4 truth-in-labeling: queries must come from the canonical scope the
+# site name PROMISES. Caught 2026-05-11 when 91% of huggingface-transformers
+# queries were off-topic (endpoints.* product UI, discuss.* forum) because
+# the source-tool had crawled the broader eTLD+1.
+
+def test_is_in_site_scope_accepts_in_scope_url():
+    assert gq.is_in_site_scope("https://huggingface.co/docs/transformers/model_doc/bert",
+                                "huggingface-transformers")
+    assert gq.is_in_site_scope("https://kubernetes.io/docs/tasks/run-application/",
+                                "kubernetes-docs")
+    assert gq.is_in_site_scope("https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html",
+                                "rust-book")
+
+
+def test_is_in_site_scope_rejects_off_host_for_hf():
+    """The headline case: endpoints.huggingface.co + discuss.huggingface.co
+    are SAME eTLD+1 but OUT of the docs/transformers scope. Filter them."""
+    assert not gq.is_in_site_scope("https://endpoints.huggingface.co/something",
+                                    "huggingface-transformers")
+    assert not gq.is_in_site_scope("https://discuss.huggingface.co/t/12345",
+                                    "huggingface-transformers")
+
+
+def test_is_in_site_scope_rejects_off_path_within_same_host():
+    """huggingface.co/blog is the same host as huggingface.co/docs/transformers
+    but a different scope. Filter it."""
+    assert not gq.is_in_site_scope("https://huggingface.co/blog/announcement",
+                                    "huggingface-transformers")
+    assert not gq.is_in_site_scope("https://huggingface.co/spaces/foo/bar",
+                                    "huggingface-transformers")
+
+
+def test_is_in_site_scope_rejects_rust_reference_out_of_book_scope():
+    """rust-book scope is /book; /reference, /std, /stable should not count
+    as rust-book content. v1.3 leakage that the filter now catches."""
+    assert not gq.is_in_site_scope("https://doc.rust-lang.org/reference/items.html",
+                                    "rust-book")
+    assert not gq.is_in_site_scope("https://doc.rust-lang.org/std/result/enum.Result.html",
+                                    "rust-book")
+    assert not gq.is_in_site_scope("https://doc.rust-lang.org/stable/book/ch04-01.html",
+                                    "rust-book")
+
+
+def test_is_in_site_scope_unknown_site_is_permissive():
+    """Sites without an explicit scope_prefix entry don't block — so a
+    new site added before its scope is set still works."""
+    assert gq.is_in_site_scope("https://anywhere.example.com/foo",
+                                "newly-added-site")
+
+
+def test_is_in_site_scope_malformed_input():
+    assert not gq.is_in_site_scope(None, "rust-book")  # type: ignore[arg-type]
+    assert not gq.is_in_site_scope(123, "rust-book")  # type: ignore[arg-type]
+
+
+def test_load_pages_filters_out_of_scope_urls(tmp_path):
+    """The headline integration test: HF endpoints + discuss URLs are dropped."""
+    site_dir = tmp_path / "tool" / "huggingface-transformers"
+    site_dir.mkdir(parents=True)
+    pages_path = site_dir / "pages.jsonl"
+    pages_path.write_text(
+        json.dumps({"url": "https://huggingface.co/docs/transformers/model_doc/bert", "markdown": "x"}) + "\n"
+        + json.dumps({"url": "https://endpoints.huggingface.co/product", "markdown": "x"}) + "\n"
+        + json.dumps({"url": "https://discuss.huggingface.co/t/12345", "markdown": "x"}) + "\n"
+        + json.dumps({"url": "https://huggingface.co/blog/announcement", "markdown": "x"}) + "\n"
+        + json.dumps({"url": "https://huggingface.co/docs/transformers/installation", "markdown": "x"}) + "\n"
+    )
+    pages = gq.load_pages_for_site(tmp_path, "tool", "huggingface-transformers")
+    urls = {p["url"] for p in pages}
+    assert urls == {
+        "https://huggingface.co/docs/transformers/model_doc/bert",
+        "https://huggingface.co/docs/transformers/installation",
+    }, f"Out-of-scope HF URLs should be filtered. Got: {urls}"
+
+
 def test_load_pages_filters_locale_mirrors(tmp_path):
     """Integration: load_pages_for_site must drop locale-mirror URLs."""
     site_dir = tmp_path / "tool" / "site"

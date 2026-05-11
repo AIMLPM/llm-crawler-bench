@@ -229,6 +229,50 @@ _LOCALE_SUBDOMAIN_PREFIXES = frozenset([
 ])
 
 
+# Per-site canonical scope prefix — what the site name PROMISES the
+# queries to be about. Filters out off-topic content the source-tool
+# (crawl4ai-raw) may have crawled at the eTLD+1 level. Set explicitly
+# per site to avoid silently accepting whatever the seed URL implies;
+# methodology-clean truth-in-labeling, not site-specific tuning.
+#
+# Caught 2026-05-11: 91% of HF queries were off-topic (62% endpoints.
+# huggingface.co product UI, 30% discuss.huggingface.co forum) because
+# crawl4ai-raw on HF crawled the broader huggingface.co eTLD+1. The
+# scope filter blocks this at the sampler level.
+SCOPE_PREFIXES = {
+    "react-dev":               "https://react.dev",
+    "stripe-docs":             "https://docs.stripe.com",
+    "huggingface-transformers": "https://huggingface.co/docs/transformers",
+    "kubernetes-docs":         "https://kubernetes.io/docs",
+    "postgres-docs":           "https://www.postgresql.org/docs",
+    "mdn-css":                 "https://developer.mozilla.org/en-US/docs/Web/CSS",
+    "rust-book":               "https://doc.rust-lang.org/book",
+    "newegg":                  "https://www.newegg.com",
+    "ikea":                    "https://www.ikea.com",
+    "smittenkitchen":          "https://smittenkitchen.com",
+    "propublica":              "https://www.propublica.org",
+}
+
+
+def is_in_site_scope(url: str, site: str) -> bool:
+    """True if url falls within the canonical scope prefix for `site`.
+
+    The scope is what the site name PROMISES the queries to be about —
+    e.g., huggingface-transformers means "the transformers docs," not
+    "the entire huggingface.co eTLD+1 including endpoints.huggingface.co
+    product UI or discuss.huggingface.co forum threads."
+
+    Sites without an explicit SCOPE_PREFIXES entry are permissive
+    (accept any URL) so new sites don't get silently blocked before
+    their scope is set."""
+    if not isinstance(url, str):
+        return False
+    prefix = SCOPE_PREFIXES.get(site)
+    if not prefix:
+        return True
+    return url.startswith(prefix)
+
+
 def is_locale_mirror_url(url: str) -> bool:
     """True if the URL's leftmost subdomain is a known locale prefix
     (ar.react.dev, ko.react.dev, zh-cn.react.dev, etc.).
@@ -254,12 +298,15 @@ def is_locale_mirror_url(url: str) -> bool:
 
 def load_pages_for_site(run_dir: Path, tool: str, site: str) -> list[dict]:
     """Load pages.jsonl for a (tool, site) combination, skipping malformed
-    lines AND filtering out locale-mirror URLs (v1.4 English-only sampler)."""
+    lines AND filtering out (a) locale-mirror URLs (v1.4 English-only
+    sampler) and (b) URLs outside the site's canonical scope prefix
+    (v1.4 truth-in-labeling — see SCOPE_PREFIXES)."""
     path = run_dir / tool / site / "pages.jsonl"
     if not path.exists():
         return []
     pages = []
     locale_filtered = 0
+    scope_filtered = 0
     with open(path) as f:
         for line in f:
             line = line.strip()
@@ -269,12 +316,19 @@ def load_pages_for_site(run_dir: Path, tool: str, site: str) -> list[dict]:
                 page = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            if is_locale_mirror_url(page.get("url", "")):
+            url = page.get("url", "")
+            if is_locale_mirror_url(url):
                 locale_filtered += 1
+                continue
+            if not is_in_site_scope(url, site):
+                scope_filtered += 1
                 continue
             pages.append(page)
     if locale_filtered:
         logger.info(f"  filtered {locale_filtered} locale-mirror URLs from {site} pool")
+    if scope_filtered:
+        logger.info(f"  filtered {scope_filtered} out-of-scope URLs from {site} pool "
+                    f"(kept only {SCOPE_PREFIXES.get(site, '<no scope>')}*)")
     return pages
 
 
@@ -502,10 +556,33 @@ def main():
     rejected_out = _REPO_ROOT / args.rejected_out
     queries_out.parent.mkdir(parents=True, exist_ok=True)
 
+    # Merge into existing JSON (if any) rather than overwriting wholesale —
+    # so a --sites huggingface-transformers re-fire updates only HF's
+    # entry without dropping the other 10 sites' queries.
+    final_accepted = {}
+    if queries_out.is_file():
+        try:
+            final_accepted = json.loads(queries_out.read_text())
+            if not isinstance(final_accepted, dict):
+                final_accepted = {}
+        except json.JSONDecodeError:
+            final_accepted = {}
+    final_accepted.update(all_accepted)
+
+    final_rejected = {}
+    if rejected_out.is_file():
+        try:
+            final_rejected = json.loads(rejected_out.read_text())
+            if not isinstance(final_rejected, dict):
+                final_rejected = {}
+        except json.JSONDecodeError:
+            final_rejected = {}
+    final_rejected.update(all_rejected)
+
     with open(queries_out, "w") as f:
-        json.dump(all_accepted, f, indent=2)
+        json.dump(final_accepted, f, indent=2)
     with open(rejected_out, "w") as f:
-        json.dump(all_rejected, f, indent=2)
+        json.dump(final_rejected, f, indent=2)
 
     total_accepted = sum(len(v) for v in all_accepted.values())
     total_rejected = sum(len(v) for v in all_rejected.values())

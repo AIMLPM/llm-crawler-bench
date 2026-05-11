@@ -18,9 +18,9 @@ def test_models_slug_changes_with_test_queries(monkeypatch):
     monkeypatch.setattr(baq, "EMBEDDING_MODEL", "text-embedding-3-small")
 
     monkeypatch.setattr(baq, "TEST_QUERIES", {"site_a": [{"query": "v13"}]})
-    slug_v13 = baq._models_slug()
+    slug_v13 = baq._models_slug("site_a")
     monkeypatch.setattr(baq, "TEST_QUERIES", {"site_a": [{"query": "v14"}]})
-    slug_v14 = baq._models_slug()
+    slug_v14 = baq._models_slug("site_a")
     assert slug_v13 != slug_v14
 
 
@@ -30,9 +30,9 @@ def test_models_slug_changes_with_judge_model(monkeypatch):
     monkeypatch.setattr(baq, "EMBEDDING_MODEL", "text-embedding-3-small")
 
     monkeypatch.setattr(baq, "JUDGE_MODEL", "gpt-4o-mini")
-    a = baq._models_slug()
+    a = baq._models_slug("site_a")
     monkeypatch.setattr(baq, "JUDGE_MODEL", "gpt-4o")
-    b = baq._models_slug()
+    b = baq._models_slug("site_a")
     assert a != b
 
 
@@ -42,9 +42,9 @@ def test_models_slug_changes_with_answer_model(monkeypatch):
     monkeypatch.setattr(baq, "EMBEDDING_MODEL", "text-embedding-3-small")
 
     monkeypatch.setattr(baq, "ANSWER_MODEL", "gpt-4o-mini")
-    a = baq._models_slug()
+    a = baq._models_slug("site_a")
     monkeypatch.setattr(baq, "ANSWER_MODEL", "gpt-4o")
-    b = baq._models_slug()
+    b = baq._models_slug("site_a")
     assert a != b
 
 
@@ -56,9 +56,9 @@ def test_models_slug_changes_with_embedding_model(monkeypatch):
     monkeypatch.setattr(baq, "JUDGE_MODEL", "gpt-4o-mini")
 
     monkeypatch.setattr(baq, "EMBEDDING_MODEL", "text-embedding-3-small")
-    a = baq._models_slug()
+    a = baq._models_slug("site_a")
     monkeypatch.setattr(baq, "EMBEDDING_MODEL", "mixedbread-ai/mxbai-embed-large-v1")
-    b = baq._models_slug()
+    b = baq._models_slug("site_a")
     assert a != b
 
 

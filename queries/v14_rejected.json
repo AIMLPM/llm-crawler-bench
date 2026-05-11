@@ -1,15 +1,5 @@
 {
-  "huggingface-transformers": [
-    {
-      "query": "What is the maximum number of tokens that can be processed in a single iteration with the vLLM inference engine?",
-      "url": "https://endpoints.huggingface.co/new?accelerator=gpu&catalog_id=360&instance_id=aws-us-east-1-nvidia-l4-x1&no_suggested_compute=true&repository=deepseek-ai%2FDeepSeek-OCR&task=image-text-to-text&vendor=aws",
-      "url_match": "new",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The page does not specify the maximum number of tokens for the vLLM inference engine."
-    }
-  ],
+  "huggingface-transformers": [],
   "ikea": [],
   "kubernetes-docs": [
     {
