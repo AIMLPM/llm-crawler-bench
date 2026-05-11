@@ -1978,14 +1978,28 @@ def _embedder_slug(model_name: Optional[str] = None) -> str:
     return name.replace("/", "_")
 
 
+def _test_queries_hash() -> str:
+    """8-char SHA-256 prefix of canonicalized TEST_QUERIES content. Included
+    in checkpoint filenames so that swapping the query set (v1.3 → v1.4 via
+    DS-7's JSON loader, or any future query-set refresh) correctly
+    invalidates the per-(tool, site) cache rather than loading stale
+    query_results from a prior run. Same class of bug as DS-13b's
+    embedder-blind cache, fixed the same way."""
+    canonical = json.dumps(TEST_QUERIES, sort_keys=True)
+    return hashlib.sha256(canonical.encode()).hexdigest()[:8]
+
+
 def _checkpoint_key(run_name: str, tool: str, site: str, config_label: str) -> str:
-    """Embedder-aware key. Without the embedder slug, swapping
-    EMBEDDING_MODEL silently loads the prior embedder's cached vectors
-    (verified 2026-05-05: mxbai re-run produced byte-identical reports
-    because all 72 (tool, site) checkpoints loaded from the OpenAI run).
-    Pre-fix checkpoints lack the slug and are naturally bypassed."""
+    """Cache-aware key. Includes the embedder slug (DS-13b) AND the
+    test-queries hash so that any change to either invalidates the
+    per-(tool, site) cache. Without these the cache silently returns
+    stale query_results when an environment knob changes — DS-13b was
+    the empirical proof for the embedder dimension; the query-set
+    dimension would have the same failure mode if Gate 4 fired against
+    v1.3-era checkpoints."""
     embedder = _embedder_slug()
-    safe = f"{run_name}__{embedder}__{tool}__{site}__{config_label}".replace("/", "_")
+    queries = _test_queries_hash()
+    safe = f"{run_name}__{embedder}__{queries}__{tool}__{site}__{config_label}".replace("/", "_")
     return safe
 
 
