@@ -60,24 +60,34 @@ GENERATION_MODEL = os.environ.get("GENERATION_MODEL", "gpt-4o-mini")
 VERIFICATION_MODEL = os.environ.get("VERIFICATION_MODEL", "gpt-4o-mini")
 SAMPLE_URLS_PER_SITE = 30
 MAX_QUERIES_PER_URL = 2
-MAX_PAGE_CHARS = 8000
+# 24000 chars ≈ 6000 tokens. crawl4ai-raw output for documentation sites
+# typically prepends ~4000 chars of navigation chrome (keyboard-shortcut
+# headers + full TOC) before substantive content; an 8000 cap was clipping
+# off most real content. 24000 covers ~95% of doc pages end-to-end at a
+# trivial extra cost (~$0.02 per Gate 3a iteration vs the 8K version).
+MAX_PAGE_CHARS = 24000
 MAX_TOKENS_GEN = 200
 MAX_TOKENS_VERIFY = 100
 
 
 GENERATION_PROMPT = """You are creating retrieval-benchmark questions from a documentation page.
 
-Read the page content below and draft 1-2 questions that:
-1. Are answerable using only this page's content (no outside knowledge needed)
-2. A real user might plausibly ask
-3. Cover different aspects of the page (don't ask two near-identical questions)
-4. Are concise — phrase as a user would type into a search box
+Read the page content below and draft 1-2 questions that meet ALL of these:
+1. The answer is **literally present in the substantive content** of this
+   specific page — not just plausible from general knowledge of the topic.
+2. The question is about the page's main topic, not navigation chrome,
+   sidebar links, page headers/footers, or "see also" cross-references.
+3. A real user reading this page might ask the question.
+4. Concise — phrase as a user would type into a search box.
+5. The two questions cover different aspects of the page (no near-duplicates).
+
+If you cannot find at least one question whose answer is LITERALLY in
+the substantive page content, return an empty array: []
+This is normal for navigation pages, sitemap pages, login walls, redirect
+stubs, 404 pages, or pages whose content is mostly chrome.
 
 Return ONLY a JSON array of strings, like:
 ["First question?", "Second question?"]
-
-If the page has no substantive content (sitemap, login wall, redirect stub,
-404 page, navigation index), return an empty array: []
 
 ## Page URL
 {url}
@@ -95,9 +105,24 @@ Return ONLY a JSON object with this exact shape:
 or
 {{"answerable": false, "rationale": "one short sentence"}}
 
-Be strict: only return true if the answer is clearly present in the content.
-If the page is empty/sitemap/login/redirect/navigation-only, return false
-with rationale starting with "page is empty" so the sampler can be debugged.
+Be strict: only return true if the answer is **clearly and literally
+present** in the content (not merely "the page is on this general topic").
+
+When returning false, the rationale **must start with one of these two
+prefixes** so downstream tooling can distinguish the two failure modes:
+
+- `"answer-not-in-page: ..."` — the page has substantive content but
+  this specific question's answer is not present. Normal verifier
+  rejection; the sampler did its job (the page exists), the question
+  just doesn't fit this URL.
+
+- `"page-broken: ..."` — the page itself is broken: literally empty,
+  sitemap, login wall, redirect stub, 404 page, or navigation-only
+  with no substantive prose. Signals a SAMPLER issue (the URL should
+  not have been picked).
+
+Do NOT use any other rationale prefix. Do NOT use "page is empty" — it
+is ambiguous between the two cases.
 
 ## Page URL
 {url}
@@ -357,17 +382,26 @@ def main():
     total_accepted = sum(len(v) for v in all_accepted.values())
     total_rejected = sum(len(v) for v in all_rejected.values())
     overall_first_pass = total_accepted / (total_accepted + total_rejected) if (total_accepted + total_rejected) else 0
-    empty_page_rejections = sum(
+    page_broken_rejections = sum(
         1 for entries in all_rejected.values()
         for e in entries
-        if "page is empty" in e.get("verifier_rationale", "").lower()
+        if e.get("verifier_rationale", "").lower().startswith("page-broken")
     )
+    answer_not_in_page_rejections = sum(
+        1 for entries in all_rejected.values()
+        for e in entries
+        if e.get("verifier_rationale", "").lower().startswith("answer-not-in-page")
+    )
+    other_rejections = total_rejected - page_broken_rejections - answer_not_in_page_rejections
 
     logger.info("\n=== TOTAL ===")
     logger.info(f"Accepted: {total_accepted}")
     logger.info(f"Rejected: {total_rejected}")
     logger.info(f"Verifier first-pass rate: {overall_first_pass:.1%}")
-    logger.info(f"'page is empty' rejections: {empty_page_rejections} (sampler health — should be 0)")
+    logger.info("  rejection breakdown:")
+    logger.info(f"    page-broken (SAMPLER issue, should be 0): {page_broken_rejections}")
+    logger.info(f"    answer-not-in-page (normal):              {answer_not_in_page_rejections}")
+    logger.info(f"    other / unprefixed (PROMPT-FORMAT issue): {other_rejections}")
     logger.info(f"Wrote {queries_out}")
     logger.info(f"Wrote {rejected_out}")
 
