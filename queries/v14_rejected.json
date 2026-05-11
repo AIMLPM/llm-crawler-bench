@@ -1,170 +1,125 @@
 {
   "huggingface-transformers": [
     {
-      "query": "What is the maximum number of sequences that can be processed in a single iteration for the vLLM inference engine?",
-      "url": "https://endpoints.huggingface.co/new?accelerator=gpu&catalog_id=241&instance_id=aws-us-east-1-nvidia-l4-x4&no_suggested_compute=true&repository=mistralai%2FMistral-Small-24B-Instruct-2501&task=text-generation&vendor=aws",
+      "query": "What is the maximum number of tokens that can be processed in a single iteration with the vLLM inference engine?",
+      "url": "https://endpoints.huggingface.co/new?accelerator=gpu&catalog_id=360&instance_id=aws-us-east-1-nvidia-l4-x1&no_suggested_compute=true&repository=deepseek-ai%2FDeepSeek-OCR&task=image-text-to-text&vendor=aws",
       "url_match": "new",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The specific maximum number of sequences for the vLLM inference engine is not provided in the content."
-    },
+      "verifier_rationale": "answer-not-in-page: The page does not specify the maximum number of tokens for the vLLM inference engine."
+    }
+  ],
+  "ikea": [],
+  "kubernetes-docs": [
     {
-      "query": "What is the maximum number of tokens that can be processed in a single iteration?",
-      "url": "https://endpoints.huggingface.co/new?accelerator=gpu&catalog_id=363&instance_id=aws-us-east-1-nvidia-a100-x2&no_suggested_compute=true&repository=Qwen%2FQwen3-VL-30B-A3B-Thinking&task=image-text-to-text&vendor=aws",
-      "url_match": "new",
+      "query": "What are Pods in Kubernetes?",
+      "url": "https://kubernetes.io/docs/concepts/",
+      "url_match": "concepts",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The specific maximum number of tokens that can be processed is not mentioned in the content."
+      "verifier_rationale": "answer-not-in-page: The page provides an overview of Kubernetes concepts but does not define what Pods are."
     }
   ],
-  "ikea": [
-    {
-      "query": "What is a Plan & order point with Pick-up?",
-      "url": "https://www.ikea.com/us/en/stores/",
-      "url_match": "stores",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists various Plan & order points but does not define what they are."
-    }
-  ],
-  "kubernetes-docs": [],
   "mdn-css": [],
   "newegg": [],
-  "postgres-docs": [],
-  "propublica": [
+  "postgres-docs": [
     {
-      "query": "What is nuisance abatement?",
-      "url": "https://www.propublica.org/series/nuisance-abatement",
-      "url_match": "nuisance-abatement",
+      "query": "How do I retrieve data from the database?",
+      "url": "https://www.postgresql.org/docs/17/queries.html",
+      "url_match": "queries.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page discusses nuisance abatement enforcement but does not define what nuisance abatement is."
+      "verifier_rationale": "answer-not-in-page: The page does not provide specific instructions on how to retrieve data from the database."
     },
     {
-      "query": "How does ProPublica rely on donor support?",
-      "url": "https://www.propublica.org/supporters",
-      "url_match": "supporters",
+      "query": "What topics are covered in Chapter 7 of the PostgreSQL documentation?",
+      "url": "https://www.postgresql.org/docs/17/queries.html",
+      "url_match": "queries.html",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page mentions that ProPublica relies on donor support but does not provide specific details on how they do so."
+      "verifier_rationale": "answer-not-in-page: The specific topics covered in Chapter 7 are not listed in the provided content."
     }
   ],
-  "react-dev": [
+  "propublica": [
     {
-      "query": "What languages are the React docs translated into?",
-      "url": "https://de.react.dev/community/translations",
-      "url_match": "translations",
+      "query": "What is the main focus of ProPublica during Donald Trump's second presidency?",
+      "url": "https://www.propublica.org/archive",
+      "url_match": "archive",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page discusses translations but does not specify which languages the React docs are translated into."
+      "verifier_rationale": "answer-not-in-page: The page does not provide specific information about ProPublica's focus during Donald Trump's second presidency."
+    },
+    {
+      "query": "What are the rates of arrest and jailing for children in Rutherford County?",
+      "url": "https://www.propublica.org/series/juvenile-injustice-tennessee",
+      "url_match": "juvenile-injustice-tennessee",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The specific rates of arrest and jailing for children in Rutherford County are not provided in the content."
     }
   ],
+  "react-dev": [],
   "rust-book": [],
   "smittenkitchen": [
     {
-      "query": "What is the recipe for simplest brisket with braised onions?",
-      "url": "https://smittenkitchen.com/./recipes/cuisine/jewish/?format=photo",
-      "url_match": "jewish",
+      "query": "When was the banana chocolate chip cake recipe first published?",
+      "url": "https://smittenkitchen.com/./recipes/fruit/bananas/?format=photo",
+      "url_match": "bananas",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the actual recipe for simplest brisket with braised onions."
+      "verifier_rationale": "answer-not-in-page: The page does not provide the publication date for the banana chocolate chip cake recipe."
     },
     {
-      "query": "How do you make chicken liver p\u00e2t\u00e9?",
-      "url": "https://smittenkitchen.com/./recipes/cuisine/jewish/?format=photo",
-      "url_match": "jewish",
+      "query": "When was the breakfast category first published on Smitten Kitchen?",
+      "url": "https://smittenkitchen.com/./recipes/course/breakfast/?format=photo",
+      "url_match": "breakfast",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the instructions for making chicken liver p\u00e2t\u00e9."
+      "verifier_rationale": "answer-not-in-page: The page does not provide the publication date for the breakfast category."
     },
     {
-      "query": "When was the stew category first published on Smitten Kitchen?",
-      "url": "https://smittenkitchen.com/./recipes/course/stew/?format=photo",
-      "url_match": "stew",
+      "query": "How can I make miso chicken and rice?",
+      "url": "https://smittenkitchen.com/./recipes/ingredient/meat/?format=photo",
+      "url_match": "meat",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page does not provide information about the publication date of the stew category."
+      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the instructions for making miso chicken and rice."
     },
     {
-      "query": "What is a recipe for classic lemon curd tart?",
-      "url": "https://smittenkitchen.com/./recipes/sweets/tarts-pies/?format=photo",
-      "url_match": "tarts-pies",
+      "query": "How does cooking and storing meals in advance benefit you?",
+      "url": "https://smittenkitchen.com/./recipes/method/freezer-friendly/?format=photo",
+      "url_match": "freezer-friendly",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the actual recipe for classic lemon curd tart."
+      "verifier_rationale": "answer-not-in-page: The page does not provide specific benefits of cooking and storing meals in advance."
     },
     {
-      "query": "How do you make extra-flaky pie crust?",
-      "url": "https://smittenkitchen.com/./recipes/sweets/tarts-pies/?format=photo",
-      "url_match": "tarts-pies",
+      "query": "When was the first eggplant recipe published on Smitten Kitchen?",
+      "url": "https://smittenkitchen.com/./recipes/vegetable/eggplant/?format=photo",
+      "url_match": "eggplant",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide instructions for making extra-flaky pie crust."
+      "verifier_rationale": "answer-not-in-page: The page does not provide a specific date for the first eggplant recipe published on Smitten Kitchen."
     },
     {
-      "query": "How many recipes are listed under the dinner category?",
-      "url": "https://smittenkitchen.com/./recipes/course/dinner/?format=photo",
-      "url_match": "dinner",
+      "query": "How can I make homemade cream cheese?",
+      "url": "https://smittenkitchen.com/./recipes/ingredient/cheese/?format=photo",
+      "url_match": "cheese",
       "page_match": "",
       "category": "",
       "description": "",
-      "verifier_rationale": "answer-not-in-page: The page does not provide a specific count of recipes listed under the dinner category."
-    },
-    {
-      "query": "How do you make peppermint hot fudge sauce?",
-      "url": "https://smittenkitchen.com/./recipes/sweets/dessert-sauces/?format=photo",
-      "url_match": "dessert-sauces",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the instructions for making peppermint hot fudge sauce."
-    },
-    {
-      "query": "What is the recipe for black bean confetti salad 2.0?",
-      "url": "https://smittenkitchen.com/./recipes/cuisine/tex-mex/?format=photo",
-      "url_match": "tex-mex",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the actual recipe for black bean confetti salad 2.0."
-    },
-    {
-      "query": "How do you make simple chicken tortilla soup?",
-      "url": "https://smittenkitchen.com/./recipes/cuisine/tex-mex/?format=photo",
-      "url_match": "tex-mex",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the instructions for making simple chicken tortilla soup."
-    },
-    {
-      "query": "How do you make roasted carrots with lentils and yogurt?",
-      "url": "https://smittenkitchen.com/./recipes/vegetable/carrots/?format=photo",
-      "url_match": "carrots",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the specific instructions for making roasted carrots with lentils and yogurt."
-    },
-    {
-      "query": "What type of dish is the 'chickpea pan bagnat'?",
-      "url": "https://smittenkitchen.com/./recipes/course/picnics/?format=photo",
-      "url_match": "picnics",
-      "page_match": "",
-      "category": "",
-      "description": "",
-      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide specific details about the 'chickpea pan bagnat' dish."
+      "verifier_rationale": "answer-not-in-page: The page lists recipes that include cheese but does not provide instructions for making homemade cream cheese."
     }
   ],
   "stripe-docs": []
