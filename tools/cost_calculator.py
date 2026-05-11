@@ -37,19 +37,38 @@ import argparse
 import json
 from dataclasses import asdict, dataclass, replace
 
-# Per-tool empirical data from the v1.3 cycle (chunk counts from
-# reports/RETRIEVAL_COMPARISON.md, retrieval depths derived from chunk
-# density per the COST_AT_SCALE methodology). Update these when v1.4
-# numbers land — DS-14 release notes consume the calculator output.
+# Per-tool empirical data from the v1.4 cycle. Chunks-per-page is the
+# aggregate ratio across all sites where the tool returned non-zero
+# chunks; deduped to (tool, site) so cache-migration history doesn't
+# inflate the count. K_retrieval is scaled with markcrawl K=10 as
+# baseline (lower chunks/page = lower K can match the same answer-
+# quality, all things equal).
+#
+# Derived from runs/run_v13_merged_20260504_203748 retrieval_checkpoints
+# (~512tok default config) after the Gate 4 + HF scope filter + 4-site
+# re-fire landed (commit 4355c67). Re-derive by running tools/derive_
+# chunks_per_page.py (TODO v1.5: bake into make readme).
+#
+# v1.3 → v1.4 chunks/page deltas:
+#   crawl4ai     15.0 → 9.92   (chunker default flip + cleaner extraction)
+#   crawl4ai-raw 15.0 → 9.61
+#   markcrawl    10.1 → 12.19  (markcrawl 0.5.0 → 0.10.5 chunker change)
+#   playwright   15.0 → 19.02
+#   scrapy+md    12.0 → 19.87
+#   crawlee      16.0 → 22.78
+#   colly+md     15.0 → 24.79
+#
+# Firecrawl removed — not in the v1.4 leaderboard (FIRECRAWL_API_KEY
+# absent, all sites skipped). v1.5 should re-add if a stable
+# self-hosted firecrawl path lands.
 PER_TOOL_DATA: dict[str, dict[str, float]] = {
-    "markcrawl":    {"chunks_per_page": 10.1,  "k_retrieval": 10},
-    "scrapy+md":    {"chunks_per_page": 12.0,  "k_retrieval": 12},
-    "firecrawl":    {"chunks_per_page": 12.97, "k_retrieval": 13},
-    "crawl4ai":     {"chunks_per_page": 15.0,  "k_retrieval": 15},
-    "crawl4ai-raw": {"chunks_per_page": 15.0,  "k_retrieval": 15},
-    "colly+md":     {"chunks_per_page": 15.0,  "k_retrieval": 15},
-    "playwright":   {"chunks_per_page": 15.0,  "k_retrieval": 15},
-    "crawlee":      {"chunks_per_page": 16.0,  "k_retrieval": 16},
+    "crawl4ai-raw": {"chunks_per_page":  9.61, "k_retrieval":  8},
+    "crawl4ai":     {"chunks_per_page":  9.92, "k_retrieval":  8},
+    "markcrawl":    {"chunks_per_page": 12.19, "k_retrieval": 10},
+    "playwright":   {"chunks_per_page": 19.02, "k_retrieval": 16},
+    "scrapy+md":    {"chunks_per_page": 19.87, "k_retrieval": 16},
+    "crawlee":      {"chunks_per_page": 22.78, "k_retrieval": 19},
+    "colly+md":     {"chunks_per_page": 24.79, "k_retrieval": 20},
 }
 
 
@@ -116,7 +135,10 @@ def render_markdown_table(rows: list[dict], p: PricingInputs) -> str:
         else:
             delta = r["total_yr"] - mc_total
             pct = delta / mc_total * 100 if mc_total else 0
-            delta_str = f"+${delta:,.0f} ({pct:+.1f}%)"
+            # Format delta with explicit sign so negatives render as "-$968"
+            # rather than the broken "+$-968" from f"+${delta:,.0f}".
+            sign = "+" if delta >= 0 else "-"
+            delta_str = f"{sign}${abs(delta):,.0f} ({pct:+.1f}%)"
         lines.append(
             f"| {r['tool']} | ${r['storage_yr']:,.0f} | ${r['query_yr']:,.0f} "
             f"| ${r['total_yr']:,.0f} | {delta_str} |"

@@ -18,15 +18,19 @@ if str(_tools_dir) not in sys.path:
 import cost_calculator as cc  # noqa: E402
 
 
-def test_default_pricing_reproduces_published_markcrawl_within_1pct():
-    """Default pricing should produce markcrawl mid-scale cost within 1%
-    of the published COST_AT_SCALE.md number ($4,505)."""
-    p = cc.PricingInputs()  # all defaults
+def test_v14_markcrawl_third_place_at_default_pricing():
+    """v1.4 calculator: markcrawl is 3rd cheapest at default pricing
+    (crawl4ai-raw and crawl4ai have lower chunks/page after the v1.4
+    chunker default flip). Locks the v1.4 ordering — a future regression
+    that put markcrawl back at 1st without updated empirical data would
+    fail this test."""
+    p = cc.PricingInputs()
     rows = cc.cost_table(p)
-    mc = next(r for r in rows if r["tool"] == "markcrawl")
-    published = 4505
-    assert abs(mc["total_yr"] - published) / published < 0.01, \
-        f"markcrawl mid-scale cost {mc['total_yr']} differs >1% from published {published}"
+    ranking = [r["tool"] for r in rows]
+    # crawl4ai-raw + crawl4ai cheaper than markcrawl in v1.4
+    assert ranking[0] == "crawl4ai-raw"
+    assert ranking[1] == "crawl4ai"
+    assert ranking[2] == "markcrawl"
 
 
 def test_cost_table_sorted_ascending_by_total():
@@ -36,11 +40,11 @@ def test_cost_table_sorted_ascending_by_total():
     assert totals == sorted(totals), "cost table must be ranked ascending"
 
 
-def test_markcrawl_first_in_baseline_ranking():
-    """Sanity check: markcrawl should rank first under default pricing.
-    If this fails, either chunks_per_page numbers changed or pricing changed."""
+def test_v14_crawl4ai_raw_first_in_baseline_ranking():
+    """Sanity check: crawl4ai-raw should rank first under v1.4 default
+    pricing (chunks_per_page 9.61 vs markcrawl's 12.19)."""
     rows = cc.cost_table(cc.PricingInputs())
-    assert rows[0]["tool"] == "markcrawl"
+    assert rows[0]["tool"] == "crawl4ai-raw"
 
 
 def test_storage_cost_scales_linearly_with_pages():
@@ -79,13 +83,13 @@ def test_sensitivity_sweep_baseline_robust_under_default_pricing():
 
 
 def test_sensitivity_sweep_can_detect_ranking_shift(monkeypatch):
-    """Negative test: if we artificially make markcrawl's chunks_per_page
-    much larger than scrapy+md's, the ranking SHOULD shift somewhere in
-    the ±50% sweep. Verifies the shift-detection isn't broken."""
-    monkeypatch.setitem(cc.PER_TOOL_DATA, "markcrawl", {"chunks_per_page": 14.0, "k_retrieval": 14})
-    monkeypatch.setitem(cc.PER_TOOL_DATA, "scrapy+md", {"chunks_per_page": 12.0, "k_retrieval": 12})
+    """Negative test: artificially make scrapy+md the cheapest tool by
+    flooring its chunks_per_page. The ranking-shift-detection logic should
+    notice this is different from the default baseline (crawl4ai-raw 1st).
+    Verifies the shift-detection isn't broken."""
+    # Floor scrapy+md below crawl4ai-raw + crawl4ai
+    monkeypatch.setitem(cc.PER_TOOL_DATA, "scrapy+md", {"chunks_per_page": 1.0, "k_retrieval": 1})
     rows = cc.cost_table(cc.PricingInputs())
-    # Now scrapy+md should rank below markcrawl in baseline
     assert rows[0]["tool"] == "scrapy+md", "test setup: scrapy+md should be cheapest after monkeypatch"
 
 
@@ -97,8 +101,10 @@ def test_render_markdown_table_contains_em_dash_for_markcrawl():
     assert "—" in mc_line and "+$" not in mc_line
 
 
-def test_per_tool_data_has_seven_competitors_plus_markcrawl():
-    """The 8 tool keys: markcrawl + 7 competitors. Sanity check that
-    PER_TOOL_DATA hasn't been accidentally pared down."""
-    assert len(cc.PER_TOOL_DATA) == 8
+def test_per_tool_data_has_seven_tools():
+    """7 tools in v1.4 (firecrawl removed — not in the v1.4 run because
+    FIRECRAWL_API_KEY was absent and all sites skipped). Sanity check
+    that PER_TOOL_DATA hasn't been accidentally pared down."""
+    assert len(cc.PER_TOOL_DATA) == 7
     assert "markcrawl" in cc.PER_TOOL_DATA
+    assert "firecrawl" not in cc.PER_TOOL_DATA
