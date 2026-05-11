@@ -810,9 +810,18 @@ def _compute_page_level_mrr_and_hits(
 ) -> Tuple[float, Dict[int, int]]:
     """Page-level MRR and Hit@K (DS-1 + DS-2).
 
-    Collapse chunks-per-URL to pages using DS-2 normalized URLs, then compute
-    MRR and Hit@K on the deduped page list. Removes the chunk-density gaming
-    signal that affects chunk-level MRR.
+    Collapses chunks-per-URL to pages using DS-2 normalized URLs (so
+    locale mirrors and fragment variants of the same canonical page
+    collapse to a single rank slot), then computes MRR and Hit@K on
+    the deduped page list. Removes the chunk-density gaming signal
+    that affects chunk-level MRR.
+
+    Bug-fix 2026-05-11: the previous version dedup'd by RAW URL, which
+    meant `react.dev/X#a` and `react.dev/X#b` were treated as two
+    distinct page entries — silently suppressing the page-level uplift
+    for tools that emit multiple fragment-variant chunks per canonical
+    page. Now passes `_normalize_url_for_matching` as the dedup key so
+    those collapse to one entry per canonical page.
     """
     if not query_results:
         return 0.0, {k: 0 for k in REPORT_AT_K}
@@ -831,7 +840,9 @@ def _compute_page_level_mrr_and_hits(
                 or (_pm and _pm in normalized)
             )
 
-        pages = collapse_chunks_to_pages(qr.top_k_urls)
+        pages = collapse_chunks_to_pages(
+            qr.top_k_urls, key_fn=_normalize_url_for_matching
+        )
         rr_sum += _page_reciprocal_rank(pages, _matches)
         for k in REPORT_AT_K:
             if _page_hit_at_k(pages, k, _matches):
@@ -2057,14 +2068,25 @@ def _load_checkpoint(run_name: str, tool: str, site: str, config_label: str) -> 
 
     mode_results = {}
     for mode, md in data.get("mode_results", {}).items():
+        mode_qrs = _load_qrs(md["query_results"])
+        # Recompute page-level metrics from query_results on load rather
+        # than trusting checkpoint values — this makes the system
+        # self-healing for page-level methodology fixes (e.g., the
+        # 2026-05-11 collapse-key bug fix). Cheap because it's just URL
+        # matching, no cosine math.
+        page_mrr, page_hits_at_k = _compute_page_level_mrr_and_hits(mode_qrs)
         mode_results[mode] = RetrievalModeResult(
             mode=md["mode"],
-            query_results=_load_qrs(md["query_results"]),
+            query_results=mode_qrs,
             hits_at_k={int(k): v for k, v in md["hits_at_k"].items()},
             mrr=md["mrr"],
-            page_mrr=md.get("page_mrr", 0.0),
-            page_hits_at_k={int(k): v for k, v in md.get("page_hits_at_k", {}).items()},
+            page_mrr=page_mrr,
+            page_hits_at_k=page_hits_at_k,
         )
+
+    # Top-level page_mrr mirrors embedding mode (matches construction
+    # path at the main run site).
+    top_level_page_mrr = mode_results["embedding"].page_mrr if "embedding" in mode_results else 0.0
 
     return ToolSiteRetrievalResult(
         tool=data["tool"],
@@ -2082,7 +2104,7 @@ def _load_checkpoint(run_name: str, tool: str, site: str, config_label: str) -> 
         mrr=data["mrr"],
         mode_results=mode_results,
         chunk_config_label=data.get("chunk_config_label", ""),
-        page_mrr=data.get("page_mrr", 0.0),
+        page_mrr=top_level_page_mrr,
     )
 
 

@@ -141,6 +141,28 @@ def test_check_hit_no_match_returns_none():
     assert rank is None
 
 
+def test_check_hit_q_param_ref_was_v13_false_positive():
+    """Reviewer-discovered case (Gate 2 colly+md −0.005 drift). DS-2 strips
+    `?ref=...` from URLs before matching. v1.3 was getting false-positive
+    hits where the query term happened to appear in a `?ref=` query param
+    (e.g. `?ref=useRef` matched url_match='useRef'). DS-2 correctly
+    eliminates this — locks the intent so a future change can't
+    re-introduce the false positive without the test catching it."""
+    # v1.3 bug: substring "useref" found in raw URL via the ?ref= param
+    raw = "https://react.dev/learn/state-management?ref=useRef"
+    # After DS-2 normalization the ?ref= is stripped → no spurious match
+    assert "useref" not in br._normalize_url_for_matching(raw)
+
+    # And the integration: _check_hit no longer counts this as a hit
+    # for url_match='useRef'
+    hit, _ = br._check_hit("useRef", "", [raw])
+    assert hit is False, (
+        "DS-2 must strip ?ref= so a query term inside it doesn't trigger "
+        "a false-positive substring match — this was the v1.3 colly+md "
+        "regression the v1.4 cycle is fixing."
+    )
+
+
 def test_check_hit_chunk_level_locale_mirror_still_counts():
     """DS-2 alone does NOT prevent a locale-mirror chunk from being
     counted as a hit at the chunk level — that is page-level dedup's

@@ -21,15 +21,30 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable
 
 
-def collapse_chunks_to_pages(urls: Iterable[str]) -> list[str]:
-    """Collapse a rank-ordered chunk URL list to unique URLs. First
-    occurrence of each URL wins, preserving the best rank that URL
-    achieved across all of its chunks."""
+def collapse_chunks_to_pages(
+    urls: Iterable[str],
+    key_fn: Callable[[str], str] | None = None,
+) -> list[str]:
+    """Collapse a rank-ordered chunk URL list to unique pages. First
+    occurrence wins, preserving the best rank that page achieved across
+    all of its chunks.
+
+    If `key_fn` is provided, dedup by `key_fn(url)` instead of the raw
+    URL string. This is how locale mirrors (he.react.dev/X +
+    react.dev/X) and fragment variants (X#a + X#b + X) collapse to a
+    single page entry: pass DS-2's `_normalize_url_for_matching` as the
+    key function. The original (un-normalized) URL is preserved in the
+    output so downstream matching/audit can still see it.
+
+    Without `key_fn`, dedup falls back to raw-URL identity — useful for
+    callers that have already pre-normalized or genuinely want raw
+    deduplication."""
     seen: set[str] = set()
     pages: list[str] = []
     for url in urls:
-        if url not in seen:
-            seen.add(url)
+        key = key_fn(url) if key_fn is not None else url
+        if key not in seen:
+            seen.add(key)
             pages.append(url)
     return pages
 
@@ -59,14 +74,20 @@ def page_level_metrics(
     chunk_urls: Iterable[str],
     match_fn: Callable[[str], bool],
     k_values: Iterable[int] = (1, 3, 5, 10),
+    key_fn: Callable[[str], str] | None = None,
 ) -> dict:
     """Single-query page-level MRR + Hit@K. Caller passes the rank-ordered
     chunk URLs and a predicate that returns True for URLs counted as a hit
     (e.g. one that wraps DS-2's URL normalization plus the expected pattern).
 
+    Optional `key_fn` controls how chunks collapse to pages — pass a URL
+    normalizer (e.g. DS-2 `_normalize_url_for_matching`) to make locale
+    mirrors and fragment variants of the same canonical page collapse to
+    a single rank slot.
+
     Returns: {"reciprocal_rank": float, "hit_at_k": {k: bool, ...}}
     """
-    pages = collapse_chunks_to_pages(chunk_urls)
+    pages = collapse_chunks_to_pages(chunk_urls, key_fn=key_fn)
     return {
         "reciprocal_rank": reciprocal_rank(pages, match_fn),
         "hit_at_k": {k: hit_at_k(pages, k, match_fn) for k in k_values},
