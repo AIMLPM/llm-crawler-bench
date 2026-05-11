@@ -2339,10 +2339,13 @@ def main():
                 continue
             site_results: Dict[str, ToolSiteRetrievalResult] = {}
             for tool in available_tools:
-                # Skip tools that have no pages data for this site
+                # Skip tools that have no pages data for this site (file
+                # missing OR empty — empty pages.jsonl is the v1.3 cycle's
+                # "tool couldn't crawl this site" sentinel and matches the
+                # behaviour of the main run path).
                 tool_pages = run_dir / tool / site / "pages.jsonl"
-                if not tool_pages.exists():
-                    logger.debug("Skipping %s/%s — no pages.jsonl", tool, site)
+                if not tool_pages.exists() or tool_pages.stat().st_size == 0:
+                    logger.debug("Skipping %s/%s — no pages data", tool, site)
                     continue
                 cached = _load_checkpoint(run_name, tool, site, config_label)
                 if cached is not None:

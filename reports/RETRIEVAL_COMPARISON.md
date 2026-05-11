@@ -1,11 +1,7 @@
 # Retrieval Quality Comparison
-<!-- style: v2, 2026-05-05 -->
+<!-- style: v2, 2026-05-10 -->
 
 Crawler choice barely matters for retrieval — retrieval mode matters more.
-
-> **Single-trial measurement.** Each per-site number reported here comes from one benchmark run. Network jitter, WAF state, and server load can shift per-site speed and coverage between runs by single-digit percent. Where CIs are reported, they reflect query-set sampling only — not run-to-run variance. Multi-trial validation is v1.5 work; see [METHODOLOGY.md](METHODOLOGY.md#single-trial-measurement).
->
-> **Query-set provenance.** The numbers below are computed against the **v1.3 hand-written query set** (the COI that v1.4 fixes — see [author disclosure](METHODOLOGY.md#author-and-conflict-of-interest-disclosure)). v1.4 swaps in an LLM-generated, LLM-verified query set in Gate 4 (DS-6/DS-7/DS-8). This banner line goes away once v1.4 numbers land.
 
 **Run:** `run_v13_merged_20260504_203748` | **Started:** 2026-05-04T13:36:42Z | **Ended:** 2026-05-05T05:41:25.381501+00:00 | **Pool:** 1.2 (sha256:caa35)
 
@@ -40,54 +36,56 @@ Summary tables use the **88-query common subset** (9 sites) so all tools are com
 
 For each tool, the mode with the highest MRR. Most readers can stop here.
 
-| Tool | Best mode | Hit@10 | MRR |
-|---|---|---|---|
-| crawlee | embedding | 84% (74/88) ±8% | 0.686 |
-| playwright | embedding | 84% (74/88) ±8% | 0.677 |
-| crawl4ai | embedding | 78% (69/88) ±8% | 0.642 |
-| crawl4ai-raw | embedding | 78% (69/88) ±8% | 0.640 |
-| colly+md | embedding | 75% (66/88) ±9% | 0.594 |
-| markcrawl | embedding | 62% (55/88) ±10% | 0.488 |
-| scrapy+md | embedding | 47% (41/88) ±10% | 0.429 |
+| Tool | Best mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | MRR | Page MRR |
+|---|---|---|---|---|---|---|---|
+| crawlee | embedding | 59% (52/88) ±10% | 75% (66/88) ±9% | 81% (71/88) ±8% | 84% (74/88) ±8% | 0.686 | 0.692 |
+| playwright | embedding | 58% (51/88) ±10% | 74% (65/88) ±9% | 81% (71/88) ±8% | 84% (74/88) ±8% | 0.677 | 0.681 |
+| crawl4ai | embedding | 56% (49/88) ±10% | 72% (63/88) ±9% | 76% (67/88) ±9% | 78% (69/88) ±8% | 0.642 | 0.650 |
+| crawl4ai-raw | embedding | 56% (49/88) ±10% | 72% (63/88) ±9% | 76% (67/88) ±9% | 78% (69/88) ±8% | 0.640 | 0.648 |
+| colly+md | embedding | 51% (45/88) ±10% | 64% (56/88) ±10% | 70% (62/88) ±9% | 74% (65/88) ±9% | 0.589 | 0.592 |
+| markcrawl | embedding | 42% (37/88) ±10% | 52% (46/88) ±10% | 59% (52/88) ±10% | 62% (55/88) ±10% | 0.488 | 0.492 |
+| scrapy+md | embedding | 41% (36/88) ±10% | 44% (39/88) ±10% | 45% (40/88) ±10% | 47% (41/88) ±10% | 0.429 | 0.437 |
 
-> **Column definitions:** **Best mode** = retrieval strategy that maximizes MRR for this tool. **Hit@10** = correct source page in top 10 results. **MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged).
+> **Column definitions:** **Best mode** = retrieval strategy that maximizes MRR for this tool. **Hit@K** = % of queries where the correct source page appeared in the top K (chunk-level). **MRR** (chunk-level) = Mean Reciprocal Rank across all retrieved chunks. **Page MRR** (DS-1) = MRR after collapsing chunks-per-URL to unique pages — removes the chunk-density gaming signal where a tool emitting more chunks per page would otherwise rank ahead at the same content.
+
+> **Density sensitivity (DS-9):** Hit@1 is the LEAST chunk-density-sensitive (each chunk competes for one slot, so emitting more chunks doesn't help unless the first one is right). Hit@10 is the MOST sensitive (more chunks = more chances to land somewhere in the top 10). MRR sits between the two. Page MRR removes the density signal entirely — read it as the chunk-density-corrected MRR.
 
 ## Summary: retrieval modes compared
 
 _Computed over 88 queries on 9 common sites (ikea, kubernetes-docs, mdn-css, postgres-docs, propublica, react-dev, rust-book, smittenkitchen, stripe-docs)._
 
-| Tool | Mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR |
-|---|---|---|---|---|---|---|---|
-| crawlee | embedding | 59% (52/88) ±10% | 75% (66/88) ±9% | 81% (71/88) ±8% | 84% (74/88) ±8% | 85% (75/88) ±7% | 0.686 |
-| playwright | embedding | 58% (51/88) ±10% | 74% (65/88) ±9% | 81% (71/88) ±8% | 84% (74/88) ±8% | 84% (74/88) ±8% | 0.677 |
-| crawl4ai | embedding | 56% (49/88) ±10% | 72% (63/88) ±9% | 76% (67/88) ±9% | 78% (69/88) ±8% | 82% (72/88) ±8% | 0.642 |
-| crawl4ai-raw | embedding | 56% (49/88) ±10% | 72% (63/88) ±9% | 76% (67/88) ±9% | 78% (69/88) ±8% | 82% (72/88) ±8% | 0.640 |
-| colly+md | embedding | 51% (45/88) ±10% | 65% (57/88) ±10% | 72% (63/88) ±9% | 75% (66/88) ±9% | 76% (67/88) ±9% | 0.594 |
-| markcrawl | embedding | 42% (37/88) ±10% | 52% (46/88) ±10% | 59% (52/88) ±10% | 62% (55/88) ±10% | 62% (55/88) ±10% | 0.488 |
-| scrapy+md | embedding | 41% (36/88) ±10% | 44% (39/88) ±10% | 45% (40/88) ±10% | 47% (41/88) ±10% | 49% (43/88) ±10% | 0.429 |
-| markcrawl | bm25 | 20% (18/88) ±8% | 32% (28/88) ±10% | 41% (36/88) ±10% | 51% (45/88) ±10% | 58% (51/88) ±10% | 0.300 |
-| scrapy+md | bm25 | 25% (22/88) ±9% | 33% (29/88) ±10% | 35% (31/88) ±10% | 39% (34/88) ±10% | 44% (39/88) ±10% | 0.299 |
-| crawlee | bm25 | 20% (18/88) ±8% | 30% (26/88) ±9% | 39% (34/88) ±10% | 53% (47/88) ±10% | 57% (50/88) ±10% | 0.291 |
-| crawl4ai | bm25 | 19% (17/88) ±8% | 30% (26/88) ±9% | 40% (35/88) ±10% | 49% (43/88) ±10% | 55% (48/88) ±10% | 0.281 |
-| crawl4ai-raw | bm25 | 18% (16/88) ±8% | 30% (26/88) ±9% | 39% (34/88) ±10% | 48% (42/88) ±10% | 55% (48/88) ±10% | 0.276 |
-| playwright | bm25 | 18% (16/88) ±8% | 31% (27/88) ±9% | 38% (33/88) ±10% | 51% (45/88) ±10% | 56% (49/88) ±10% | 0.273 |
-| colly+md | bm25 | 17% (15/88) ±8% | 27% (24/88) ±9% | 30% (26/88) ±9% | 42% (37/88) ±10% | 49% (43/88) ±10% | 0.243 |
-| crawlee | hybrid | 47% (41/88) ±10% | 66% (58/88) ±10% | 73% (64/88) ±9% | 81% (71/88) ±8% | 85% (75/88) ±7% | 0.581 |
-| crawl4ai | hybrid | 47% (41/88) ±10% | 61% (54/88) ±10% | 68% (60/88) ±10% | 77% (68/88) ±9% | 82% (72/88) ±8% | 0.561 |
-| crawl4ai-raw | hybrid | 45% (40/88) ±10% | 61% (54/88) ±10% | 68% (60/88) ±10% | 77% (68/88) ±9% | 82% (72/88) ±8% | 0.556 |
-| playwright | hybrid | 42% (37/88) ±10% | 65% (57/88) ±10% | 73% (64/88) ±9% | 81% (71/88) ±8% | 85% (75/88) ±7% | 0.553 |
-| colly+md | hybrid | 42% (37/88) ±10% | 58% (51/88) ±10% | 60% (53/88) ±10% | 68% (60/88) ±10% | 75% (66/88) ±9% | 0.510 |
-| markcrawl | hybrid | 34% (30/88) ±10% | 51% (45/88) ±10% | 55% (48/88) ±10% | 60% (53/88) ±10% | 64% (56/88) ±10% | 0.438 |
-| scrapy+md | hybrid | 35% (31/88) ±10% | 41% (36/88) ±10% | 44% (39/88) ±10% | 48% (42/88) ±10% | 51% (45/88) ±10% | 0.395 |
-| playwright | reranked | 44% (39/88) ±10% | 64% (56/88) ±10% | 70% (62/88) ±9% | 77% (68/88) ±9% | 83% (73/88) ±8% | 0.554 |
-| crawlee | reranked | 41% (36/88) ±10% | 62% (55/88) ±10% | 70% (62/88) ±9% | 78% (69/88) ±8% | 82% (72/88) ±8% | 0.537 |
-| crawl4ai-raw | reranked | 39% (34/88) ±10% | 62% (55/88) ±10% | 70% (62/88) ±9% | 76% (67/88) ±9% | 83% (73/88) ±8% | 0.520 |
-| crawl4ai | reranked | 38% (33/88) ±10% | 62% (55/88) ±10% | 70% (62/88) ±9% | 77% (68/88) ±9% | 83% (73/88) ±8% | 0.512 |
-| colly+md | reranked | 36% (32/88) ±10% | 59% (52/88) ±10% | 64% (56/88) ±10% | 68% (60/88) ±10% | 72% (63/88) ±9% | 0.488 |
-| markcrawl | reranked | 38% (33/88) ±10% | 48% (42/88) ±10% | 57% (50/88) ±10% | 62% (55/88) ±10% | 62% (55/88) ±10% | 0.451 |
-| scrapy+md | reranked | 31% (27/88) ±9% | 40% (35/88) ±10% | 44% (39/88) ±10% | 48% (42/88) ±10% | 49% (43/88) ±10% | 0.364 |
+| Tool | Mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Page MRR |
+|---|---|---|---|---|---|---|---|---|
+| crawlee | embedding | 59% (52/88) ±10% | 75% (66/88) ±9% | 81% (71/88) ±8% | 84% (74/88) ±8% | 85% (75/88) ±7% | 0.686 | 0.692 |
+| playwright | embedding | 58% (51/88) ±10% | 74% (65/88) ±9% | 81% (71/88) ±8% | 84% (74/88) ±8% | 84% (74/88) ±8% | 0.677 | 0.681 |
+| crawl4ai | embedding | 56% (49/88) ±10% | 72% (63/88) ±9% | 76% (67/88) ±9% | 78% (69/88) ±8% | 82% (72/88) ±8% | 0.642 | 0.650 |
+| crawl4ai-raw | embedding | 56% (49/88) ±10% | 72% (63/88) ±9% | 76% (67/88) ±9% | 78% (69/88) ±8% | 82% (72/88) ±8% | 0.640 | 0.648 |
+| colly+md | embedding | 51% (45/88) ±10% | 64% (56/88) ±10% | 70% (62/88) ±9% | 74% (65/88) ±9% | 76% (67/88) ±9% | 0.589 | 0.592 |
+| markcrawl | embedding | 42% (37/88) ±10% | 52% (46/88) ±10% | 59% (52/88) ±10% | 62% (55/88) ±10% | 62% (55/88) ±10% | 0.488 | 0.492 |
+| scrapy+md | embedding | 41% (36/88) ±10% | 44% (39/88) ±10% | 45% (40/88) ±10% | 47% (41/88) ±10% | 49% (43/88) ±10% | 0.429 | 0.437 |
+| markcrawl | bm25 | 20% (18/88) ±8% | 32% (28/88) ±10% | 41% (36/88) ±10% | 51% (45/88) ±10% | 58% (51/88) ±10% | 0.300 | 0.309 |
+| scrapy+md | bm25 | 25% (22/88) ±9% | 33% (29/88) ±10% | 35% (31/88) ±10% | 39% (34/88) ±10% | 44% (39/88) ±10% | 0.299 | 0.305 |
+| crawlee | bm25 | 20% (18/88) ±8% | 30% (26/88) ±9% | 39% (34/88) ±10% | 53% (47/88) ±10% | 57% (50/88) ±10% | 0.291 | 0.315 |
+| crawl4ai | bm25 | 19% (17/88) ±8% | 30% (26/88) ±9% | 40% (35/88) ±10% | 49% (43/88) ±10% | 55% (48/88) ±10% | 0.281 | 0.290 |
+| crawl4ai-raw | bm25 | 18% (16/88) ±8% | 30% (26/88) ±9% | 39% (34/88) ±10% | 48% (42/88) ±10% | 55% (48/88) ±10% | 0.276 | 0.286 |
+| playwright | bm25 | 18% (16/88) ±8% | 31% (27/88) ±9% | 38% (33/88) ±10% | 51% (45/88) ±10% | 56% (49/88) ±10% | 0.273 | 0.298 |
+| colly+md | bm25 | 16% (14/88) ±8% | 26% (23/88) ±9% | 28% (25/88) ±9% | 42% (37/88) ±10% | 49% (43/88) ±10% | 0.233 | 0.242 |
+| crawlee | hybrid | 47% (41/88) ±10% | 66% (58/88) ±10% | 73% (64/88) ±9% | 81% (71/88) ±8% | 85% (75/88) ±7% | 0.581 | 0.592 |
+| crawl4ai | hybrid | 47% (41/88) ±10% | 61% (54/88) ±10% | 68% (60/88) ±10% | 77% (68/88) ±9% | 82% (72/88) ±8% | 0.561 | 0.568 |
+| crawl4ai-raw | hybrid | 45% (40/88) ±10% | 61% (54/88) ±10% | 68% (60/88) ±10% | 77% (68/88) ±9% | 82% (72/88) ±8% | 0.556 | 0.562 |
+| playwright | hybrid | 42% (37/88) ±10% | 65% (57/88) ±10% | 73% (64/88) ±9% | 81% (71/88) ±8% | 85% (75/88) ±7% | 0.553 | 0.565 |
+| colly+md | hybrid | 42% (37/88) ±10% | 57% (50/88) ±10% | 59% (52/88) ±10% | 67% (59/88) ±10% | 74% (65/88) ±9% | 0.507 | 0.513 |
+| markcrawl | hybrid | 34% (30/88) ±10% | 51% (45/88) ±10% | 55% (48/88) ±10% | 60% (53/88) ±10% | 64% (56/88) ±10% | 0.438 | 0.444 |
+| scrapy+md | hybrid | 35% (31/88) ±10% | 41% (36/88) ±10% | 44% (39/88) ±10% | 48% (42/88) ±10% | 51% (45/88) ±10% | 0.395 | 0.400 |
+| playwright | reranked | 48% (38/80) ±11% | 64% (51/80) ±10% | 70% (56/80) ±10% | 76% (61/80) ±9% | 81% (65/80) ±8% | 0.572 | 0.581 |
+| crawlee | reranked | 45% (36/80) ±11% | 62% (50/80) ±10% | 70% (56/80) ±10% | 76% (61/80) ±9% | 80% (64/80) ±9% | 0.559 | 0.564 |
+| crawl4ai-raw | reranked | 40% (32/80) ±10% | 64% (51/80) ±10% | 69% (55/80) ±10% | 74% (59/80) ±9% | 81% (65/80) ±8% | 0.528 | 0.531 |
+| colly+md | reranked | 40% (32/80) ±10% | 61% (49/80) ±10% | 69% (55/80) ±10% | 75% (60/80) ±9% | 78% (62/80) ±9% | 0.523 | 0.530 |
+| crawl4ai | reranked | 39% (31/80) ±10% | 64% (51/80) ±10% | 69% (55/80) ±10% | 75% (60/80) ±9% | 81% (65/80) ±8% | 0.519 | 0.522 |
+| markcrawl | reranked | 36% (29/80) ±10% | 45% (36/80) ±11% | 52% (42/80) ±11% | 59% (47/80) ±11% | 59% (47/80) ±11% | 0.427 | 0.430 |
+| scrapy+md | reranked | 34% (27/80) ±10% | 44% (35/80) ±11% | 49% (39/80) ±11% | 52% (42/80) ±11% | 54% (43/80) ±11% | 0.400 | 0.410 |
 
-> **Column definitions:** **Hit@K** = percentage of queries where the correct source page appeared in the top K results (shown as % with raw counts). **MRR** (Mean Reciprocal Rank) = average of 1/rank for correct results (1.0 = always rank 1, 0.5 = always rank 2). **Mode** = retrieval strategy used (see definitions above).
+> **Column definitions:** **Hit@K** = percentage of queries where the correct source page appeared in the top K results (shown as % with raw counts). **MRR** (Mean Reciprocal Rank, chunk-level) = average of 1/rank for correct results across the chunk-ordered top-K (1.0 = always rank 1, 0.5 = always rank 2). **Page MRR** (DS-1, page-level) = MRR after collapsing multiple chunks per URL into a single rank — neutralises chunk-density inflation. Page MRR ≥ MRR by construction; the gap measures how much chunk-density was inflating the chunk-level number. **Mode** = retrieval strategy used (see definitions above).
 
 ## Summary: embedding-only (hit rate at multiple K values)
 
@@ -99,7 +97,7 @@ _Computed over 88 queries on 9 common sites._
 | playwright | 58% (51/88) ±10% | 74% (65/88) ±9% | 81% (71/88) ±8% | 84% (74/88) ±8% | 84% (74/88) ±8% | 0.677 | 56855 | 382 |
 | crawl4ai | 56% (49/88) ±10% | 72% (63/88) ±9% | 76% (67/88) ±9% | 78% (69/88) ±8% | 82% (72/88) ±8% | 0.642 | 24400 | 345 |
 | crawl4ai-raw | 56% (49/88) ±10% | 72% (63/88) ±9% | 76% (67/88) ±9% | 78% (69/88) ±8% | 82% (72/88) ±8% | 0.640 | 25245 | 344 |
-| colly+md | 51% (45/88) ±10% | 65% (57/88) ±10% | 72% (63/88) ±9% | 75% (66/88) ±9% | 76% (67/88) ±9% | 0.594 | 59078 | 385 |
+| colly+md | 51% (45/88) ±10% | 64% (56/88) ±10% | 70% (62/88) ±9% | 74% (65/88) ±9% | 76% (67/88) ±9% | 0.589 | 59078 | 385 |
 | markcrawl | 42% (37/88) ±10% | 52% (46/88) ±10% | 59% (52/88) ±10% | 62% (55/88) ±10% | 62% (55/88) ±10% | 0.488 | 27193 | 334 |
 | scrapy+md | 41% (36/88) ±10% | 44% (39/88) ±10% | 45% (40/88) ±10% | 47% (41/88) ±10% | 49% (43/88) ±10% | 0.429 | 46141 | 364 |
 
@@ -123,7 +121,7 @@ Query categories reveal where crawlers actually differ. Categories like `js-rend
 |---|---|---|---|---|
 | api-function | playwright | 89% (25/28) | 0.751 | 28 |
 | api-function | crawlee | 89% (25/28) | 0.727 | 28 |
-| api-function | colly+md | 86% (24/28) | 0.735 | 28 |
+| api-function | colly+md | 86% (24/28) | 0.721 | 28 |
 | api-function | crawl4ai-raw | 86% (24/28) | 0.696 | 28 |
 | api-function | crawl4ai | 86% (24/28) | 0.696 | 28 |
 | api-function | scrapy+md | 57% (16/28) | 0.521 | 28 |
@@ -188,7 +186,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | crawl4ai-raw | 81% (13/16) | 88% (14/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 0.863 | 3210 | 500 |
 | crawlee | 75% (12/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 100% (16/16) | 0.856 | 3063 | 217 |
 | playwright | 62% (10/16) | 88% (14/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 0.776 | 3067 | 221 |
-| colly+md | 62% (10/16) | 88% (14/16) | 94% (15/16) | 100% (16/16) | 100% (16/16) | 0.762 | 5083 | 292 |
+| colly+md | 62% (10/16) | 81% (13/16) | 88% (14/16) | 94% (15/16) | 100% (16/16) | 0.737 | 5083 | 292 |
 | markcrawl | 44% (7/16) | 50% (8/16) | 56% (9/16) | 56% (9/16) | 56% (9/16) | 0.484 | 419 | 51 |
 
 > **Chunks** = total chunks from this tool for this site. **Pages** = pages crawled. Hit rates shown as % (hits/total queries).
@@ -205,7 +203,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 |---|---|---|---|---|---|---|---|
 | markcrawl | #1 | react.dev/learn/reacting-to-input-with-state | 0.681 | react.dev/learn/managing-state | 0.667 | react.dev/learn/preserving-and-resetting-state | 0.651 |
 | crawl4ai | #1 | he.react.dev/learn/managing-state | 0.680 | az.react.dev/learn/managing-state | 0.679 | de.react.dev/learn/managing-state | 0.678 |
-| crawl4ai-raw | #1 | he.react.dev/learn/managing-state | 0.680 | az.react.dev/learn/managing-state | 0.678 | de.react.dev/learn/managing-state | 0.678 |
+| crawl4ai-raw | #1 | he.react.dev/learn/managing-state | 0.680 | az.react.dev/learn/managing-state | 0.679 | de.react.dev/learn/managing-state | 0.678 |
 | scrapy+md | #1 | react.dev/learn/preserving-and-resetting-state | 0.679 | react.dev/learn/choosing-the-state-structure | 0.678 | react.dev/learn/managing-state | 0.674 |
 | crawlee | #1 | react.dev/learn/reacting-to-input-with-state | 0.668 | react.dev/learn/state-a-components-memory | 0.647 | react.dev/learn/managing-state | 0.645 |
 | colly+md | #1 | react.dev/learn/reacting-to-input-with-state | 0.672 | react.dev/learn/managing-state | 0.669 | react.dev/learn/state-a-components-memory | 0.647 |
@@ -245,10 +243,10 @@ _Spread = difference between best and worst tool. High spread categories are whe
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | #1 | react.dev/learn/writing-markup-with-jsx | 0.675 | react.dev/learn/writing-markup-with-jsx | 0.635 | react.dev/learn | 0.633 |
-| crawl4ai | #1 | react.dev/learn/writing-markup-with-jsx | 0.685 | react.dev/learn/writing-markup-with-jsx | 0.661 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.647 |
-| crawl4ai-raw | #1 | react.dev/learn/writing-markup-with-jsx | 0.685 | react.dev/learn/writing-markup-with-jsx | 0.661 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.647 |
-| scrapy+md | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.662 | react.dev/learn/writing-markup-with-jsx | 0.651 | react.dev/learn/writing-markup-with-jsx | 0.639 |
+| markcrawl | #1 | react.dev/learn/writing-markup-with-jsx | 0.675 | react.dev/learn/writing-markup-with-jsx | 0.634 | react.dev/learn | 0.633 |
+| crawl4ai | #1 | react.dev/learn/writing-markup-with-jsx | 0.685 | react.dev/learn/writing-markup-with-jsx | 0.660 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.647 |
+| crawl4ai-raw | #1 | react.dev/learn/writing-markup-with-jsx | 0.685 | react.dev/learn/writing-markup-with-jsx | 0.660 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.647 |
+| scrapy+md | #1 | react.dev/learn/javascript-in-jsx-with-curly-brace | 0.662 | react.dev/learn/writing-markup-with-jsx | 0.651 | react.dev/learn/writing-markup-with-jsx | 0.638 |
 | crawlee | #1 | react.dev/learn/writing-markup-with-jsx | 0.725 | react.dev/learn/writing-markup-with-jsx | 0.663 | react.dev/learn/writing-markup-with-jsx | 0.656 |
 | colly+md | #1 | react.dev/learn/writing-markup-with-jsx | 0.725 | react.dev/learn/writing-markup-with-jsx | 0.663 | react.dev/learn/writing-markup-with-jsx | 0.656 |
 | playwright | #1 | react.dev/learn/writing-markup-with-jsx | 0.725 | react.dev/learn/writing-markup-with-jsx | 0.663 | react.dev/learn/writing-markup-with-jsx | 0.656 |
@@ -264,8 +262,8 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | crawl4ai-raw | #2 | react.dev/learn/tutorial-tic-tac-toe | 0.700 | react.dev/learn/rendering-lists | 0.694 | react.dev/learn/rendering-lists | 0.669 |
 | scrapy+md | #1 | react.dev/learn/rendering-lists | 0.658 | react.dev/learn/rendering-lists | 0.649 | react.dev/learn/tutorial-tic-tac-toe | 0.638 |
 | crawlee | #2 | react.dev/learn/tutorial-tic-tac-toe | 0.666 | react.dev/learn/rendering-lists | 0.658 | react.dev/learn/tutorial-tic-tac-toe | 0.638 |
-| colly+md | #2 | react.dev/learn/tutorial-tic-tac-toe | 0.666 | react.dev/learn/rendering-lists | 0.658 | react.dev/learn/rendering-lists#keeping-list-items | 0.658 |
-| playwright | #2 | react.dev/learn/tutorial-tic-tac-toe | 0.666 | react.dev/learn/rendering-lists | 0.657 | react.dev/learn/tutorial-tic-tac-toe | 0.638 |
+| colly+md | #2 | react.dev/learn/tutorial-tic-tac-toe | 0.666 | react.dev/learn/rendering-lists#keeping-list-items | 0.658 | react.dev/learn/rendering-lists | 0.658 |
+| playwright | #2 | react.dev/learn/tutorial-tic-tac-toe | 0.666 | react.dev/learn/rendering-lists | 0.658 | react.dev/learn/tutorial-tic-tac-toe | 0.638 |
 
 
 **Q6: How do I use the useRef hook in React?** [api-function]
@@ -278,7 +276,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | crawl4ai-raw | #1 | react.dev/reference/react/useRef | 0.666 | react.dev/learn/referencing-values-with-refs | 0.660 | react.dev/learn/referencing-values-with-refs | 0.657 |
 | scrapy+md | #1 | react.dev/reference/react/useRef | 0.705 | react.dev/reference/react/useRef | 0.659 | react.dev/learn/referencing-values-with-refs | 0.639 |
 | crawlee | #2 | react.dev/learn/manipulating-the-dom-with-refs | 0.673 | react.dev/reference/react/useRef | 0.667 | react.dev/reference/react/useRef | 0.661 |
-| colly+md | #2 | react.dev/learn/manipulating-the-dom-with-refs | 0.673 | react.dev/reference/react/useRef#reference | 0.667 | react.dev/reference/react/useRef#returns | 0.667 |
+| colly+md | #2 | react.dev/learn/manipulating-the-dom-with-refs | 0.673 | react.dev/reference/react/useRef | 0.667 | react.dev/reference/react/useRef#returns | 0.667 |
 | playwright | #2 | react.dev/learn/manipulating-the-dom-with-refs | 0.673 | react.dev/reference/react/useRef | 0.667 | react.dev/learn/manipulating-the-dom-with-refs | 0.661 |
 
 
@@ -292,7 +290,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | crawl4ai-raw | #1 | react.dev/learn/passing-props-to-a-component | 0.698 | react.dev/learn/passing-data-deeply-with-context | 0.664 | react.dev/learn/passing-props-to-a-component | 0.659 |
 | scrapy+md | #1 | react.dev/learn/passing-props-to-a-component | 0.671 | react.dev/learn/passing-data-deeply-with-context | 0.622 | react.dev/learn/sharing-state-between-components | 0.598 |
 | crawlee | #1 | react.dev/learn/passing-props-to-a-component | 0.683 | react.dev/learn/passing-data-deeply-with-context | 0.668 | react.dev/learn/passing-data-deeply-with-context | 0.643 |
-| colly+md | #4 | react.dev/learn/passing-data-deeply-with-context#s | 0.668 | react.dev/learn/passing-data-deeply-with-context#s | 0.668 | react.dev/learn/passing-data-deeply-with-context | 0.668 |
+| colly+md | #4 | react.dev/learn/passing-data-deeply-with-context | 0.668 | react.dev/learn/passing-data-deeply-with-context#s | 0.668 | react.dev/learn/passing-data-deeply-with-context#s | 0.668 |
 | playwright | #2 | react.dev/learn/passing-data-deeply-with-context | 0.668 | react.dev/learn/passing-props-to-a-component | 0.667 | react.dev/learn/passing-data-deeply-with-context | 0.643 |
 
 
@@ -307,7 +305,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | scrapy+md | #1 | react.dev/learn/conditional-rendering | 0.621 | react.dev/learn/describing-the-ui | 0.595 | react.dev/learn/conditional-rendering | 0.559 |
 | crawlee | #1 | react.dev/learn/conditional-rendering | 0.601 | react.dev/learn/describing-the-ui | 0.593 | react.dev/learn/conditional-rendering | 0.566 |
 | colly+md | #1 | react.dev/learn/conditional-rendering | 0.627 | react.dev/learn/conditional-rendering | 0.567 | react.dev/learn/conditional-rendering | 0.566 |
-| playwright | #1 | react.dev/learn/conditional-rendering | 0.629 | react.dev/learn/conditional-rendering | 0.567 | react.dev/learn/conditional-rendering | 0.566 |
+| playwright | #1 | react.dev/learn/conditional-rendering | 0.629 | react.dev/learn/conditional-rendering | 0.567 | react.dev/learn/conditional-rendering | 0.567 |
 
 
 **Q9: What is the useMemo hook for in React?** [api-function]
@@ -319,9 +317,9 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | crawl4ai | #1 | react.dev/reference/react/useMemo | 0.666 | react.dev/reference/react/useMemo | 0.662 | react.dev/reference/react/useMemo | 0.651 |
 | crawl4ai-raw | #1 | react.dev/reference/react/useMemo | 0.666 | react.dev/reference/react/useMemo | 0.662 | react.dev/reference/react/useMemo | 0.651 |
 | scrapy+md | #1 | react.dev/reference/react/useMemo | 0.652 | react.dev/reference/react/useMemo | 0.617 | react.dev/reference/react/useMemo | 0.608 |
-| crawlee | #1 | react.dev/reference/react/useMemo | 0.677 | react.dev/reference/react/useMemo | 0.648 | react.dev/reference/react/useMemo | 0.632 |
-| colly+md | #1 | react.dev/reference/react/useMemo#how-to-tell-if-a | 0.677 | react.dev/reference/react/useMemo | 0.677 | react.dev/reference/react/useMemo | 0.648 |
-| playwright | #1 | react.dev/reference/react/useMemo | 0.677 | react.dev/reference/react/useMemo | 0.648 | react.dev/reference/react/useMemo | 0.632 |
+| crawlee | #1 | react.dev/reference/react/useMemo | 0.676 | react.dev/reference/react/useMemo | 0.648 | react.dev/reference/react/useMemo | 0.632 |
+| colly+md | #1 | react.dev/reference/react/useMemo#how-to-tell-if-a | 0.676 | react.dev/reference/react/useMemo | 0.676 | react.dev/reference/react/useMemo | 0.648 |
+| playwright | #1 | react.dev/reference/react/useMemo | 0.676 | react.dev/reference/react/useMemo | 0.648 | react.dev/reference/react/useMemo | 0.632 |
 
 
 **Q10: How do I use the useState hook in React?** [api-function]
@@ -334,7 +332,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | crawl4ai-raw | #9 | react.dev/learn/state-a-components-memory | 0.665 | react.dev/learn/state-a-components-memory | 0.663 | react.dev/learn/state-a-components-memory | 0.661 |
 | scrapy+md | #4 | react.dev/learn/state-a-components-memory | 0.653 | react.dev/learn | 0.648 | react.dev/learn | 0.648 |
 | crawlee | #5 | react.dev/learn/state-a-components-memory | 0.653 | react.dev/learn | 0.648 | react.dev/learn/state-a-components-memory | 0.646 |
-| colly+md | #2 | react.dev/learn/state-a-components-memory | 0.653 | react.dev/learn/state-a-components-memory#anatomy- | 0.653 | react.dev/learn | 0.648 |
+| colly+md | #11 | react.dev/learn/state-a-components-memory | 0.653 | react.dev/learn/state-a-components-memory#anatomy- | 0.653 | react.dev/learn | 0.648 |
 | playwright | #6 | react.dev/learn/state-a-components-memory | 0.653 | react.dev/learn | 0.648 | react.dev/learn/state-a-components-memory | 0.646 |
 
 
@@ -346,10 +344,10 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | markcrawl | miss | react.dev/learn/typescript | 0.636 | react.dev/learn/manipulating-the-dom-with-refs | 0.541 | react.dev/learn/reusing-logic-with-custom-hooks | 0.536 |
 | crawl4ai | #1 | react.dev/reference/react/useCallback | 0.668 | react.dev/reference/react/useCallback | 0.643 | react.dev/reference/react/useCallback | 0.629 |
 | crawl4ai-raw | #1 | react.dev/reference/react/useCallback | 0.668 | react.dev/reference/react/useCallback | 0.643 | react.dev/reference/react/useCallback | 0.629 |
-| scrapy+md | #1 | react.dev/reference/react/useCallback | 0.639 | react.dev/learn/typescript | 0.634 | react.dev/reference/react/useCallback | 0.613 |
-| crawlee | #1 | react.dev/reference/react/useCallback | 0.661 | react.dev/learn/typescript | 0.634 | react.dev/reference/react/useCallback | 0.629 |
+| scrapy+md | #1 | react.dev/reference/react/useCallback | 0.639 | react.dev/learn/typescript | 0.633 | react.dev/reference/react/useCallback | 0.613 |
+| crawlee | #1 | react.dev/reference/react/useCallback | 0.661 | react.dev/learn/typescript | 0.633 | react.dev/reference/react/useCallback | 0.629 |
 | colly+md | #1 | react.dev/reference/react/useCallback | 0.661 | react.dev/learn/typescript#further-learning | 0.634 | react.dev/learn/typescript#example-hooks | 0.634 |
-| playwright | #1 | react.dev/reference/react/useCallback | 0.661 | react.dev/learn/typescript | 0.634 | react.dev/reference/react/useCallback | 0.629 |
+| playwright | #1 | react.dev/reference/react/useCallback | 0.661 | react.dev/learn/typescript | 0.633 | react.dev/reference/react/useCallback | 0.629 |
 
 
 **Q12: How do I use the useReducer hook in React?** [api-function]
@@ -376,7 +374,7 @@ _Spread = difference between best and worst tool. High spread categories are whe
 | crawl4ai-raw | #1 | react.dev/learn/responding-to-events | 0.658 | az.react.dev/learn | 0.624 | 18.react.dev/learn | 0.622 |
 | scrapy+md | #1 | react.dev/learn/responding-to-events | 0.658 | react.dev/learn/adding-interactivity | 0.611 | react.dev/learn | 0.606 |
 | crawlee | #1 | react.dev/learn/responding-to-events | 0.653 | react.dev/learn/responding-to-events | 0.598 | react.dev/learn/tutorial-tic-tac-toe | 0.590 |
-| colly+md | #1 | react.dev/learn/responding-to-events | 0.631 | react.dev/learn/responding-to-events#passing-event | 0.631 | react.dev/learn/responding-to-events | 0.598 |
+| colly+md | #1 | react.dev/learn/responding-to-events | 0.631 | react.dev/learn/responding-to-events#passing-event | 0.631 | react.dev/learn/responding-to-events#passing-event | 0.598 |
 | playwright | #1 | react.dev/learn/responding-to-events | 0.631 | react.dev/learn/responding-to-events | 0.598 | react.dev/learn/tutorial-tic-tac-toe | 0.590 |
 
 
