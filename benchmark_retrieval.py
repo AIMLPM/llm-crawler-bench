@@ -753,12 +753,26 @@ def _write_query_audit_csv(
             "query_id", "query_text", "site", "tool", "rank",
             "url", "cosine_score", "is_hit",
             "url_match_pattern", "normalized_url",
+            "page_rank_after_collapse",
         ])
         for site, tool_map in all_results.items():
             for tool, r in tool_map.items():
                 for q_idx, qr in enumerate(r.query_results):
                     pattern = qr.expected_url_match or ""
                     page_pattern = qr.expected_page_match or ""
+
+                    # Pre-compute the page-rank assignment for each chunk:
+                    # iterate top_k in order, assigning each unique normalized
+                    # URL a 1-indexed page rank. Multiple chunks sharing the
+                    # same normalized canonical (locale mirrors, fragment
+                    # variants) share the same page_rank. Lets reviewers see
+                    # the chunk → page collapse explicitly in the audit.
+                    canonical_to_page_rank: Dict[str, int] = {}
+                    for u in qr.top_k_urls:
+                        canon = _normalize_url_for_matching(u)
+                        if canon not in canonical_to_page_rank:
+                            canonical_to_page_rank[canon] = len(canonical_to_page_rank) + 1
+
                     for rank in range(1, top_k + 1):
                         if rank > len(qr.top_k_urls):
                             break
@@ -769,6 +783,7 @@ def _write_query_audit_csv(
                             (pattern and pattern.lower() in normalized)
                             or (page_pattern and page_pattern.lower() in normalized)
                         )
+                        page_rank = canonical_to_page_rank.get(normalized, "")
                         writer.writerow([
                             f"{site}:{q_idx}",
                             qr.query,
@@ -780,6 +795,7 @@ def _write_query_audit_csv(
                             "true" if is_hit else "false",
                             pattern,
                             normalized,
+                            page_rank,
                         ])
                         rows_written += 1
     tmp_path.replace(output_path)
@@ -2085,8 +2101,19 @@ def _load_checkpoint(run_name: str, tool: str, site: str, config_label: str) -> 
         )
 
     # Top-level page_mrr mirrors embedding mode (matches construction
-    # path at the main run site).
-    top_level_page_mrr = mode_results["embedding"].page_mrr if "embedding" in mode_results else 0.0
+    # path at the main run site). Warn loudly if embedding mode is
+    # missing — silent zero would let a malformed checkpoint sneak a
+    # 0.0 page-MRR into the rendered report (reviewer Q3).
+    if "embedding" in mode_results:
+        top_level_page_mrr = mode_results["embedding"].page_mrr
+    else:
+        logger.warning(
+            "Checkpoint for %s/%s missing 'embedding' mode_results — "
+            "top-level page_mrr will be reported as 0.0. Re-run without "
+            "--report-only to regenerate this checkpoint.",
+            data["tool"], data["site"],
+        )
+        top_level_page_mrr = 0.0
 
     return ToolSiteRetrievalResult(
         tool=data["tool"],

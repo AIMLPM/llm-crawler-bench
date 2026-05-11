@@ -47,6 +47,7 @@ def test_audit_csv_has_expected_header(tmp_path):
         "query_id", "query_text", "site", "tool", "rank",
         "url", "cosine_score", "is_hit",
         "url_match_pattern", "normalized_url",
+        "page_rank_after_collapse",
     ]
 
 
@@ -122,6 +123,40 @@ def test_audit_csv_query_id_stable_across_tools(tmp_path):
     assert len(rows) == 2
     assert rows[0]["query_id"] == rows[1]["query_id"] == "site-a:0"
     assert {rows[0]["tool"], rows[1]["tool"]} == {"tool-a", "tool-b"}
+
+
+def test_audit_csv_includes_page_rank_after_collapse(tmp_path):
+    """Reviewer Q1: audit CSV must expose the chunk → page collapse so a
+    reviewer reading it cold can see that locale-mirror and fragment-
+    variant chunks share a page_rank slot. Without this column the CSV
+    looks like the bench is matching different canonicals when actually
+    it's collapsing per DS-1+DS-2."""
+    qrs = [_make_qr(
+        "q1",
+        "react.dev/learn/state",
+        [
+            "https://he.react.dev/learn/state",      # rank 1
+            "https://react.dev/learn/state#hooks",   # rank 2 (same canonical as 1+3)
+            "https://react.dev/learn/state",         # rank 3 (canonical)
+            "https://react.dev/learn/effects",       # rank 4 (different canonical)
+            "https://react.dev/learn/refs",          # rank 5 (different canonical)
+        ],
+        [0.95, 0.93, 0.91, 0.85, 0.80],
+    )]
+    all_results = {"react-dev": {"markcrawl": _make_result("markcrawl", "react-dev", qrs)}}
+    out = tmp_path / "QUERY_AUDIT.csv"
+    br._write_query_audit_csv(all_results, out)
+
+    with open(out, encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    assert len(rows) == 5
+    # Three chunks share the same canonical → all get page_rank 1
+    assert rows[0]["page_rank_after_collapse"] == "1"
+    assert rows[1]["page_rank_after_collapse"] == "1"
+    assert rows[2]["page_rank_after_collapse"] == "1"
+    # Different canonicals get monotonically-increasing page ranks
+    assert rows[3]["page_rank_after_collapse"] == "2"
+    assert rows[4]["page_rank_after_collapse"] == "3"
 
 
 def test_audit_csv_atomic_write(tmp_path):

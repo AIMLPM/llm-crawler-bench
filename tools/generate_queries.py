@@ -46,6 +46,14 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
+# Load .env so OPENAI_API_KEY etc. are available (matches benchmark_retrieval.py).
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(_REPO_ROOT / ".env")
+except ImportError:
+    pass
+
 logger = logging.getLogger(__name__)
 
 GENERATION_MODEL = os.environ.get("GENERATION_MODEL", "gpt-4o-mini")
