@@ -28,7 +28,7 @@ This benchmark chunks each tool's crawl output, embeds it with
 - **Hybrid**: Embedding + BM25 fused via Reciprocal Rank Fusion
 - **Reranked**: Hybrid candidates reranked by `cross-encoder/ms-marco-MiniLM-L-6-v2`
 
-**600 queries** across 11 sites.
+**557 queries** across 11 sites.
 Hit rate = correct source page in top-K results. Higher is better.
 Summary tables use the **495-query common subset** (9 sites) so all tools are compared on identical queries. Sites excluded: huggingface-transformers, newegg (not all tools have data). Per-site tables show full results.
 
@@ -38,12 +38,12 @@ For each tool, the mode with the highest MRR. Most readers can stop here.
 
 | Tool | Best mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | MRR | Page MRR |
 |---|---|---|---|---|---|---|---|
-| crawl4ai-raw | embedding | 70% (347/495) ±4% | 83% (409/495) ±3% | 87% (431/495) ±3% | 91% (450/495) ±3% | 0.777 | 0.793 |
-| crawl4ai | embedding | 68% (339/495) ±4% | 82% (407/495) ±3% | 87% (429/495) ±3% | 90% (446/495) ±3% | 0.766 | 0.781 |
-| playwright | embedding | 68% (337/495) ±4% | 81% (402/495) ±3% | 86% (424/495) ±3% | 90% (447/495) ±3% | 0.761 | 0.776 |
-| crawlee | embedding | 67% (334/495) ±4% | 82% (405/495) ±3% | 86% (428/495) ±3% | 91% (448/495) ±3% | 0.758 | 0.771 |
-| colly+md | embedding | 45% (223/495) ±4% | 53% (260/495) ±4% | 54% (267/495) ±4% | 55% (274/495) ±4% | 0.490 | 0.499 |
-| markcrawl | hybrid | 23% (113/495) ±4% | 34% (169/495) ±4% | 36% (177/495) ±4% | 37% (184/495) ±4% | 0.287 | 0.292 |
+| crawl4ai-raw | embedding | 70% (347/495) ±4% | 83% (409/495) ±3% | 87% (431/495) ±3% | 91% (450/495) ±3% | 0.777 | 0.791 |
+| crawl4ai | embedding | 68% (339/495) ±4% | 82% (407/495) ±3% | 87% (429/495) ±3% | 90% (446/495) ±3% | 0.766 | 0.779 |
+| playwright | embedding | 68% (337/495) ±4% | 81% (402/495) ±3% | 86% (424/495) ±3% | 90% (447/495) ±3% | 0.761 | 0.773 |
+| crawlee | embedding | 67% (334/495) ±4% | 82% (405/495) ±3% | 86% (428/495) ±3% | 91% (448/495) ±3% | 0.758 | 0.769 |
+| colly+md | embedding | 45% (223/495) ±4% | 53% (260/495) ±4% | 54% (267/495) ±4% | 55% (274/495) ±4% | 0.490 | 0.497 |
+| markcrawl | hybrid | 23% (113/495) ±4% | 34% (169/495) ±4% | 36% (177/495) ±4% | 37% (184/495) ±4% | 0.287 | 0.290 |
 | scrapy+md | reranked | 16% (81/495) ±3% | 19% (95/495) ±3% | 21% (103/495) ±4% | 22% (108/495) ±4% | 0.182 | 0.185 |
 
 > **Column definitions:** **Best mode** = retrieval strategy that maximizes MRR for this tool. **Hit@K** = % of queries where the correct source page appeared in the top K (chunk-level). **MRR** (chunk-level) = Mean Reciprocal Rank across all retrieved chunks. **Page MRR** (DS-1) = MRR after collapsing chunks-per-URL to unique pages — removes the chunk-density gaming signal where a tool emitting more chunks per page would otherwise rank ahead at the same content.
@@ -56,27 +56,27 @@ _Computed over 495 queries on 9 common sites (ikea, kubernetes-docs, mdn-css, po
 
 | Tool | Mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Page MRR |
 |---|---|---|---|---|---|---|---|---|
-| crawl4ai-raw | embedding | 70% (347/495) ±4% | 83% (409/495) ±3% | 87% (431/495) ±3% | 91% (450/495) ±3% | 95% (468/495) ±2% | 0.777 | 0.793 |
-| crawl4ai | embedding | 68% (339/495) ±4% | 82% (407/495) ±3% | 87% (429/495) ±3% | 90% (446/495) ±3% | 94% (463/495) ±2% | 0.766 | 0.781 |
-| playwright | embedding | 68% (337/495) ±4% | 81% (402/495) ±3% | 86% (424/495) ±3% | 90% (447/495) ±3% | 93% (460/495) ±2% | 0.761 | 0.776 |
-| crawlee | embedding | 67% (334/495) ±4% | 82% (405/495) ±3% | 86% (428/495) ±3% | 91% (448/495) ±3% | 93% (458/495) ±2% | 0.758 | 0.771 |
-| colly+md | embedding | 45% (223/495) ±4% | 53% (260/495) ±4% | 54% (267/495) ±4% | 55% (274/495) ±4% | 57% (282/495) ±4% | 0.490 | 0.499 |
+| crawl4ai-raw | embedding | 70% (347/495) ±4% | 83% (409/495) ±3% | 87% (431/495) ±3% | 91% (450/495) ±3% | 95% (468/495) ±2% | 0.777 | 0.791 |
+| crawl4ai | embedding | 68% (339/495) ±4% | 82% (407/495) ±3% | 87% (429/495) ±3% | 90% (446/495) ±3% | 94% (463/495) ±2% | 0.766 | 0.779 |
+| playwright | embedding | 68% (337/495) ±4% | 81% (402/495) ±3% | 86% (424/495) ±3% | 90% (447/495) ±3% | 93% (460/495) ±2% | 0.761 | 0.773 |
+| crawlee | embedding | 67% (334/495) ±4% | 82% (405/495) ±3% | 86% (428/495) ±3% | 91% (448/495) ±3% | 93% (458/495) ±2% | 0.758 | 0.769 |
+| colly+md | embedding | 45% (223/495) ±4% | 53% (260/495) ±4% | 54% (267/495) ±4% | 55% (274/495) ±4% | 57% (282/495) ±4% | 0.490 | 0.497 |
 | markcrawl | embedding | 22% (108/495) ±4% | 31% (155/495) ±4% | 35% (174/495) ±4% | 38% (190/495) ±4% | 40% (198/495) ±4% | 0.276 | 0.283 |
-| scrapy+md | embedding | 16% (79/495) ±3% | 20% (98/495) ±4% | 21% (105/495) ±4% | 22% (107/495) ±4% | 22% (111/495) ±4% | 0.182 | 0.183 |
-| crawlee | bm25 | 46% (230/495) ±4% | 61% (302/495) ±4% | 67% (331/495) ±4% | 75% (371/495) ±4% | 81% (402/495) ±3% | 0.560 | 0.577 |
-| crawl4ai-raw | bm25 | 45% (223/495) ±4% | 63% (311/495) ±4% | 69% (341/495) ±4% | 75% (373/495) ±4% | 81% (402/495) ±3% | 0.556 | 0.570 |
-| crawl4ai | bm25 | 45% (225/495) ±4% | 62% (309/495) ±4% | 68% (338/495) ±4% | 75% (371/495) ±4% | 80% (397/495) ±4% | 0.555 | 0.569 |
-| playwright | bm25 | 44% (220/495) ±4% | 60% (297/495) ±4% | 65% (324/495) ±4% | 74% (366/495) ±4% | 79% (392/495) ±4% | 0.542 | 0.561 |
-| colly+md | bm25 | 26% (128/495) ±4% | 34% (170/495) ±4% | 39% (193/495) ±4% | 42% (207/495) ±4% | 46% (229/495) ±4% | 0.311 | 0.329 |
-| markcrawl | bm25 | 18% (88/495) ±3% | 28% (139/495) ±4% | 31% (153/495) ±4% | 34% (168/495) ±4% | 37% (182/495) ±4% | 0.239 | 0.242 |
-| scrapy+md | bm25 | 11% (54/495) ±3% | 15% (74/495) ±3% | 18% (89/495) ±3% | 20% (97/495) ±3% | 20% (101/495) ±4% | 0.138 | 0.141 |
-| crawl4ai-raw | hybrid | 64% (319/495) ±4% | 84% (418/495) ±3% | 88% (437/495) ±3% | 94% (464/495) ±2% | 96% (476/495) ±2% | 0.753 | 0.765 |
-| crawlee | hybrid | 66% (327/495) ±4% | 82% (404/495) ±3% | 87% (429/495) ±3% | 92% (457/495) ±2% | 94% (463/495) ±2% | 0.750 | 0.763 |
-| playwright | hybrid | 65% (324/495) ±4% | 82% (407/495) ±3% | 87% (431/495) ±3% | 92% (456/495) ±2% | 94% (466/495) ±2% | 0.747 | 0.762 |
-| crawl4ai | hybrid | 64% (317/495) ±4% | 84% (414/495) ±3% | 87% (432/495) ±3% | 92% (457/495) ±2% | 95% (472/495) ±2% | 0.746 | 0.758 |
-| colly+md | hybrid | 40% (200/495) ±4% | 49% (245/495) ±4% | 52% (259/495) ±4% | 56% (278/495) ±4% | 58% (285/495) ±4% | 0.457 | 0.467 |
-| markcrawl | hybrid | 23% (113/495) ±4% | 34% (169/495) ±4% | 36% (177/495) ±4% | 37% (184/495) ±4% | 39% (195/495) ±4% | 0.287 | 0.292 |
-| scrapy+md | hybrid | 16% (78/495) ±3% | 19% (92/495) ±3% | 20% (98/495) ±4% | 22% (107/495) ±4% | 23% (112/495) ±4% | 0.176 | 0.181 |
+| scrapy+md | embedding | 16% (79/495) ±3% | 20% (98/495) ±4% | 21% (105/495) ±4% | 22% (107/495) ±4% | 22% (111/495) ±4% | 0.182 | 0.182 |
+| crawlee | bm25 | 46% (230/495) ±4% | 61% (302/495) ±4% | 67% (331/495) ±4% | 75% (371/495) ±4% | 81% (402/495) ±3% | 0.560 | 0.575 |
+| crawl4ai-raw | bm25 | 45% (223/495) ±4% | 63% (311/495) ±4% | 69% (341/495) ±4% | 75% (373/495) ±4% | 81% (402/495) ±3% | 0.556 | 0.566 |
+| crawl4ai | bm25 | 45% (225/495) ±4% | 62% (309/495) ±4% | 68% (338/495) ±4% | 75% (371/495) ±4% | 80% (397/495) ±4% | 0.555 | 0.565 |
+| playwright | bm25 | 44% (220/495) ±4% | 60% (297/495) ±4% | 65% (324/495) ±4% | 74% (366/495) ±4% | 79% (392/495) ±4% | 0.542 | 0.557 |
+| colly+md | bm25 | 26% (128/495) ±4% | 34% (170/495) ±4% | 39% (193/495) ±4% | 42% (207/495) ±4% | 46% (229/495) ±4% | 0.311 | 0.326 |
+| markcrawl | bm25 | 18% (88/495) ±3% | 28% (139/495) ±4% | 31% (153/495) ±4% | 34% (168/495) ±4% | 37% (182/495) ±4% | 0.239 | 0.241 |
+| scrapy+md | bm25 | 11% (54/495) ±3% | 15% (74/495) ±3% | 18% (89/495) ±3% | 20% (97/495) ±3% | 20% (101/495) ±4% | 0.138 | 0.140 |
+| crawl4ai-raw | hybrid | 64% (319/495) ±4% | 84% (418/495) ±3% | 88% (437/495) ±3% | 94% (464/495) ±2% | 96% (476/495) ±2% | 0.753 | 0.763 |
+| crawlee | hybrid | 66% (327/495) ±4% | 82% (404/495) ±3% | 87% (429/495) ±3% | 92% (457/495) ±2% | 94% (463/495) ±2% | 0.750 | 0.762 |
+| playwright | hybrid | 65% (324/495) ±4% | 82% (407/495) ±3% | 87% (431/495) ±3% | 92% (456/495) ±2% | 94% (466/495) ±2% | 0.747 | 0.761 |
+| crawl4ai | hybrid | 64% (317/495) ±4% | 84% (414/495) ±3% | 87% (432/495) ±3% | 92% (457/495) ±2% | 95% (472/495) ±2% | 0.746 | 0.756 |
+| colly+md | hybrid | 40% (200/495) ±4% | 49% (245/495) ±4% | 52% (259/495) ±4% | 56% (278/495) ±4% | 58% (285/495) ±4% | 0.457 | 0.465 |
+| markcrawl | hybrid | 23% (113/495) ±4% | 34% (169/495) ±4% | 36% (177/495) ±4% | 37% (184/495) ±4% | 39% (195/495) ±4% | 0.287 | 0.290 |
+| scrapy+md | hybrid | 16% (78/495) ±3% | 19% (92/495) ±3% | 20% (98/495) ±4% | 22% (107/495) ±4% | 23% (112/495) ±4% | 0.176 | 0.180 |
 | playwright | reranked | 65% (322/495) ±4% | 83% (409/495) ±3% | 87% (429/495) ±3% | 91% (448/495) ±3% | 94% (464/495) ±2% | 0.750 | 0.757 |
 | crawl4ai-raw | reranked | 64% (319/495) ±4% | 82% (408/495) ±3% | 88% (437/495) ±3% | 93% (458/495) ±2% | 97% (480/495) ±2% | 0.748 | 0.756 |
 | crawl4ai | reranked | 64% (317/495) ±4% | 82% (407/495) ±3% | 87% (433/495) ±3% | 92% (455/495) ±2% | 96% (475/495) ±2% | 0.743 | 0.751 |
@@ -117,11 +117,11 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 | Tool | Hit@1 | Hit@3 | Hit@5 | Hit@10 | Hit@20 | MRR | Chunks | Pages |
 |---|---|---|---|---|---|---|---|---|
-| crawl4ai-raw | 74% (35/47) | 85% (40/47) | 94% (44/47) | 100% (47/47) | 100% (47/47) | 0.816 | 1018 | 295 |
-| markcrawl | 9% (4/47) | 9% (4/47) | 13% (6/47) | 17% (8/47) | 19% (9/47) | 0.105 | 4518 | 300 |
-| scrapy+md | 4% (2/47) | 9% (4/47) | 9% (4/47) | 13% (6/47) | 21% (10/47) | 0.073 | 6346 | 240 |
-| playwright | 4% (2/47) | 6% (3/47) | 6% (3/47) | 13% (6/47) | 17% (8/47) | 0.064 | 356 | 300 |
-| crawlee | 4% (2/47) | 4% (2/47) | 4% (2/47) | 4% (2/47) | 4% (2/47) | 0.043 | 67 | 16 |
+| markcrawl | 100% (4/4) | 100% (4/4) | 100% (4/4) | 100% (4/4) | 100% (4/4) | 1.000 | 4518 | 300 |
+| crawl4ai-raw | 100% (4/4) | 100% (4/4) | 100% (4/4) | 100% (4/4) | 100% (4/4) | 1.000 | 1018 | 295 |
+| crawlee | 100% (4/4) | 100% (4/4) | 100% (4/4) | 100% (4/4) | 100% (4/4) | 1.000 | 67 | 16 |
+| playwright | 100% (4/4) | 100% (4/4) | 100% (4/4) | 100% (4/4) | 100% (4/4) | 1.000 | 356 | 300 |
+| scrapy+md | 50% (2/4) | 50% (2/4) | 50% (2/4) | 50% (2/4) | 50% (2/4) | 0.510 | 6346 | 240 |
 | crawl4ai | — | — | — | — | — | — | — | — |
 | colly+md | — | — | — | — | — | — | — | — |
 
@@ -132,259 +132,7 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 > **Hit** = rank position where correct page appeared (#1 = top result, 'miss' = not in top 20). **Score** = cosine similarity between query embedding and chunk embedding.
 
-**Q1: What is the YouTube tutorial about for beginners who want to start building on HF Spaces?**
-*(expects URL containing: `175733`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/quickto | 0.305 | huggingface.co/docs/transformers/quicktour | 0.305 | huggingface.co/docs/transformers/main/en/quicktour | 0.296 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/just-published-a-yt-video | 0.543 | discuss.huggingface.co/t/just-published-a-yt-video | 0.543 | discuss.huggingface.co/c/spaces/24 | 0.383 |
-| scrapy+md | miss | huggingface.co/docs/hub/security-sso-user-manageme | 0.349 | huggingface.co/docs/hub/security-sso-basic | 0.347 | huggingface.co/docs/hub/models-download-stats | 0.343 |
-| crawlee | miss | huggingface.co/storage | 0.355 | huggingface.co/spaces | 0.301 | huggingface.co/pricing | 0.292 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/storage | 0.355 | huggingface.co/docs/transformers/quicktour | 0.316 | huggingface.co/spaces | 0.301 |
-
-
-**Q2: What three questions does the tutorial address for beginners?**
-*(expects URL containing: `175733`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/trouble | 0.378 | huggingface.co/docs/transformers/v5.8.0/en/tasks/m | 0.366 | huggingface.co/docs/transformers/v5.8.0/en/tasks/q | 0.366 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #8 | discuss.huggingface.co/t/how-to-ask-questions-on-t | 0.451 | discuss.huggingface.co/c/beginners/5 | 0.443 | discuss.huggingface.co/c/beginners/5 | 0.437 |
-| scrapy+md | miss | huggingface.co/learn/llm-course/chapter0/1 | 0.399 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.342 | huggingface.co/docs/transformers/trainer | 0.342 |
-| crawlee | miss | huggingface.co/docs/transformers/quicktour | 0.344 | huggingface.co/docs/transformers/quicktour | 0.338 | huggingface.co/docs/transformers/index | 0.332 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/docs/transformers/quicktour | 0.387 | huggingface.co/docs/transformers/quicktour | 0.320 | huggingface.co/docs/transformers/index | 0.312 |
-
-
-**Q3: What is the cost per hour for running a replica of the embeddinggemma-300m model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.422 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.400 | huggingface.co/docs/transformers/main/en/model_doc | 0.400 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.535 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.520 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.520 |
-| scrapy+md | miss | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.378 | huggingface.co/collections/nightmedia/qwen35 | 0.360 | huggingface.co/docs/transformers/model_doc/t5 | 0.358 |
-| crawlee | miss | huggingface.co/pricing | 0.493 | huggingface.co/pricing | 0.483 | huggingface.co/pricing | 0.442 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.493 | huggingface.co/pricing | 0.483 | huggingface.co/pricing | 0.442 |
-
-
-**Q4: What is the maximum number of concurrent requests for a deployment?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/perf_trai | 0.309 | huggingface.co/docs/transformers/main/en/perf_trai | 0.267 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.241 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.397 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.396 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.387 |
-| scrapy+md | miss | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.272 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.272 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.260 |
-| crawlee | miss | huggingface.co/storage | 0.295 | huggingface.co/pricing | 0.262 | huggingface.co/enterprise | 0.255 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #7 | huggingface.co/storage | 0.295 | huggingface.co/pricing | 0.262 | huggingface.co/enterprise | 0.255 |
-
-
-**Q5: What is the price range for using the inference server TEI?**
-*(expects URL containing: `catalog`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/serve-c | 0.376 | huggingface.co/docs/transformers/main/en/performan | 0.365 | huggingface.co/docs/transformers/main/en/perf_trai | 0.362 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/catalog?inferenceServer=v | 0.598 | endpoints.huggingface.co/catalog | 0.598 | endpoints.huggingface.co/catalog?accelerator=gpu | 0.598 |
-| scrapy+md | miss | huggingface.co/ | 0.395 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.379 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.370 |
-| crawlee | miss | huggingface.co/pricing | 0.449 | huggingface.co/pricing | 0.404 | huggingface.co/ | 0.387 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.449 | huggingface.co/pricing | 0.404 | huggingface.co/ | 0.388 |
-
-
-**Q6: How many items are in the model catalog for TEI?**
-*(expects URL containing: `catalog`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.444 | huggingface.co/docs/transformers/main/en/model_doc | 0.368 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.354 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #3 | huggingface.co/google/gemma-4-26B-A4B-it | 0.380 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.369 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.369 |
-| scrapy+md | miss | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.398 | huggingface.co/models?other=base_model:quantized:D | 0.394 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.393 |
-| crawlee | miss | huggingface.co/models | 0.354 | huggingface.co/datasets | 0.339 | huggingface.co/datasets | 0.308 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/models?library=transformers&sort=tr | 0.354 | huggingface.co/models | 0.353 | huggingface.co/docs/transformers/models_timeline | 0.340 |
-
-
-**Q7: What is the cost per hour for running a replica of the animagine-xl-2.0 model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #7 | huggingface.co/docs/transformers/main/en/model_doc | 0.390 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.390 | huggingface.co/docs/transformers/main/en/big_model | 0.371 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #2 | huggingface.co/pricing | 0.489 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.470 | huggingface.co/pricing | 0.461 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.396 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.386 | huggingface.co/ | 0.377 |
-| crawlee | miss | huggingface.co/pricing | 0.493 | huggingface.co/pricing | 0.472 | huggingface.co/pricing | 0.452 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.493 | huggingface.co/pricing | 0.472 | huggingface.co/pricing | 0.452 |
-
-
-**Q8: What types of cloud providers are supported for deploying the animagine-xl-2.0 model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.402 | huggingface.co/docs/transformers/main/en/model_doc | 0.395 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.394 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.500 | endpoints.huggingface.co/ | 0.497 | endpoints.huggingface.co | 0.497 |
-| scrapy+md | miss | huggingface.co/ | 0.423 | huggingface.co/ghadeermobasher/Originalbiobert-Bio | 0.415 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.411 |
-| crawlee | miss | huggingface.co/ | 0.456 | huggingface.co/enterprise | 0.429 | huggingface.co/pricing | 0.429 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/ | 0.456 | huggingface.co/enterprise | 0.429 | huggingface.co/pricing | 0.429 |
-
-
-**Q9: What should I check if my Space is stuck while restarting?**
-*(expects URL containing: `2`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/debugging | 0.310 | huggingface.co/docs/transformers/v5.8.0/en/trouble | 0.307 | huggingface.co/docs/transformers/main/en/debugging | 0.272 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/something-went-wrong-when | 0.586 | discuss.huggingface.co/t/something-went-wrong-when | 0.586 | discuss.huggingface.co/t/something-went-wrong-when | 0.586 |
-| scrapy+md | #1 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.335 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.301 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.275 |
-| crawlee | miss | huggingface.co/spaces | 0.332 | huggingface.co/pricing | 0.304 | huggingface.co/spaces | 0.258 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #12 | huggingface.co/spaces | 0.331 | huggingface.co/pricing | 0.304 | huggingface.co/ | 0.259 |
-
-
-**Q10: How can I duplicate a Space into a new repo?**
-*(expects URL containing: `2`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #13 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.295 | huggingface.co/docs/transformers/v5.8.0/en/add_new | 0.295 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.284 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #2 | discuss.huggingface.co/t/something-went-wrong-when | 0.454 | discuss.huggingface.co/t/something-went-wrong-when | 0.454 | discuss.huggingface.co/t/something-went-wrong-when | 0.454 |
-| scrapy+md | #6 | huggingface.co/docs/hub/enterprise-advanced-sso | 0.337 | huggingface.co/docs/hub/security-sso-user-manageme | 0.336 | huggingface.co/docs/hub/security-sso-basic | 0.336 |
-| crawlee | miss | huggingface.co/pricing | 0.395 | huggingface.co/pricing | 0.359 | huggingface.co/enterprise | 0.339 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #32 | huggingface.co/pricing | 0.395 | huggingface.co/pricing | 0.359 | huggingface.co/enterprise | 0.339 |
-
-
-**Q11: What is the quantization type of the Qwen2.5-VL-3B-Instruct-GGUF model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.574 | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.574 | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.530 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #5 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.582 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.570 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.566 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.485 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.483 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.479 |
-| crawlee | miss | huggingface.co/docs/transformers/index | 0.314 | huggingface.co/models | 0.295 | huggingface.co/pricing | 0.260 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/models?library=transformers&sort=tr | 0.354 | huggingface.co/models | 0.335 | huggingface.co/chat | 0.318 |
-
-
-**Q12: What is the maximum number of concurrent requests for the deployment?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/perf_trai | 0.315 | huggingface.co/docs/transformers/main/en/perf_trai | 0.270 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.256 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.407 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.406 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.396 |
-| scrapy+md | miss | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.283 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.281 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.272 |
-| crawlee | miss | huggingface.co/storage | 0.305 | huggingface.co/pricing | 0.268 | huggingface.co/pricing | 0.264 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #6 | huggingface.co/storage | 0.305 | huggingface.co/pricing | 0.268 | huggingface.co/pricing | 0.264 |
-
-
-**Q13: What is the main failure mode described for the planner when it produces a machine-consumable protocol artifact?**
-*(expects URL containing: `5`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.302 | huggingface.co/docs/transformers/main/en/kv_cache | 0.285 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.284 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/anyone-else-fighting-the- | 0.480 | discuss.huggingface.co/t/anyone-else-fighting-the- | 0.478 | discuss.huggingface.co/t/anyone-else-fighting-the- | 0.473 |
-| scrapy+md | #1 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.326 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.324 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.316 |
-| crawlee | miss | huggingface.co/docs/transformers/peft | 0.231 | huggingface.co/docs/transformers/peft | 0.230 | huggingface.co/docs/transformers/peft | 0.219 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/docs/transformers/peft | 0.251 | huggingface.co/chat | 0.231 | huggingface.co/chat | 0.229 |
-
-
-**Q14: What are the steps recommended to validate a plan before execution?**
-*(expects URL containing: `5`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #1 | huggingface.co/docs/transformers/v5.8.0/en/add_new | 0.308 | huggingface.co/docs/transformers/v5.8.0/en/add_new | 0.301 | huggingface.co/docs/transformers/v5.8.0/en/add_new | 0.277 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/anyone-else-fighting-the- | 0.588 | discuss.huggingface.co/t/anyone-else-fighting-the- | 0.478 | discuss.huggingface.co/t/anyone-else-fighting-the- | 0.449 |
-| scrapy+md | #26 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.356 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.348 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.339 |
-| crawlee | miss | huggingface.co/enterprise | 0.219 | huggingface.co/docs/transformers/index | 0.208 | huggingface.co/docs/transformers/peft | 0.206 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/docs/transformers/peft | 0.223 | huggingface.co/enterprise | 0.220 | huggingface.co/docs/transformers/quicktour | 0.212 |
-
-
-**Q15: What is the quantization type of the jina-reranker-v1-turbo-en-GGUF model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.580 | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.580 | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.555 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #4 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.538 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.537 | discuss.huggingface.co/t/the-bpe-pre-tokenizer-was | 0.511 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.459 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.441 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.441 |
-| crawlee | miss | huggingface.co/docs/transformers/index | 0.411 | huggingface.co/docs/transformers/peft | 0.359 | huggingface.co/docs/transformers/index | 0.349 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/docs/transformers/index | 0.368 | huggingface.co/docs/transformers/peft | 0.360 | huggingface.co/models?library=transformers&sort=tr | 0.356 |
-
-
-**Q16: What is the estimated total memory usage for the deployment?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.353 | huggingface.co/docs/transformers/v5.8.0/en/models | 0.347 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.324 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.496 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.495 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.493 |
-| scrapy+md | miss | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.352 | huggingface.co/api/resolve-cache/models/fxmarty/20 | 0.338 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.331 |
-| crawlee | miss | huggingface.co/pricing | 0.371 | huggingface.co/storage | 0.346 | huggingface.co/pricing | 0.339 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.371 | huggingface.co/storage | 0.346 | huggingface.co/pricing | 0.339 |
-
-
-**Q17: What is the main question being discussed in the forum post?**
-*(expects URL containing: `1`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/philosophy | 0.347 | huggingface.co/docs/transformers/v5.8.0/en/philoso | 0.347 | huggingface.co/docs/transformers/v5.8.0/en/trouble | 0.346 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #3 | discuss.huggingface.co/t/how-to-ask-questions-on-t | 0.456 | discuss.huggingface.co/c/site-feedback/2 | 0.452 | discuss.huggingface.co/t/replacing-claude-code-wit | 0.447 |
-| scrapy+md | #10 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.373 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.372 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.363 |
-| crawlee | miss | huggingface.co/ | 0.336 | huggingface.co/chat | 0.318 | huggingface.co/docs | 0.318 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #17 | huggingface.co/ | 0.340 | huggingface.co/chat | 0.320 | huggingface.co/chat | 0.319 |
-
-
-**Q18: Which frameworks are being compared for chatbot development?**
-*(expects URL containing: `1`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/model_doc | 0.464 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.463 | huggingface.co/docs/transformers/v5.8.0/en/chat_te | 0.458 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/which-framework-is-better | 0.548 | discuss.huggingface.co/t/which-framework-is-better | 0.548 | discuss.huggingface.co/c/intermediate/6 | 0.478 |
-| scrapy+md | #2 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.459 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.444 | huggingface.co/chat/ | 0.427 |
-| crawlee | miss | huggingface.co/chat | 0.452 | huggingface.co/models | 0.407 | huggingface.co/docs/transformers/peft | 0.398 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #47 | huggingface.co/chat | 0.411 | huggingface.co/models?library=transformers&sort=tr | 0.410 | huggingface.co/models | 0.404 |
-
-
-**Q19: What is the command to install Transformers using uv?**
+**Q1: What is the command to install Transformers using uv?**
 *(expects URL containing: `installation`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -398,7 +146,7 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #1 | huggingface.co/docs/transformers/installation | 0.659 | huggingface.co/docs/transformers/installation | 0.621 | huggingface.co/docs/transformers/installation | 0.504 |
 
 
-**Q20: How can I set up Transformers for offline usage?**
+**Q2: How can I set up Transformers for offline usage?**
 *(expects URL containing: `installation`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
@@ -412,382 +160,32 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 | playwright | #1 | huggingface.co/docs/transformers/installation | 0.526 | huggingface.co/docs/transformers/index | 0.526 | huggingface.co/docs/transformers/installation | 0.519 |
 
 
-**Q21: What is the title of paper 2604.23758?**
-*(expects URL containing: `175675`)*
+**Q3: What are the main design principles of Transformers?**
+*(expects URL containing: `transformers`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.301 | huggingface.co/docs/transformers/main/en/model_doc | 0.287 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.280 |
+| markcrawl | #1 | huggingface.co/docs/transformers/philosophy | 0.521 | huggingface.co/docs/transformers/v5.8.0/en/philoso | 0.521 | huggingface.co/docs/transformers/v5.8.0/en/index | 0.518 |
 | crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/help-needed-paper-claim-s | 0.362 | discuss.huggingface.co/c/research/awesome-paper/ | 0.357 | discuss.huggingface.co/t/help-needed-paper-claim-s | 0.352 |
-| scrapy+md | miss | huggingface.co/papers/2601.06411 | 0.443 | huggingface.co/papers/2601.20465 | 0.442 | huggingface.co/papers/2604.08570 | 0.432 |
-| crawlee | miss | huggingface.co/spaces | 0.270 | huggingface.co/docs/transformers/peft | 0.246 | huggingface.co/storage | 0.245 |
+| crawl4ai-raw | #1 | huggingface.co/docs/transformers/index | 0.526 | huggingface.co/docs/transformers/index | 0.522 | huggingface.co/docs/transformers/index | 0.429 |
+| scrapy+md | #1 | huggingface.co/docs/transformers/index | 0.538 | huggingface.co/docs/transformers/philosophy | 0.530 | huggingface.co/docs/transformers/index | 0.500 |
+| crawlee | #1 | huggingface.co/docs/transformers/index | 0.501 | huggingface.co/docs/transformers/index | 0.479 | huggingface.co/docs/transformers/index | 0.414 |
 | colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/spaces | 0.270 | huggingface.co/storage | 0.245 | huggingface.co/moonshotai/Kimi-K2.6 | 0.239 |
+| playwright | #1 | huggingface.co/docs/transformers/index | 0.521 | huggingface.co/docs/transformers/index | 0.482 | huggingface.co/docs/transformers/quicktour | 0.441 |
 
 
-**Q22: Why is the paper claim status stuck on 'Pending'?**
-*(expects URL containing: `175675`)*
+**Q4: What features does Transformers provide for inference or training?**
+*(expects URL containing: `transformers`)*
 
 | Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
 |---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.223 | huggingface.co/docs/transformers/v5.8.0/en/task_su | 0.189 | huggingface.co/docs/transformers/v5.8.0/en/tasks/s | 0.184 |
+| markcrawl | #1 | huggingface.co/docs/transformers/index | 0.627 | huggingface.co/docs/transformers/v5.8.0/en/index | 0.627 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.624 |
 | crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/help-needed-paper-claim-s | 0.635 | discuss.huggingface.co/t/help-needed-paper-claim-s | 0.595 | discuss.huggingface.co/t/help-needed-paper-claim-s | 0.595 |
-| scrapy+md | miss | huggingface.co/papers?q=Cirq | 0.357 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.308 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.297 |
-| crawlee | miss | huggingface.co/login?next=/enterprise | 0.176 | huggingface.co/datasets | 0.163 | huggingface.co/models | 0.161 |
+| crawl4ai-raw | #1 | huggingface.co/docs/transformers/index | 0.661 | huggingface.co/docs/transformers/index | 0.603 | huggingface.co/docs/transformers/index | 0.581 |
+| scrapy+md | #1 | huggingface.co/docs/transformers/index | 0.644 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.615 | huggingface.co/docs/transformers/index | 0.607 |
+| crawlee | #1 | huggingface.co/docs/transformers/index | 0.662 | huggingface.co/docs/transformers/index | 0.571 | huggingface.co/docs/transformers/index | 0.568 |
 | colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/settings/billing?add-storage=true | 0.284 | huggingface.co/login | 0.283 | huggingface.co/login?next=%2Fenterprise | 0.281 |
-
-
-**Q23: What error occurs when using the Qwen model in smolagent?**
-*(expects URL containing: `1`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.459 | huggingface.co/docs/transformers/main/en/model_doc | 0.459 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.441 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/issue-with-qwen-model-in- | 0.514 | discuss.huggingface.co/t/issue-with-qwen-model-in- | 0.513 | discuss.huggingface.co/t/issue-with-qwen-model-in- | 0.513 |
-| scrapy+md | #17 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.475 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.449 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.445 |
-| crawlee | miss | huggingface.co/chat | 0.278 | huggingface.co/spaces | 0.265 | huggingface.co/models | 0.262 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/chat | 0.337 | huggingface.co/chat | 0.319 | huggingface.co/models?library=transformers&sort=tr | 0.289 |
-
-
-**Q24: What are the likely causes of the error in LlamaIndex when using the Qwen model?**
-*(expects URL containing: `1`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/model_doc | 0.456 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.456 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.453 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/issue-with-qwen-model-in- | 0.618 | discuss.huggingface.co/t/issue-with-qwen-model-in- | 0.615 | discuss.huggingface.co/t/issue-with-qwen-model-in- | 0.615 |
-| scrapy+md | #17 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.512 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.482 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.472 |
-| crawlee | miss | huggingface.co/models | 0.307 | huggingface.co/models | 0.301 | huggingface.co/models | 0.296 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/chat | 0.415 | huggingface.co/chat | 0.369 | huggingface.co/chat | 0.363 |
-
-
-**Q25: What is the price range for text ranking tasks?**
-*(expects URL containing: `catalog`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.323 | huggingface.co/docs/transformers/main/en/model_doc | 0.323 | huggingface.co/docs/transformers/v5.8.0/en/tasks/s | 0.319 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/catalog?task=text-ranking | 0.534 | endpoints.huggingface.co/catalog?task=sentence-sim | 0.474 | endpoints.huggingface.co/catalog?task=text-to-imag | 0.462 |
-| scrapy+md | miss | huggingface.co/models?other=conversational | 0.397 | huggingface.co/models?other=conversational | 0.386 | huggingface.co/models?search=nli | 0.378 |
-| crawlee | miss | huggingface.co/models | 0.393 | huggingface.co/models | 0.364 | huggingface.co/models | 0.363 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/models | 0.401 | huggingface.co/models?library=transformers&sort=tr | 0.377 | huggingface.co/models | 0.372 |
-
-
-**Q26: How many models are available in the text ranking catalog?**
-*(expects URL containing: `catalog`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.398 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.379 | huggingface.co/docs/transformers/main/en/model_doc | 0.370 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/catalog?task=text-ranking | 0.461 | huggingface.co/models | 0.436 | huggingface.co/google/gemma-4-26B-A4B-it | 0.434 |
-| scrapy+md | miss | huggingface.co/models?search=nli | 0.466 | huggingface.co/models?other=conversational | 0.452 | huggingface.co/models?pipeline_tag=token-classific | 0.451 |
-| crawlee | miss | huggingface.co/models | 0.410 | huggingface.co/models | 0.388 | huggingface.co/models | 0.356 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/models | 0.411 | huggingface.co/models | 0.400 | huggingface.co/models?library=transformers&sort=tr | 0.398 |
-
-
-**Q27: What is the cost per hour for running a replica of the Mistral-Small-24B-Instruct-2501 model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/model_doc | 0.403 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.403 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.392 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.531 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.519 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.514 |
-| scrapy+md | miss | huggingface.co/executorch-community/SmolLM2-135M | 0.355 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.351 | huggingface.co/ | 0.329 |
-| crawlee | miss | huggingface.co/pricing | 0.453 | huggingface.co/pricing | 0.444 | huggingface.co/pricing | 0.438 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.453 | huggingface.co/pricing | 0.444 | huggingface.co/pricing | 0.438 |
-
-
-**Q28: What is the maximum number of sequences that can be processed in a single iteration?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/pipeline_tutorial | 0.390 | huggingface.co/docs/transformers/v5.8.0/en/pipelin | 0.390 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.346 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #4 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.327 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.327 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.309 |
-| scrapy+md | miss | huggingface.co/docs/transformers/pipeline_tutorial | 0.390 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.353 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.353 |
-| crawlee | miss | huggingface.co/datasets | 0.218 | huggingface.co/storage | 0.215 | huggingface.co/models | 0.214 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/chat | 0.263 | huggingface.co/chat | 0.262 | huggingface.co/chat | 0.249 |
-
-
-**Q29: What is the cost per hour for running a replica of the Qwen3-Embedding-4B model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.488 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.455 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.443 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.599 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.594 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.594 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.485 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.472 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.470 |
-| crawlee | miss | huggingface.co/pricing | 0.502 | huggingface.co/pricing | 0.500 | huggingface.co/pricing | 0.462 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.502 | huggingface.co/pricing | 0.500 | huggingface.co/pricing | 0.462 |
-
-
-**Q30: What types of cloud providers are supported for deploying the Qwen3-Embedding-4B model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.512 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.507 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.477 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.618 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.610 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.608 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.543 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.516 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.505 |
-| crawlee | miss | huggingface.co/pricing | 0.402 | huggingface.co/ | 0.399 | huggingface.co/pricing | 0.398 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/models?library=transformers&sort=tr | 0.417 | huggingface.co/pricing | 0.402 | huggingface.co/ | 0.399 |
-
-
-**Q31: What is the cost per hour for running a replica of the Apertus-8B-Instruct-2509 model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #45 | huggingface.co/docs/transformers/main/en/model_doc | 0.392 | huggingface.co/docs/transformers/main/en/model_doc | 0.369 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.369 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.519 | huggingface.co/pricing | 0.483 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.477 |
-| scrapy+md | miss | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.356 | huggingface.co/executorch-community/SmolLM2-135M | 0.332 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.329 |
-| crawlee | miss | huggingface.co/pricing | 0.478 | huggingface.co/pricing | 0.470 | huggingface.co/pricing | 0.456 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.478 | huggingface.co/pricing | 0.470 | huggingface.co/pricing | 0.456 |
-
-
-**Q32: What types of cloud providers are supported for deploying the model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/perf_trai | 0.418 | huggingface.co/docs/transformers/main/en/perf_trai | 0.417 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.401 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #3 | endpoints.huggingface.co | 0.496 | endpoints.huggingface.co/ | 0.496 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.461 |
-| scrapy+md | miss | huggingface.co/ghadeermobasher/Originalbiobert-Bio | 0.436 | huggingface.co/ghadeermobasher/Modified-biobertv1- | 0.422 | huggingface.co/dpovedano/distilbert-base-uncased-f | 0.419 |
-| crawlee | miss | huggingface.co/ | 0.418 | huggingface.co/pricing | 0.407 | huggingface.co/docs/transformers/index | 0.403 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/ | 0.418 | huggingface.co/pricing | 0.407 | huggingface.co/pricing | 0.403 |
-
-
-**Q33: How can I ensure TTS voice segments are synchronized with video scenes?**
-*(expects URL containing: `1`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #32 | huggingface.co/docs/transformers/v5.8.0/en/noteboo | 0.357 | huggingface.co/docs/transformers/v5.8.0/en/chat_te | 0.341 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.340 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/how-to-make-tts-voice-in- | 0.697 | discuss.huggingface.co/t/how-to-make-tts-voice-in- | 0.697 | discuss.huggingface.co/t/how-to-make-tts-voice-in- | 0.697 |
-| scrapy+md | #3 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.342 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.334 | huggingface.co/learn/llm-course/chapter1/1?fw=pt | 0.334 |
-| crawlee | miss | huggingface.co/docs/transformers/peft | 0.328 | huggingface.co/docs/transformers/index | 0.326 | huggingface.co/docs/transformers/quicktour | 0.323 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #49 | huggingface.co/spaces | 0.341 | huggingface.co/docs/transformers/index | 0.308 | huggingface.co/models?library=transformers&sort=tr | 0.302 |
-
-
-**Q34: What is the recommended architecture for a TTS dubbing pipeline?**
-*(expects URL containing: `1`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #4 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.412 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.402 | huggingface.co/docs/transformers/v5.8.0/en/main_cl | 0.398 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | discuss.huggingface.co/t/how-to-make-tts-voice-in- | 0.577 | discuss.huggingface.co/t/how-to-make-tts-voice-in- | 0.576 | discuss.huggingface.co/t/how-to-make-tts-voice-in- | 0.576 |
-| scrapy+md | #13 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.418 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.402 | huggingface.co/docs/transformers/v5.7.0/en/main_cl | 0.398 |
-| crawlee | miss | huggingface.co/docs/transformers/installation | 0.341 | huggingface.co/docs/transformers/installation | 0.329 | huggingface.co/docs/transformers/index | 0.325 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/docs/transformers/installation | 0.341 | huggingface.co/docs/transformers/installation | 0.332 | huggingface.co/docs/transformers/index | 0.323 |
-
-
-**Q35: What is the cost per hour for running a replica of the stable-diffusion-v1-5 model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #7 | huggingface.co/docs/transformers/main/en/model_doc | 0.402 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.402 | huggingface.co/docs/transformers/main/en/perf_trai | 0.361 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.510 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.507 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.454 |
-| scrapy+md | miss | huggingface.co/datasets/facebook/ego-1k | 0.371 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.363 | huggingface.co/ | 0.352 |
-| crawlee | miss | huggingface.co/pricing | 0.434 | huggingface.co/pricing | 0.411 | huggingface.co/pricing | 0.375 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.434 | huggingface.co/pricing | 0.411 | huggingface.co/pricing | 0.375 |
-
-
-**Q36: What types of cloud providers are supported for deploying the stable-diffusion-v1-5 model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/model_doc | 0.398 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.389 | huggingface.co/docs/transformers/main/en/perf_trai | 0.372 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.533 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.529 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.474 |
-| scrapy+md | miss | huggingface.co/dpovedano/distilbert-base-uncased-f | 0.428 | huggingface.co/ghadeermobasher/Originalbiobert-Bio | 0.415 | huggingface.co/ghadeermobasher/Modified-biobertv1- | 0.409 |
-| crawlee | miss | huggingface.co/docs | 0.375 | huggingface.co/storage | 0.372 | huggingface.co/ | 0.367 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/docs | 0.375 | huggingface.co/storage | 0.372 | huggingface.co/ | 0.366 |
-
-
-**Q37: What is the maximum context length for Qwen3.5-35B-A3B?**
-*(expects URL containing: `Qwen3.5-35B-A3B-GGUF`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.445 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.409 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.408 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.471 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.464 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.447 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.440 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.422 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.406 |
-| crawlee | miss | huggingface.co/models | 0.270 | huggingface.co/models | 0.259 | huggingface.co/spaces | 0.239 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/chat | 0.342 | huggingface.co/models?library=transformers&sort=tr | 0.336 | huggingface.co/models | 0.304 |
-
-
-**Q38: What are the key enhancements of Qwen3.5?**
-*(expects URL containing: `Qwen3.5-35B-A3B-GGUF`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.527 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.523 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.506 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.621 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.587 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.576 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.584 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.572 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.525 |
-| crawlee | miss | huggingface.co/models | 0.349 | huggingface.co/spaces | 0.335 | huggingface.co/models | 0.330 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/models?library=transformers&sort=tr | 0.421 | huggingface.co/models | 0.385 | huggingface.co/models | 0.362 |
-
-
-**Q39: What is the cost per hour for running a replica of the Phi-3-mini-4k-instruct model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #28 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.406 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.365 | huggingface.co/docs/transformers/main/en/model_doc | 0.365 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.508 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.492 | huggingface.co/pricing | 0.474 |
-| scrapy+md | miss | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.346 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.336 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.322 |
-| crawlee | miss | huggingface.co/pricing | 0.470 | huggingface.co/pricing | 0.458 | huggingface.co/pricing | 0.433 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.470 | huggingface.co/pricing | 0.458 | huggingface.co/pricing | 0.433 |
-
-
-**Q40: What is the maximum number of sequences that can be processed in a single iteration?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/pipeline_tutorial | 0.390 | huggingface.co/docs/transformers/v5.8.0/en/pipelin | 0.390 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.346 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #4 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.327 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.327 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.309 |
-| scrapy+md | miss | huggingface.co/docs/transformers/pipeline_tutorial | 0.390 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.353 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.353 |
-| crawlee | miss | huggingface.co/datasets | 0.218 | huggingface.co/storage | 0.215 | huggingface.co/models | 0.214 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/chat | 0.263 | huggingface.co/chat | 0.262 | huggingface.co/chat | 0.249 |
-
-
-**Q41: What is the cost per hour for running a replica of the DeepSeek-OCR model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/model_doc | 0.551 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.551 | huggingface.co/docs/transformers/main/en/model_doc | 0.538 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.573 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.512 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.506 |
-| scrapy+md | miss | huggingface.co/models?other=conversational | 0.430 | huggingface.co/executorch-community/DeepSeek-R1-Di | 0.423 | huggingface.co/ | 0.415 |
-| crawlee | miss | huggingface.co/pricing | 0.472 | huggingface.co/pricing | 0.439 | huggingface.co/models | 0.423 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.472 | huggingface.co/pricing | 0.439 | huggingface.co/models | 0.423 |
-
-
-**Q42: What is the cost per hour for running a replica of the openjourney model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | #4 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.364 | huggingface.co/docs/transformers/main/en/model_doc | 0.364 | huggingface.co/docs/transformers/main/en/big_model | 0.326 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.467 | endpoints.huggingface.co/new?accelerator=cpu&catal | 0.398 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.396 |
-| scrapy+md | miss | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.407 | huggingface.co/ | 0.355 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.353 |
-| crawlee | miss | huggingface.co/pricing | 0.391 | huggingface.co/pricing | 0.383 | huggingface.co/pricing | 0.368 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/pricing | 0.391 | huggingface.co/pricing | 0.383 | huggingface.co/pricing | 0.368 |
-
-
-**Q43: What types of cloud providers are supported for deploying the endpoint?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/perf_trai | 0.315 | huggingface.co/docs/transformers/main/en/perf_trai | 0.299 | huggingface.co/docs/transformers/v5.8.0/en/serve-c | 0.279 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.485 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.483 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.482 |
-| scrapy+md | #20 | huggingface.co/docs/hub/enterprise-sso | 0.355 | huggingface.co/docs/hub/security-sso-configuration | 0.338 | huggingface.co/support | 0.331 |
-| crawlee | miss | huggingface.co/enterprise | 0.365 | huggingface.co/pricing | 0.364 | huggingface.co/storage | 0.348 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/enterprise | 0.366 | huggingface.co/pricing | 0.364 | huggingface.co/storage | 0.348 |
-
-
-**Q44: What is the quantization type of the Qwen3.5-9B-GGUF model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.569 | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.569 | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.510 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #7 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.606 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.598 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.596 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.494 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.489 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.488 |
-| crawlee | miss | huggingface.co/models | 0.316 | huggingface.co/docs/transformers/index | 0.292 | huggingface.co/models | 0.283 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/models?library=transformers&sort=tr | 0.380 | huggingface.co/models | 0.354 | huggingface.co/models | 0.323 |
-
-
-**Q45: What is the maximum number of concurrent requests for the deployment?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/perf_trai | 0.315 | huggingface.co/docs/transformers/main/en/perf_trai | 0.270 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.256 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.407 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.406 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.396 |
-| scrapy+md | miss | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.283 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.281 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.272 |
-| crawlee | miss | huggingface.co/storage | 0.305 | huggingface.co/pricing | 0.268 | huggingface.co/pricing | 0.264 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #6 | huggingface.co/storage | 0.305 | huggingface.co/pricing | 0.268 | huggingface.co/pricing | 0.264 |
-
-
-**Q46: What is the quantization type for the Qwen3.5-35B-A3B-GGUF model?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.560 | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.560 | huggingface.co/docs/transformers/v5.8.0/en/quantiz | 0.500 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #7 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.600 | huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF | 0.580 | huggingface.co/unsloth/Qwen3.5-9B-GGUF | 0.578 |
-| scrapy+md | miss | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.480 | huggingface.co/DavidAU/Qwen3.5-9B-Claude-4.6-Opus- | 0.479 | huggingface.co/nightmedia/Qwen3.5-9B-Claude-4.6-Op | 0.474 |
-| crawlee | miss | huggingface.co/models | 0.298 | huggingface.co/docs/transformers/index | 0.281 | huggingface.co/models | 0.274 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | miss | huggingface.co/models?library=transformers&sort=tr | 0.365 | huggingface.co/models | 0.339 | huggingface.co/models | 0.312 |
-
-
-**Q47: What is the maximum number of concurrent requests for this deployment?**
-*(expects URL containing: `new`)*
-
-| Tool | Hit | Top-1 URL | Score | Top-2 URL | Score | Top-3 URL | Score |
-|---|---|---|---|---|---|---|---|
-| markcrawl | miss | huggingface.co/docs/transformers/main/en/perf_trai | 0.313 | huggingface.co/docs/transformers/main/en/model_doc | 0.264 | huggingface.co/docs/transformers/v5.8.0/en/model_d | 0.264 |
-| crawl4ai | — | — | — | — | — | — | — |
-| crawl4ai-raw | #1 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.422 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.415 | endpoints.huggingface.co/new?accelerator=gpu&catal | 0.412 |
-| scrapy+md | miss | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.292 | huggingface.co/datasets/yoonsanglee/deepsearchqa-r | 0.290 | huggingface.co/datasets/OpenRubrics/OpenRubrics/vi | 0.287 |
-| crawlee | miss | huggingface.co/storage | 0.321 | huggingface.co/pricing | 0.287 | huggingface.co/enterprise | 0.277 |
-| colly+md | — | — | — | — | — | — | — |
-| playwright | #3 | huggingface.co/storage | 0.321 | huggingface.co/login?next=%2Fenterprise | 0.290 | huggingface.co/new-bucket | 0.288 |
+| playwright | #1 | huggingface.co/docs/transformers/index | 0.634 | huggingface.co/docs/transformers/quicktour | 0.601 | huggingface.co/docs/transformers/index | 0.598 |
 
 
 </details>
@@ -8746,7 +8144,7 @@ Tools span MRR 0.182-0.777 on embedding mode (a 0.596 spread). Tools crawl simil
 
 ## Methodology
 
-- **Queries:** 600 across 11 sites, categorized by type (api-function, code-example, conceptual, structured-data, factual-lookup, cross-page, navigation, js-rendered)
+- **Queries:** 557 across 11 sites, categorized by type (api-function, code-example, conceptual, structured-data, factual-lookup, cross-page, navigation, js-rendered)
 - **Embedding model:** `text-embedding-3-small` (1536 dimensions)
 - **Chunking:** Markdown-aware, 400 word max, 50 word overlap
 - **Retrieval modes:** Embedding (cosine), BM25 (Okapi), Hybrid (RRF k=60), Reranked (`cross-encoder/ms-marco-MiniLM-L-6-v2`)

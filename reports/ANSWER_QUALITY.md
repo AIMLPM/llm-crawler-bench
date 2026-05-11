@@ -1,7 +1,7 @@
 # End-to-End RAG Answer Quality
 <!-- style: v2, 2026-05-11 -->
 
-All crawlers produce similar LLM answer quality (3.55-4.73 out of 5). crawl4ai leads slightly at 4.73; markcrawl ranks 7th at 3.55 — a 24.8% gap from the best. The gaps are small but consistent.
+All crawlers produce similar LLM answer quality (3.64-4.73 out of 5). crawl4ai leads slightly at 4.73; markcrawl ranks 7th at 3.64 — a 23.0% gap from the best. The gaps are small but consistent.
 
 **Run:** `run_v13_merged_20260504_203748` | **Started:** 2026-05-04T13:36:42Z | **Ended:** 2026-05-05T05:41:25.381501+00:00 | **Pool:** 1.2 (sha256:caa35)
 
@@ -25,23 +25,23 @@ and sent to `gpt-4o-mini` to generate an answer. Answers are scored by
 
 **Scoring scale:** 1 = wrong/irrelevant, 2 = partially relevant, 3 = acceptable, 4 = good, 5 = excellent/complete. Scores are averaged across all queries per tool. An overall score above 4.0 indicates consistently good answers.
 
-## Summary (600 queries across 11 sites)
+## Summary (557 queries across 11 sites)
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | **Overall** | Avg tokens/query |
 |---|---|---|---|---|---|---|
 | crawl4ai | 4.74 | 4.83 | 4.64 | 4.71 | **4.73 ±0.06** | 4,346 |
-| crawl4ai-raw | 4.69 | 4.79 | 4.58 | 4.65 | **4.68 ±0.06** | 4,281 |
-| crawlee | 4.60 | 4.64 | 4.39 | 4.49 | **4.53 ±0.08** | 4,070 |
+| crawl4ai-raw | 4.73 | 4.82 | 4.64 | 4.70 | **4.72 ±0.06** | 4,340 |
+| crawlee | 4.71 | 4.82 | 4.59 | 4.67 | **4.70 ±0.07** | 4,091 |
+| playwright | 4.58 | 4.60 | 4.33 | 4.45 | **4.49 ±0.08** | 4,128 |
 | colly+md | 4.55 | 4.46 | 4.19 | 4.35 | **4.39 ±0.09** | 4,205 |
-| playwright | 4.49 | 4.45 | 4.16 | 4.30 | **4.35 ±0.08** | 4,111 |
-| scrapy+md | 4.01 | 3.64 | 3.24 | 3.48 | **3.59 ±0.11** | 4,143 |
-| markcrawl | 3.97 | 3.61 | 3.18 | 3.46 | **3.55 ±0.11** | 4,000 |
+| scrapy+md | 4.04 | 3.72 | 3.33 | 3.58 | **3.67 ±0.12** | 4,151 |
+| markcrawl | 4.02 | 3.70 | 3.29 | 3.55 | **3.64 ±0.12** | 4,015 |
 
 > **Column definitions:** All scores are 1-5 averages across queries, judged by `gpt-4o-mini`. **Correctness** = factual accuracy. **Relevance** = answers the question asked. **Completeness** = covers all aspects. **Usefulness** = practical value to the user. **Overall** = mean of the four dimensions (± 95% confidence interval). **Avg tokens/query** = estimated input tokens per query (chunk words x 1.33). Gaps within the ± range are not statistically significant.
 
 ## What this means in practice
 
-The quality gap between the best (crawl4ai, 4.73) and worst (markcrawl, 3.55) crawler is 1.17 points on a 5-point scale -- 24.8% relative. This gap is real but small.
+The quality gap between the best (crawl4ai, 4.73) and worst (markcrawl, 3.64) crawler is 1.09 points on a 5-point scale -- 23.0% relative. This gap is real but small.
 
 For most use cases, your choice of crawler will not noticeably affect the quality of LLM-generated answers. All tools produce answers that score above 4.0 ("good") on average, meaning users get helpful, accurate responses regardless of which crawler feeds the pipeline.
 
@@ -51,488 +51,58 @@ For most use cases, your choice of crawler will not noticeably affect the qualit
 
 | Tool | Correctness | Relevance | Completeness | Usefulness | Overall |
 |---|---|---|---|---|---|
-| crawl4ai-raw | 4.17 | 4.40 | 3.87 | 3.96 | 4.10 ±0.33 |
-| scrapy+md | 3.55 | 2.72 | 2.15 | 2.34 | 2.69 ±0.17 |
-| crawlee | 3.32 | 2.77 | 2.19 | 2.45 | 2.68 ±0.20 |
-| playwright | 3.34 | 2.72 | 2.13 | 2.40 | 2.65 ±0.18 |
-| markcrawl | 3.36 | 2.66 | 2.09 | 2.43 | 2.63 ±0.15 |
+| playwright | 3.50 | 4.75 | 3.75 | 3.75 | 3.94 ±1.30 |
+| crawlee | 3.25 | 4.50 | 3.50 | 3.75 | 3.75 ±1.41 |
+| crawl4ai-raw | 3.25 | 4.50 | 3.50 | 3.50 | 3.69 ±1.49 |
+| markcrawl | 3.00 | 4.00 | 3.25 | 3.25 | 3.38 ±1.93 |
+| scrapy+md | 3.25 | 3.00 | 2.50 | 2.75 | 2.88 ±1.39 |
 
 > Scores are 1-5 averages. See summary table legend for dimension definitions.
 
 <details>
 <summary>Query-by-query scores for huggingface-transformers</summary>
 
-**Q1: What is the YouTube tutorial about for beginners who want to start building on HF Spaces?**
+**Q1: What is the command to install Transformers using uv?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The YouTube tutorial is about helping beginners and non-engineers learn how to start building on HF ... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
+| markcrawl | 1 | 5 | 2 | 2 | 2.5 | The command to install Transformers using uv is:  ``` uv pip install transformers ```... |
+| crawl4ai-raw | 1 | 5 | 2 | 2 | 2.5 | The command to install Transformers using uv is:  ``` uv pip install transformers ```... |
+| crawlee | 1 | 5 | 2 | 2 | 2.5 | The command to install Transformers using uv is:  ``` uv pip install transformers ```... |
+| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
+| playwright | 1 | 5 | 2 | 1 | 2.2 | The command to install Transformers using uv is:  ``` uv pip install transformers ```... |
 
 > **Corr** = correctness, **Rel** = relevance, **Comp** = completeness, **Use** = usefulness, **Avg** = average of the four dimensions (1-5).
 
-**Q2: What three questions does the tutorial address for beginners?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The tutorial addresses the following three questions for beginners: 1. How to pick a Space worth lea... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The tutorial addresses the following three questions for beginners:  1. What is the purpose of the `... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The tutorial addresses the following three questions for beginners:  1. How to load a pretrained mod... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q3: What is the cost per hour for running a replica of the embeddinggemma-300m model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 1 | 5 | 1 | 2 | 2.2 | The cost per hour for running a replica of the embeddinggemma-300m model is $0.07.... |
-
-**Q4: What is the maximum number of concurrent requests for a deployment?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| playwright | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q5: What is the price range for using the inference server TEI?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 4 | 5 | 4 | 4 | 4.2 | The price range for using the inference server TEI is $0 - $50 per hour.... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q6: How many items are in the model catalog for TEI?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q7: What is the cost per hour for running a replica of the animagine-xl-2.0 model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The cost per hour for running a replica of the animagine-xl-2.0 model is $0.80.... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q8: What types of cloud providers are supported for deploying the animagine-xl-2.0 model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The animagine-xl-2.0 model supports deployment on Amazon Web Services, Microsoft Azure, and Google C... |
-| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q9: What should I check if my Space is stuck while restarting?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | You should check the logs using the provided code snippet to see if there are any app errors. If the... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q10: How can I duplicate a Space into a new repo?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q11: What is the quantization type of the Qwen2.5-VL-3B-Instruct-GGUF model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 2 | 1 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q12: What is the maximum number of concurrent requests for the deployment?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q13: What is the main failure mode described for the planner when it produces a machine-consumable protocol artifact?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The main failure mode described for the planner is that it sometimes falls back into human-facing pr... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q14: What are the steps recommended to validate a plan before execution?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The recommended steps to validate a plan before execution are:  1. **Transport Validation**: Check f... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q15: What is the quantization type of the jina-reranker-v1-turbo-en-GGUF model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-
-**Q16: What is the estimated total memory usage for the deployment?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q17: What is the main question being discussed in the forum post?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The main question being discussed is whether anyone has successfully run a local coding stack for 15... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-
-**Q18: Which frameworks are being compared for chatbot development?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The frameworks being compared for chatbot development are LangChain and LlamaIndex.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q19: What is the command to install Transformers using uv?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 2 | 4 | 2 | 2 | 2.5 | The command to install Transformers using uv is:  ``` uv pip install transformers ```... |
-| crawlee | 1 | 5 | 2 | 2 | 2.5 | The command to install Transformers using uv is:  ``` uv pip install transformers ```... |
-| playwright | 1 | 5 | 2 | 2 | 2.5 | The command to install Transformers using uv is:  ``` uv pip install transformers ```... |
-| crawl4ai-raw | 1 | 5 | 2 | 1 | 2.2 | The command to install Transformers using uv is:  ``` uv pip install transformers ```... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q20: How can I set up Transformers for offline usage?**
+**Q2: How can I set up Transformers for offline usage?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
 | markcrawl | 5 | 5 | 5 | 5 | 5.0 | To set up Transformers for offline usage, you need to download and cache the required model files ah... |
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To set up Transformers for offline usage, you need to download and cache the required model files ah... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To set up Transformers for offline usage, you need to download and cache the necessary files ahead o... |
 | crawlee | 5 | 5 | 5 | 5 | 5.0 | To set up Transformers for offline usage, you need to download and cache the required files ahead of... |
 | playwright | 5 | 5 | 5 | 5 | 5.0 | To set up Transformers for offline usage, you need to download and cache the model files ahead of ti... |
 | scrapy+md | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
 
-**Q21: What is the title of paper 2604.23758?**
+**Q3: What are the main design principles of Transformers?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The title of paper 2604.23758 is "Agentic Fusion of Large Atomic and Language Models to Accelerate S... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
+| playwright | 3 | 4 | 3 | 4 | 3.5 | The main design principles of Transformers are:  1. Fast and easy to use: Every model is implemented... |
+| crawlee | 2 | 3 | 2 | 3 | 2.5 | The main design principles of Transformers are:  1. Fast and easy to use: Every model is implemented... |
+| crawl4ai-raw | 2 | 3 | 2 | 2 | 2.2 | The main design principles of Transformers are: 1. Fast and easy to use: Every model is implemented ... |
+| scrapy+md | 2 | 3 | 2 | 2 | 2.2 | The main design principles of Transformers are:  1. **Fast and easy to use**: Every model is impleme... |
+| markcrawl | 1 | 1 | 1 | 1 | 1.0 | The main design principles of Transformers include:  1. Composition over abstraction. 2. Duplicate c... |
 
-**Q22: Why is the paper claim status stuck on 'Pending'?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The paper claim status is stuck on 'Pending' because it is currently in the queue for approval, and ... |
-| markcrawl | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q23: What error occurs when using the Qwen model in smolagent?**
+**Q4: What features does Transformers provide for inference or training?**
 
 | Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
 |---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The error that occurs when using the Qwen model in smolagent is: "Client.post() got an unexpected ke... |
-| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q24: What are the likely causes of the error in LlamaIndex when using the Qwen model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The likely causes of the error in LlamaIndex when using the Qwen model include:  1. The LlamaIndex H... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q25: What is the price range for text ranking tasks?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| playwright | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 2 | 4 | 2 | 3 | 2.8 | The price range for text ranking tasks is $0.033 to $0.268 per hour.... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q26: How many models are available in the text ranking catalog?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | There are 3 models available in the text ranking catalog.... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q27: What is the cost per hour for running a replica of the Mistral-Small-24B-Instruct-2501 model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The cost per hour for running a replica of the Mistral-Small-24B-Instruct-2501 model is $3.80.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q28: What is the maximum number of sequences that can be processed in a single iteration?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawlee | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q29: What is the cost per hour for running a replica of the Qwen3-Embedding-4B model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 2 | 5 | 3 | 3 | 3.2 | The cost per hour for running a replica of the Qwen3-Embedding-4B model is $0.80.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q30: What types of cloud providers are supported for deploying the Qwen3-Embedding-4B model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The supported cloud providers for deploying the Qwen3-Embedding-4B model are Amazon Web Services, Mi... |
-| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q31: What is the cost per hour for running a replica of the Apertus-8B-Instruct-2509 model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 2 | 5 | 3 | 3 | 3.2 | The cost per hour for running a replica of the Apertus-8B-Instruct-2509 model is $0.80.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q32: What types of cloud providers are supported for deploying the model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The supported cloud providers for deploying the model are Amazon Web Services (AWS), Microsoft Azure... |
-| crawlee | 5 | 5 | 5 | 5 | 5.0 | The supported cloud providers for deploying the model include AWS (Amazon Web Services), GCP (Google... |
-| playwright | 5 | 5 | 5 | 5 | 5.0 | The supported cloud providers for deploying the model are AWS, Google Cloud (GCP), and Microsoft Azu... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q33: How can I ensure TTS voice segments are synchronized with video scenes?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | To ensure TTS voice segments are synchronized with video scenes, follow these steps:  1. **Segment t... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q34: What is the recommended architecture for a TTS dubbing pipeline?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The recommended architecture for a TTS dubbing pipeline is as follows:  ``` video → extract audio → ... |
-| scrapy+md | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q35: What is the cost per hour for running a replica of the stable-diffusion-v1-5 model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 2 | 5 | 3 | 3 | 3.2 | The cost per hour for running a replica of the stable-diffusion-v1-5 model is $0.50.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q36: What types of cloud providers are supported for deploying the stable-diffusion-v1-5 model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The supported cloud providers for deploying the stable-diffusion-v1-5 model are Amazon Web Services,... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q37: What is the maximum context length for Qwen3.5-35B-A3B?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The maximum context length for Qwen3.5-35B-A3B is 262,144 tokens.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q38: What are the key enhancements of Qwen3.5?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The key enhancements of Qwen3.5 include:  1. **Unified Vision-Language Foundation**: Achieves cross-... |
-| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | The key enhancements of Qwen3.5 include:  1. **Unified Vision-Language Foundation**: Achieves cross-... |
-| markcrawl | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 1 | 2 | 2.0 | I cannot answer this based on the provided context.... |
-
-**Q39: What is the cost per hour for running a replica of the Phi-3-mini-4k-instruct model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The cost per hour for running a replica of the Phi-3-mini-4k-instruct model is $0.80.... |
-| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q40: What is the maximum number of sequences that can be processed in a single iteration?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawlee | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-
-**Q41: What is the cost per hour for running a replica of the DeepSeek-OCR model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The cost per hour for running a replica of the DeepSeek-OCR model is $0.80.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q42: What is the cost per hour for running a replica of the openjourney model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The cost per hour for running a replica of the openjourney model is $0.80.... |
-| playwright | 4 | 3 | 3 | 3 | 3.2 | I cannot answer this based on the provided context.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 3 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-
-**Q43: What types of cloud providers are supported for deploying the endpoint?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The supported cloud providers for deploying the endpoint are Amazon Web Services, Microsoft Azure, a... |
-| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q44: What is the quantization type of the Qwen3.5-9B-GGUF model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | The quantization type of the Qwen3.5-9B-GGUF model is Q8_0.... |
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| scrapy+md | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q45: What is the maximum number of concurrent requests for the deployment?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| crawl4ai-raw | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| playwright | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
-| markcrawl | 3 | 2 | 2 | 2 | 2.2 | I cannot answer this based on the provided context.... |
-
-**Q46: What is the quantization type for the Qwen3.5-35B-A3B-GGUF model?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 4 | 3 | 2 | 3 | 3.0 | The quantization type for the Qwen3.5-35B-A3B-GGUF model is not specified in the provided context. I... |
-| scrapy+md | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| crawlee | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 3 | 3.0 | I cannot answer this based on the provided context.... |
-
-**Q47: What is the maximum number of concurrent requests for this deployment?**
-
-| Tool | Corr | Rel | Comp | Use | Avg | Answer (truncated) |
-|---|---|---|---|---|---|---|
-| markcrawl | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawl4ai-raw | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| scrapy+md | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| playwright | 4 | 3 | 2 | 2 | 2.8 | I cannot answer this based on the provided context.... |
-| crawlee | 3 | 3 | 2 | 2 | 2.5 | I cannot answer this based on the provided context.... |
+| markcrawl | 5 | 5 | 5 | 5 | 5.0 | Transformers provides a model-definition framework for state-of-the-art machine learning models in t... |
+| crawl4ai-raw | 5 | 5 | 5 | 5 | 5.0 | Transformers provides the following features for inference or training:  1. **Pipeline**: A simple a... |
+| scrapy+md | 5 | 5 | 5 | 5 | 5.0 | Transformers provides several features for inference or training, including:  1. **Pipeline**: A sim... |
+| crawlee | 5 | 5 | 5 | 5 | 5.0 | Transformers provides the following features for inference or training:  1. **Pipeline**: A simple a... |
+| playwright | 5 | 5 | 5 | 5 | 5.0 | Transformers provides the following features for inference or training:  1. **Pipeline**: A simple a... |
 
 </details>
 
