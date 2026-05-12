@@ -107,12 +107,22 @@ def write_models_manifest(
     answer_temperature: Optional[float] = None,
     judge_temperature: Optional[float] = None,
 ) -> Path:
-    """Append a per-phase section to runs/<run_id>/models_manifest.json.
+    """Append a per-phase section to runs/<run_id>/models_manifest.json
+    (or models_manifest_LOCAL.json for any non-default EMBEDDING_MODEL).
 
     Reads existing manifest if present, merges this phase's section in,
     writes back atomically. Multiple phases (retrieval / answer_quality /
-    pipeline) coexist as sibling keys in the manifest dict."""
-    manifest_path = run_dir / "models_manifest.json"
+    pipeline) coexist as sibling keys in the manifest dict.
+
+    Embedder-aware filename so PUBLISH-BOTH primary + secondary runs
+    don't overwrite each other (caught 2026-05-11 when the DS-13a
+    LOCAL fire's manifest stomped the primary's data)."""
+    is_local = (
+        embedding_model is not None
+        and embedding_model != "text-embedding-3-small"
+    )
+    suffix = "_LOCAL" if is_local else ""
+    manifest_path = run_dir / f"models_manifest{suffix}.json"
 
     section: dict[str, object] = {
         "started_at": datetime.datetime.now(datetime.UTC).isoformat(),
