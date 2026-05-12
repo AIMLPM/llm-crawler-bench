@@ -41,8 +41,8 @@ All 7 tools, sorted by speed. 8 sites, 109 retrieval queries, scored on 5 dimens
 | scrapy+md | 5.0 | 92% | 0.176 | 3.68 | $5,464 |
 | markcrawl | 2.7 | 99% | 0.341 | 3.77 | $4,505 |
 | playwright | 2.5 | 67% | 0.758 | 4.48 | $7,320 |
-| crawl4ai-raw | 1.4 | 83% | 0.763 | 4.70 | $6,961 |
 | crawl4ai | 1.4 | 82% | 0.757 | 4.72 | $6,960 |
+| crawl4ai-raw | 1.4 | 83% | 0.763 | 4.70 | $6,961 |
 | crawlee | 1.3 | 68% | 0.765 | 4.68 | $7,467 |
 | colly+md | 1.0 | 70% | 0.459 | 4.36 | $7,213 |
 
@@ -174,7 +174,7 @@ docker run --rm \
 
 ## Benchmark version
 
-**v2.0** -- 2026-05-11
+**v2.0** -- 2026-05-12
 
 When benchmark methodology changes (new sites, different scoring, updated
 tool versions), we increment the version. Results from different versions

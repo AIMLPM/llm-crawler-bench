@@ -2,7 +2,7 @@
 
 ## TL;DR
 
-v1.4 ships four simultaneous methodology fixes addressing chunk-density gaming, COI in query authorship, substring false positives, and off-topic URL sampling. The leaderboard re-ranks: high-coverage tools (crawl4ai, crawlee, playwright) gain meaningfully on retrieval; **markcrawl drops to 7th on both retrieval MRR and answer quality, and is 3rd on cost under the OpenAI fairness contract** (crawl4ai-raw 1st at $3,787/yr, markcrawl 3rd at $4,755/yr, mid-scale). Markcrawl's retrieval drop decomposes as **86% scope-narrowing trade-off** (intentional design choice quantified for the first time), 14% retrieval-rank weakness on pages it does have. The product reframe that survives v1.4: markcrawl ranks **higher** on retrieval MRR under its shipping default embedder (`mxbai-embed-large-v1`), per the PUBLISH-BOTH asymmetric-bias finding. The bench is now publicly reproducible end-to-end via `make benchmark`.
+v1.4 ships four simultaneous methodology fixes addressing chunk-density gaming, COI in query authorship, substring false positives, and off-topic URL sampling. The leaderboard re-ranks: high-coverage tools (crawl4ai, crawlee, playwright) gain meaningfully on retrieval; **markcrawl drops to 7th on both retrieval MRR and answer quality, and is 3rd on cost under the OpenAI fairness contract** (crawl4ai-raw 1st at $3,787/yr, markcrawl 3rd at $4,755/yr, mid-scale). Markcrawl's retrieval drop decomposes as **86% scope-narrowing trade-off** (intentional design choice quantified for the first time), 14% retrieval-rank weakness on pages it does have. Two methodologically-interesting findings emerge alongside the headline: (a) **the COI in v1.3's hand-written queries was bigger than we had quantified** — the same query authorship that boosted markcrawl on answer quality also produced the May 6 mxbai asymmetric-bias finding, which does not survive v1.4's LLM-authored queries; and (b) **a previously-unobserved retrieval-vs-answer-quality decoupling under embedder choice** (markcrawl alone has a non-negative mxbai answer-quality delta even after the retrieval asymmetry vanishes; single-trial, flagged for v1.5 multi-trial). The bench is now publicly reproducible end-to-end via `make benchmark`.
 
 ## What changed
 
@@ -45,6 +45,13 @@ Markcrawl's **−0.147 MRR / −0.26 answer-quality** delta decomposes on the **
 
 Decomposition is computed over the **499-query common subset** (9 sites where all 7 tools have indexable content; excludes huggingface-transformers and newegg, where at least one tool returned zero chunks). 178 + 43 + 278 = 499. The 14% / 86% split is share-of-misses among the 321 markcrawl missed queries.
 
+**Per-query audit of the 43 retrieval-bucket misses surfaces two sub-categories worth disclosing:**
+
+- **~9-12 are aggregator-page pollution** (a markcrawl-side URL-filter bug, not a retrieval-algorithm weakness). Markcrawl is returning `/print.html` (rust-book — 49% of top-5 slots) and `/_print/` (kubernetes-docs — 39% of top-5 slots) in places where the canonical-content page should appear. All five competitors except scrapy+md return 0% `/_print/` on kubernetes-docs. Fix shipping in markcrawl v0.11.1; expected MRR lift +0.02-0.04 on the 9-site pool concentrated on rust-book and kubernetes-docs.
+- **~18-20 are substring-match false negatives** (single-reviewer categorization; precise count subject to disagreement, qualitative finding robust) — the bench's `url_match` substring matcher counts these as misses, but the chunk markcrawl returned is semantically more relevant than the canonical pattern URL. Examples: kubernetes-docs query "role of kube-scheduler" → markcrawl returned the kube-scheduler doc page at rank 1, but the pattern points to the architecture overview; stripe-docs query "What is a Checkout Session?" → markcrawl returned the checkout-sessions doc, pattern points to accept-a-payment; mdn-css query on logical-properties → markcrawl returned the writing-modes guide, pattern points elsewhere. **The 14% bucket overstates retrieval-pipeline weakness because substring matching counts some semantically-correct retrievals as misses.** v1.5 LLM-judged relevance (already on the deferral list) will tighten this estimate. The remaining ~13-16 are likely genuine retrieval-rank misses.
+
+The 14% number is the load-bearing metric; the sub-bucketing tells maintainers where to look. The 86% coverage finding is unaffected by these caveats — coverage misses are independent of substring matching since the URL is absent from the index entirely.
+
 The 14% is **retrieval-pipeline-bounded only** — chunks went into the retrieval index but didn't surface at the top of the ranked list. The answer-quality LLM-judge scores (the 3.77 column above) are **measured separately at the leaderboard level**, not bucketed into this decomposition. We didn't try to split "answer-judge scored low" into its own bucket because the question we're answering here is "where did the retrieval pipeline lose?", which is the more actionable diagnostic for a maintainer.
 
 This is the **documented quality-vs-coverage trade-off** quantified for the first time. Markcrawl produces 99% content signal under its shipping local-embedder default ($0 embedding cost — the mxbai-embed-large-v1 model runs on CPU/MPS), but ranks lower on retrieval-recall benchmarks against tools that index broader page sets:
@@ -54,13 +61,53 @@ This is the **documented quality-vs-coverage trade-off** quantified for the firs
 
 A future cycle (v1.5) may add a `scope=narrow` vs `scope=broad` mode selector to make this trade-off a published dimension rather than a methodology footnote.
 
+## PUBLISH-BOTH at v1.4 — asymmetric-bias narrative reshape
+
+The May 6 mxbai validation under v1.3's hand-written queries showed markcrawl as the only tool with a positive mxbai delta (+0.043 MRR vs OpenAI), with every competitor scoring lower under mxbai. We attributed this to embedder-side asymmetry favoring markcrawl's clean-chunk output, and chose PUBLISH-BOTH (parallel never-mixed leaderboards) rather than switch primary to mxbai — the asymmetric bias would have read as motivated reasoning.
+
+**Re-running the same mxbai validation under v1.4's LLM-authored queries reshapes that finding.** Per-tool deltas under both query sets:
+
+### Retrieval MRR delta (mxbai − OpenAI), best-mode per tool, 9-site common subset
+
+| Tool | May 6 Δ (v1.3 queries) | v1.4 Δ | Direction |
+|---|---|---|---|
+| markcrawl | +0.043 | **+0.002** | gain collapsed to noise |
+| crawl4ai | −0.009 | **+0.011** | flipped to positive |
+| crawl4ai-raw | −0.007 | **+0.007** | flipped to positive |
+| scrapy+md | −0.077 | **+0.003** | flipped to positive |
+| colly+md | −0.047 | −0.022 | smaller negative |
+| playwright | −0.037 | −0.036 | unchanged |
+| crawlee | −0.020 | **−0.058** | larger negative |
+
+### Answer-quality delta (mxbai − OpenAI), 11-site corpus, gpt-4o-mini judge
+
+| Tool | v1.4 Δ AnsQual | Direction |
+|---|---|---|
+| markcrawl | +0.02 | small positive (within single-trial LLM-judge noise; see caveat) |
+| crawl4ai | −0.05 | negative |
+| crawl4ai-raw | −0.04 | negative |
+| crawlee | **−0.20** | **largest negative — independent finding, see below** |
+| playwright | −0.08 | negative |
+| colly+md | −0.10 | negative |
+| scrapy+md | −0.09 | negative |
+
+**What this means: the May 6 retrieval-side asymmetric-bias finding does not survive the methodology hardening.** The most plausible single contributor is the COI removal — v1.3's hand-written queries (authored by markcrawl's maintainer) may have phrased questions in ways that aligned with patterns mxbai captured more strongly than text-embedding-3-small for markcrawl-output chunks specifically. Removing the COI in DS-6's LLM-authored query set largely neutralized the apparent retrieval bias.
+
+**The COI was bigger than we had quantified — but it's not the whole story.** The v1.4 retrieval pattern is not uniform convergence to zero: crawlee's mxbai delta moved further negative (−0.020 → −0.058), and crawl4ai / crawl4ai-raw / scrapy+md flipped to small positives. This suggests the v1.4 query distribution interacts with embedder choice in ways that aren't reducible to a single "COI-was-the-source" mechanism. Multi-trial measurement in v1.5 should help disentangle.
+
+**Answer quality preserves a markcrawl-favorable pattern that retrieval mostly lost.** On answer quality at v1.4, markcrawl is the only tool with a non-negative mxbai delta. This suggests a mechanistic decoupling: at similar MRR levels, the embedder choice still affects WHICH chunks rank in the top-K, even when the COUNT of relevant chunks retrieved is similar. Markcrawl's chunks are designed to maximize answer-relevant content density per token (its stated product goal), so when mxbai's ranking surfaces those chunks, the downstream LLM scores higher. **MRR measures whether some relevant chunk was found; answer quality measures the specific chunks' content density.** The decoupling appears mechanistic rather than accidental, though multi-trial v1.5 measurement is required to confirm.
+
+**Single-trial caveat applies extra strongly to this finding.** v1.4 numbers are single-trial; the LLM-judge noise floor at site-pool level is approximately ±0.02-0.03. Markcrawl's +0.02 answer-quality delta is directionally clean but within that noise band. Per-tool retrieval-delta magnitudes < ~0.02 (the small flips: crawl4ai −0.009 → +0.011, crawl4ai-raw −0.007 → +0.007) are similarly within plausible single-trial variance and may not be real reversals. Multi-trial measurement (v1.5) will produce CI bounds on each delta. The large effects (markcrawl's gain collapse, scrapy+md's magnitude collapse, crawlee's growing negative on retrieval, crawlee's −0.20 on answer quality) are robustly outside a plausible single-trial noise floor.
+
+**Crawlee's −0.20 answer-quality regression is the largest mxbai effect at v1.4 and worth flagging independently.** This isn't a markcrawl-side story — it's an embedder/tool interaction where mxbai consistently surfaces lower-quality crawlee chunks than text-embedding-3-small does. We don't have a clean mechanism yet and flag this for v1.5 multi-trial confirmation + chunk-content inspection. If the effect holds, it could be a useful methodology paper in itself (chunk-shape / embedder-affinity interactions).
+
+PUBLISH-BOTH still ships (`reports/RETRIEVAL_COMPARISON_LOCAL.md` and `reports/ANSWER_QUALITY_LOCAL.md` are published as parallel never-mixed leaderboards) — but the published rationale shifts from "asymmetric retrieval bias forces PUBLISH-BOTH" to "we ship both for transparency, $0-embedding-cost-pathway publication, and to surface the answer-quality dimension where the asymmetry persists." METHODOLOGY's "Embedder choice and PUBLISH-BOTH decision" section gets a "v1.4 update" note documenting this reshape; the May 6 finding stays in the audit trail as a methodology data point, not as a load-bearing claim.
+
 ## Cost methodology note
 
-The cost figures in the deltas table above are computed under the **fairness contract**: OpenAI text-embedding-3-small for every tool, uniformly. This is the same comparable basis we used for retrieval MRR — the embedder choice is held constant so chunk count is the only varying input. Under this fairness contract, markcrawl is 3rd ($4,755/yr at 100K pages × 1K queries/day) vs crawl4ai-raw 1st ($3,787) and crawl4ai 2nd ($3,824).
+The cost figures are computed under the fairness contract: OpenAI text-embedding-3-small for every tool, uniformly — the same comparable basis we used for retrieval MRR. Under this contract, markcrawl is 3rd ($4,755/yr at 100K pages × 1K queries/day) behind crawl4ai-raw 1st ($3,787) and crawl4ai 2nd ($3,824). The v1.3 → v1.4 ranking inverted partly because the v1.4 calculator refresh corrected stale chunk counts and partly because tool versions shifted in the cycle (notably crawl4ai's chunker reducing chunks/page on docs sites).
 
-The ranking inverts versus v1.3 because tool versions shifted between cycles (notably: crawl4ai's chunker reducing chunks/page on docs sites; markcrawl 0.10.0's Track D chunker default flip raising chunks/page from 10.1 to 12.19). The v1.4 calculator refresh uses current empirical chunk counts; the prior v1.3 numbers were stale w.r.t. these tool-version shifts.
-
-Users running markcrawl with its shipping default (local mxbai-embed-large-v1 since v0.10.1) pay **$0 embedding cost** — embedding runs locally on CPU/MPS, no API charge. At 100K pages × 1K queries/day the embedding savings are marginal ($7/yr; vector-DB hosting dominates the storage line), so markcrawl remains 3rd in total cost ($4,748/yr with local embedder vs $3,781 for crawl4ai-raw under the same configuration). The honest reframe is **retrieval ranking, not cost**: under PUBLISH-BOTH's mxbai secondary, markcrawl ranks higher on retrieval MRR — the asymmetric-bias finding is documented in METHODOLOGY's "Embedder choice and PUBLISH-BOTH decision" section. Markcrawl is the only tool in the pool that ships with a free local embedder as default; PUBLISH-BOTH makes that scenario directly comparable across all 7 tools rather than asserted in vendor marketing.
+Users running markcrawl with its shipping default (local mxbai-embed-large-v1 since v0.10.1) save ~$7/yr on embedding — but **the cost ranking does not change**: markcrawl is still 3rd at $4,748/yr. Vector-DB storage dominates the cost line on RAG ingestion at this scale, not embedding inference cost. The "$0 local embedding" framing markcrawl shipped with v0.10.1 was a meaningful cost-positioning claim against v0.9.x's OpenAI-only embedder default — but it is **not** sufficient to win cost vs. competitors who produce smaller chunk indices. See `reports/COST_AT_SCALE_LOCAL.md` for the full mxbai-pricing breakdown.
 
 Run `python tools/cost_calculator.py --embedder=local-mxbai --sensitivity` for the mxbai breakdown + ±50% pricing sensitivity.
 
@@ -80,10 +127,12 @@ The COI-removal hypothesis from the spec is now empirically supported:
 ## What's deferred to v1.5
 
 - **`bench/site_scope.yaml` + `test_all_queries_match_site_scope` as gate-zero.** v1.4 documented per-site scope prefixes in code (`tools/generate_queries.py:SCOPE_PREFIXES`); v1.5 should lift this into config and add a hard test that asserts every generated query falls within its site's declared scope. The HF bug couldn't have happened silently if that test existed. The v1.5 cycle should land this **before** any new site additions or query regenerations — the structural lock-in, not vigilance.
-- **Multi-trial measurement.** v1.4 is single-trial (one full run, query-sampling CIs only). Multi-trial work in v1.5 will let us replace the "~5% effective-tie" rule of thumb with a measured run-to-run variance floor.
-- **Multi-embedder full validation across all 11 sites.** v1.4 included a primary OpenAI run + a mxbai PUBLISH-BOTH secondary on RETRIEVAL_COMPARISON_LOCAL.md. v1.5 should extend the secondary to ANSWER_QUALITY_LOCAL.md + PIPELINE_TIMING_LOCAL.md (if not already done in this cycle) and add a third sanity-check embedder (bge-large) on 2-3 adversarial sites.
-- **LLM-judged relevance to replace substring matching.** Substring `url_match` is fundamentally fuzzy (`state` matches 20+ react.dev URLs). v1.5 LLM-judge should evaluate "is this URL actually the answer page?" as a separate evaluation dimension.
+- **Multi-trial measurement.** v1.4 is single-trial (one full run, query-sampling CIs only). Multi-trial work in v1.5 will let us replace the "~5% effective-tie" rule of thumb with a measured run-to-run variance floor — and confirm whether the small mxbai retrieval-delta flips at v1.4 (markcrawl +0.002, crawl4ai +0.011, etc.) are real reversals or within-noise. The large effects (crawlee retrieval −0.058, crawlee answer-quality −0.20, scrapy+md retrieval magnitude collapse) are robust to single-trial noise.
+- **Multi-embedder full validation across all 11 sites.** v1.4 ships PUBLISH-BOTH primary OpenAI + mxbai secondary on retrieval, answer-quality, and cost. v1.5 should add a third sanity-check embedder (bge-large) on 2-3 adversarial sites to confirm the v1.4 asymmetric-bias-reshape isn't mxbai-specific.
+- **LLM-judged relevance to replace substring matching.** Substring `url_match` is fundamentally fuzzy. ~18-20 of markcrawl's 43 retrieval-bucket misses (40-46%) audit as substring-match false negatives where markcrawl returned semantically more relevant pages than the canonical pattern. v1.5 LLM-judge should evaluate "is this URL actually the answer page?" as a separate evaluation dimension; under that lens the markcrawl 14% retrieval-bucket would shrink materially.
 - **Multilingual RAG evaluation** as an explicit, opt-in dimension. v1.4's locale-mirror filter is English-only by sampler design; v1.5 should add a `multilingual=true` mode that flips the filter and surfaces a separate parallel leaderboard.
+- **Crawlee/mxbai chunk-shape investigation.** Crawlee shows the largest mxbai answer-quality regression at −0.20, robust to single-trial noise. We don't have a clean mechanism yet. v1.5 should pair multi-trial confirmation with chunk-content inspection (what about crawlee's chunks makes mxbai surface lower-quality content than text-embedding-3-small does?). Could be a methodology paper in itself.
+- **Markcrawl v0.11.1 aggregator-page URL filter** (markcrawl-side, not bench-side). markcrawl is returning `/print.html` (rust-book) and `/_print/` (kubernetes-docs) at high rates in v1.4 retrieval; competitors return 0%. ~9-12 of markcrawl's 43 retrieval-bucket misses concentrate on this. Fix expected to lift markcrawl MRR +0.02-0.04 on the 9-site pool. v1.5 bench cycle should re-run after that markcrawl release lands.
 
 ## How to reproduce
 

@@ -2504,8 +2504,16 @@ def main():
         for w in lint_warnings:
             logger.warning("  - %s", w)
 
-    # DS-3: emit per-query audit CSV alongside the markdown report
-    audit_path = Path(output_path).parent / "QUERY_AUDIT.csv"
+    # DS-3: emit per-query audit CSV alongside the markdown report.
+    # Embedder-aware filename so PUBLISH-BOTH primary + secondary runs don't
+    # overwrite each other (caught 2026-05-11 when the DS-13a LOCAL fire's
+    # audit CSV stomped the primary's audit data).
+    audit_basename = (
+        "QUERY_AUDIT.csv"
+        if EMBEDDING_MODEL == "text-embedding-3-small"
+        else "QUERY_AUDIT_LOCAL.csv"
+    )
+    audit_path = Path(output_path).parent / audit_basename
     try:
         rows = _write_query_audit_csv(all_results, audit_path)
         logger.info("Query audit written to %s (%d rows)", audit_path, rows)
