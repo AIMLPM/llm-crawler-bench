@@ -8,6 +8,8 @@ MarkCrawl achieves 17.63 pages/sec across 728 pages with 100% title extraction a
 This report measures MarkCrawl's own performance and extraction quality.
 No other tools are involved — this is a self-assessment of speed, content quality, and output completeness.
 
+> **Single-trial measurement.** Each per-site number reported here comes from one benchmark run. Network jitter, WAF state, and server load can shift per-site speed and coverage between runs by single-digit percent. Confidence intervals reflect query-set sampling only — not run-to-run variance. Multi-trial validation is v1.5 work; see [METHODOLOGY.md](METHODOLOGY.md#single-trial-measurement).
+
 Generated: 2026-04-13 10:28:01 UTC
 
 ## What this measures

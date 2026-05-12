@@ -2,6 +2,48 @@
 
 <!-- style: v2, 2026-04-07 -->
 
+## Author and conflict-of-interest disclosure
+
+This benchmark suite is authored and maintained by the same team that develops one of the tools being compared (markcrawl). The v1.4 cycle removes humans from the query-acceptance loop to keep the benchmark resistant to motivated reasoning:
+
+- **v1.3 query set** (current at this commit): hand-written by the maintainer (paulsave). This is the conflict-of-interest that v1.4 fixes.
+- **v1.4 query set** (`queries/v14_queries.json`, 591 queries across 11 sites): drafted by gpt-4o-mini and verified by a separate gpt-4o-mini API invocation with no shared context window (no human reviewer in the acceptance loop). The structural separation is the API-call boundary — the verifier does not see the draft prompt or any prior turns. Rejected drafts are logged in `queries/v14_rejected.json` for transparency. **Pre-processing pipeline:** page content from `crawl4ai-raw` (the highest-coverage source-tool) is fed through `tools/generate_queries.py:strip_nav_chrome()` before being capped at 24K chars and shown to the LLM. The stripper drops runs of ≥5 consecutive lines whose non-whitespace text is ≥70% inside markdown links (TOC entries, locale-link blocks, version selectors, footers). Generic across sites — no per-site config. Empirically validated: kubernetes-docs pages (113K chars, ~6K of leading nav chrome) drop to ~7K chars of substantive content end-to-end, lifting kubernetes-docs query yield from 4 to 60 accepted queries. Newegg shows the same pattern (chrome-dominated catalog pages, 2 → 56 queries with the stripper).
+- **Runners and methodology**: written by the same maintainer. The fairness contract — every tool runs with equivalent settings, every tool chunked through the same pipeline — is enforced by code in `runners/` and `benchmark_*.py`, which are open for review.
+- **markcrawl tool itself**: developed in a separate repository (https://github.com/AIMLPM/markcrawl). Versions used are pinned in `pyproject.toml` and announced in release notes.
+- **Run execution**: deterministic given the pinned code + query set + crawl data — any third party running the same commit against the same `runs/` directory should reproduce the published numbers within network/API jitter. Reproducibility artifact (DS-13) makes this a single command. Closes the "but you ran it" attack: no party has to trust the maintainer's local execution.
+
+Human inspection of LLM-generated queries before the full benchmark run (per the v1.4 spec's Implementation Roadmap, Gates 3a/3b) is permitted for setup-bug verification only — fixes happen at the prompt/code level, never at the individual-query level. See `specs/v14-methodology-hardening.md` "Inspection vs. curation" for the explicit allow/deny list.
+
+## Anti-gaming
+
+A retrieval benchmark authored by a tool's maintainer is structurally vulnerable to a handful of gaming attacks. The table below enumerates the attacks we considered and what the v1.4 cycle does about each. The "limitation noted" rows are honest disclosures — places where the defense is incomplete and a reviewer is right to be skeptical.
+
+| Attack | What it looks like | Defense | Status |
+|---|---|---|---|
+| **Chunk-density inflation** | A crawler emits 5 chunks per page; another emits 1. The first ranks higher in MRR purely because it has more chunks competing for top-K slots — same content, more "shots on goal". | **Page MRR (DS-1 + DS-2)**: collapse all chunks per URL to a single rank, deduping by DS-2 normalized URL so locale mirrors and fragment variants of the same canonical page count once. Reported alongside chunk-level MRR in every report. **Empirical pattern (Gate 2)**: the v1.3 → Page-MRR transition produces TWO offsetting effects per tool — page-collapse uplift (chunks-per-canonical-page collapse to one slot, MRR up) AND v1.3 false-positive removal (chunks that were matching via stripped fragment-text or `?ref=` query-text no longer count, MRR down on those queries). Net per-tool delta is small (±0.005-0.012 in our v1.3 data) and the direction depends on which effect dominates for that tool. Both effects are correct behavior; a tool whose page-MRR drops is one whose v1.3 chunk-MRR was inflated by the false positives DS-2 now removes. | Implemented |
+| **Locale duplication** | A crawler indexes locale mirrors (he.react.dev, de.react.dev, ...) and the duplicated content boosts MRR via repeated near-identical chunks. | **URL normalization (DS-2)** strips ISO-639-1 + BCP-47 locale subdomain prefixes before matching. Combined with page-level dedup (DS-1), the locale mirrors collapse into a single canonical page in the page-level metric. | Implemented |
+| **URL-text injection** | A crawler appends or includes the `url_match` pattern in URL slugs to game substring matching. | Queries are derived from page **content**, not from URLs — `tools/generate_queries.py` (DS-6) prompts the LLM with the page body, never the URL. The `url_match` value is auto-derived from the URL's last path segment, identically across all tools. | Structural |
+| **Hub-page inflation** | An index/sitemap page lists every product or article; substring matching finds the hub for almost any query. | The verifier (DS-6 second invocation) rejects queries that match content-poor pages with rationale "page is empty"; a non-zero count of these rejections indicates the sampler should be fixed (Gate 3a falsifiable check). | Implemented |
+| **Embedder favoritism** | The author picks the embedding model that ranks their tool best. | **PUBLISH-BOTH (DS-13a)**: OpenAI text-embedding-3-small remains primary; mxbai-embed-large-v1 published as a never-mixed parallel secondary. Per-tool delta surfaced explicitly (markcrawl gains +0.043 MRR with mxbai; all 6 other tools lose -0.007 to -0.077). The asymmetric bias is the reason we kept OpenAI primary — we considered switching and chose not to, and we lead the disclosure with that delta rather than burying it. | Implemented |
+| **Author conflict-of-interest in queries** | The benchmark maintainer (also the maintainer of one compared tool) writes queries that subtly favor their tool. | **DS-6 LLM generation + LLM verification** removes humans from the query-acceptance loop. The generator and verifier are both gpt-4o-mini but invoked as **separate API calls with no shared context window**. Human inspection (Gates 3a/3b) is permitted ONLY for setup-bug verification at the prompt/code level — never to drop or rewrite individual queries. | Implemented |
+| **Verifier laxness** | The same model used for generation is also the verifier; it rationalizes its own drafts as "answerable". | The verifier sees only the URL + page content + query (no draft prompt, no prior turn context). Defaults to **rejection** on parse failure so malformed JSON cannot smuggle drafts through. The first-pass acceptance rate is logged per Gate 3a so anomalous laxness is visible. | Mitigated |
+| **Single-trial cherry-picking** | One run produced unfavorable numbers for the author's tool; they re-ran and reported the better outcome. | **Run determinism + git-pinned commit + checkpoint cache** mean any third party can rerun the same commit and reproduce within network/API jitter. We do not iterate runs to chase a number — when methodology changes, we ship the diff and call it out (DS-14 release notes lead with markcrawl's deltas, including negative ones). | Mitigated |
+| **Multi-trial variance hiding** | The published number happened to fall on a lucky run; a more honest framing would show the run-to-run variance. | **Single-trial caveat banner** on every report links to METHODOLOGY's `## Single-trial measurement` section. Multi-trial measurement deferred to v1.5 — explicitly limitation-noted, not papered over. | Limitation noted |
+| **Cost-table assumption hiding** | Cost-of-scale claims bake in unstated assumptions (queries/day, embedding price, dedup ratio) that flatter one tool. | **DS-11 cost calculator** is a Python script with adjustable inputs and a sensitivity table showing how rankings shift when each input moves ±50%. Reviewers can re-run with their own pricing. | Pending DS-11 |
+| **Substring-matcher fuzziness** | The `url_match` matcher is a case-insensitive substring check on the normalized URL — a short pattern like `state` matches 20+ react-dev URLs. Tools that happen to have the pattern text in many places get inflated hits. | This is **inherent to the substring approach** and v1.4 inherits it. Mitigated by (a) `url_match` patterns are derived from the page's content (DS-6), not chosen to favor any tool, and (b) the matcher operates on the DS-2-normalized URL so locale/fragment/UTM noise is gone before matching. Genuinely fixing this requires LLM-judged relevance — deferred to v1.5. | Limitation noted |
+
+If a hostile reviewer finds a 11th attack we haven't named, the right response is to add a row, document the defense or limitation honestly, and update the spec — not to argue.
+
+## Single-trial measurement
+
+Each per-site number in the comparative reports comes from one benchmark run. Network jitter, WAF rate-limiting, and server load can shift per-site speed and coverage between runs by single-digit percent. Where confidence intervals are reported (currently a subset of retrieval Hit@K columns), they reflect query-set sampling only — derived from query count — and do NOT reflect run-to-run variance. Per-dimension CI coverage is widening: v1.4 Gate 4 (DS-9) adds Hit@1/3/5/10 with CIs to every retrieval table.
+
+Multi-trial measurement (running each (tool, site) pair N times to compute both within-run and between-run variance) is deferred to v1.5. The current single-trial constraint is imposed by hardware budget on the development machine: a full v1.3 cycle takes ~24 hours wall-time across 7 tools × 11 sites, and N=3 trials would push that past a week.
+
+For per-site numbers within ~5% of each other across tools, treat them as effectively tied. The 5% threshold is a **conservative rule of thumb based on observed jitter from prior re-runs, not a formally measured noise floor** — multi-trial work in v1.5 will replace it with a measured value. Aggregate metrics (overall MRR, content signal averaged across sites) are more stable than individual per-site numbers.
+
+**On model determinism:** gpt-4o-mini at temperature=0 is mostly-but-not-100% deterministic — OpenAI returns slightly different responses across calls even with identical inputs. This noise is **symmetric across primary and PUBLISH-BOTH secondary runs** (both draw from the same model with the same params), so it's absorbed by the single-trial caveat above and doesn't confound the leaderboard delta between the two embedder choices. Asymmetric confounds (e.g., one run using gpt-4o-mini and the other using gpt-4o) are blocked at startup by the `models_manifest.json` assertion described in the Reproducibility section.
+
 ## Goal
 
 Compare MarkCrawl against Crawl4AI, FireCrawl (self-hosted), Scrapy, Crawlee, Playwright, and Colly on the same sites with equivalent settings, measuring what matters for the "crawl a documentation site for RAG" use case.
@@ -456,6 +498,19 @@ Every run writes a `manifest.json` capturing the exact sites, seed, pool
 version, tool versions, and repo git SHA — so any run can be replayed
 bit-for-bit. See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for the manifest
 format and replay one-liners.
+
+**Single-command reproduction (DS-13):**
+
+```bash
+make benchmark-quick   # ~5 min, single site, ~$0 spend (cached query embeddings) — verifies the pipeline runs
+make benchmark         # ~24 hours, all 11 sites, ~$3 spend — produces the canonical reports
+```
+
+**Models manifest (DS-13a defense-in-depth):** every benchmark run writes `runs/<run_id>/models_manifest.json` capturing the resolved values of `ANSWER_MODEL`, `JUDGE_MODEL`, `EMBEDDING_MODEL`, answer/judge temperatures, the git commit, and any environment overrides detected. Both `benchmark_retrieval.py` and `benchmark_answer_quality.py` assert these resolve to the canonical defaults at startup and **refuse to spend API credits if drift is detected** (raising `SystemExit` before the first API call). This closes the JUDGE_MODEL / ANSWER_MODEL drift surface completely — future cycles can't silently desync across two dimensions even if an operator forgets the runbook hygiene before firing a PUBLISH-BOTH secondary run. The PUBLISH-BOTH expansion explicitly allows `EMBEDDING_MODEL` to be either `text-embedding-3-small` (OpenAI primary) or `mixedbread-ai/mxbai-embed-large-v1` (mxbai secondary); anything else is methodology drift and the assertion fires. A `--dry-run` flag on `benchmark_answer_quality.py` runs the assertion + manifest write then exits, useful as a pre-flight gate before topping up credits.
+
+`benchmark-quick` is the smoke target — it runs `benchmark_retrieval.py` against the most recent merged run dir on a single site (`rust-book` by default; override with `SMOKE_SITE=...`) without the cross-encoder reranker. Useful for verifying the pipeline runs after methodology or code changes, before committing to a 24-hour cycle. Output goes to `reports/RETRIEVAL_QUICK_SMOKE.md` so it doesn't disrupt the canonical `RETRIEVAL_COMPARISON.md`.
+
+`benchmark` is the full pipeline: `preflight` → retrieval (all 11 sites, all 4 modes including reranker) → answer-quality (LLM judge across 7 tools × ~104 queries × 2 calls each ≈ ~1,500 LLM calls) → pipeline timing → README regeneration. Wall-time is dominated by the cross-encoder reranker on large-chunk sites and the LLM-judge calls.
 
 ### Prerequisites
 

@@ -23,6 +23,7 @@ Requires:
 from __future__ import annotations
 
 import argparse
+import csv
 import datetime
 import hashlib
 import json
@@ -36,6 +37,7 @@ import time as _time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+from urllib.parse import urlsplit, urlunsplit
 
 BENCH_DIR = Path(__file__).parent
 REPO_ROOT = BENCH_DIR
@@ -50,6 +52,10 @@ except ImportError:
     pass
 
 from markcrawl.chunker import chunk_markdown  # noqa: E402
+
+from tools.page_level_mrr import collapse_chunks_to_pages  # noqa: E402
+from tools.page_level_mrr import hit_at_k as _page_hit_at_k  # noqa: E402
+from tools.page_level_mrr import reciprocal_rank as _page_reciprocal_rank  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -101,777 +107,46 @@ HYDE_PROMPT_TEMPLATE = (
     "Paragraph:"
 )
 
-# Test queries per site.  Each query has:
-#   - query text (what a user would ask)
-#   - expected URL substring (identifies the correct source page)
-#   - description (what the query tests)
-#   - category (query type for per-category analysis)
+# DS-7: Test queries are loaded from JSON at module import time. The v1.4
+# LLM-generated, LLM-verified query set (queries/v14_queries.json, produced
+# by tools/generate_queries.py per DS-6) takes priority; the archived v1.3
+# hand-written set (queries/v13_queries.json) is the fallback so the
+# benchmark still runs while v1.4 generation is in progress (Gates 3a/3b).
 #
-# Categories:
-#   api-function   — looking up a specific API function, method, or endpoint
-#   code-example   — finding code samples or implementation patterns
-#   conceptual     — understanding a concept, architecture, or design pattern
-#   structured-data — querying structured/tabular content (prices, ratings, lists)
-#   factual-lookup — finding a specific fact, definition, or named entity
-#   cross-page     — answer requires content spread across multiple pages
-#   navigation     — finding an index, table of contents, or site structure
-#   js-rendered    — content that requires JS rendering to capture fully
-#
-# ~130 total queries across 8 sites.
-# All url_match values verified against actually-crawled pages.
-TEST_QUERIES: Dict[str, List[Dict]] = {
-    "react-dev": [
-        {
-            "query": "How do I manage state in a React component?",
-            "url_match": "state",
-            "page_match": "state",
-            "category": "conceptual",
-            "description": "Find state management docs",
-        },
-        {
-            "query": "How does the useEffect hook work in React?",
-            "url_match": "useEffect",
-            "page_match": "useEffect",
-            "category": "api-function",
-            "description": "Find useEffect reference",
-        },
-        {
-            "query": "How do I create and use context in React?",
-            "url_match": "useContext",
-            "page_match": "context",
-            "category": "api-function",
-            "description": "Find context API docs",
-        },
-        {
-            "query": "What is JSX and how does React use it?",
-            "url_match": "writing-markup-with-jsx",
-            "page_match": "jsx",
-            "category": "conceptual",
-            "description": "Find JSX explanation",
-        },
-        {
-            "query": "How do I render lists and use keys in React?",
-            "url_match": "rendering-lists",
-            "page_match": "rendering-lists",
-            "category": "code-example",
-            "description": "Find list rendering docs",
-        },
-        {
-            "query": "How do I use the useRef hook in React?",
-            "url_match": "useRef",
-            "page_match": "useRef",
-            "category": "api-function",
-            "description": "Find useRef reference",
-        },
-        {
-            "query": "How do I pass props between React components?",
-            "url_match": "passing-props",
-            "page_match": "passing-props",
-            "category": "conceptual",
-            "description": "Find props tutorial",
-        },
-        {
-            "query": "How do I conditionally render content in React?",
-            "url_match": "conditional-rendering",
-            "page_match": "conditional",
-            "category": "code-example",
-            "description": "Find conditional rendering docs",
-        },
-        {
-            "query": "What is the useMemo hook for in React?",
-            "url_match": "useMemo",
-            "page_match": "useMemo",
-            "category": "api-function",
-            "description": "Find useMemo reference",
-        },
-        {
-            "query": "How do I use the useState hook in React?",
-            "url_match": "useState",
-            "page_match": "useState",
-            "category": "api-function",
-            "description": "Find useState reference",
-        },
-        {
-            "query": "How do I use the useCallback hook in React?",
-            "url_match": "useCallback",
-            "page_match": "useCallback",
-            "category": "api-function",
-            "description": "Find useCallback reference",
-        },
-        {
-            "query": "How do I use the useReducer hook in React?",
-            "url_match": "useReducer",
-            "page_match": "useReducer",
-            "category": "api-function",
-            "description": "Find useReducer reference",
-        },
-        {
-            "query": "How do I handle events like clicks in React?",
-            "url_match": "responding-to-events",
-            "page_match": "responding-to-events",
-            "category": "code-example",
-            "description": "Find event handling docs",
-        },
-        {
-            "query": "What is the Suspense component in React?",
-            "url_match": "Suspense",
-            "page_match": "Suspense",
-            "category": "api-function",
-            "description": "Find Suspense reference",
-        },
-        {
-            "query": "How do I add interactivity to React components?",
-            "url_match": "adding-interactivity",
-            "page_match": "adding-interactivity",
-            "category": "conceptual",
-            "description": "Find interactivity tutorial",
-        },
-        {
-            "query": "How do I install and set up a new React project?",
-            "url_match": "installation",
-            "page_match": "installation",
-            "category": "conceptual",
-            "description": "Find installation guide",
-        },
-    ],
-    "stripe-docs": [
-        {
-            "query": "How do I create a payment intent with Stripe?",
-            "url_match": "payment-intent",
-            "page_match": "payment-intent",
-            "category": "api-function",
-            "description": "Find payment intent docs",
-        },
-        {
-            "query": "How do I handle webhooks from Stripe?",
-            "url_match": "webhook",
-            "page_match": "webhook",
-            "category": "api-function",
-            "description": "Find webhook handling docs",
-        },
-        {
-            "query": "How do I set up Stripe subscriptions?",
-            "url_match": "subscription",
-            "page_match": "subscription",
-            "category": "api-function",
-            "description": "Find subscription docs",
-        },
-        {
-            "query": "How do I authenticate with the Stripe API?",
-            "url_match": "authentication",
-            "page_match": "authentication",
-            "category": "api-function",
-            "description": "Find authentication docs",
-        },
-        {
-            "query": "How do I handle errors in the Stripe API?",
-            "url_match": "error-handling",
-            "page_match": "error-handling",
-            "category": "api-function",
-            "description": "Find error handling docs",
-        },
-        {
-            "query": "How do I process refunds with Stripe?",
-            "url_match": "refund",
-            "page_match": "refund",
-            "category": "api-function",
-            "description": "Find refund docs",
-        },
-        {
-            "query": "How do I use Stripe checkout for payments?",
-            "url_match": "checkout",
-            "page_match": "checkout",
-            "category": "js-rendered",
-            "description": "Find checkout docs (JS-rendered tabbed content)",
-        },
-        {
-            "query": "How do I test Stripe payments in development?",
-            "url_match": "testing",
-            "page_match": "testing",
-            "category": "code-example",
-            "description": "Find testing docs with code samples",
-        },
-        {
-            "query": "What are Stripe Connect and platform payments?",
-            "url_match": "connect",
-            "page_match": "connect",
-            "category": "conceptual",
-            "description": "Find Connect docs",
-        },
-        {
-            "query": "How do I set up usage-based billing with Stripe?",
-            "url_match": "usage-based",
-            "page_match": "usage-based",
-            "category": "js-rendered",
-            "description": "Find usage-based billing (JS tabbed content)",
-        },
-        {
-            "query": "How do I manage Stripe API keys?",
-            "url_match": "keys",
-            "page_match": "keys",
-            "category": "api-function",
-            "description": "Find API key management docs",
-        },
-        {
-            "query": "How do I handle Stripe rate limits?",
-            "url_match": "rate-limits",
-            "page_match": "rate-limit",
-            "category": "api-function",
-            "description": "Find rate limiting docs",
-        },
-        {
-            "query": "How do I use metadata with Stripe objects?",
-            "url_match": "metadata",
-            "page_match": "metadata",
-            "category": "api-function",
-            "description": "Find metadata docs",
-        },
-        {
-            "query": "How do I set up Apple Pay with Stripe?",
-            "url_match": "apple-pay",
-            "page_match": "apple-pay",
-            "category": "js-rendered",
-            "description": "Find Apple Pay integration (JS-rendered)",
-        },
-        {
-            "query": "How do I issue cards with Stripe Issuing?",
-            "url_match": "issuing",
-            "page_match": "issuing",
-            "category": "api-function",
-            "description": "Find Stripe Issuing docs",
-        },
-        {
-            "query": "How do I recover failed subscription payments?",
-            "url_match": "revenue-recovery",
-            "page_match": "revenue-recovery",
-            "category": "js-rendered",
-            "description": "Find revenue recovery docs (JS tabbed content)",
-        },
-        {
-            "query": "How does Stripe handle tax calculation for billing?",
-            "url_match": "billing/taxes",
-            "page_match": "billing/taxes",
-            "category": "js-rendered",
-            "description": "Find billing tax docs (JS-rendered)",
-        },
-        {
-            "query": "How do I migrate data to Stripe?",
-            "url_match": "data-migrations",
-            "page_match": "data-migration",
-            "category": "conceptual",
-            "description": "Find data migration guide",
-        },
-    ],
-    "huggingface-transformers": [
-        {
-            "query": "How do I use the Pipeline class for inference in Transformers?",
-            "url_match": "pipeline_tutorial",
-            "page_match": "pipeline_tutorial",
-            "category": "api-function",
-            "description": "Find pipeline tutorial",
-        },
-        {
-            "query": "How do I train a model with the Hugging Face Trainer?",
-            "url_match": "trainer",
-            "page_match": "trainer",
-            "category": "api-function",
-            "description": "Find trainer tutorial",
-        },
-        {
-            "query": "How do I generate text with a large language model?",
-            "url_match": "llm_tutorial",
-            "page_match": "llm_tutorial",
-            "category": "api-function",
-            "description": "Find LLM text generation tutorial",
-        },
-        {
-            "query": "What are the design principles behind the Transformers library?",
-            "url_match": "philosophy",
-            "page_match": "philosophy",
-            "category": "conceptual",
-            "description": "Find philosophy / design principles page",
-        },
-        {
-            "query": "What models are supported in the Transformers library?",
-            "url_match": "models_timeline",
-            "page_match": "models_timeline",
-            "category": "cross-page",
-            "description": "Find models timeline",
-        },
-        {
-            "query": "What is the Pipeline API reference in Transformers?",
-            "url_match": "main_classes/pipelines",
-            "page_match": "main_classes/pipelines",
-            "category": "api-function",
-            "description": "Find pipelines main class reference",
-        },
-        {
-            "query": "What does the Trainer class support for distributed training?",
-            "url_match": "main_classes/trainer",
-            "page_match": "main_classes/trainer",
-            "category": "api-function",
-            "description": "Find trainer main class reference",
-        },
-        {
-            "query": "What is the Hugging Face Transformers library?",
-            "url_match": "transformers/index",
-            "page_match": "transformers/index",
-            "category": "conceptual",
-            "description": "Find library overview / index page",
-        },
-    ],
-    "kubernetes-docs": [
-        {
-            "query": "What is a Kubernetes pod and what does it represent?",
-            "url_match": "workloads/pods",
-            "page_match": "pods",
-            "category": "conceptual",
-            "description": "Find pods concept docs",
-        },
-        {
-            "query": "How do Kubernetes Deployments manage replicas and rollouts?",
-            "url_match": "controllers/deployment",
-            "page_match": "deployment",
-            "category": "api-function",
-            "description": "Find Deployment controller docs",
-        },
-        {
-            "query": "What is a Kubernetes Service and how does it expose pods?",
-            "url_match": "services-networking/service",
-            "page_match": "service",
-            "category": "conceptual",
-            "description": "Find Service networking docs",
-        },
-        {
-            "query": "How do I use ConfigMaps to inject configuration into pods?",
-            "url_match": "configuration/configmap",
-            "page_match": "configmap",
-            "category": "api-function",
-            "description": "Find ConfigMap docs",
-        },
-        {
-            "query": "How do I manage Secrets in Kubernetes?",
-            "url_match": "configuration/secret",
-            "page_match": "secret",
-            "category": "api-function",
-            "description": "Find Secret docs",
-        },
-        {
-            "query": "What are namespaces in Kubernetes and when should I use them?",
-            "url_match": "working-with-objects/namespaces",
-            "page_match": "namespaces",
-            "category": "conceptual",
-            "description": "Find namespaces docs",
-        },
-        {
-            "query": "How does Kubernetes Ingress route external traffic?",
-            "url_match": "services-networking/ingress",
-            "page_match": "ingress",
-            "category": "conceptual",
-            "description": "Find Ingress networking docs",
-        },
-        {
-            "query": "What is a StatefulSet and when do I need one?",
-            "url_match": "controllers/statefulset",
-            "page_match": "statefulset",
-            "category": "api-function",
-            "description": "Find StatefulSet docs",
-        },
-    ],
-    "postgres-docs": [
-        {
-            "query": "What data types does PostgreSQL support?",
-            "url_match": "datatype",
-            "page_match": "datatype",
-            "category": "cross-page",
-            "description": "Find data types chapter",
-        },
-        {
-            "query": "What is the SQL syntax for queries in PostgreSQL?",
-            "url_match": "sql-syntax",
-            "page_match": "sql-syntax",
-            "category": "conceptual",
-            "description": "Find SQL syntax chapter",
-        },
-        {
-            "query": "How do indexes work in PostgreSQL?",
-            "url_match": "indexes",
-            "page_match": "indexes",
-            "category": "conceptual",
-            "description": "Find indexes chapter",
-        },
-        {
-            "query": "How does MVCC concurrency control work in PostgreSQL?",
-            "url_match": "mvcc",
-            "page_match": "mvcc",
-            "category": "conceptual",
-            "description": "Find concurrency control chapter",
-        },
-        {
-            "query": "How do transactions work in PostgreSQL?",
-            "url_match": "transactions",
-            "page_match": "transactions",
-            "category": "conceptual",
-            "description": "Find transactions chapter",
-        },
-        {
-            "query": "How do I set up logical replication in PostgreSQL?",
-            "url_match": "logical-replication",
-            "page_match": "logical-replication",
-            "category": "api-function",
-            "description": "Find logical replication chapter",
-        },
-        {
-            "query": "What built-in functions and operators are available in PostgreSQL?",
-            "url_match": "functions",
-            "page_match": "functions",
-            "category": "cross-page",
-            "description": "Find functions and operators chapter",
-        },
-        {
-            "query": "How do I use full text search in PostgreSQL?",
-            "url_match": "textsearch",
-            "page_match": "textsearch",
-            "category": "api-function",
-            "description": "Find full text search chapter",
-        },
-    ],
-    "mdn-css": [
-        {
-            "query": "How does the CSS display property work?",
-            "url_match": "CSS/Reference/Properties/display",
-            "page_match": "display",
-            "category": "api-function",
-            "description": "Find CSS display property page",
-        },
-        {
-            "query": "How do I use flexbox for page layout?",
-            "url_match": "Flexible_box_layout",
-            "page_match": "flexbox",
-            "category": "conceptual",
-            "description": "Find flexbox guide",
-        },
-        {
-            "query": "How does CSS Grid layout work?",
-            "url_match": "Grid_layout",
-            "page_match": "grid",
-            "category": "conceptual",
-            "description": "Find grid layout guide",
-        },
-        {
-            "query": "What is the CSS box model?",
-            "url_match": "Box_model",
-            "page_match": "box-model",
-            "category": "conceptual",
-            "description": "Find box model guide",
-        },
-        {
-            "query": "How does the CSS margin property work?",
-            "url_match": "Reference/Properties/margin",
-            "page_match": "margin",
-            "category": "api-function",
-            "description": "Find margin property page",
-        },
-        {
-            "query": "How does CSS specificity determine which rules win?",
-            "url_match": "Cascade/Specificity",
-            "page_match": "specificity",
-            "category": "conceptual",
-            "description": "Find cascade specificity guide",
-        },
-        {
-            "query": "How does the :hover pseudo-class work in CSS?",
-            "url_match": "Selectors/:hover",
-            "page_match": "hover",
-            "category": "api-function",
-            "description": "Find :hover pseudo-class page",
-        },
-        {
-            "query": "How do I create CSS animations?",
-            "url_match": "Animations/Using",
-            "page_match": "animations",
-            "category": "conceptual",
-            "description": "Find CSS animations guide",
-        },
-    ],
-    "rust-book": [
-        {
-            "query": "What is ownership in Rust?",
-            "url_match": "ch04-01-what-is-ownership",
-            "page_match": "ownership",
-            "category": "conceptual",
-            "description": "Find ownership chapter",
-        },
-        {
-            "query": "How do references and borrowing work in Rust?",
-            "url_match": "ch04-02-references-and-borrowing",
-            "page_match": "references-and-borrowing",
-            "category": "conceptual",
-            "description": "Find references and borrowing chapter",
-        },
-        {
-            "query": "How do I define structs in Rust?",
-            "url_match": "ch05-01-defining-structs",
-            "page_match": "structs",
-            "category": "api-function",
-            "description": "Find structs definition chapter",
-        },
-        {
-            "query": "How do enums work in Rust?",
-            "url_match": "ch06-01-defining-an-enum",
-            "page_match": "enum",
-            "category": "conceptual",
-            "description": "Find enum chapter",
-        },
-        {
-            "query": "How do I use generics in Rust?",
-            "url_match": "ch10-01-syntax",
-            "page_match": "generics",
-            "category": "conceptual",
-            "description": "Find generics chapter",
-        },
-        {
-            "query": "What are traits in Rust and how do I define them?",
-            "url_match": "ch10-02-traits",
-            "page_match": "traits",
-            "category": "conceptual",
-            "description": "Find traits chapter",
-        },
-        {
-            "query": "How do closures work in Rust?",
-            "url_match": "ch13-01-closures",
-            "page_match": "closures",
-            "category": "conceptual",
-            "description": "Find closures chapter",
-        },
-        {
-            "query": "How do I handle errors with Result in Rust?",
-            "url_match": "ch09",
-            "page_match": "error",
-            "category": "conceptual",
-            "description": "Find error handling chapter",
-        },
-    ],
-    "smittenkitchen": [
-        {
-            "query": "How do you make world peace cookies?",
-            "url_match": "world-peace-cookies",
-            "page_match": "world-peace-cookies",
-            "category": "factual-lookup",
-            "description": "Find world peace cookies recipe",
-        },
-        {
-            "query": "What's the recipe for miso chicken and rice?",
-            "url_match": "miso-chicken-and-rice",
-            "page_match": "miso-chicken",
-            "category": "factual-lookup",
-            "description": "Find miso chicken and rice recipe",
-        },
-        {
-            "query": "How do I make ultimate banana bread?",
-            "url_match": "ultimate-banana-bread",
-            "page_match": "banana-bread",
-            "category": "factual-lookup",
-            "description": "Find ultimate banana bread recipe",
-        },
-        {
-            "query": "What's the skillet-baked macaroni and cheese recipe?",
-            "url_match": "skillet-baked-macaroni-and-cheese",
-            "page_match": "macaroni",
-            "category": "factual-lookup",
-            "description": "Find skillet mac and cheese recipe",
-        },
-        {
-            "query": "What vegan recipes are available on Smitten Kitchen?",
-            "url_match": "diet/vegan",
-            "page_match": "vegan",
-            "category": "cross-page",
-            "description": "Find vegan recipes category",
-        },
-        {
-            "query": "Show me cookie recipes",
-            "url_match": "sweets/cookie",
-            "page_match": "cookie",
-            "category": "cross-page",
-            "description": "Find cookie category",
-        },
-        {
-            "query": "How do you make pumpkin basque cheesecake?",
-            "url_match": "pumpkin-basque-cheesecake",
-            "page_match": "pumpkin-basque",
-            "category": "factual-lookup",
-            "description": "Find pumpkin basque cheesecake recipe",
-        },
-        {
-            "query": "What recipes are good for winter?",
-            "url_match": "season/winter",
-            "page_match": "winter",
-            "category": "cross-page",
-            "description": "Find winter season category",
-        },
-    ],
-    "ikea": [
-        {
-            "query": "How much does the MALM bed frame cost at IKEA?",
-            "url_match": "malm-bed-frame",
-            "page_match": "malm-bed-frame",
-            "category": "factual-lookup",
-            "description": "Find MALM bed frame product page with pricing",
-        },
-        {
-            "query": "What's the price of the SLATTUM upholstered bed frame?",
-            "url_match": "slattum-upholstered-bed",
-            "page_match": "slattum",
-            "category": "factual-lookup",
-            "description": "Find SLATTUM bed product page with pricing",
-        },
-        {
-            "query": "Tell me about the HEMNES 8-drawer dresser",
-            "url_match": "hemnes-8-drawer-dresser",
-            "page_match": "hemnes",
-            "category": "factual-lookup",
-            "description": "Find HEMNES dresser product page",
-        },
-        {
-            "query": "What's the price of the RAST 3-drawer dresser?",
-            "url_match": "rast-3-drawer-dresser",
-            "page_match": "rast",
-            "category": "factual-lookup",
-            "description": "Find RAST dresser product page with pricing",
-        },
-        {
-            "query": "What bed frames does IKEA sell?",
-            "url_match": "cat/beds",
-            "page_match": "beds",
-            "category": "cross-page",
-            "description": "Find beds category page",
-        },
-        {
-            "query": "Show me IKEA's sofa and armchair selection",
-            "url_match": "cat/sofas-armchairs",
-            "page_match": "sofas-armchairs",
-            "category": "cross-page",
-            "description": "Find sofas and armchairs category",
-        },
-        {
-            "query": "What dressers and storage drawers does IKEA offer?",
-            "url_match": "cat/dressers-storage-drawers",
-            "page_match": "dressers",
-            "category": "cross-page",
-            "description": "Find dressers and storage drawers category",
-        },
-        {
-            "query": "How much is the STOREMOLLA 8-drawer dresser at IKEA?",
-            "url_match": "storemolla-8-drawer-dresser",
-            "page_match": "storemolla",
-            "category": "factual-lookup",
-            "description": "Find STOREMOLLA product page with pricing",
-        },
-    ],
-    "newegg": [
-        {
-            "query": "What graphics cards are available at Newegg?",
-            "url_match": "GPUs-Video-Graphics-Cards",
-            "page_match": "GPUs",
-            "category": "cross-page",
-            "description": "Find GPUs category page",
-        },
-        {
-            "query": "What laptops does Newegg sell?",
-            "url_match": "Laptops-Notebooks",
-            "page_match": "Laptops",
-            "category": "cross-page",
-            "description": "Find laptops category page",
-        },
-        {
-            "query": "How much does the AMD Ryzen 7 9800X3D CPU cost?",
-            "url_match": "ryzen-7-9800x3d",
-            "page_match": "ryzen-7-9800x3d",
-            "category": "factual-lookup",
-            "description": "Find Ryzen 7 9800X3D product page with pricing",
-        },
-        {
-            "query": "What is the price of the Intel Core i9-14900K?",
-            "url_match": "i9-14900k",
-            "page_match": "14900k",
-            "category": "factual-lookup",
-            "description": "Find i9-14900K product page with pricing",
-        },
-        {
-            "query": "Tell me about the GIGABYTE GeForce RTX 5090 graphics card",
-            "url_match": "gv-n5090gaming",
-            "page_match": "rtx-5090",
-            "category": "factual-lookup",
-            "description": "Find RTX 5090 product page",
-        },
-        {
-            "query": "How much does the SAPPHIRE Radeon RX 9070 XT cost?",
-            "url_match": "radeon-rx-9070-xt",
-            "page_match": "rx-9070-xt",
-            "category": "factual-lookup",
-            "description": "Find RX 9070 XT product page with pricing",
-        },
-        {
-            "query": "What ASUS TUF gaming laptops are available on Newegg?",
-            "url_match": "asus-tuf-gaming",
-            "page_match": "asus-tuf",
-            "category": "factual-lookup",
-            "description": "Find ASUS TUF gaming laptop product page",
-        },
-        {
-            "query": "What electronics categories does Newegg offer?",
-            "url_match": "Electronics/Store",
-            "page_match": "Electronics",
-            "category": "cross-page",
-            "description": "Find Electronics store category",
-        },
-    ],
-    "propublica": [
-        {
-            "query": "What ProPublica investigations cover criminal justice?",
-            "url_match": "criminal-justice",
-            "page_match": "criminal-justice",
-            "category": "cross-page",
-            "description": "Find ProPublica criminal-justice topic + related articles",
-        },
-        {
-            "query": "What is ProPublica reporting about healthcare?",
-            "url_match": "health",
-            "page_match": "health",
-            "category": "cross-page",
-            "description": "Find ProPublica healthcare coverage",
-        },
-        {
-            "query": "What ProPublica articles discuss politics and government accountability?",
-            "url_match": "politics",
-            "page_match": "politics",
-            "category": "cross-page",
-            "description": "Find ProPublica politics topic + government accountability stories",
-        },
-        {
-            "query": "What environmental or climate investigations does ProPublica have?",
-            "url_match": "climate",
-            "page_match": "climate",
-            "category": "cross-page",
-            "description": "Find ProPublica climate / environment articles",
-        },
-        {
-            "query": "What ProPublica stories cover immigration?",
-            "url_match": "immigration",
-            "page_match": "immigration",
-            "category": "cross-page",
-            "description": "Find ProPublica immigration reporting",
-        },
-        {
-            "query": "What is the main ProPublica homepage with featured stories?",
-            "url_match": "propublica.org/",
-            "page_match": "propublica.org/",
-            "category": "cross-page",
-            "description": "Find ProPublica homepage / seed URL",
-        },
-    ],
-}
+# Each query dict has: query text, url_match (substring identifying the
+# correct source page), page_match (alternate match), category, description.
+# Categories: api-function, code-example, conceptual, structured-data,
+# factual-lookup, cross-page, navigation, js-rendered.
+TEST_QUERY_SOURCES = [
+    BENCH_DIR / "queries" / "v14_queries.json",
+    BENCH_DIR / "queries" / "v13_queries.json",
+]
 
+
+def _load_test_queries() -> Dict[str, List[Dict]]:
+    """Load the canonical test query set, preferring v1.4 over v1.3."""
+    for path in TEST_QUERY_SOURCES:
+        if path.is_file():
+            with open(path) as f:
+                queries = json.load(f)
+            logger.info(
+                "Loaded %d queries across %d sites from %s",
+                sum(len(v) for v in queries.values()),
+                len(queries),
+                path.name,
+            )
+            return queries
+    raise FileNotFoundError(
+        "No test query JSON found. Expected one of: "
+        + ", ".join(str(p) for p in TEST_QUERY_SOURCES)
+    )
+
+
+TEST_QUERIES: Dict[str, List[Dict]] = _load_test_queries()
+
+
+# Old inline TEST_QUERIES dict was extracted to queries/v13_queries.json by
+# the DS-7 commit; see git log for the prior inline definition.
 
 # ---------------------------------------------------------------------------
 # Data structures
@@ -906,7 +181,13 @@ class RetrievalModeResult:
     mode: str  # "embedding", "bm25", "hybrid", "reranked"
     query_results: List[QueryResult]
     hits_at_k: Dict[int, int] = field(default_factory=dict)
-    mrr: float = 0.0  # Mean Reciprocal Rank
+    mrr: float = 0.0  # Mean Reciprocal Rank (chunk-level)
+    # DS-1: page-level metrics — collapse chunks-per-URL using DS-2 normalized
+    # URLs before computing MRR/Hit@K. Removes the chunk-density gaming signal
+    # (a tool emitting 5 chunks per page no longer beats one emitting 1 chunk
+    # when both rank the same canonical page first).
+    page_mrr: float = 0.0
+    page_hits_at_k: Dict[int, int] = field(default_factory=dict)
 
 
 @dataclass
@@ -923,9 +204,10 @@ class ToolSiteRetrievalResult:
     embed_time: float
     search_time: float
     hits_at_k: Dict[int, int] = field(default_factory=dict)  # {k: hit_count}
-    mrr: float = 0.0  # Mean Reciprocal Rank
+    mrr: float = 0.0  # Mean Reciprocal Rank (chunk-level, embedding mode)
     mode_results: Dict[str, RetrievalModeResult] = field(default_factory=dict)
     chunk_config_label: str = ""  # e.g. "~512tok"
+    page_mrr: float = 0.0  # DS-1: page-level MRR for embedding mode
 
 
 # ---------------------------------------------------------------------------
@@ -1371,15 +653,153 @@ def _rerank(query: str, chunks: List[EmbeddedChunk], candidate_indices: List[int
 # Hit checking and MRR
 # ---------------------------------------------------------------------------
 
+# DS-2: locale subdomain prefixes stripped before url_match evaluation.
+# Explicit allowlist so legitimate-but-similar subdomains (docs.stripe.com,
+# support.X.com) are not collapsed. ISO-639-1 + common BCP-47 region forms
+# observed in the v1.3 site pool.
+_LOCALE_SUBDOMAIN_PREFIXES = frozenset([
+    "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el",
+    "en", "eo", "es", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi",
+    "hr", "hu", "hy", "id", "is", "it", "ja", "ka", "kk", "km", "kn", "ko",
+    "ky", "la", "lt", "lv", "mk", "ml", "mn", "mr", "ms", "mt", "my", "nb",
+    "ne", "nl", "nn", "no", "pa", "pl", "ps", "pt", "ro", "ru", "sa", "si",
+    "sk", "sl", "sq", "sr", "sv", "sw", "ta", "te", "th", "tl", "tr", "uk",
+    "ur", "uz", "vi", "zh",
+    "zh-cn", "zh-tw", "zh-hk", "zh-hans", "zh-hant",
+    "en-us", "en-gb", "en-ca", "en-au",
+    "pt-br", "pt-pt",
+    "es-mx", "es-ar", "es-es", "es-419",
+    "fr-ca", "fr-fr",
+    "de-de", "de-at", "de-ch",
+])
+
+# Query keys dropped before url_match evaluation. utm_* matched by prefix.
+_STRIP_QUERY_KEYS = frozenset(["lang", "language", "locale", "random", "ref", "source"])
+_STRIP_QUERY_KEY_PREFIXES = ("utm_",)
+
+
+def _normalize_url_for_matching(url: str) -> str:
+    """Normalize a URL before evaluating it against an expected_url_match
+    substring (DS-2). Strips locale subdomain prefixes, drops UTM/lang/
+    locale/random query params, drops the fragment, lowercases scheme +
+    host + path.
+
+    Eliminates the v1.3 false positive where `he.react.dev/learn/managing-state`
+    matched url_match='state' for English queries. Malformed URLs fall
+    back to the lowercased raw input — never drop a chunk on parse failure."""
+    if not isinstance(url, str):
+        return ""
+    try:
+        scheme, netloc, path, query, _frag = urlsplit(url.strip())
+    except (ValueError, TypeError):
+        return url.lower()
+
+    netloc = netloc.lower()
+    if "." in netloc:
+        first, _, rest = netloc.partition(".")
+        if first in _LOCALE_SUBDOMAIN_PREFIXES and rest:
+            netloc = rest
+
+    if query:
+        kept = []
+        for pair in query.split("&"):
+            key = pair.partition("=")[0].lower()
+            if key in _STRIP_QUERY_KEYS:
+                continue
+            if any(key.startswith(prefix) for prefix in _STRIP_QUERY_KEY_PREFIXES):
+                continue
+            kept.append(pair)
+        query = "&".join(kept)
+
+    return urlunsplit((scheme.lower(), netloc, path.lower(), query, ""))
+
+
 def _check_hit(url_match: str, page_match: str, ranked_urls: List[str]) -> Tuple[bool, Optional[int]]:
-    """Check if any URL in ranked list matches. Returns (hit, 1-indexed rank)."""
+    """Check if any URL in ranked list matches. Returns (hit, 1-indexed rank).
+
+    URLs run through _normalize_url_for_matching before substring comparison
+    so locale-prefixed and UTM-tagged variants of the same canonical URL no
+    longer create false positives (DS-2)."""
     for rank, url in enumerate(ranked_urls, 1):
-        url_lower = url.lower()
-        if url_match and url_match.lower() in url_lower:
+        normalized = _normalize_url_for_matching(url)
+        if url_match and url_match.lower() in normalized:
             return True, rank
-        if page_match and page_match.lower() in url_lower:
+        if page_match and page_match.lower() in normalized:
             return True, rank
     return False, None
+
+
+def _write_query_audit_csv(
+    all_results: Dict[str, Dict[str, "ToolSiteRetrievalResult"]],
+    output_path: Path,
+    top_k: int = 5,
+) -> int:
+    """Write the per-(query × tool × rank) audit artifact (DS-3).
+
+    One row per (query, tool, rank in [1..top_k]) with columns:
+      query_id, query_text, site, tool, rank, url, cosine_score,
+      is_hit, url_match_pattern, normalized_url
+
+    Reviewers questioning a specific number can spot-check the CSV
+    without re-running anything. Returns the row count written.
+
+    Atomic write via .tmp + replace; idempotent across re-runs."""
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = output_path.with_suffix(".csv.tmp")
+    rows_written = 0
+    with open(tmp_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "query_id", "query_text", "site", "tool", "rank",
+            "url", "cosine_score", "is_hit",
+            "url_match_pattern", "normalized_url",
+            "page_rank_after_collapse",
+        ])
+        for site, tool_map in all_results.items():
+            for tool, r in tool_map.items():
+                for q_idx, qr in enumerate(r.query_results):
+                    pattern = qr.expected_url_match or ""
+                    page_pattern = qr.expected_page_match or ""
+
+                    # Pre-compute the page-rank assignment for each chunk:
+                    # iterate top_k in order, assigning each unique normalized
+                    # URL a 1-indexed page rank. Multiple chunks sharing the
+                    # same normalized canonical (locale mirrors, fragment
+                    # variants) share the same page_rank. Lets reviewers see
+                    # the chunk → page collapse explicitly in the audit.
+                    canonical_to_page_rank: Dict[str, int] = {}
+                    for u in qr.top_k_urls:
+                        canon = _normalize_url_for_matching(u)
+                        if canon not in canonical_to_page_rank:
+                            canonical_to_page_rank[canon] = len(canonical_to_page_rank) + 1
+
+                    for rank in range(1, top_k + 1):
+                        if rank > len(qr.top_k_urls):
+                            break
+                        url = qr.top_k_urls[rank - 1]
+                        score = qr.top_k_scores[rank - 1] if rank - 1 < len(qr.top_k_scores) else ""
+                        normalized = _normalize_url_for_matching(url)
+                        is_hit = bool(
+                            (pattern and pattern.lower() in normalized)
+                            or (page_pattern and page_pattern.lower() in normalized)
+                        )
+                        page_rank = canonical_to_page_rank.get(normalized, "")
+                        writer.writerow([
+                            f"{site}:{q_idx}",
+                            qr.query,
+                            site,
+                            tool,
+                            rank,
+                            url,
+                            score,
+                            "true" if is_hit else "false",
+                            pattern,
+                            normalized,
+                            page_rank,
+                        ])
+                        rows_written += 1
+    tmp_path.replace(output_path)
+    return rows_written
 
 
 def _compute_mrr(query_results: List[QueryResult]) -> float:
@@ -1399,6 +819,52 @@ def _compute_hits_at_k(query_results: List[QueryResult]) -> Dict[int, int]:
         k: sum(1 for r in query_results if r.hit_rank is not None and r.hit_rank <= k)
         for k in REPORT_AT_K
     }
+
+
+def _compute_page_level_mrr_and_hits(
+    query_results: List[QueryResult],
+) -> Tuple[float, Dict[int, int]]:
+    """Page-level MRR and Hit@K (DS-1 + DS-2).
+
+    Collapses chunks-per-URL to pages using DS-2 normalized URLs (so
+    locale mirrors and fragment variants of the same canonical page
+    collapse to a single rank slot), then computes MRR and Hit@K on
+    the deduped page list. Removes the chunk-density gaming signal
+    that affects chunk-level MRR.
+
+    Bug-fix 2026-05-11: the previous version dedup'd by RAW URL, which
+    meant `react.dev/X#a` and `react.dev/X#b` were treated as two
+    distinct page entries — silently suppressing the page-level uplift
+    for tools that emit multiple fragment-variant chunks per canonical
+    page. Now passes `_normalize_url_for_matching` as the dedup key so
+    those collapse to one entry per canonical page.
+    """
+    if not query_results:
+        return 0.0, {k: 0 for k in REPORT_AT_K}
+
+    rr_sum = 0.0
+    hits_per_k = {k: 0 for k in REPORT_AT_K}
+
+    for qr in query_results:
+        url_match = (qr.expected_url_match or "").lower()
+        page_match = (qr.expected_page_match or "").lower()
+
+        def _matches(url: str, _um=url_match, _pm=page_match) -> bool:
+            normalized = _normalize_url_for_matching(url)
+            return bool(
+                (_um and _um in normalized)
+                or (_pm and _pm in normalized)
+            )
+
+        pages = collapse_chunks_to_pages(
+            qr.top_k_urls, key_fn=_normalize_url_for_matching
+        )
+        rr_sum += _page_reciprocal_rank(pages, _matches)
+        for k in REPORT_AT_K:
+            if _page_hit_at_k(pages, k, _matches):
+                hits_per_k[k] += 1
+
+    return rr_sum / len(query_results), hits_per_k
 
 
 # ---------------------------------------------------------------------------
@@ -1786,11 +1252,14 @@ def run_retrieval_test(
         qrs = mode_query_results[mode]
         hits_at_k = _compute_hits_at_k(qrs)
         mrr = _compute_mrr(qrs)
+        page_mrr, page_hits_at_k = _compute_page_level_mrr_and_hits(qrs)
         mode_results[mode] = RetrievalModeResult(
             mode=mode,
             query_results=qrs,
             hits_at_k=hits_at_k,
             mrr=mrr,
+            page_mrr=page_mrr,
+            page_hits_at_k=page_hits_at_k,
         )
 
     # Primary result uses embedding mode for backward compatibility
@@ -1814,6 +1283,7 @@ def run_retrieval_test(
         mrr=emb.mrr,
         mode_results=mode_results,
         chunk_config_label=chunk_config_label,
+        page_mrr=emb.page_mrr,
     )
 
 
@@ -1851,12 +1321,15 @@ def _aggregate_tool_mode(
 ) -> Optional[tuple]:
     """Aggregate hit counts and MRR for a tool+mode over the given sites.
 
-    Returns (total_queries, agg_hits_dict, mrr) or None if no data.
+    Returns (total_queries, agg_hits_dict, mrr, page_mrr, agg_page_hits_dict)
+    or None if no data. Page-level fields (DS-1) sit at indices 3 and 4.
     """
     total_queries = 0
     has_data = False
     agg_hits: Dict[int, int] = {k: 0 for k in REPORT_AT_K}
+    agg_page_hits: Dict[int, int] = {k: 0 for k in REPORT_AT_K}
     rr_sum = 0.0
+    page_rr_sum = 0.0
 
     for site, site_results in results.items():
         if sites is not None and site not in sites:
@@ -1868,11 +1341,19 @@ def _aggregate_tool_mode(
             total_queries += r.total_queries
             for k in REPORT_AT_K:
                 agg_hits[k] += mr.hits_at_k.get(k, 0)
+                agg_page_hits[k] += mr.page_hits_at_k.get(k, 0)
             rr_sum += mr.mrr * r.total_queries
+            page_rr_sum += mr.page_mrr * r.total_queries
 
     if not has_data or total_queries == 0:
         return None
-    return (total_queries, agg_hits, rr_sum / total_queries)
+    return (
+        total_queries,
+        agg_hits,
+        rr_sum / total_queries,
+        page_rr_sum / total_queries,
+        agg_page_hits,
+    )
 
 
 def generate_retrieval_report(
@@ -1957,8 +1438,8 @@ def generate_retrieval_report(
         "For each tool, the mode with the highest MRR. Most readers can stop here."
     )
     lines.append("")
-    lines.append("| Tool | Best mode | Hit@10 | MRR |")
-    lines.append("|---|---|---|---|")
+    lines.append("| Tool | Best mode | Hit@1 | Hit@3 | Hit@5 | Hit@10 | MRR | Page MRR |")
+    lines.append("|---|---|---|---|---|---|---|---|")
 
     # Build digest rows, sorted by best MRR descending
     digest_rows = []
@@ -1966,10 +1447,13 @@ def generate_retrieval_report(
         if not tool_mode_aggs[tool]:
             continue
         best_mode = max(tool_mode_aggs[tool], key=lambda m: tool_mode_aggs[tool][m][2])
-        total_queries, agg_hits, mrr = tool_mode_aggs[tool][best_mode]
+        total_queries, agg_hits, mrr, page_mrr, _ = tool_mode_aggs[tool][best_mode]
+        hit1 = _fmt_rate(agg_hits.get(1, 0), total_queries)
+        hit3 = _fmt_rate(agg_hits.get(3, 0), total_queries)
+        hit5 = _fmt_rate(agg_hits.get(5, 0), total_queries)
         hit10 = _fmt_rate(agg_hits.get(10, 0), total_queries)
         tname = tool
-        digest_rows.append((mrr, f"| {tname} | {best_mode} | {hit10} | {mrr:.3f} |"))
+        digest_rows.append((mrr, f"| {tname} | {best_mode} | {hit1} | {hit3} | {hit5} | {hit10} | {mrr:.3f} | {page_mrr:.3f} |"))
     digest_rows.sort(key=lambda x: x[0], reverse=True)
     for _, row in digest_rows:
         lines.append(row)
@@ -1978,8 +1462,18 @@ def generate_retrieval_report(
         "",
         "> **Column definitions:** "
         "**Best mode** = retrieval strategy that maximizes MRR for this tool. "
-        "**Hit@10** = correct source page in top 10 results. "
-        "**MRR** = Mean Reciprocal Rank (1/rank of correct result, averaged).",
+        "**Hit@K** = % of queries where the correct source page appeared in the top K (chunk-level). "
+        "**MRR** (chunk-level) = Mean Reciprocal Rank across all retrieved chunks. "
+        "**Page MRR** (DS-1) = MRR after collapsing chunks-per-URL to unique pages — "
+        "removes the chunk-density gaming signal where a tool emitting more chunks "
+        "per page would otherwise rank ahead at the same content.",
+        "",
+        "> **Density sensitivity (DS-9):** Hit@1 is the LEAST chunk-density-sensitive "
+        "(each chunk competes for one slot, so emitting more chunks doesn't help unless "
+        "the first one is right). Hit@10 is the MOST sensitive (more chunks = more "
+        "chances to land somewhere in the top 10). MRR sits between the two. Page MRR "
+        "removes the density signal entirely — read it as the chunk-density-corrected "
+        "MRR.",
         "",
     ])
 
@@ -1994,10 +1488,10 @@ def generate_retrieval_report(
         )
         lines.append("")
 
-    # Build header: Tool | Mode | Hit@K... | MRR
+    # Build header: Tool | Mode | Hit@K... | MRR | Page MRR
     k_headers = " | ".join(f"Hit@{k}" for k in REPORT_AT_K)
-    lines.append(f"| Tool | Mode | {k_headers} | MRR |")
-    lines.append("|---" + "|---" * len(REPORT_AT_K) + "|---|---|")
+    lines.append(f"| Tool | Mode | {k_headers} | MRR | Page MRR |")
+    lines.append("|---" + "|---" * len(REPORT_AT_K) + "|---|---|---|")
 
     # Sort within each mode group by MRR descending
     for mode in RETRIEVAL_MODES:
@@ -2006,10 +1500,10 @@ def generate_retrieval_report(
             agg = tool_mode_aggs[tool].get(mode)
             if agg is None:
                 continue
-            total_queries, agg_hits, mrr = agg
+            total_queries, agg_hits, mrr, page_mrr, _ = agg
             k_cols = [_fmt_rate(agg_hits[k], total_queries) for k in REPORT_AT_K]
             tname = tool
-            mode_rows.append((mrr, f"| {tname} | {mode} | " + " | ".join(k_cols) + f" | {mrr:.3f} |"))
+            mode_rows.append((mrr, f"| {tname} | {mode} | " + " | ".join(k_cols) + f" | {mrr:.3f} | {page_mrr:.3f} |"))
         mode_rows.sort(key=lambda x: x[0], reverse=True)
         for _, row in mode_rows:
             lines.append(row)
@@ -2018,7 +1512,8 @@ def generate_retrieval_report(
         "",
         "> **Column definitions:** "
         "**Hit@K** = percentage of queries where the correct source page appeared in the top K results (shown as % with raw counts). "
-        "**MRR** (Mean Reciprocal Rank) = average of 1/rank for correct results (1.0 = always rank 1, 0.5 = always rank 2). "
+        "**MRR** (Mean Reciprocal Rank, chunk-level) = average of 1/rank for correct results across the chunk-ordered top-K (1.0 = always rank 1, 0.5 = always rank 2). "
+        "**Page MRR** (DS-1, page-level) = MRR after collapsing multiple chunks per URL into a single rank — neutralises chunk-density inflation. Page MRR ≥ MRR by construction; the gap measures how much chunk-density was inflating the chunk-level number. "
         "**Mode** = retrieval strategy used (see definitions above).",
         "",
     ])
@@ -2473,9 +1968,40 @@ def find_latest_run(runs_dir: Path) -> Optional[Path]:
 CHECKPOINT_DIR = BENCH_DIR / "retrieval_checkpoints"
 
 
+def _embedder_slug(model_name: Optional[str] = None) -> str:
+    """Filesystem-safe slug for an embedder model name.
+
+    text-embedding-3-small               -> text-embedding-3-small
+    mixedbread-ai/mxbai-embed-large-v1   -> mixedbread-ai_mxbai-embed-large-v1
+    """
+    name = model_name if model_name is not None else EMBEDDING_MODEL
+    return name.replace("/", "_")
+
+
+def _site_queries_hash(site: str) -> str:
+    """8-char SHA-256 prefix of canonicalized TEST_QUERIES[site]. Per-site
+    rather than whole-dict so that tweaking one site's queries (e.g.,
+    re-firing DS-6 for huggingface-transformers only) invalidates JUST
+    that site's cache instead of all 11.
+
+    Returns an empty-set hash if the site has no entry, which still
+    differs from any populated set — so adding a new site cleanly busts
+    its cache too."""
+    site_queries = TEST_QUERIES.get(site, [])
+    canonical = json.dumps(site_queries, sort_keys=True)
+    return hashlib.sha256(canonical.encode()).hexdigest()[:8]
+
+
 def _checkpoint_key(run_name: str, tool: str, site: str, config_label: str) -> str:
-    """Stable key for a checkpoint file."""
-    safe = f"{run_name}__{tool}__{site}__{config_label}".replace("/", "_")
+    """Cache-aware key. Includes the embedder slug (DS-13b) AND a
+    per-site queries hash so that any change to either invalidates the
+    per-(tool, site) cache. The per-site hash matters for v1.4+ cycles
+    where DS-6 can be re-fired site-by-site (e.g., HF scope-filter fix
+    2026-05-11) — whole-dict hashing would invalidate every site on
+    any per-site tweak."""
+    embedder = _embedder_slug()
+    queries = _site_queries_hash(site)
+    safe = f"{run_name}__{embedder}__{queries}__{tool}__{site}__{config_label}".replace("/", "_")
     return safe
 
 
@@ -2496,6 +2022,7 @@ def _save_checkpoint(run_name: str, tool: str, site: str, config_label: str, res
         "search_time": result.search_time,
         "hits_at_k": result.hits_at_k,
         "mrr": result.mrr,
+        "page_mrr": result.page_mrr,
         "chunk_config_label": result.chunk_config_label,
         "mode_results": {},
         "query_results": [],  # primary (embedding) mode
@@ -2506,6 +2033,8 @@ def _save_checkpoint(run_name: str, tool: str, site: str, config_label: str, res
             "mode": mr.mode,
             "hits_at_k": mr.hits_at_k,
             "mrr": mr.mrr,
+            "page_mrr": mr.page_mrr,
+            "page_hits_at_k": mr.page_hits_at_k,
             "query_results": [],
         }
         for qr in mr.query_results:
@@ -2571,12 +2100,36 @@ def _load_checkpoint(run_name: str, tool: str, site: str, config_label: str) -> 
 
     mode_results = {}
     for mode, md in data.get("mode_results", {}).items():
+        mode_qrs = _load_qrs(md["query_results"])
+        # Recompute page-level metrics from query_results on load rather
+        # than trusting checkpoint values — this makes the system
+        # self-healing for page-level methodology fixes (e.g., the
+        # 2026-05-11 collapse-key bug fix). Cheap because it's just URL
+        # matching, no cosine math.
+        page_mrr, page_hits_at_k = _compute_page_level_mrr_and_hits(mode_qrs)
         mode_results[mode] = RetrievalModeResult(
             mode=md["mode"],
-            query_results=_load_qrs(md["query_results"]),
+            query_results=mode_qrs,
             hits_at_k={int(k): v for k, v in md["hits_at_k"].items()},
             mrr=md["mrr"],
+            page_mrr=page_mrr,
+            page_hits_at_k=page_hits_at_k,
         )
+
+    # Top-level page_mrr mirrors embedding mode (matches construction
+    # path at the main run site). Warn loudly if embedding mode is
+    # missing — silent zero would let a malformed checkpoint sneak a
+    # 0.0 page-MRR into the rendered report (reviewer Q3).
+    if "embedding" in mode_results:
+        top_level_page_mrr = mode_results["embedding"].page_mrr
+    else:
+        logger.warning(
+            "Checkpoint for %s/%s missing 'embedding' mode_results — "
+            "top-level page_mrr will be reported as 0.0. Re-run without "
+            "--report-only to regenerate this checkpoint.",
+            data["tool"], data["site"],
+        )
+        top_level_page_mrr = 0.0
 
     return ToolSiteRetrievalResult(
         tool=data["tool"],
@@ -2594,6 +2147,7 @@ def _load_checkpoint(run_name: str, tool: str, site: str, config_label: str) -> 
         mrr=data["mrr"],
         mode_results=mode_results,
         chunk_config_label=data.get("chunk_config_label", ""),
+        page_mrr=top_level_page_mrr,
     )
 
 
@@ -2795,6 +2349,20 @@ def main():
         logger.error(f"No benchmark run found at {run_dir}")
         sys.exit(1)
 
+    # DS-13a defense-in-depth: assert embedding-model invariant + write
+    # per-phase models_manifest.json BEFORE any API spend. PUBLISH-BOTH
+    # allows EMBEDDING_MODEL to be either the OpenAI default or the
+    # mxbai secondary; anything else is methodology drift and the
+    # assertion fires here, before query embeddings get billed.
+    from models_manifest import assert_embedding_model, write_models_manifest
+    assert_embedding_model(EMBEDDING_MODEL)
+    manifest_path = write_models_manifest(
+        run_dir,
+        "retrieval",
+        embedding_model=EMBEDDING_MODEL,
+    )
+    logger.info(f"Wrote models manifest section to {manifest_path}")
+
     logger.info(f"Using benchmark run: {run_dir.name}")
 
     # Determine sites and tools to test.
@@ -2850,10 +2418,13 @@ def main():
                 continue
             site_results: Dict[str, ToolSiteRetrievalResult] = {}
             for tool in available_tools:
-                # Skip tools that have no pages data for this site
+                # Skip tools that have no pages data for this site (file
+                # missing OR empty — empty pages.jsonl is the v1.3 cycle's
+                # "tool couldn't crawl this site" sentinel and matches the
+                # behaviour of the main run path).
                 tool_pages = run_dir / tool / site / "pages.jsonl"
-                if not tool_pages.exists():
-                    logger.debug("Skipping %s/%s — no pages.jsonl", tool, site)
+                if not tool_pages.exists() or tool_pages.stat().st_size == 0:
+                    logger.debug("Skipping %s/%s — no pages data", tool, site)
                     continue
                 cached = _load_checkpoint(run_name, tool, site, config_label)
                 if cached is not None:
@@ -2932,6 +2503,22 @@ def main():
         logger.warning("Post-generation lint found %d issue(s):", len(lint_warnings))
         for w in lint_warnings:
             logger.warning("  - %s", w)
+
+    # DS-3: emit per-query audit CSV alongside the markdown report.
+    # Embedder-aware filename so PUBLISH-BOTH primary + secondary runs don't
+    # overwrite each other (caught 2026-05-11 when the DS-13a LOCAL fire's
+    # audit CSV stomped the primary's audit data).
+    audit_basename = (
+        "QUERY_AUDIT.csv"
+        if EMBEDDING_MODEL == "text-embedding-3-small"
+        else "QUERY_AUDIT_LOCAL.csv"
+    )
+    audit_path = Path(output_path).parent / audit_basename
+    try:
+        rows = _write_query_audit_csv(all_results, audit_path)
+        logger.info("Query audit written to %s (%d rows)", audit_path, rows)
+    except Exception as e:
+        logger.warning("Query audit CSV write failed (non-fatal): %s", e)
 
     # Print summary
     logger.info("\n" + "=" * 60)

@@ -1,0 +1,97 @@
+{
+  "huggingface-transformers": [],
+  "ikea": [],
+  "kubernetes-docs": [
+    {
+      "query": "What are Pods in Kubernetes?",
+      "url": "https://kubernetes.io/docs/concepts/",
+      "url_match": "concepts",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page provides an overview of Kubernetes concepts but does not define what Pods are."
+    }
+  ],
+  "mdn-css": [],
+  "newegg": [],
+  "postgres-docs": [],
+  "propublica": [
+    {
+      "query": "What is the main focus of ProPublica during Donald Trump's second presidency?",
+      "url": "https://www.propublica.org/archive",
+      "url_match": "archive",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide specific information about ProPublica's focus during Donald Trump's second presidency."
+    },
+    {
+      "query": "What are the rates of arrest and jailing for children in Rutherford County?",
+      "url": "https://www.propublica.org/series/juvenile-injustice-tennessee",
+      "url_match": "juvenile-injustice-tennessee",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The specific rates of arrest and jailing for children in Rutherford County are not provided in the content."
+    }
+  ],
+  "react-dev": [],
+  "rust-book": [],
+  "smittenkitchen": [
+    {
+      "query": "When was the banana chocolate chip cake recipe first published?",
+      "url": "https://smittenkitchen.com/./recipes/fruit/bananas/?format=photo",
+      "url_match": "bananas",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide the publication date for the banana chocolate chip cake recipe."
+    },
+    {
+      "query": "When was the breakfast category first published on Smitten Kitchen?",
+      "url": "https://smittenkitchen.com/./recipes/course/breakfast/?format=photo",
+      "url_match": "breakfast",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide the publication date for the breakfast category."
+    },
+    {
+      "query": "How can I make miso chicken and rice?",
+      "url": "https://smittenkitchen.com/./recipes/ingredient/meat/?format=photo",
+      "url_match": "meat",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page lists recipes but does not provide the instructions for making miso chicken and rice."
+    },
+    {
+      "query": "How does cooking and storing meals in advance benefit you?",
+      "url": "https://smittenkitchen.com/./recipes/method/freezer-friendly/?format=photo",
+      "url_match": "freezer-friendly",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide specific benefits of cooking and storing meals in advance."
+    },
+    {
+      "query": "When was the first eggplant recipe published on Smitten Kitchen?",
+      "url": "https://smittenkitchen.com/./recipes/vegetable/eggplant/?format=photo",
+      "url_match": "eggplant",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide a specific date for the first eggplant recipe published on Smitten Kitchen."
+    },
+    {
+      "query": "How can I make homemade cream cheese?",
+      "url": "https://smittenkitchen.com/./recipes/ingredient/cheese/?format=photo",
+      "url_match": "cheese",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page lists recipes that include cheese but does not provide instructions for making homemade cream cheese."
+    }
+  ],
+  "stripe-docs": []
+}

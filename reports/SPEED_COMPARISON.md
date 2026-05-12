@@ -3,6 +3,8 @@
 
 scrapy+md leads aggregate speed at 5.00 pages/sec across all 11 sites; markcrawl follows at 2.72 p/s. markcrawl is the per-site speed champion when sites cooperate (postgres-docs at 22.3 p/s, kubernetes at 13.3 p/s, mdn-css at 11.4 p/s on v0.10.5).
 
+> **Single-trial measurement.** Each per-site number reported here comes from one benchmark run. Network jitter, WAF state, and server load can shift per-site speed and coverage between runs by single-digit percent. Confidence intervals reflect query-set sampling only — not run-to-run variance. Multi-trial validation is v1.5 work; see [METHODOLOGY.md](METHODOLOGY.md#single-trial-measurement).
+
 **Run:** `run_v13_merged_20260504_203748` (v1.3 cycle, aggregated from per-tool gap-fill passes 2026-05-04/06) | **Pool:** v1.2 (npr-news removed, propublica added — see METHODOLOGY.md "Crawler tuning" + "Site pool ethics")
 
 **Tool versions in this run:**

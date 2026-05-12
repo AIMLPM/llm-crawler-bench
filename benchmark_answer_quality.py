@@ -243,8 +243,33 @@ def _judge_answer(client, question: str, answer: str) -> Dict[str, int]:
                 raise
 
 
+def _models_slug(site: str) -> str:
+    """8-char SHA-256 prefix that changes whenever the answer-quality
+    inputs FOR THIS SITE change. Per-site rather than whole-dict so a
+    single-site re-fire (e.g., HF scope-filter fix 2026-05-11)
+    invalidates only that site's cache.
+
+    Inputs covered: (a) TEST_QUERIES[site] — the questions, (b) the
+    answer model, (c) the judge model, (d) the embedding model (used
+    for the top-K retrieval step that feeds the answer LLM). Any
+    change to any of these silently bakes into the cached results, so
+    all four must be part of the key."""
+    canonical = json.dumps({
+        "queries": TEST_QUERIES.get(site, []),
+        "answer_model": ANSWER_MODEL,
+        "judge_model": JUDGE_MODEL,
+        "embedding_model": EMBEDDING_MODEL,
+    }, sort_keys=True)
+    import hashlib
+    return hashlib.sha256(canonical.encode()).hexdigest()[:8]
+
+
 def _checkpoint_key(run_name: str, tool: str, site: str) -> str:
-    return f"{run_name}__{tool}__{site}".replace("/", "_")
+    """Cache-aware key including a per-site models-and-queries hash.
+    Same failure-mode-protection as retrieval (commit 544d966 + this
+    per-site refactor); per-site granularity matters for v1.4+ cycles
+    where DS-6 can be re-fired site-by-site."""
+    return f"{run_name}__{_models_slug(site)}__{tool}__{site}".replace("/", "_")
 
 
 def _save_checkpoint(run_name: str, tool: str, site: str, results: List[AnswerResult]) -> None:
@@ -659,6 +684,9 @@ def main():
     parser.add_argument("--fresh", action="store_true", help="Clear checkpoints")
     parser.add_argument("--report-only", action="store_true",
                         help="Regenerate report from checkpoints only — no API calls")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Run model-invariant assertions + write models_manifest.json, then exit. "
+                             "No API spend. Used by tests + as a pre-flight gate before topping up credits.")
     args = parser.parse_args()
 
     runs_dir = BENCH_DIR / "runs"
@@ -669,6 +697,32 @@ def main():
         sys.exit(1)
 
     logger.info(f"Using benchmark run: {run_dir.name}")
+
+    # DS-13a defense-in-depth: assert model invariants + write per-phase
+    # models_manifest.json BEFORE any API spend. Closes the JUDGE_MODEL /
+    # ANSWER_MODEL drift surface even if runbook hygiene is forgotten.
+    from models_manifest import (
+        assert_answer_model,
+        assert_embedding_model,
+        assert_judge_model,
+        write_models_manifest,
+    )
+    assert_answer_model(ANSWER_MODEL)
+    assert_judge_model(JUDGE_MODEL)
+    assert_embedding_model(EMBEDDING_MODEL)
+    manifest_path = write_models_manifest(
+        run_dir,
+        "answer_quality",
+        answer_model=ANSWER_MODEL,
+        judge_model=JUDGE_MODEL,
+        embedding_model=EMBEDDING_MODEL,
+        answer_temperature=0,
+        judge_temperature=0,
+    )
+    logger.info(f"Wrote models manifest section to {manifest_path}")
+    if args.dry_run:
+        logger.info("Dry-run complete: assertions passed, manifest written, no API spend.")
+        return
 
     if args.fresh:
         import shutil
