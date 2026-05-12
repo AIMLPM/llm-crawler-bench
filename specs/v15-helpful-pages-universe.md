@@ -47,7 +47,7 @@ Three-stage universe construction, decomposed leaderboard, intersection-set sibl
 
 **Stage 1 — Universe enumeration per site.** Define the test universe ONCE per site, independently of any benchmarked tool. Preference order: (a) site `sitemap.xml` if present (fresh fetch, deduped + normalized via `_normalize_url_for_matching`), (b) union of v1.4's per-tool `pages.jsonl` files (capped per site, e.g., ≤5000 URLs after dedup), (c) **no fresh single-tool reference crawl** — that just relocates the anchor. Output: `bench/reference_corpora/<site>/urls.txt`, git-tracked, ~2.6 MB total across 11 sites.
 
-**Stage 2 — Helpful-pages relevance filter.** Per URL: fetch + Haiku call asking "does this page contain substantive content a user might ask RAG queries about, or is it nav / filter / archive / login?" Output: `bench/helpful_pages/<site>.json`, git-tracked. Calibration audit on 100 hand-judged pages × 3 representative sites (a docs site, an ecommerce site, a blog) before full-pool application; 2-3 prompt iterations expected. Multi-call agreement check on the calibration set at 3× to detect prompt softness (Haiku at temp=0 is mostly-but-not-fully deterministic; >5% disagreement on binary classification = prompt too soft, sharpen before lock). Per-site sanity check after full-pool: count helpful pages per site, eyeball 10 lowest-confidence accepts + 10 highest-confidence rejects per site.
+**Stage 2 — Helpful-pages relevance filter.** Per URL: fetch + Haiku call asking "does this page contain substantive content a user might ask RAG queries about, or is it nav / filter / archive / login?" Output: `bench/helpful_pages/<site>.json`, git-tracked. Calibration audit on 100 hand-judged pages × 4 representative sites (docs, ecommerce, blog, small-corpus check via rust-book) before full-pool application; 2-3 prompt iterations expected. Both thresholds at the same difficulty level: per-site ground-truth agreement ≥90% AND multi-call disagreement <5% on the calibration set at 3×. Per-site sanity check after full-pool with double-call confidence proxy on a 20-URL/site sample (~$0.11 total).
 
 **Stage 3 — Query generation from helpful set.** Replace `generate_queries.py`'s crawl4ai-raw sampling with sampling from `bench/helpful_pages/<site>.json`. Carry over v1.4's DS-6 verifier (LLM-generated + LLM-verified, no human in acceptance loop). Output: `queries/v15_queries.json`.
 
@@ -69,7 +69,7 @@ Three-stage universe construction, decomposed leaderboard, intersection-set sibl
 
 - **SC-2** — **Given** the helpful-pages judge runs on the universe, **When** results land at `bench/helpful_pages/<site>.json`, **Then** each entry contains `[url, helpful_classification, rationale, judge_prompt_version, haiku_model_version, judged_at]`. The judge prompt itself lives at `specs/v15-judge-prompt-v1.md` as a versioned, diff-reviewable artifact.
 
-- **SC-3** — **Given** the calibration audit, **When** complete, **Then** 100 hand-judged pages × 3 representative sites have been compared against Haiku's classification, AND multi-call agreement check on the calibration set at 3× shows <5% disagreement on the binary classification. If disagreement ≥5%, the prompt is sharpened and the calibration is re-run before full-pool application. Audit results stored at `bench/calibration_audit_v15.csv`.
+- **SC-3** — **Given** the calibration audit, **When** complete, **Then** 100 hand-judged pages × 4 representative sites (3 content-shape sites + rust-book as small-corpus check) have been compared against Haiku's classification, AND BOTH thresholds met: per-site ground-truth agreement ≥90% AND multi-call agreement check at 3× shows <5% disagreement on the binary classification. The two thresholds are at the same difficulty level — the ≥90% bar catches systematic miscalibration vs ground truth; the <5% bar catches random softness. If either fails, the prompt is sharpened and the calibration is re-run before full-pool application. Audit results stored at `bench/calibration_audit_v15.csv`.
 
 - **SC-4** — **Given** the helpful-pages judge has run on the full universe, **When** per-site sanity check is performed, **Then** for each site: (a) total helpful-pages count is recorded, (b) the 10 lowest-confidence accepts and 10 highest-confidence rejects are eyeballed for systematic prompt failures, (c) any site whose helpful-pages set is <5% or >95% of universe URLs is flagged for prompt review (likely indicates a content-shape failure of the prompt on that site). Sanity-check log stored at `bench/sanity_check_v15.md`.
 
@@ -196,7 +196,7 @@ Acceptance: both files committed on `feature/v15-helpful-pages-universe`. Posted
 
 `tools/build_reference_corpus.py` — per site:
 
-1. Attempt to fetch `<site>/sitemap.xml` (and `sitemap_index.xml`, recursive). Respect robots.txt + 3-attempt backoff. If success: parse `<loc>` elements, normalize via `_normalize_url_for_matching`, dedup, cap at 10000 URLs (alphabetical-tiebreak deterministic), record `sitemap_fetch_date` for the manifest.
+1. Attempt to fetch `<site>/sitemap.xml` (and `sitemap_index.xml`, recursive). Respect robots.txt + 3-attempt backoff. If success: parse `<loc>` elements, normalize via `_normalize_url_for_matching`, dedup. If URL count > 10000, **random-sample 10000 with a fixed seed** (recorded in the manifest as `sitemap_url_sample_seed: <int>`) — preserves determinism across rebuilds while bounding cost symmetrically across sites. Asymmetric raising of the cap for one large site (HF transformers, ~25k URLs) would inflate that site's full-pool spend disproportionately. Per-site limitations note required for any sampled site: "Sitemap had ~25k URLs; v1.5 random-samples 10k with seed N for cost control." Record `sitemap_fetch_date` for the manifest.
 2. If sitemap missing OR yields fewer than 50 URLs (likely stale/incomplete): fall back to union-of-tools. Read all 7 v1.4 tools' `pages.jsonl` for the site from the canonical v1.4 run (`run_v13_merged_20260504_203748`), extract URLs, normalize, dedup, cap at 5000, record `union_of_tools_run_id` for the manifest.
 3. Write `bench/reference_corpora/<site>/urls.txt` (one URL per line, alphabetical for git-diff stability) + `bench/reference_corpora/<site>/source.json` (records which path was used + counts).
 
@@ -214,22 +214,27 @@ Acceptance: SC-1 met. All 11 sites have a `urls.txt` with ≥50 URLs. Source rec
 2. Call Haiku (claude-haiku-4-5-20251001) with the prompt at `specs/v15-judge-prompt-v1.md`. Temperature=0. Two-prefix rationale categories: `helpful:` (with brief rationale) or `non-helpful:` (with category — nav/filter/archive/login/error/empty/index-only).
 3. Write `bench/helpful_pages/<site>.json`: `[{url, classification, rationale, judge_prompt_version, haiku_model_version, judged_at}]`.
 
+**Pre-calibration cost validation (FIRST action of DS-2):**
+
+Before the calibration run itself, fire a 10-page sanity check against Haiku to record actual per-call input/output token counts. Cost: $0.0025 total. Records grounded per-page measurements so the full-pool projection isn't an estimate. If actual cost exceeds the $30 budget cap by >20% at the 10-page check (i.e., projects to >$36 full-pool), escalate to chat.md before proceeding with calibration.
+
 **Calibration audit (BEFORE full-pool):**
 
-1. Pick 3 representative sites covering 3 content shapes (a docs site: `huggingface-docs`, an ecommerce site: `newegg`, a blog: `propublica`).
+1. Pick 4 representative sites covering content-shape diversity + a small-corpus check: docs (`huggingface-transformers`), ecommerce (`newegg`), blog (`propublica`), small-corpus (`rust-book`, ~423 URLs — surfaces the edge case where helpful ratio is high simply because the site is naturally dense).
 2. For each: hand-classify 100 random URLs from its reference corpus → store ground truth at `bench/calibration_ground_truth_v15.csv`.
-3. Run the judge on those 300 URLs. Compute: per-site agreement %, per-site false-helpful + false-non-helpful counts.
-4. Multi-call agreement check: re-run the judge 2 more times on the same 300 URLs (3 total calls). Compute pairwise disagreement %. If >5% disagreement on binary classification, sharpen the prompt and repeat. Document version bumps as `v15-judge-prompt-v1.md` → `v15-judge-prompt-v2.md` etc.
-5. Lock the prompt version when ground-truth agreement ≥85% on each of the 3 calibration sites AND multi-call disagreement <5%.
+3. Run the judge on those 400 URLs. Compute: per-site agreement %, per-site false-helpful + false-non-helpful counts.
+4. Multi-call agreement check: re-run the judge 2 more times on the same 400 URLs (3 total calls). Compute pairwise disagreement %. Document version bumps as `v15-judge-prompt-v1.md` → `v15-judge-prompt-v2.md` etc.
+5. Lock the prompt version when BOTH per-site ground-truth agreement ≥90% on each of the 4 calibration sites AND multi-call disagreement <5%. Both thresholds at the same difficulty level (one catches systematic miscalibration vs ground truth; the other catches random softness).
 
-**Full-pool application:** ~$28 expected spend (10K pages × 11 sites × $0.00025/page Haiku, with caching of repeated fetches).
+**Full-pool application — budget cap framing:** Budget cap = $30 (was previously framed as expected spend ~$28; corrected to cap framing because many sites have far fewer URLs than the 10K cap, so actual spend is bounded above and likely $15-20). Hard escalation threshold = $50 per Risk Assessment R5. Calibration increment for the 4th site (rust-book) is ~$0.075 (100 pages × 3 calls × $0.00025), trivial.
 
 **Per-site sanity check (AFTER full-pool):**
 
 1. Per site: count helpful pages, compute helpful/total ratio.
-2. Eyeball 10 lowest-confidence accepts + 10 highest-confidence rejects per site (judge can return a confidence-like signal via prompt instruction — TBD in the prompt artifact).
-3. Flag any site where helpful ratio is <5% or >95% as likely prompt failure on that site's content shape. If flagged: re-prompt or accept-with-disclosure in METHODOLOGY.md.
-4. Document in `bench/sanity_check_v15.md`.
+2. **Confidence proxy via double-call on the sanity-check sample only (not full-pool).** For each site, sample 20 URLs (random across the full URL set), re-judge each one once more, and flag the URLs where the two calls disagreed as "low confidence." Cost: 20 URLs × 11 sites × 2 calls = 440 extra Haiku calls = ~$0.11 total. This is a 4th call per page on a sampled subset, NOT a 2nd call across all pages — full-pool double-call would be ~$30 and is explicitly out of scope for v1.5 (revisit in v1.5.x if sanity check surfaces systematic confidence problems).
+3. Eyeball 10 lowest-confidence (= disagreed) accepts + 10 highest-confidence (= consistent across calls) rejects per site.
+4. Flag any site where helpful ratio is <5% or >95% as likely prompt failure on that site's content shape. If flagged: re-prompt or accept-with-disclosure in METHODOLOGY.md.
+5. Document in `bench/sanity_check_v15.md`.
 
 Acceptance: SC-2, SC-3, SC-4 met.
 
@@ -305,10 +310,22 @@ Single git-tracked manifest:
     "rust-book": {
       "source": "sitemap",
       "sitemap_fetch_date": "2026-05-XX",
+      "sitemap_url_sample_seed": null,
       "url_list_sha256": "...",
       "url_count": 423,
       "helpful_pages_count": 387,
       "intersection_size": 215,
+      "intersection_excluded_tools": []
+    },
+    "huggingface-transformers": {
+      "source": "sitemap",
+      "sitemap_fetch_date": "2026-05-XX",
+      "sitemap_url_sample_seed": 42,
+      "sitemap_url_total_pre_sample": 25410,
+      "url_list_sha256": "...",
+      "url_count": 10000,
+      "helpful_pages_count": 8214,
+      "intersection_size": 1872,
       "intersection_excluded_tools": []
     },
     "newegg": {
@@ -408,10 +425,12 @@ Modified files:
 - **R4 (low):** Re-fetching sitemaps in future cycles produces incomparable universes. Mitigation: git-tracked corpora + manifest's `sitemap_fetch_date` make universe diffs auditable.
 - **R5 (low):** Calibration cost overruns ($28 budget). Mitigation: cap at $50; if blown, investigate prompt/cache before approving.
 
-## Open Questions
+## Resolved decisions (Q1-Q5, resolved 2026-05-11 in chat.md round-trip)
 
-1. **Calibration site selection — confirmed?** Proposing huggingface-docs (docs), newegg (ecommerce), propublica (blog). Alternatives: postgres-docs (denser docs), bookshop (lighter ecommerce), hackernews (very different blog). Choose three that span content shapes; awaiting markcrawl-agent + paulsave input.
-2. **Haiku model lock — pin to `claude-haiku-4-5-20251001` for v1.5?** Defense-in-depth pattern from v1.4 says yes; assertion fires on drift. Awaiting confirmation.
-3. **Per-page judge cost validation — is $0.00025/page Haiku estimate accurate?** Function of input/output token sizes. Worth a 10-page sanity check before full-pool to confirm budget.
-4. **Sitemap URL cap (10000) — too tight for huggingface-docs?** HF sitemap is ~25k URLs. Either raise cap (more cost downstream) or apply random sampling at 10k (loses determinism). Lean random-sample-with-fixed-seed; awaiting confirmation.
-5. **Universe rebuild cadence — when does v1.5.x bump rebuild the universe vs reuse v1.5's?** Default: reuse until a content-shape change is observed. Document in METHODOLOGY.md.
+Audit trail preserved here so a future reader can see the deliberation that shaped the spec body above.
+
+1. **Calibration site selection — RESOLVED.** Four sites: `huggingface-transformers` (docs), `newegg` (ecommerce), `propublica` (blog), `rust-book` (small-corpus check). Rust-book added on markcrawl-agent's suggestion to surface the edge case where helpful ratio is naturally high simply because the site is content-dense. Cost increment ~$0.075. Baked into DS-2 + SC-3.
+2. **Haiku model lock — RESOLVED.** Pin to `claude-haiku-4-5-20251001` for v1.5. Drift assertion at universe-build time mirrors v1.4 `models_manifest.json` defense-in-depth.
+3. **Per-page cost validation — RESOLVED.** 10-page sanity check is the FIRST action of DS-2 (after ground-truth hand-judging, before calibration run). $0.0025 spend. If projection >$36 (>20% over $30 cap), escalate to chat.md before proceeding. Baked into DS-2.
+4. **Sitemap URL cap — RESOLVED.** Random-sample-with-fixed-seed at 10000. Manifest field `sitemap_url_sample_seed: <int>` records the seed. Symmetric across sites; cost-bounded; deterministic across rebuilds. Per-site limitations note required for any sampled site. Baked into DS-1 + DS-7 manifest schema.
+5. **Universe rebuild cadence — RESOLVED.** Reuse by default. Concrete rebuild triggers: (a) any site's sitemap returns >20% URL delta vs the recorded list, (b) v1.5.x version adds/removes a site, (c) judge prompt version bumps. Baked into DS-8 (METHODOLOGY.md update).

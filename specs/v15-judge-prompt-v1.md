@@ -78,8 +78,8 @@ If NON-HELPFUL, prefix with one of:
 
 Examples:
 
-URL: https://docs.huggingface.co/transformers/model_doc/bert
-Title: BERT — Hugging Face documentation
+URL: https://huggingface.co/docs/transformers/model_doc/bert
+Title: BERT — Hugging Face transformers documentation
 HELPFUL
 helpful-docs: Reference documentation for the BERT model with class signatures, parameters, and usage examples.
 
@@ -116,14 +116,16 @@ Now classify the URL above. Output exactly two lines.
 
 ## Calibration acceptance thresholds (from spec SC-3)
 
-- Per-site agreement with hand-judged ground truth ≥85% on each of the 3 calibration sites
-- Multi-call self-agreement on the same 100 calibration pages, 3 calls: <5% disagreement on binary classification
+Both thresholds must be met for prompt lock; they are at the same difficulty level (one catches systematic miscalibration vs ground truth, the other catches random softness):
 
-If thresholds are not met:
+- **Per-site agreement with hand-judged ground truth ≥90%** on each of the 4 calibration sites (huggingface-transformers, newegg, propublica, rust-book)
+- **Multi-call self-agreement on the same 400 calibration pages, 3 calls: <5% disagreement** on binary classification
+
+If either threshold is not met:
 1. Identify the specific failure mode (false-helpful or false-non-helpful, on which content shapes)
 2. Sharpen the prompt — add explicit rule, add example, or refine category definition
 3. Increment version: this file becomes `specs/v15-judge-prompt-v2.md`
-4. Re-run calibration on the same 300 pages
+4. Re-run calibration on the same 400 pages
 5. Repeat up to 3 iterations; if still failing, escalate to chat.md for joint design review
 
 ## Per-site sanity check thresholds (from spec SC-4)
@@ -133,7 +135,7 @@ After full-pool application:
 - Per-site helpful ratio > 95% → flag for prompt review (likely systematic over-acceptance)
 - Manual eyeball: 10 lowest-confidence accepts + 10 highest-confidence rejects per site
 
-Confidence proxy: Haiku does not natively return per-call confidence. We approximate by sampling each page TWICE (one extra call beyond the canonical) and flagging URLs where the two calls disagreed. Disagreement = "low confidence." This adds ~$3 to the full-pool spend but materially aids the sanity check. Documented separately as `tools/judge_helpful_pages.py --confidence-mode`.
+Confidence proxy: Haiku does not natively return per-call confidence. We approximate by re-judging a **sampled subset** (20 URLs/site × 11 sites = 220 URLs) once more (440 extra calls = ~$0.11) and flagging URLs where the two calls disagreed as "low confidence." Disagreement = "low confidence." Full-pool double-call (~$30) is explicitly out of scope for v1.5 — revisit in v1.5.x only if the sanity-check sample surfaces systematic confidence problems. Documented as `tools/judge_helpful_pages.py --confidence-sample-mode`.
 
 ## Prompt-version migration
 
