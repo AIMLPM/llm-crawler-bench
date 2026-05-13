@@ -15,6 +15,7 @@ dependencies = [
     "python-dotenv",
     "psutil",
     "openai",
+    "anthropic",
     "numpy",
     "rank_bm25",
     "sentence-transformers",
