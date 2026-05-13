@@ -121,7 +121,10 @@ MAX_CONTENT_CHARS = 2000
 
 # Model versions (per spec resolved decisions Q2 + R-E snapshot resolver).
 HAIKU_MODEL = "claude-haiku-4-5-20251001"  # pinned, drift assertion fires on mismatch
-GPT4OMINI_FAMILY_PREFIX = "gpt-4o-mini-"   # resolver picks latest GA snapshot
+GPT4OMINI_FAMILY_PREFIX = "gpt-4o-mini"     # resolver picks latest CHAT-only GA snapshot
+# Chat-only snapshot pattern: gpt-4o-mini OR gpt-4o-mini-YYYY-MM-DD.
+# Rejects audio/realtime/search/transcribe/tts variants that share the prefix.
+GPT4OMINI_CHAT_RE = re.compile(r"^gpt-4o-mini(-\d{4}-\d{2}-\d{2})?$")
 
 # HTTP fetch (for sitemap-source calibration sites lacking v1.4 cache).
 USER_AGENT = "bench-agent-v1.5/1.0 (+https://github.com/AIMLPM/llm-crawler-benchmarks)"
@@ -208,24 +211,31 @@ def _openai_client():
 
 
 def resolve_gpt4omini_snapshot(client) -> Optional[str]:
-    """R-E: pick the most-recent `gpt-4o-mini-*` GA snapshot via
+    """R-E: pick the most-recent `gpt-4o-mini` CHAT-only GA snapshot via
     client.models.list(). Returns None if no snapshot available
     (escape-hatch path → SC-14 records `blocked — gpt-4o-mini snapshot
-    unavailable`)."""
+    unavailable`).
+
+    Filter is strict: only `gpt-4o-mini` (alias) and dated chat snapshots
+    `gpt-4o-mini-YYYY-MM-DD`. Rejects audio/realtime/search/transcribe/tts
+    variants that share the prefix — those break /v1/chat/completions
+    with a 404 'not a chat model' error (caught 2026-05-13 during smoke
+    test where `gpt-4o-mini-tts-2025-12-15` sorted higher than the
+    real chat snapshot)."""
     try:
         models = client.models.list()
     except Exception as e:
         logger.warning(f"OpenAI models.list() failed: {e}")
         return None
-    candidates = [
-        m.id for m in models.data
-        if m.id.startswith(GPT4OMINI_FAMILY_PREFIX)
-    ]
-    if not candidates:
+    chat_candidates = [m.id for m in models.data if GPT4OMINI_CHAT_RE.match(m.id)]
+    if not chat_candidates:
         return None
-    # Snapshot IDs include date suffix (e.g., gpt-4o-mini-2024-07-18);
-    # sort lexically descending picks the most recent.
-    return sorted(candidates, reverse=True)[0]
+    # Prefer dated snapshots over the bare alias for reproducibility (alias
+    # rolls forward silently). If no dated snapshot, fall back to alias.
+    dated = sorted([c for c in chat_candidates if "-20" in c], reverse=True)
+    if dated:
+        return dated[0]
+    return chat_candidates[0]
 
 
 def call_haiku(client, prompt: str) -> JudgeResult:
@@ -540,25 +550,15 @@ def mode_sanity_check(args) -> int:
     logger.info(f"Budget cap: $30  |  Hard escalation: $36 (>20% over cap)")
     logger.info("")
 
-    # Format-compliance gate per spec DS-2.
-    if gpt_parse_warnings > 1:  # >10% of 10 fails
-        logger.error(
-            f"gpt-4o-mini parse warnings = {gpt_parse_warnings} / 10 — "
-            "format-compliance gate FAILED (>10% threshold)."
-        )
-        logger.error("ESCALATE to chat.md before proceeding to calibration.")
-        return 3
-    # Cost-projection gate per spec DS-2.
-    if projected_full_pool > 36:
-        logger.error(
-            f"Projected full-pool ${projected_full_pool:.2f} > $36 cap-plus-20% — "
-            "cost-projection gate FAILED."
-        )
-        logger.error("ESCALATE to chat.md before proceeding to calibration.")
-        return 4
+    # Determine gate outcomes (compute BEFORE persistence so the JSON
+    # records them, even when a gate fails — auditable data must be
+    # written regardless of subsequent flow control).
+    format_gate = "PASS" if gpt_parse_warnings <= 1 else "FAIL"
+    cost_gate = "PASS" if projected_full_pool <= 36 else "FAIL"
 
-    # Persist results for the chat.md confirmation.
-    out_path = REPO_ROOT / "bench" / "sanity_check_v15_dual.json"
+    # Persist results for the chat.md confirmation (BEFORE gate-exit so
+    # measurement always gets recorded; the chat.md escalation needs it).
+    out_path = REPO_ROOT / "bench" / "sanity_check_v15.json"
     out_path.write_text(json.dumps({
         "started_at": _dt.datetime.now(_dt.UTC).isoformat(),
         "site": SANITY_CHECK_SITE,
@@ -578,10 +578,33 @@ def mode_sanity_check(args) -> int:
             "combined": round(total_cost_per_page, 6),
         },
         "projected_full_pool_usd": round(projected_full_pool, 2),
-        "gates": {"format_compliance": "PASS", "cost_projection": "PASS"},
+        "universe_size_assumed": universe_size,
+        "haiku_pricing_assumed_per_million": {"input": 0.80, "output": 4.00},
+        "gpt4omini_pricing_assumed_per_million": {"input": 0.15, "output": 0.60},
+        "gates": {"format_compliance": format_gate, "cost_projection": cost_gate},
+        "budget_cap_usd": 30,
+        "escalation_threshold_usd": 36,
         "results": results,
     }, indent=2, default=str))
-    logger.info(f"Sanity check results: {out_path.relative_to(REPO_ROOT)}")
+    logger.info(f"Sanity check results persisted: {out_path.relative_to(REPO_ROOT)}")
+
+    # Gate-exit AFTER persistence — measurements are audit data regardless
+    # of pass/fail; the escalation message references them by file path.
+    if format_gate == "FAIL":
+        logger.error(
+            f"gpt-4o-mini parse warnings = {gpt_parse_warnings} / 10 — "
+            "format-compliance gate FAILED (>10% threshold)."
+        )
+        logger.error("ESCALATE to chat.md before proceeding to calibration.")
+        return 3
+    if cost_gate == "FAIL":
+        logger.error(
+            f"Projected full-pool ${projected_full_pool:.2f} > $36 cap-plus-20% — "
+            "cost-projection gate FAILED."
+        )
+        logger.error("ESCALATE to chat.md before proceeding to calibration.")
+        return 4
+
     logger.info("Both gates PASS. Cleared to proceed to calibration scaffold + hand-judging.")
     return 0
 
