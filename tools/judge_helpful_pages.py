@@ -747,7 +747,7 @@ def mode_sanity_check(args) -> int:
     logger.info(f"Combined per-page cost:                                 ${combined_avg_cost:.6f}")
     logger.info(f"Projected full-pool cost ({universe_size:,} URLs, naive scale): ${projected_full_pool:.2f}")
     logger.info(f"Projected full-pool cost (best case, all cache reads):  ${best_case_pool:.2f}")
-    logger.info(f"Budget cap: $30  |  Hard escalation: $36 (>20% over cap)")
+    logger.info("Budget cap: $30  |  Hard escalation: $36 (>20% over cap)")
     logger.info("")
 
     format_gate = "PASS" if gpt_parse_warnings <= 1 else "FAIL"
@@ -1258,7 +1258,7 @@ def mode_calibration(args) -> int:
         "",
         "## Canonical model pick",
         "",
-        f"Pick rule: higher per-site ground-truth agreement (Haiku tiebreak default).",
+        "Pick rule: higher per-site ground-truth agreement (Haiku tiebreak default).",
         f"- Haiku avg per-site agreement: **{haiku_avg:.2f}%**",
         f"- gpt-4o-mini avg per-site agreement: **{gpt_avg:.2f}%**",
         f"- **Canonical**: `{canonical}`",
@@ -1356,7 +1356,7 @@ def mode_full_pool(args) -> int:
         wanted = {s.strip() for s in args.sites.split(",") if s.strip()}
         target_sites = [s for s in target_sites if s in wanted]
     if not target_sites:
-        logger.error(f"No sites match filter; check pool config or --sites flag.")
+        logger.error("No sites match filter; check pool config or --sites flag.")
         return 1
 
     prefix_block, suffix_template = load_prompt_blocks()

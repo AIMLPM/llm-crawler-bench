@@ -27,16 +27,15 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from tools.build_reference_corpus import (  # noqa: E402
     OUTPUT_DIR,
-    MANIFEST_PATH,
+    SITEMAP_SAMPLE_SEED,
     _session,
     dedup_normalize,
     fetch_sitemap,
+    init_manifest_top_level,
     load_manifest,
     load_pool_sites,
     sample_if_oversized,
     write_manifest,
-    init_manifest_top_level,
-    SITEMAP_SAMPLE_SEED,
 )
 
 RECAP_CAP = 5000
