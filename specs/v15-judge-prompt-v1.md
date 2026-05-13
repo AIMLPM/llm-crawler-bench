@@ -2,23 +2,29 @@
 artifact: judge_prompt
 version: v1
 date: 2026-05-11
-model: claude-haiku-4-5-20251001
+models:
+  primary_haiku: claude-haiku-4-5-20251001
+  secondary_gpt4omini: gpt-4o-mini (current GA snapshot, resolved at universe-build time per spec DS-2)
+model_agnostic: true
 temperature: 0
 parent_spec: specs/v15-helpful-pages-universe.md
 status: draft
 ---
 
-# v1.5 Helpful-Pages Judge Prompt — v1
+# v1.5 Helpful-Pages Judge Prompt — v1 (model-agnostic, dual-model use)
 
-This is a **separately versioned, diff-reviewable artifact**. The prompt below is consumed by `tools/judge_helpful_pages.py` to classify each URL in the v1.5 reference corpora as `helpful` or `non-helpful` for RAG query generation. When a calibration audit reveals systematic prompt failure, the next iteration lands at `specs/v15-judge-prompt-v2.md` (and so on); the universe manifest records which prompt version judged the corpus.
+This is a **separately versioned, diff-reviewable artifact**. The prompt below is consumed by `tools/judge_helpful_pages.py` to classify each URL in the v1.5 reference corpora as `helpful` or `non-helpful` for RAG query generation. When a calibration audit reveals systematic prompt failure (under EITHER judge model), the next iteration lands at `specs/v15-judge-prompt-v2.md` (and so on); the universe manifest records which prompt version judged the corpus.
+
+**Dual-model usage (DS-2 amendment, 2026-05-12).** The same prompt is sent to BOTH judge models — primary Haiku (`claude-haiku-4-5-20251001`) and secondary gpt-4o-mini (snapshot resolved at universe-build time). The prompt is intentionally model-agnostic: no Claude-specific or OpenAI-specific instructions, no system-role assumptions, no proprietary directive syntax. If the calibration audit at SC-3 reveals one model interprets the prompt materially differently from the other (per-class agreement gap >5 pp), that surfaces as a prompt-design issue rather than a model-choice issue, and the prompt is iterated.
 
 The classification powers two downstream artifacts:
-- `bench/helpful_pages/<site>.json` — universe of pages from which queries are sampled
-- `tools/intersection_set.py` — intersection-set sibling report computes MRR only on `intersection ⊂ helpful-pages`
+- `bench/helpful_pages/<site>.json` — merged canonical universe of pages from which queries are sampled (canonical pick per SC-3 calibration)
+- `bench/helpful_pages_disagreement.csv` — per-URL disagreement rows for cross-model methodology validation
+- `tools/intersection_set.py` — intersection-set sibling report computes MRR only on `intersection ⊂ helpful-pages` (under the canonical model)
 
-A loose prompt produces a contaminated universe (boilerplate inflates intersection MRR; nav pages produce nonsensical queries). A strict prompt under-covers substantive content (API references with sparse prose may be wrongly rejected). The calibration audit (SC-3) is the gate that catches both failure modes before full-pool application.
+A loose prompt produces a contaminated universe (boilerplate inflates intersection MRR; nav pages produce nonsensical queries). A strict prompt under-covers substantive content (API references with sparse prose may be wrongly rejected). The calibration audit (SC-3) is the gate that catches both failure modes before full-pool application — applied independently to BOTH models.
 
-## Prompt body (sent to Haiku)
+## Prompt body (sent to BOTH judge models, model-agnostic)
 
 ```
 You are classifying whether a single web page contains substantive
@@ -114,19 +120,26 @@ Now classify the URL above. Output exactly two lines.
 - **Localized mirrors are flagged** even though the v1.5 sampler also has `is_locale_mirror_url()` filtering — defense in depth.
 - **Cookie banners / ToS / privacy** are explicitly non-helpful even though they are informational. They are not what users ask the site about.
 
-## Calibration acceptance thresholds (from spec SC-3)
+## Calibration acceptance thresholds (from spec SC-3, dual-model)
 
-Both thresholds must be met for prompt lock; they are at the same difficulty level (one catches systematic miscalibration vs ground truth, the other catches random softness):
+All THREE thresholds must be met by EACH MODEL INDEPENDENTLY for prompt lock; they catch different failure modes at the same difficulty level:
 
-- **Per-site agreement with hand-judged ground truth ≥90%** on each of the 4 calibration sites (huggingface-transformers, newegg, propublica, rust-book)
-- **Multi-call self-agreement on the same 400 calibration pages, 3 calls: <5% disagreement** on binary classification
+- **Per-site ground-truth agreement ≥90%** on each of the 4 calibration sites (huggingface-transformers, newegg, propublica, rust-book) — catches systematic miscalibration vs ground truth.
+- **Multi-call self-agreement on the same 400 calibration pages, 3 calls: <5% disagreement** on binary classification — catches random softness.
+- **Per-class agreement ≥85%** on each binary class (helpful, non-helpful) — prevents class imbalance from hiding minority-class miscalibration. Reported alongside Cohen's kappa per site in `reports/methodology_validation.md` ("almost perfect" per Landis-Koch convention is κ ≥ 0.8).
 
-If either threshold is not met:
-1. Identify the specific failure mode (false-helpful or false-non-helpful, on which content shapes)
-2. Sharpen the prompt — add explicit rule, add example, or refine category definition
-3. Increment version: this file becomes `specs/v15-judge-prompt-v2.md`
-4. Re-run calibration on the same 400 pages
-5. Repeat up to 3 iterations; if still failing, escalate to chat.md for joint design review
+If any threshold fails on EITHER model:
+1. Identify the specific failure mode (which model, false-helpful or false-non-helpful, on which content shapes, on which calibration site).
+2. Sharpen the prompt — add explicit rule, add example, or refine category definition. Both models share the prompt; iteration affects both calibrations.
+3. Increment version: this file becomes `specs/v15-judge-prompt-v2.md`.
+4. Re-run calibration on the same 400 pages with BOTH models.
+5. Repeat up to 3 iterations. After 3 failed iterations:
+   - If BOTH models still fail similarly → prompt cannot be salvaged with current design; escalate to chat.md for joint redesign review.
+   - If only gpt-4o-mini fails → escape hatch: drop gpt-4o-mini, set `canonical = "haiku"`, mark SC-14's `v15x_can_drop_to_single_cheap` as `"blocked — gpt-4o-mini failed calibration"`, and render the templated disclosure paragraph below in `reports/methodology_validation.md` (the paragraph is gated on this case firing; absent otherwise):
+
+     > v1.5.0 attempted dual-model judge validation. After N prompt iterations, gpt-4o-mini failed to meet the ≥90% ground-truth agreement / <5% multi-call / ≥85% per-class threshold on calibration site M. The methodology proceeds with Haiku-only judgment for v1.5.0 publication; v1.5.x may re-attempt validation with a revised prompt or an alternative cheap-model candidate. SC-14 cannot be evaluated this cycle.
+
+   - If only Haiku fails → methodology emergency (Haiku is the locked canonical); escalate to chat.md for joint design review immediately.
 
 ## Per-site sanity check thresholds (from spec SC-4)
 

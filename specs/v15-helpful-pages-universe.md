@@ -18,8 +18,10 @@ affected_code:
   - tools/judge_helpful_pages.py (new — dual-model: Haiku + gpt-4o-mini)
   - tools/intersection_set.py (new)
   - bench/reference_corpora/<site>/urls.txt (new git-tracked artifact, 11 files)
-  - bench/helpful_pages/<site>.json (new git-tracked artifact, 11 files; dual-model schema)
-  - bench/helpful_pages_disagreement.csv (new git-tracked artifact — per-URL disagreement rows)
+  - bench/helpful_pages_haiku/<site>.json (new git-tracked artifact, 11 files — raw Haiku output, per-R-B)
+  - bench/helpful_pages_gpt4omini/<site>.json (new git-tracked artifact, 11 files — raw gpt-4o-mini output, per-R-B)
+  - bench/helpful_pages/<site>.json (new git-tracked artifact, 11 files — merged canonical, dual-model schema)
+  - bench/helpful_pages_disagreement.csv (new git-tracked artifact — per-URL disagreement rows from merge step)
   - bench/universe_manifest.json (new git-tracked artifact; includes judge_models + inter_model_agreement)
   - specs/v15-judge-prompt-v1.md (new versioned prompt artifact; model-agnostic)
   - queries/v15_queries.json (new)
@@ -69,7 +71,7 @@ Three-stage universe construction, decomposed leaderboard, intersection-set sibl
 
 - **SC-1** — **Given** a v1.5 cycle, **When** `bench/reference_corpora/<site>/urls.txt` is built, **Then** every site's URL list comes from either (a) a fresh `sitemap.xml` fetch (with `fetch_date` recorded in the manifest), or (b) the deduped+normalized union of all 7 v1.4 tools' `pages.jsonl` files (with the source `run_id` recorded in the manifest). No site's universe comes from a single fresh tool-specific reference crawl.
 
-- **SC-2** — **Given** the helpful-pages judge runs on the universe (dual-model: Haiku + gpt-4o-mini), **When** results land at `bench/helpful_pages/<site>.json`, **Then** each entry contains the dual-model schema: `[url, haiku: {classification, rationale, judged_at, judge_call_id}, gpt4omini: {classification, rationale, judged_at, judge_call_id}, canonical: "haiku"|"gpt4omini", agreement: bool, judge_prompt_version, haiku_model_version, gpt4omini_model_version]`. Per-URL disagreement rows (where `agreement == false`) also land in `bench/helpful_pages_disagreement.csv` with both rationales for review. The judge prompt itself lives at `specs/v15-judge-prompt-v1.md` as a versioned, diff-reviewable artifact — the prompt is model-agnostic (validated in DS-2 calibration that both models follow the two-line output discipline).
+- **SC-2** — **Given** the helpful-pages judge runs on the universe (dual-model: Haiku + gpt-4o-mini), **When** results land in `bench/`, **Then** they appear in three git-tracked trees: (i) `bench/helpful_pages_haiku/<site>.json` (raw Haiku output, per-URL), (ii) `bench/helpful_pages_gpt4omini/<site>.json` (raw gpt-4o-mini output, per-URL), (iii) `bench/helpful_pages/<site>.json` (merged canonical, dual-model schema). The merged schema has each entry contain: `[url, haiku: {classification, rationale, judged_at, judge_call_id}, gpt4omini: {classification, rationale, judged_at, judge_call_id}, canonical: "haiku"|"gpt4omini", agreement: bool, judge_prompt_version, haiku_model_version, gpt4omini_model_version]`. Per-URL disagreement rows (where `agreement == false`) also land in `bench/helpful_pages_disagreement.csv` with both rationales for review. The judge prompt itself lives at `specs/v15-judge-prompt-v1.md` as a versioned, diff-reviewable artifact — the prompt is model-agnostic (validated in DS-2 calibration that both models follow the two-line output discipline). The per-model split (R-B) avoids write-race conditions and preserves per-model diffability when v1.5.x revisits.
 
 - **SC-3** — **Given** the dual-model calibration audit, **When** complete, **Then** 100 hand-judged pages × 4 representative sites (3 content-shape sites + rust-book as small-corpus check) have been compared independently against BOTH Haiku's AND gpt-4o-mini's classifications, AND each model independently meets THREE thresholds: per-site ground-truth agreement ≥90% AND multi-call self-agreement check at 3× shows <5% disagreement AND per-class agreement ≥85% on each binary class (helpful, non-helpful). The three thresholds catch different failure modes — the ≥90% bar catches systematic miscalibration; the <5% bar catches random softness; the per-class ≥85% bar prevents class imbalance from hiding minority-class miscalibration (e.g., if helpful pages are 80% of the universe, a model could hit 90% raw agreement while being only 50% accurate on the non-helpful class). Canonical model = the one with higher overall ground-truth agreement on the calibration set; tiebreak → Haiku (status-quo default per v1.5 spec lock). If either model fails any threshold, the spec branches: (a) if the prompt is at fault (both models fail similarly), iterate the prompt and re-run both calibrations; (b) if only one model fails, the canonical pick defaults to the passing model and SC-14 marks `v15x_can_drop_to_single_cheap` as "blocked — <failed-model> failed calibration." Audit results stored at `bench/calibration_audit_v15.csv` (both models' per-page outputs alongside ground truth).
 
@@ -226,8 +228,12 @@ Acceptance: SC-1 met. All 11 sites have a `urls.txt` with ≥50 URLs. Source rec
 2. Call Haiku (`claude-haiku-4-5-20251001`) with the prompt at `specs/v15-judge-prompt-v1.md`. Temperature=0.
 3. Call gpt-4o-mini (model snapshot pinned to current GA at universe-build time — see Model lock note below) with the SAME prompt. Temperature=0. The prompt is model-agnostic; DS-2 calibration validates both models follow the two-line output discipline.
 4. Sequential per-URL (NOT parallel across models). Sequential ordering keeps rate-limit accounting simple per provider; the bench is not latency-sensitive (universe build is offline). Per-call back-off is the existing tenacity retry pattern; if either provider's request fails after retries, that URL is skipped and logged for re-judgment (do NOT silently fall back to single-model on a sampled URL).
-5. Write `bench/helpful_pages/<site>.json` in the dual-model schema (per SC-2): each entry has both models' outputs, the canonical pick (set per-corpus from calibration result), the agreement boolean, prompt version, both model versions, and timestamps.
-6. Emit per-URL disagreement rows (where `agreement == false`) to `bench/helpful_pages_disagreement.csv` for the methodology-validation report.
+5. **Two-stage write (per-model first, then merge — R-B):** Write raw per-model results separately to avoid write-races and preserve per-model diffability:
+   - `bench/helpful_pages_haiku/<site>.json` — Haiku per-URL classifications (raw output, model-specific).
+   - `bench/helpful_pages_gpt4omini/<site>.json` — gpt-4o-mini per-URL classifications (raw output, model-specific).
+   - `bench/helpful_pages/<site>.json` — merged canonical output (deterministic post-processor combines the two per-model files), in the dual-model schema (per SC-2): each entry has both models' outputs, the canonical pick (set per-corpus from calibration result), the agreement boolean, prompt version, both model versions, and timestamps.
+   - All three trees are git-tracked. If a per-model run dies mid-way, the merge step can resume from the partial per-model files without rerunning the completed model.
+6. Emit per-URL disagreement rows (where `agreement == false`) to `bench/helpful_pages_disagreement.csv` for the methodology-validation report. Generated from the merge step.
 
 **Model lock — both judges:**
 
@@ -247,8 +253,16 @@ Before the calibration run itself, fire a 10-page sanity check against BOTH Haik
 3. Run BOTH judges on those 400 URLs (independent runs, neither model sees the other's output). Compute, FOR EACH MODEL INDEPENDENTLY: per-site agreement %, per-site false-helpful + false-non-helpful counts, per-class agreement % (helpful / non-helpful separately).
 4. Multi-call agreement check FOR EACH MODEL: re-run each judge 2 more times on the same 400 URLs (3 total calls per model). Compute pairwise disagreement %. Document version bumps as `v15-judge-prompt-v1.md` → `v15-judge-prompt-v2.md` etc. (a prompt iteration triggers re-calibration of BOTH models).
 5. Lock the prompt version when EACH MODEL INDEPENDENTLY meets THREE thresholds: per-site ground-truth agreement ≥90% on each of the 4 calibration sites AND multi-call self-disagreement <5% AND per-class agreement ≥85% on each binary class.
-6. **Canonical pick:** the model with higher overall ground-truth agreement on the 400-URL calibration set. Record in `bench/universe_manifest.json` under `judge_models.canonical_choice` with `canonical_chose_by: "calibration_ground_truth_agreement"`. If tied within 0.5 pp, tiebreak → `haiku` (status-quo per spec lock).
-7. **Asymmetric failure handling:** If only one model fails calibration, the canonical pick defaults to the passing model and SC-14 records `blocked — <failed-model> failed calibration`. v1.5.x cycles continue with the passing model only; no SC-14 viability evaluation against the failed model. If both models fail similarly, the prompt is at fault — iterate per (5) above. If both models fail differently, escalate to chat.md for joint review of whether the disagreement is prompt or content.
+6. **R-A — Companion metric for methodology paper:** Compute Cohen's kappa per site + overall, alongside raw agreement %. The headline criterion remains raw agreement (95%/90%/85% thresholds per SC-3 + SC-14); kappa is reported in `reports/methodology_validation.md` as the "shown work" because κ is the standard inter-rater bar reviewers expect for binary classification. Landis-Koch convention: κ ≥ 0.8 is "almost perfect." Trivial computation (single numpy line per site).
+7. **Canonical pick:** the model with higher overall ground-truth agreement on the 400-URL calibration set. Record in `bench/universe_manifest.json` under `judge_models.canonical_choice` with `canonical_chose_by: "calibration_ground_truth_agreement"`. If tied within 0.5 pp, tiebreak → `haiku` (status-quo per spec lock).
+8. **R-D — Calibration failure rule (prompt-iteration cap + escape hatch):** Failure handling proceeds in this order:
+   - (a) If both models fail similarly (prompt is at fault), iterate the prompt — bump version to `v15-judge-prompt-v2.md` (and so on) and re-run calibration on both models. Allowed up to **3 prompt iterations**.
+   - (b) If only one model fails calibration after each iteration: continue iterating the prompt up to the 3-iteration cap (the prompt is the shared surface; we don't want to ship a known-failed secondary). If after 3 iterations only one model has converged, fire the **escape hatch**: drop the failing model, proceed canonical = passing model, SC-14 records `blocked — <failed-model> failed calibration after 3 prompt iterations`. Templated disclosure paragraph below MUST render in `reports/methodology_validation.md`.
+   - (c) If both models fail differently or the 3-iteration cap is reached with neither converging, escalate to chat.md for joint review (continue Haiku-only with disclosure vs broader prompt redesign vs delay v1.5.0).
+9. **Templated disclosure paragraph (renders only if R-D escape hatch fires):** in `reports/methodology_validation.md` under section "Calibration failure handling":
+   > v1.5.0 attempted dual-model judge validation. After N prompt iterations, `<failed-model>` failed to meet the ≥90% ground-truth agreement / <5% multi-call disagreement / ≥85% per-class agreement thresholds on calibration site(s) `<sites>`. The methodology proceeds with `<passing-model>`-only judgment for v1.5.0 publication; v1.5.x may re-attempt validation with a revised prompt or an alternative cheap-model candidate. SC-14 cannot be evaluated this cycle (`v15x_can_drop_to_single_cheap: blocked`).
+
+   If both models calibrate successfully, this paragraph stays unrendered in `methodology_validation.md` (gated on the escape hatch firing). Don't hide the failure mode — it's data.
 
 **Full-pool application — budget cap framing:** Budget cap = $30 (covers Haiku full-pool ~$15 + gpt-4o-mini full-pool ~$6 + calibration audits on both ~$1 + sanity-check confidence proxy ~$0.11 + headroom). Hard escalation threshold = $50 per Risk Assessment R5. The dual-model cost increment over single-judge is ~$5 marginal in v1.5.0 (offset by potential ~$10/cycle savings in v1.5.x if SC-14 thresholds met). If the 10-page validation projects full-pool combined cost >$36, escalate before firing.
 
@@ -265,9 +279,11 @@ Before the calibration run itself, fire a 10-page sanity check against BOTH Haik
 After full-pool dual-model judging completes, generate `reports/methodology_validation.md`:
 
 1. Overall inter-model agreement %, per-site inter-model agreement %, per-class min agreement %.
-2. SC-14 evaluation: which row of the criterion table applies; the resulting `v15x_can_drop_to_single_cheap` boolean.
-3. Disagreement analysis from `bench/helpful_pages_disagreement.csv`: top 3 sites by disagreement count, content-shape patterns (e.g., "47% of disagreements are on API-reference pages where Haiku says helpful and gpt-4o-mini says non-helpful").
-4. Recommendation for v1.5.x cycles: drop to gpt-4o-mini-only / targeted dual-judge / keep full dual-judge.
+2. Cohen's kappa per site + overall (R-A — companion metric; Landis-Koch convention κ ≥ 0.8 = "almost perfect"). Raw agreement % stays as headline criterion per SC-14; kappa is the "shown work" for methodology-paper reviewers.
+3. SC-14 evaluation: which row of the criterion table applies; the resulting `v15x_can_drop_to_single_cheap` boolean.
+4. Disagreement analysis from `bench/helpful_pages_disagreement.csv`: top 3 sites by disagreement count, content-shape patterns (e.g., "47% of disagreements are on API-reference pages where Haiku says helpful and gpt-4o-mini says non-helpful").
+5. Calibration failure handling section (R-D — renders only if escape hatch fires per the templated disclosure paragraph above; stays unrendered when both models calibrate successfully).
+6. Recommendation for v1.5.x cycles: drop to gpt-4o-mini-only / targeted dual-judge / keep full dual-judge.
 
 Acceptance: SC-2, SC-3, SC-4, SC-14 met.
 
@@ -430,7 +446,7 @@ Append to METHODOLOGY.md:
    - Intersection-set boilerplate inflation: defense = intersection ⊂ helpful-pages (under the canonical model).
 3. **Per-site limitations section**: "helpful-pages count = (sitemap OR union-of-tools-discovered) ∩ LLM-judged-helpful (under the canonical model), NOT all substantive content the site contains. Sites with sitemap incompleteness or systematic union-of-tools blindspots will have helpful-pages sets that under-cover the site. Sites with high inter-model judge disagreement (below SC-14 per-site thresholds) are flagged in `reports/methodology_validation.md` and warrant dual-judge in subsequent cycles."
 4. **Multi-trial roadmap paragraph**: "v1.5 = locked-foundation single-trial; v1.5.1 = first multi-trial cycle."
-5. **Dual-judge methodology section**: Brief explainer of why two judges (defends "why this model?" attack; produces forward-looking decision data) + pointer to `reports/methodology_validation.md` + the SC-14 criterion table.
+5. **Dual-judge methodology section**: Brief explainer of why two judges (defends "why this model?" attack; produces forward-looking decision data) + pointer to `reports/methodology_validation.md` + the SC-14 criterion table + Cohen's kappa companion metric (κ ≥ 0.8 = Landis-Koch "almost perfect" bar; raw agreement remains the headline criterion, kappa is the methodology-paper-reviewer "shown work").
 
 Acceptance: SC-9, SC-11 met.
 
@@ -472,8 +488,10 @@ New files (all git-tracked unless noted):
 - `tools/intersection_set.py`
 - `bench/reference_corpora/<site>/urls.txt` × 11
 - `bench/reference_corpora/<site>/source.json` × 11
-- `bench/helpful_pages/<site>.json` × 11 (dual-model schema per SC-2)
-- `bench/helpful_pages_disagreement.csv` (per-URL inter-model disagreement rows + both rationales)
+- `bench/helpful_pages_haiku/<site>.json` × 11 (raw Haiku per-URL output, R-B per-model split)
+- `bench/helpful_pages_gpt4omini/<site>.json` × 11 (raw gpt-4o-mini per-URL output, R-B per-model split)
+- `bench/helpful_pages/<site>.json` × 11 (merged canonical, dual-model schema per SC-2; output of merge step)
+- `bench/helpful_pages_disagreement.csv` (per-URL inter-model disagreement rows + both rationales, output of merge step)
 - `bench/calibration_ground_truth_v15.csv` (400 hand-judged pages — 100 × 4 calibration sites)
 - `bench/calibration_audit_v15.csv` (BOTH judges' results vs ground truth + multi-call agreement per model)
 - `bench/sanity_check_v15.md` (per-site sanity check log, canonical model)
@@ -545,10 +563,12 @@ Audit trail preserved here so a future reader can see the deliberation that shap
 
 **Cost impact:** Budget cap remains $30 (unchanged). Expected full-pool spend rises from ~$15 (Haiku-only) to ~$20 (dual-model). Hard escalation threshold remains $50.
 
-**bench-agent's three refinements** to the markcrawl-agent proposal:
+**bench-agent's refinements** to the markcrawl-agent proposal (converged through chat.md round-trip 2026-05-12T21:30Z → markcrawl-agent accept 2026-05-12T21:45Z):
 
-- **R-A — Per-class agreement floor (≥85% on each binary class).** Class imbalance can hide miscalibration (e.g., 80% helpful → 80% raw agreement baseline). Added to SC-3, SC-14, and the manifest schema.
-- **R-B — Practical implementation notes.** Sequential per-URL judging (no parallel-across-models complexity); OpenAI key dependency note (already required for queries + embeddings, so not a new external dep at v1.5.0 level); asymmetric-failure handling rule (canonical defaults to passing model; SC-14 marks blocked); both calibrations must pass independently.
-- **R-C — gpt-4o-mini snapshot resolver.** `gpt-4o-mini-2024-07-18` may be deprecated by 2026-05-12; resolver picks current GA at universe-build time; falls back gracefully if no `gpt-4o-mini-*` GA model available.
+- **R-A — Cohen's kappa companion metric + per-class agreement floor.** Raw agreement % is class-imbalance-sensitive (e.g., 80% helpful → 68% baseline κ=0 raw agreement between two random "always HELPFUL" baselines). Cohen's kappa is the standard inter-rater metric for binary classification; methodology-paper reviewers will ask. Per-class agreement ≥85% floor (helpful class + non-helpful class) added to SC-3 + SC-14 thresholds to catch minority-class miscalibration that raw agreement could hide. Raw agreement remains headline criterion; kappa is the "shown work" in `reports/methodology_validation.md` (Landis-Koch convention: κ ≥ 0.8 = "almost perfect"). Trivial computation (single numpy line per site).
+- **R-B — Separate per-model output files; merge afterward.** `bench/helpful_pages_haiku/<site>.json` + `bench/helpful_pages_gpt4omini/<site>.json` are raw per-model outputs; `bench/helpful_pages/<site>.json` is the merged canonical (deterministic post-processor). Avoids write-races on concurrent two-model judging; preserves per-model diffability when v1.5.x revisits; allows resume-from-partial if one model's run dies mid-way. All three trees git-tracked.
+- **R-C — 10-page cost-validation sanity check on BOTH models.** Extends DS-2 first action from Haiku-only to both models (10 + 10 pages = ~$0.004 total). Validates token-usage projection AND — critically — format compliance (does gpt-4o-mini follow the "exactly two lines, line 1 binary + line 2 prefixed rationale" instruction as reliably as Haiku?). Format failures are the most likely gpt-4o-mini-specific risk; surfacing them at $0.001 cost beats discovering them mid-full-pool at $5 sunk.
+- **R-D — Calibration failure rule (prompt iterate up to 3× + escape hatch + templated disclosure).** If both models fail similarly, iterate prompt (v1 → v2 → v3 cap). If only one model fails, continue iterating up to the cap (prompt is shared surface). If after 3 iterations only one model converges, fire escape hatch: drop the failing model, proceed canonical = passing model, SC-14 records `blocked — <failed-model> failed calibration after 3 prompt iterations`. Templated disclosure paragraph in `reports/methodology_validation.md` "Calibration failure handling" section renders only when the escape hatch fires (gated; stays unrendered when both models calibrate). Don't hide the failure mode — it's data.
+- **R-E (additional, derived from R-D)** — gpt-4o-mini snapshot resolver. `gpt-4o-mini-2024-07-18` may be deprecated by 2026-05-12; resolver picks current GA at universe-build time; falls back gracefully if no `gpt-4o-mini-*` GA model available (SC-14 records `blocked — gpt-4o-mini snapshot unavailable`).
 
-**No counter proposed.** Amendment accepted as a strict improvement on the locked spec — methodology becomes empirically defensible (defends "why this judge?" reviewer attack) and produces forward-looking decision data for v1.5.x cost optimization at trivial marginal spend ($5).
+**No counter proposed.** Amendment accepted as a strict improvement on the locked spec — methodology becomes empirically defensible (defends "why this judge?" reviewer attack) and produces forward-looking decision data for v1.5.x cost optimization at trivial marginal spend (~$5).
