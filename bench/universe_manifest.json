@@ -65,12 +65,12 @@
       "url_list_sha256": "7f46c71772416339772890e061ab027c88915d956b76a433f2d6a9cb71b35399"
     },
     "propublica": {
-      "sitemap_fetch_date": "2026-05-12",
+      "sitemap_fetch_date": "2026-05-13",
       "sitemap_url_sample_seed": 42,
       "sitemap_url_total_pre_sample": 12207,
       "source": "sitemap",
-      "url_count": 10000,
-      "url_list_sha256": "69f496ac604174749fa3c3fa1828db92b6a2ac15bfc94f01008dc91a63290bad"
+      "url_count": 5000,
+      "url_list_sha256": "5378b1d0d30b705bda14ef505f7efdb1965fe5044cb908afbbcf22c9c958e693"
     },
     "react-dev": {
       "sitemap_fetch_status": "errored_or_missing",
