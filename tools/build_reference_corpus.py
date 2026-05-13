@@ -247,7 +247,7 @@ def _maybe_decompress(resp: requests.Response, url: str) -> bytes:
 def fetch_sitemap(
     site_url: str,
     session: requests.Session,
-    max_nested: int = 200,
+    max_nested: int = 5000,
 ) -> Tuple[List[str], Dict]:
     """Try to fetch sitemap.xml (then sitemap_index.xml) for the given site.
 
@@ -310,6 +310,12 @@ def fetch_sitemap(
             absolute = urljoin(sm_url, n)
             if absolute not in seen_sitemap_urls:
                 nested_queue.append(absolute)
+
+        # Politeness pause between sitemap fetches when we have many to
+        # fetch (e.g., ProPublica's 4000+ daily sitemap shards). Don't
+        # pause for the top-level fetch.
+        if nested_queue and nested_processed > 1:
+            time.sleep(0.05)
 
     info["nested_count"] = nested_processed
     return all_urls, info
