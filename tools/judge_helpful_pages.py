@@ -1474,6 +1474,419 @@ def mode_full_pool(args) -> int:
     return 0
 
 
+# --- Pilot mode (--pilot) -------------------------------------------------
+
+
+def _pilot_checkpoint_path(model: str, site: str) -> Path:
+    """Pilot-specific checkpoint path (separate dir from full-pool)."""
+    base = PILOT_PRIMARY_OUT_DIR if model == "primary" else PILOT_GPT4OMINI_OUT_DIR
+    return base / f"{site}.json"
+
+
+def _pilot_load_ckpt(model: str, site: str) -> Dict:
+    p = _pilot_checkpoint_path(model, site)
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text())
+    except Exception:
+        return {}
+
+
+def _pilot_save_ckpt(model: str, site: str, data: Dict) -> None:
+    p = _pilot_checkpoint_path(model, site)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tmp = p.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(data, indent=2, default=str))
+    tmp.replace(p)
+
+
+def mode_pilot(args) -> int:
+    """2-site cost-validation pilot (Sonnet 4.5 + gpt-4o-mini on rust-book +
+    huggingface-transformers = 5,357 URLs).
+
+    Per the 2026-05-13 chat.md authorization: validate that:
+      (a) Sonnet 4.5 prompt caching fires at scale (cache_creation on cold,
+          cache_read on warm calls; cumulative cache read share is high).
+      (b) Per-page cost under cached steady state lands at the projected
+          ~$0.00126/page (Sonnet) + $0.00019/page (gpt-4o-mini).
+      (c) Full-pool extrapolation (× 33,316 URLs) stays under $50 hard cap.
+
+    Outputs go to bench/helpful_pages_sonnet_pilot/<site>.json and
+    bench/helpful_pages_gpt4omini_pilot/<site>.json (separate from eventual
+    full-pool output dirs). Aggregate metrics + per-call cache metering are
+    persisted to bench/pilot_v15_results.json.
+
+    Cost cap: $10 (escalation if exceeded mid-run).
+
+    Concurrency: --pilot-concurrency N (default 6). Both models per URL are
+    fired in parallel; the threadpool keeps Anthropic's 5-minute ephemeral
+    cache warm.
+    """
+    import concurrent.futures as cf
+    import threading
+
+    concurrency = max(1, min(int(getattr(args, "pilot_concurrency", 6)), 8))
+    cost_cap = float(getattr(args, "pilot_cost_cap", PILOT_COST_CAP_USD))
+    allow_live = bool(getattr(args, "allow_live_fetch", True))
+    logger.info("=" * 60)
+    logger.info("DS-2 PILOT — 2-site cost validation")
+    logger.info("=" * 60)
+    logger.info(f"Sites: {list(PILOT_SITES)}")
+    logger.info(f"Concurrency: {concurrency}; cost cap: ${cost_cap:.2f}; live-fetch: {allow_live}")
+
+    prefix_block, suffix_template = load_prompt_blocks()
+    prompt_ver = f"{PROMPT_PATH.relative_to(REPO_ROOT)} (sha256: {prompt_sha256()[:16]}...)"
+    anthropic_client = _anthropic_client()
+    openai_client = _openai_client()
+    gpt_model = resolve_gpt4omini_snapshot(openai_client)
+    if not gpt_model:
+        logger.error("gpt-4o-mini snapshot resolver returned None — aborting pilot.")
+        return 2
+    logger.info(f"Primary judge: {PRIMARY_JUDGE_MODEL}")
+    logger.info(f"Secondary judge: {gpt_model}")
+    logger.info(f"Prompt: {prompt_ver}")
+
+    # Thread-safe running totals.
+    lock = threading.Lock()
+    abort_event = threading.Event()
+    state = {
+        "primary_input_total": 0,
+        "primary_output_total": 0,
+        "primary_cache_creation_total": 0,
+        "primary_cache_read_total": 0,
+        "primary_cost_total": 0.0,
+        "primary_calls": 0,
+        "primary_cache_hits": 0,    # calls where cache_read > 0
+        "primary_cache_writes": 0,  # calls where cache_creation > 0
+        "gpt_input_total": 0,
+        "gpt_output_total": 0,
+        "gpt_cached_input_total": 0,
+        "gpt_cost_total": 0.0,
+        "gpt_calls": 0,
+        "agreements": 0,
+        "comparisons": 0,
+        "per_call_records": [],  # capped sample of per-call diagnostics
+        "per_call_keep_first_n": 50,
+    }
+
+    started = time.time()
+
+    def judge_one_url(site: str, url: str, cache: Dict, primary_ckpt: Dict, gpt_ckpt: Dict) -> Optional[Tuple[str, str]]:
+        """Judge a single URL with both models in sequence within one worker.
+        Updates state under lock. Returns (primary_classification, gpt_classification)
+        or None on skip."""
+        if abort_event.is_set():
+            return None
+        page = get_page_text(url, cache, allow_live_fetch=allow_live)
+        if page is None:
+            with lock:
+                primary_ckpt[url] = {
+                    "classification": "SKIPPED_NO_CONTENT",
+                    "judged_at": _dt.datetime.now(_dt.UTC).isoformat(),
+                }
+                gpt_ckpt[url] = {
+                    "classification": "SKIPPED_NO_CONTENT",
+                    "judged_at": _dt.datetime.now(_dt.UTC).isoformat(),
+                }
+            return None
+        title, raw_text = page
+        snippet = strip_nav_chrome(raw_text)[:MAX_CONTENT_CHARS]
+        if len(snippet) < 100:
+            with lock:
+                primary_ckpt[url] = {
+                    "classification": "SKIPPED_THIN_CONTENT",
+                    "judged_at": _dt.datetime.now(_dt.UTC).isoformat(),
+                }
+                gpt_ckpt[url] = {
+                    "classification": "SKIPPED_THIN_CONTENT",
+                    "judged_at": _dt.datetime.now(_dt.UTC).isoformat(),
+                }
+            return None
+
+        variable = format_suffix(suffix_template, url, title, snippet)
+        full_prompt = prefix_block + "\n\n" + variable
+
+        # Primary (Sonnet 4.5) — cached.
+        try:
+            pr = call_primary_judge(anthropic_client, prefix_block, variable)
+        except RuntimeError as e:
+            logger.warning(f"  [{site}] primary failed for {url[:60]}: {e}")
+            return None
+        p_in = pr.input_tokens or 0
+        p_out = pr.output_tokens or 0
+        p_cw = pr.cache_creation_input_tokens or 0
+        p_cr = pr.cache_read_input_tokens or 0
+        p_cost = _primary_judge_cost_per_call(p_in, p_out, p_cw, p_cr)
+
+        # Secondary (gpt-4o-mini) — auto-cached.
+        try:
+            gr, g_cached_in = call_gpt4omini_with_cache_meta(openai_client, gpt_model, full_prompt)
+        except RuntimeError as e:
+            logger.warning(f"  [{site}] gpt failed for {url[:60]}: {e}")
+            return None
+        g_in = gr.input_tokens or 0
+        g_out = gr.output_tokens or 0
+        g_cost = _gpt4omini_cost_per_call(g_in, g_out, g_cached_in)
+
+        with lock:
+            primary_ckpt[url] = {
+                "classification": pr.classification,
+                "rationale_prefix": pr.rationale_prefix,
+                "rationale_text": pr.rationale_text,
+                "judged_at": pr.judged_at,
+                "judge_call_id": pr.judge_call_id,
+                "parse_warning": pr.parse_warning,
+                "input_tokens": p_in,
+                "output_tokens": p_out,
+                "cache_creation_input_tokens": p_cw,
+                "cache_read_input_tokens": p_cr,
+                "per_call_cost_usd": p_cost,
+            }
+            gpt_ckpt[url] = {
+                "classification": gr.classification,
+                "rationale_prefix": gr.rationale_prefix,
+                "rationale_text": gr.rationale_text,
+                "judged_at": gr.judged_at,
+                "judge_call_id": gr.judge_call_id,
+                "parse_warning": gr.parse_warning,
+                "input_tokens": g_in,
+                "output_tokens": g_out,
+                "cached_input_tokens": g_cached_in,
+                "per_call_cost_usd": g_cost,
+            }
+
+            state["primary_input_total"] += p_in
+            state["primary_output_total"] += p_out
+            state["primary_cache_creation_total"] += p_cw
+            state["primary_cache_read_total"] += p_cr
+            state["primary_cost_total"] += p_cost
+            state["primary_calls"] += 1
+            if p_cw > 0:
+                state["primary_cache_writes"] += 1
+            if p_cr > 0:
+                state["primary_cache_hits"] += 1
+
+            state["gpt_input_total"] += g_in
+            state["gpt_output_total"] += g_out
+            state["gpt_cached_input_total"] += g_cached_in
+            state["gpt_cost_total"] += g_cost
+            state["gpt_calls"] += 1
+
+            if pr.classification in ("HELPFUL", "NON-HELPFUL") and gr.classification in ("HELPFUL", "NON-HELPFUL"):
+                state["comparisons"] += 1
+                if pr.classification == gr.classification:
+                    state["agreements"] += 1
+
+            if len(state["per_call_records"]) < state["per_call_keep_first_n"]:
+                state["per_call_records"].append({
+                    "site": site,
+                    "url": url,
+                    "primary": {
+                        "input_tokens": p_in,
+                        "output_tokens": p_out,
+                        "cache_creation_input_tokens": p_cw,
+                        "cache_read_input_tokens": p_cr,
+                        "per_call_cost_usd": p_cost,
+                        "classification": pr.classification,
+                    },
+                    "gpt4omini": {
+                        "input_tokens": g_in,
+                        "output_tokens": g_out,
+                        "cached_input_tokens": g_cached_in,
+                        "per_call_cost_usd": g_cost,
+                        "classification": gr.classification,
+                    },
+                })
+
+            running = state["primary_cost_total"] + state["gpt_cost_total"]
+            if running > cost_cap:
+                logger.error(f"  Cost cap exceeded: ${running:.4f} > ${cost_cap:.2f}; signaling abort.")
+                abort_event.set()
+        return (pr.classification, gr.classification)
+
+    # Per-site loop, but URLs within a site are dispatched to a threadpool.
+    for site in PILOT_SITES:
+        if abort_event.is_set():
+            break
+        ref_urls = _ref_urls_for_site(site)
+        logger.info(f"\n=== {site}: {len(ref_urls)} URLs ===")
+        cache = load_v14_cached_pages(site)
+        logger.info(f"  v1.4 cache contains {len(cache)} URLs; live-fetch enabled: {allow_live}")
+
+        primary_ckpt = _pilot_load_ckpt("primary", site)
+        gpt_ckpt = _pilot_load_ckpt("gpt4omini", site)
+        already_primary = set(primary_ckpt.keys())
+        already_gpt = set(gpt_ckpt.keys())
+        # URL is "done" only if BOTH per-model checkpoints have it.
+        remaining = [u for u in ref_urls if not (u in already_primary and u in already_gpt)]
+        logger.info(f"  Already complete: {len(ref_urls)-len(remaining)}; remaining: {len(remaining)}")
+
+        progress_counter = {"n": 0}
+        progress_lock = threading.Lock()
+        site_start = time.time()
+
+        def submit_url(url: str):
+            res = judge_one_url(site, url, cache, primary_ckpt, gpt_ckpt)
+            with progress_lock:
+                progress_counter["n"] += 1
+                n = progress_counter["n"]
+            if n % 50 == 0:
+                with lock:
+                    running = state["primary_cost_total"] + state["gpt_cost_total"]
+                    cr = state["primary_cache_read_total"]
+                    cw = state["primary_cache_creation_total"]
+                    hits = state["primary_cache_hits"]
+                    calls = state["primary_calls"]
+                _pilot_save_ckpt("primary", site, primary_ckpt)
+                _pilot_save_ckpt("gpt4omini", site, gpt_ckpt)
+                elapsed = time.time() - site_start
+                rate = n / elapsed if elapsed > 0 else 0
+                hit_rate = (hits / calls * 100) if calls > 0 else 0
+                logger.info(
+                    f"  [{n}/{len(remaining)}] cost≈${running:.4f} "
+                    f"cache_hits={hits}/{calls} ({hit_rate:.1f}%) "
+                    f"cw_tot={cw} cr_tot={cr} "
+                    f"rate={rate:.1f}/s"
+                )
+            return res
+
+        with cf.ThreadPoolExecutor(max_workers=concurrency) as ex:
+            futures = [ex.submit(submit_url, u) for u in remaining]
+            for f in cf.as_completed(futures):
+                if abort_event.is_set():
+                    # Drain remaining futures cleanly (don't kill mid-call).
+                    for ff in futures:
+                        ff.cancel()
+                    break
+                try:
+                    f.result()
+                except Exception as e:
+                    logger.warning(f"  worker exception: {e}")
+
+        _pilot_save_ckpt("primary", site, primary_ckpt)
+        _pilot_save_ckpt("gpt4omini", site, gpt_ckpt)
+        logger.info(f"  {site}: primary saved {len(primary_ckpt)} entries; gpt saved {len(gpt_ckpt)} entries.")
+
+    elapsed_total = time.time() - started
+
+    # Aggregate + write results.
+    primary_calls = state["primary_calls"]
+    gpt_calls = state["gpt_calls"]
+    primary_cost = state["primary_cost_total"]
+    gpt_cost = state["gpt_cost_total"]
+    total_cost = primary_cost + gpt_cost
+    cache_writes = state["primary_cache_writes"]
+    cache_hits = state["primary_cache_hits"]
+    hit_rate_pct = (cache_hits / primary_calls * 100) if primary_calls > 0 else 0.0
+    agreement_pct = (state["agreements"] / state["comparisons"] * 100) if state["comparisons"] > 0 else 0.0
+
+    avg_primary_cost = (primary_cost / primary_calls) if primary_calls > 0 else 0.0
+    avg_gpt_cost = (gpt_cost / gpt_calls) if gpt_calls > 0 else 0.0
+    avg_combined_cost = avg_primary_cost + avg_gpt_cost
+
+    # Cached-steady-state per-page cost (excludes write calls; better extrapolation).
+    if cache_hits > 0:
+        # Re-derive per-read cost from totals minus the cache_creation share.
+        # On read calls, input_tokens is small (just Block 2) and cache_creation=0.
+        # We approximate steady-state as: avg primary cost across cache_hit calls only.
+        # Without per-call cost stratified by hit/miss, use total minus the writes' premium.
+        # Conservative: assume each cache write was ~25% premium over what a read would cost.
+        steady_primary_per_call = (
+            (primary_cost - cache_writes * (avg_primary_cost * 0.25))
+            / max(primary_calls, 1)
+        )
+    else:
+        steady_primary_per_call = avg_primary_cost
+
+    # Full-pool projection — use AVG per-call cost (includes the amortized write cost,
+    # since the full pool will likewise have periodic cache rewrites every ~5 min TTL).
+    projected_full_pool = avg_combined_cost * PILOT_FULL_POOL_UNIVERSE_SIZE
+
+    results = {
+        "started_at": _dt.datetime.now(_dt.UTC).isoformat(),
+        "pilot_sites": list(PILOT_SITES),
+        "primary_judge_model": PRIMARY_JUDGE_MODEL,
+        "gpt4omini_model_version": gpt_model,
+        "judge_prompt_version": prompt_ver,
+        "concurrency": concurrency,
+        "cost_cap_usd": cost_cap,
+        "aborted_mid_run": abort_event.is_set(),
+        "wall_clock_seconds": round(elapsed_total, 1),
+        "primary": {
+            "calls": primary_calls,
+            "cache_writes": cache_writes,
+            "cache_hits": cache_hits,
+            "cache_hit_rate_pct": round(hit_rate_pct, 2),
+            "input_tokens_total_noncached": state["primary_input_total"],
+            "output_tokens_total": state["primary_output_total"],
+            "cache_creation_tokens_total": state["primary_cache_creation_total"],
+            "cache_read_tokens_total": state["primary_cache_read_total"],
+            "cost_total_usd": round(primary_cost, 4),
+            "cost_per_page_avg_usd": round(avg_primary_cost, 6),
+            "cost_per_page_steady_state_usd": round(steady_primary_per_call, 6),
+        },
+        "gpt4omini": {
+            "calls": gpt_calls,
+            "input_tokens_total": state["gpt_input_total"],
+            "output_tokens_total": state["gpt_output_total"],
+            "cached_input_tokens_total": state["gpt_cached_input_total"],
+            "cost_total_usd": round(gpt_cost, 4),
+            "cost_per_page_avg_usd": round(avg_gpt_cost, 6),
+        },
+        "combined": {
+            "cost_total_usd": round(total_cost, 4),
+            "cost_per_page_avg_usd": round(avg_combined_cost, 6),
+        },
+        "inter_model_agreement_pct": round(agreement_pct, 2),
+        "comparisons_with_both_classified": state["comparisons"],
+        "projection": {
+            "full_pool_universe_size": PILOT_FULL_POOL_UNIVERSE_SIZE,
+            "projected_full_pool_usd": round(projected_full_pool, 2),
+            "escalation_threshold_usd": 50.0,
+            "expected_option_e_usd": 42.0,
+            "verdict": (
+                "PASS_PROCEED_FULL_POOL" if projected_full_pool <= 45
+                else "MARGINAL_PAULSAVE_DECIDE" if projected_full_pool <= 50
+                else "FAIL_ESCALATE"
+            ),
+        },
+        "sample_per_call_records": state["per_call_records"],
+        "anthropic_sonnet45_pricing_per_million": {
+            "input": 3.00,
+            "output": 15.00,
+            "cache_creation_5m": 3.75,
+            "cache_read": 0.30,
+        },
+        "gpt4omini_pricing_per_million": {
+            "input": 0.15,
+            "output": 0.60,
+            "cached_input": 0.075,
+        },
+    }
+    PILOT_RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    PILOT_RESULTS_PATH.write_text(json.dumps(results, indent=2, default=str))
+
+    logger.info("")
+    logger.info("=" * 60)
+    logger.info("PILOT RESULTS")
+    logger.info("=" * 60)
+    logger.info(f"Wall clock: {elapsed_total:.1f} s")
+    logger.info(f"Primary calls: {primary_calls} (cache writes={cache_writes}, hits={cache_hits}, hit-rate={hit_rate_pct:.1f}%)")
+    logger.info(f"  total cost: ${primary_cost:.4f}  avg/call: ${avg_primary_cost:.6f}  steady-state: ${steady_primary_per_call:.6f}")
+    logger.info(f"gpt-4o-mini calls: {gpt_calls}")
+    logger.info(f"  total cost: ${gpt_cost:.4f}  avg/call: ${avg_gpt_cost:.6f}")
+    logger.info(f"Combined per-page: ${avg_combined_cost:.6f}")
+    logger.info(f"Inter-model agreement: {agreement_pct:.2f}% ({state['agreements']}/{state['comparisons']})")
+    logger.info("")
+    logger.info(f"Pilot spend total:                  ${total_cost:.4f}  (cap ${cost_cap:.2f})")
+    logger.info(f"Full-pool projection (× {PILOT_FULL_POOL_UNIVERSE_SIZE:,}): ${projected_full_pool:.2f}")
+    logger.info(f"Verdict: {results['projection']['verdict']}")
+    logger.info(f"Results persisted: {PILOT_RESULTS_PATH.relative_to(REPO_ROOT)}")
+
+    return 0 if not abort_event.is_set() else 8
+
+
 # --- Merge mode (--merge) -------------------------------------------------
 
 
@@ -1773,6 +2186,24 @@ def main() -> int:
         help="Run dual-judge on all 33,316 reference URLs with per-site checkpoints.",
     )
     parser.add_argument(
+        "--pilot",
+        action="store_true",
+        help="2-site cost-validation pilot (Sonnet 4.5 + gpt-4o-mini on rust-book "
+             "+ huggingface-transformers, 5,357 URLs). Per chat.md 2026-05-13.",
+    )
+    parser.add_argument(
+        "--pilot-concurrency",
+        type=int,
+        default=6,
+        help="Concurrent worker count for --pilot (range 1-8, default 6).",
+    )
+    parser.add_argument(
+        "--pilot-cost-cap",
+        type=float,
+        default=PILOT_COST_CAP_USD,
+        help=f"Pilot cost cap in USD (default ${PILOT_COST_CAP_USD:.2f}).",
+    )
+    parser.add_argument(
         "--merge",
         action="store_true",
         help="Merge per-model JSONs into canonical bench/helpful_pages/ + disagreement CSV.",
@@ -1822,6 +2253,8 @@ def main() -> int:
         return mode_calibration(args)
     if args.full_pool:
         return mode_full_pool(args)
+    if args.pilot:
+        return mode_pilot(args)
     if args.merge:
         return mode_merge(args)
     if args.sanity_confidence:
