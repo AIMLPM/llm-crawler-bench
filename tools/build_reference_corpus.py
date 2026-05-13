@@ -601,7 +601,25 @@ def main() -> int:
         action="store_true",
         help="Fetch + parse + log, but do NOT write artifacts or manifest.",
     )
+    ap.add_argument(
+        "--sitemap-cap",
+        type=int,
+        default=None,
+        help=(
+            "Override SITEMAP_CAP for this run (default 10000). Used for the "
+            "v1.5 cost-control re-cap to 5000 on the 4 biggest sampled sites "
+            "(huggingface-transformers/mdn-css/postgres-docs/propublica) per "
+            "chat.md option B+C. Same seed=42 sampling logic applies; the new "
+            "5k sample is NOT a subset of the prior 10k — `rng.sample(raw, 5k)` "
+            "with the same seed picks a different subset than `rng.sample(raw, 10k)`."
+        ),
+    )
     args = ap.parse_args()
+
+    global SITEMAP_CAP
+    if args.sitemap_cap is not None:
+        log(f"Override: SITEMAP_CAP {SITEMAP_CAP} -> {args.sitemap_cap}")
+        SITEMAP_CAP = args.sitemap_cap
 
     all_sites = load_pool_sites()
     if args.sites:
