@@ -3,7 +3,7 @@ artifact: judge_prompt
 version: v2
 date: 2026-05-13
 models:
-  primary_haiku: claude-haiku-4-5-20251001
+  primary: claude-sonnet-4-5-20250929  # amended 2026-05-13: was claude-haiku-4-5-20251001 (Haiku 4.5 silently ignores cache_control on this prefix; Sonnet 4.5 cached is cheaper + stronger). See parent_spec amendment block.
   secondary_gpt4omini: gpt-4o-mini (current GA snapshot, resolved at universe-build time per spec DS-2)
 model_agnostic: true
 temperature: 0
@@ -11,6 +11,8 @@ parent_spec: specs/v15-helpful-pages-universe.md
 predecessor: specs/v15-judge-prompt-v1.md
 status: draft
 ---
+
+> **Note (2026-05-13):** Primary-judge field renamed from `primary_haiku` to `primary` per the parent spec's 2026-05-13 amendment. Block 1 + Block 2 content below are byte-identical to v2 lock; the only change is the model identifier in the frontmatter above. Anthropic prompt caching is verified to fire on this byte-identical prefix under Sonnet 4.5 (call 1 cache_creation=1168, call 2 cache_read=1168 on a 2-call isolated diagnostic 2026-05-13).
 
 # v1.5 Helpful-Pages Judge Prompt — v2 (caching-optimized restructure)
 

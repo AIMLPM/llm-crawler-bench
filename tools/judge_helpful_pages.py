@@ -103,6 +103,15 @@ GPT4OMINI_OUT_DIR = REPO_ROOT / "bench" / "helpful_pages_gpt4omini"
 CANONICAL_OUT_DIR = REPO_ROOT / "bench" / "helpful_pages"
 DISAGREEMENT_CSV = REPO_ROOT / "bench" / "helpful_pages_disagreement.csv"
 
+# Pilot output directories (--pilot mode; 2-site cost-validation run, separate
+# from full-pool so the artifacts don't collide with eventual canonical output).
+PILOT_PRIMARY_OUT_DIR = REPO_ROOT / "bench" / "helpful_pages_sonnet_pilot"
+PILOT_GPT4OMINI_OUT_DIR = REPO_ROOT / "bench" / "helpful_pages_gpt4omini_pilot"
+PILOT_RESULTS_PATH = REPO_ROOT / "bench" / "pilot_v15_results.json"
+PILOT_SITES = ("rust-book", "huggingface-transformers")
+PILOT_COST_CAP_USD = 10.0
+PILOT_FULL_POOL_UNIVERSE_SIZE = 33_316  # for projection extrapolation
+
 # Calibration artifacts.
 CALIB_GROUND_TRUTH = REPO_ROOT / "bench" / "calibration_ground_truth_v15.csv"
 CALIB_AUDIT = REPO_ROOT / "bench" / "calibration_audit_v15.csv"
@@ -121,7 +130,12 @@ SANITY_CHECK_SEED = 17
 MAX_CONTENT_CHARS = 2000
 
 # Model versions (per spec resolved decisions Q2 + R-E snapshot resolver).
-HAIKU_MODEL = "claude-haiku-4-5-20251001"  # pinned, drift assertion fires on mismatch
+# 2026-05-13 amendment: primary judge swapped Haiku 4.5 → Sonnet 4.5.
+# Haiku 4.5 silently ignores cache_control on the v2 prefix (verified empirically);
+# Sonnet 4.5 cached is cheaper than Haiku 4.5 uncached AND a stronger model.
+# See specs/v15-helpful-pages-universe.md "Spec amendment 2026-05-13" block.
+PRIMARY_JUDGE_MODEL = "claude-sonnet-4-5-20250929"  # pinned, drift assertion fires on mismatch
+HAIKU_MODEL = PRIMARY_JUDGE_MODEL  # deprecated alias retained for cross-file diff hygiene
 GPT4OMINI_FAMILY_PREFIX = "gpt-4o-mini"     # resolver picks latest CHAT-only GA snapshot
 # Chat-only snapshot pattern: gpt-4o-mini OR gpt-4o-mini-YYYY-MM-DD.
 # Rejects audio/realtime/search/transcribe/tts variants that share the prefix.
@@ -227,9 +241,13 @@ def format_prompt(template: str, url: str, title: str, content: str) -> str:
 # --- API clients ----------------------------------------------------------
 
 
-def _haiku_client():
+def _anthropic_client():
     import anthropic
     return anthropic.Anthropic()
+
+
+# Deprecated alias retained for any external callers / cross-file diff hygiene.
+_haiku_client = _anthropic_client
 
 
 def _openai_client():
@@ -265,7 +283,7 @@ def resolve_gpt4omini_snapshot(client) -> Optional[str]:
     return chat_candidates[0]
 
 
-def build_haiku_messages(prefix: str, variable: str) -> List[dict]:
+def build_anthropic_messages(prefix: str, variable: str) -> List[dict]:
     """Build the two-content-block Anthropic message list with cache_control
     applied to the static prefix.
 
@@ -275,7 +293,7 @@ def build_haiku_messages(prefix: str, variable: str) -> List[dict]:
 
     Per Anthropic docs (https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching):
       - cache_control: {"type": "ephemeral"} marks the breakpoint
-      - The prefix MUST be ≥1024 tokens for Haiku family (verified by
+      - The prefix MUST be ≥1024 tokens for Sonnet family (verified by
         Anthropic count_tokens() — v2 prompt prefix is 1171 tokens)
       - On cache hit: cache_read_input_tokens populated, billed at 10%
       - On cache miss/write: cache_creation_input_tokens populated, billed at 125%
@@ -297,20 +315,24 @@ def build_haiku_messages(prefix: str, variable: str) -> List[dict]:
     }]
 
 
-def call_haiku(client, prefix: str, variable: str) -> JudgeResult:
-    """Haiku single-call with retries, using v2 two-block messages with
-    cache_control on the static prefix.
+# Deprecated alias retained for any external callers / cross-file diff hygiene.
+build_haiku_messages = build_anthropic_messages
+
+
+def call_primary_judge(client, prefix: str, variable: str) -> JudgeResult:
+    """Primary-judge single call (Sonnet 4.5) with retries, using v2 two-block
+    messages with cache_control on the static prefix.
 
     Args:
       prefix: the cacheable Block 1 text (instructions + examples).
       variable: the per-URL Block 2 text (URL/Title/Content filled in).
     """
-    messages = build_haiku_messages(prefix, variable)
+    messages = build_anthropic_messages(prefix, variable)
     last_err = None
     for attempt in range(3):
         try:
             resp = client.messages.create(
-                model=HAIKU_MODEL,
+                model=PRIMARY_JUDGE_MODEL,
                 max_tokens=200,
                 temperature=0,
                 messages=messages,
@@ -329,7 +351,11 @@ def call_haiku(client, prefix: str, variable: str) -> JudgeResult:
             last_err = e
             if attempt < 2:
                 time.sleep(2 ** attempt * 2)
-    raise RuntimeError(f"Haiku call failed after 3 attempts: {last_err}")
+    raise RuntimeError(f"primary-judge call failed after 3 attempts: {last_err}")
+
+
+# Deprecated alias retained for any external callers / cross-file diff hygiene.
+call_haiku = call_primary_judge
 
 
 def call_gpt4omini(client, model_id: str, prompt: str) -> JudgeResult:
@@ -517,26 +543,34 @@ def get_page_text(
 # --- Modes ----------------------------------------------------------------
 
 
-def _haiku_cost_per_call(
+def _primary_judge_cost_per_call(
     input_tokens: int,
     output_tokens: int,
     cache_creation: int,
     cache_read: int,
 ) -> float:
-    """Per-call Haiku cost reflecting prompt cache metering.
+    """Per-call primary-judge cost (Sonnet 4.5) reflecting prompt cache metering.
 
-    Anthropic Haiku pricing per spec ($/1M):
-      input (non-cached):      $0.80
-      cache write (25% prem):  $1.00  (input_tokens that became cache_creation)
-      cache read (10%):        $0.08
-      output:                  $4.00
+    Anthropic Sonnet 4.5 pricing per Anthropic docs ($/1M):
+      input (non-cached):           $3.00
+      cache write 5m TTL (25% prem): $3.75
+      cache read (10%):             $0.30
+      output:                       $15.00
+
+    Note: input_tokens from the Anthropic API reflects the NON-cached portion
+    only (Block 2). cache_creation_input_tokens and cache_read_input_tokens
+    are reported separately. Adding them all together avoids double-counting.
     """
     return (
-        input_tokens * 0.80
-        + cache_creation * 1.00
-        + cache_read * 0.08
-        + output_tokens * 4.00
+        input_tokens * 3.00
+        + cache_creation * 3.75
+        + cache_read * 0.30
+        + output_tokens * 15.00
     ) / 1_000_000
+
+
+# Deprecated alias retained for any external callers / cross-file diff hygiene.
+_haiku_cost_per_call = _primary_judge_cost_per_call
 
 
 def _gpt4omini_cost_per_call(

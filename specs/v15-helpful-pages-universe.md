@@ -31,6 +31,25 @@ constitution_reviewed: false
 
 # v1.5 Helpful-Pages Universe — anchor-bias removal + decomposed leaderboard
 
+## Spec amendment 2026-05-13 — primary judge model swap (Haiku 4.5 → Sonnet 4.5)
+
+**Scope:** Generalize the `primary judge` slot from a hard-pinned Haiku 4.5 to a configurable `judge_primary_model_version` field. Bump the v1.5.0 binding to `claude-sonnet-4-5-20250929`. Keep the secondary gpt-4o-mini slot unchanged. Keep the dual-judge methodology, calibration thresholds, manifest shape, and three output trees unchanged.
+
+**Rationale.** Empirical verification on 2026-05-13 (10-page cached sanity check at commit `8d51da7` + a direct 2-call isolated diagnostic + a 2-call Sonnet sanity rerun on the v2 prompt prefix) established two facts:
+
+1. **Haiku 4.5 silently ignores `cache_control` for v2's 1171-token prefix.** Both `cache_creation_input_tokens` and `cache_read_input_tokens` are 0 on every call; the full input is billed at the non-cached rate. The 10-page sanity check measured $0.001604/page for Haiku 4.5 vs the spec's $0.000250/page assumption — 6.4× over.
+2. **Sonnet 4.5 honors `cache_control` on the byte-identical v2 prefix.** Direct 2-call test on the v2 prompt prefix: call 1 produced `cache_creation_input_tokens=1168` (write), call 2 produced `cache_read_input_tokens=1168` (read). Per-call cost under cached steady state is lower than Haiku 4.5 uncached (cache read at $0.30/M × 1168 + ~140 fresh input tokens × $3/M + ~30 output × $15/M ≈ $0.001255/call, vs Haiku 4.5 uncached ≈ $0.001434/call). The full-pool projection at universe N=33,316 lands under the $50 hard escalation threshold and Sonnet 4.5 is a stronger model than Haiku 4.5.
+
+**Field generalization.** The manifest field `haiku_model_version` is renamed `judge_primary_model_version`. The `judge_models.primary_haiku` field is renamed `judge_models.primary`. Per-site `helpful_pages_count_haiku` is renamed `helpful_pages_count_primary`. Per-model output directory `bench/helpful_pages_haiku/` is renamed `bench/helpful_pages_primary/`. All `call_haiku` / `HAIKU_MODEL` symbols in `tools/judge_helpful_pages.py` are renamed `call_primary_judge` / `PRIMARY_JUDGE_MODEL`. The pinned model identifier becomes `claude-sonnet-4-5-20250929`. (Earlier prose in this spec — written before the swap — still uses the word "Haiku" in places; read those literal occurrences as historical context and apply the model-agnostic rename to the implementation.)
+
+**Methodology impact.** None. The model-agnostic v2 prompt and the SC-3 calibration thresholds (≥90% per-site ground-truth agreement, <5% multi-call self-disagreement, ≥85% per-class agreement) apply unchanged. The calibration step is still pending (paulsave's 373-row hand-judging is the gating input). The 2-site cost-validation pilot fired on 2026-05-13 validates the cost projection only — it is NOT a substitute for the canonical calibration step.
+
+**Tiebreak rule.** Where SC-3 says "tiebreak → Haiku" the rule becomes "tiebreak → primary" (i.e., Sonnet 4.5 after this amendment).
+
+**Budget framing update.** Pre-amendment "$30 cap covers Haiku full-pool ~$15 + gpt-4o-mini full-pool ~$6 + ..." prose stays as historical context. The amendment-era projection is: Sonnet 4.5 cached ~$42 + gpt-4o-mini ~$6 = ~$48 for the full 33,316-URL universe. Hard escalation threshold remains $50 per R5; the new projection clears it. Pilot validates this projection before full-pool fires.
+
+---
+
 ## Problem Statement
 
 The v1.4 cycle hardened methodology along every axis EXCEPT the one structural assumption that determines what "good crawl coverage" means: the test universe is anchored to a single tool's `pages.jsonl` (currently `crawl4ai-raw`). Three concrete consequences:
@@ -237,7 +256,7 @@ Acceptance: SC-1 met. All 11 sites have a `urls.txt` with ≥50 URLs. Source rec
 
 **Model lock — both judges:**
 
-- **Primary (Haiku):** `claude-haiku-4-5-20251001` (pinned per Q2 resolution).
+- **Primary judge:** `claude-sonnet-4-5-20250929` (pinned per the 2026-05-13 amendment above; supersedes the prior Haiku 4.5 pin which silently ignored `cache_control`). Original Q2 resolution language preserved below for diff review.
 - **Secondary (gpt-4o-mini):** pinned at universe-build time to OpenAI's current GA snapshot for gpt-4o-mini. Implementation MUST query the OpenAI API at build time to resolve the snapshot ID (e.g., `gpt-4o-mini-2024-07-18` if still available, else the current replacement) and record the exact snapshot ID in the manifest. If the proposed snapshot is deprecated/retired, the resolver picks the next-available `gpt-4o-mini-*` GA model; if none, DS-2 falls back to Haiku-only and SC-14 records `blocked — gpt-4o-mini snapshot unavailable`.
 
 **External dependency note (escalation-worthy at universe-build time):** This step adds an OpenAI API key requirement to the universe-build flow. OpenAI keys are already required for query generation (DS-3 uses gpt-4o-mini) and embeddings (DS-4), so this is not a new external dependency in the v1.5.0 pipeline — but it IS a new dependency on the specific `judge_helpful_pages.py` tool, which previously was Anthropic-only.
@@ -528,7 +547,7 @@ Modified files:
 Audit trail preserved here so a future reader can see the deliberation that shaped the spec body above.
 
 1. **Calibration site selection — RESOLVED.** Four sites: `huggingface-transformers` (docs), `newegg` (ecommerce), `propublica` (blog), `rust-book` (small-corpus check). Rust-book added on markcrawl-agent's suggestion to surface the edge case where helpful ratio is naturally high simply because the site is content-dense. Cost increment ~$0.075. Baked into DS-2 + SC-3.
-2. **Haiku model lock — RESOLVED.** Pin to `claude-haiku-4-5-20251001` for v1.5. Drift assertion at universe-build time mirrors v1.4 `models_manifest.json` defense-in-depth.
+2. **Primary judge model lock — RESOLVED (amended 2026-05-13).** Initially pinned to `claude-haiku-4-5-20251001`; superseded by `claude-sonnet-4-5-20250929` after Haiku 4.5 was empirically shown not to support `cache_control` on the v2 prefix. Drift assertion at universe-build time mirrors v1.4 `models_manifest.json` defense-in-depth. See the "Spec amendment 2026-05-13" block at the top of this spec.
 3. **Per-page cost validation — RESOLVED.** 10-page sanity check is the FIRST action of DS-2 (after ground-truth hand-judging, before calibration run). $0.0025 spend. If projection >$36 (>20% over $30 cap), escalate to chat.md before proceeding. Baked into DS-2.
 4. **Sitemap URL cap — RESOLVED.** Random-sample-with-fixed-seed at 10000. Manifest field `sitemap_url_sample_seed: <int>` records the seed. Symmetric across sites; cost-bounded; deterministic across rebuilds. Per-site limitations note required for any sampled site. Baked into DS-1 + DS-7 manifest schema.
 5. **Universe rebuild cadence — RESOLVED.** Reuse by default. Concrete rebuild triggers: (a) any site's sitemap returns >20% URL delta vs the recorded list, (b) v1.5.x version adds/removes a site, (c) judge prompt version bumps. Baked into DS-8 (METHODOLOGY.md update).
