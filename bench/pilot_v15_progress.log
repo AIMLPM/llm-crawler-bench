@@ -1,0 +1,12 @@
+=== rust-book: 357 URLs ===
+  Already complete: 0; remaining: 357
+  [50/357] cost≈$0.1677 cache_hits=44/50 (88.0%) cw_tot=7008 cr_tot=51392 rate=1.3/s
+  [100/357] cost≈$0.3113 cache_hits=94/100 (94.0%) cw_tot=7008 cr_tot=109792 rate=1.5/s
+  [150/357] cost≈$0.4027 cache_hits=127/133 (95.5%) cw_tot=7008 cr_tot=148336 rate=1.6/s
+  [200/357] cost≈$0.5038 cache_hits=165/171 (96.5%) cw_tot=7008 cr_tot=192720 rate=1.5/s
+  [250/357] cost≈$0.6593 cache_hits=214/220 (97.3%) cw_tot=7008 cr_tot=249952 rate=1.5/s
+  [300/357] cost≈$0.8049 cache_hits=264/270 (97.8%) cw_tot=7008 cr_tot=308352 rate=1.5/s
+  [350/357] cost≈$0.8822 cache_hits=290/296 (98.0%) cw_tot=7008 cr_tot=338720 rate=1.6/s
+  rust-book: primary saved 357 entries; gpt saved 357 entries.
+=== huggingface-transformers: 5000 URLs ===
+  Already complete: 0; remaining: 5000
