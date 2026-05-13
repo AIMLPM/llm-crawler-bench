@@ -4,7 +4,8 @@
 Classifies each URL in the v1.5 reference corpora as `helpful` or
 `non-helpful` for RAG query generation, using TWO independent judge
 models (primary Haiku + secondary gpt-4o-mini) with the same model-
-agnostic prompt at `specs/v15-judge-prompt-v1.md`.
+agnostic prompt at `specs/v15-judge-prompt-v3.md` (v3 supersedes v2; v2
+remains for audit diff; v1 remains as the un-cached predecessor).
 
 Per the spec amendment (commit 2219a5e), the dual-judge serves two
 purposes:
@@ -93,7 +94,8 @@ POOL_PATH = REPO_ROOT / "sites" / "pool_v1.yaml"
 REF_CORPUS_DIR = REPO_ROOT / "bench" / "reference_corpora"
 V14_RUN = REPO_ROOT / "runs" / "run_v13_merged_20260504_203748"
 
-PROMPT_PATH = REPO_ROOT / "specs" / "v15-judge-prompt-v2.md"
+PROMPT_PATH = REPO_ROOT / "specs" / "v15-judge-prompt-v3.md"
+PROMPT_PATH_V2 = REPO_ROOT / "specs" / "v15-judge-prompt-v2.md"  # retained for audit diff
 PROMPT_PATH_V1 = REPO_ROOT / "specs" / "v15-judge-prompt-v1.md"  # retained for audit diff
 MANIFEST_PATH = REPO_ROOT / "bench" / "universe_manifest.json"
 
@@ -188,11 +190,15 @@ class JudgeResult:
 
 
 def load_prompt_blocks() -> Tuple[str, str]:
-    """Extract the v2 two-block prompt (cacheable prefix + variable suffix).
+    """Extract the v3 two-block prompt (cacheable prefix + variable suffix).
 
     Returns (prefix_block, suffix_template). The prefix is byte-identical
     for every URL judged (cacheable). The suffix is a template with
     `{url}/{title}/{content}` placeholders.
+
+    v3 supersedes v2: adds one source-code-viewer worked example +
+    one decision-guidance line. Block 1/Block 2 split structure is
+    unchanged. See specs/v15-judge-prompt-v3.md.
     """
     text = PROMPT_PATH.read_text()
     m1 = re.search(r"### Block 1 .*?```\s*\n(.*?)\n```", text, re.DOTALL)
@@ -1529,10 +1535,28 @@ def mode_pilot(args) -> int:
     concurrency = max(1, min(int(getattr(args, "pilot_concurrency", 6)), 8))
     cost_cap = float(getattr(args, "pilot_cost_cap", PILOT_COST_CAP_USD))
     allow_live = bool(getattr(args, "allow_live_fetch", True))
+
+    # --pilot-sites override (default: PILOT_SITES). Comma-separated subset;
+    # each token must be a member of PILOT_SITES so we don't accidentally fire
+    # the pilot judge against a site without checkpoint scaffolding.
+    pilot_sites_arg = getattr(args, "pilot_sites", None)
+    if pilot_sites_arg:
+        requested = [s.strip() for s in pilot_sites_arg.split(",") if s.strip()]
+        unknown = [s for s in requested if s not in PILOT_SITES]
+        if unknown:
+            logger.error(
+                f"--pilot-sites contains unknown site(s) {unknown}; "
+                f"valid options are {list(PILOT_SITES)}."
+            )
+            return 2
+        sites_to_run = tuple(requested)
+    else:
+        sites_to_run = PILOT_SITES
+
     logger.info("=" * 60)
     logger.info("DS-2 PILOT — 2-site cost validation")
     logger.info("=" * 60)
-    logger.info(f"Sites: {list(PILOT_SITES)}")
+    logger.info(f"Sites: {list(sites_to_run)}")
     logger.info(f"Concurrency: {concurrency}; cost cap: ${cost_cap:.2f}; live-fetch: {allow_live}")
 
     prefix_block, suffix_template = load_prompt_blocks()
@@ -1706,7 +1730,7 @@ def mode_pilot(args) -> int:
         return (pr.classification, gr.classification)
 
     # Per-site loop, but URLs within a site are dispatched to a threadpool.
-    for site in PILOT_SITES:
+    for site in sites_to_run:
         if abort_event.is_set():
             break
         ref_urls = _ref_urls_for_site(site)
@@ -1805,7 +1829,7 @@ def mode_pilot(args) -> int:
 
     results = {
         "started_at": _dt.datetime.now(_dt.UTC).isoformat(),
-        "pilot_sites": list(PILOT_SITES),
+        "pilot_sites": list(sites_to_run),
         "primary_judge_model": PRIMARY_JUDGE_MODEL,
         "gpt4omini_model_version": gpt_model,
         "judge_prompt_version": prompt_ver,
@@ -2204,6 +2228,14 @@ def main() -> int:
         help=f"Pilot cost cap in USD (default ${PILOT_COST_CAP_USD:.2f}).",
     )
     parser.add_argument(
+        "--pilot-sites",
+        default=None,
+        help="Comma-separated subset of pilot sites to run "
+             f"(default all of {list(PILOT_SITES)}). Each token must be a "
+             "member of PILOT_SITES. Useful for re-running a single site "
+             "(e.g. --pilot-sites rust-book) after a prompt iteration.",
+    )
+    parser.add_argument(
         "--merge",
         action="store_true",
         help="Merge per-model JSONs into canonical bench/helpful_pages/ + disagreement CSV.",
@@ -2234,7 +2266,7 @@ def main() -> int:
         dest="cached",
         action="store_true",
         default=True,
-        help="(default) Use v2 prompt + Anthropic cache_control for --sanity-check.",
+        help="(default) Use v3 prompt + Anthropic cache_control for --sanity-check.",
     )
     parser.add_argument(
         "--no-cached",
