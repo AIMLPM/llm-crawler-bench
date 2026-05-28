@@ -19,6 +19,9 @@ dependencies = [
     "numpy",
     "rank_bm25",
     "sentence-transformers",
+    # Hand-judging web UI (tools/hand_judge_web.py)
+    "flask",
+    "trafilatura",
 ]
 
 [project.optional-dependencies]
