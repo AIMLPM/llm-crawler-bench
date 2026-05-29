@@ -47,7 +47,7 @@ import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urljoin, urlparse
 from urllib.robotparser import RobotFileParser
 
 import requests

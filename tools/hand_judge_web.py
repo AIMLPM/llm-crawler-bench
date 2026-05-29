@@ -16,15 +16,13 @@ from __future__ import annotations
 
 import csv
 import json
-import os
 import re
 import sys
 import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit
 
-from flask import Flask, render_template_string, request, redirect, url_for, jsonify
+from flask import Flask, jsonify, redirect, render_template_string, request
 
 ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "bench" / "calibration_ground_truth_v15.csv"
@@ -80,8 +78,6 @@ TOOLS_PREFERRED = ["markcrawl", "crawl4ai", "crawl4ai-raw", "crawlee", "playwrig
 def _load_v14_index() -> dict[tuple[str, str], dict]:
     """Build {(site, normalized_url) -> first-tool-page-record} lookup."""
     idx: dict[tuple[str, str], dict] = {}
-    sites = [d for d in V14_RUN.iterdir() if d.is_dir()] if V14_RUN.exists() else []
-    # Actually iterate by tool, then site
     if not V14_RUN.exists():
         return idx
     for tool in TOOLS_PREFERRED:
@@ -136,8 +132,9 @@ _RATELIMIT_LOCK = threading.Lock()
 
 def _live_trafilatura(url: str) -> tuple[str | None, str | None]:
     try:
-        import trafilatura
         import urllib.request
+
+        import trafilatura
 
         # Skip if this host already rate-limited us in this run
         host = urlsplit(url).netloc.lower()
@@ -161,7 +158,7 @@ def _live_trafilatura(url: str) -> tuple[str | None, str | None]:
         if exc.code == 429:
             with _RATELIMIT_LOCK:
                 _RATELIMITED_HOSTS.add(host)
-            return None, f"429 rate-limited (host blacklisted for this run)"
+            return None, "429 rate-limited (host blacklisted for this run)"
         return None, f"HTTP {exc.code}"
     except Exception as exc:
         return None, f"live error: {exc.__class__.__name__}"
@@ -557,10 +554,10 @@ def main() -> int:
         return 1
     global _V14_INDEX
     print(f"Loaded {len(ROWS)} rows from {CSV_PATH.name}", file=sys.stderr)
-    print(f"Building v1.4 cache index (one-time scan of all crawler pages.jsonl)…", file=sys.stderr)
+    print("Building v1.4 cache index (one-time scan of all crawler pages.jsonl)…", file=sys.stderr)
     _V14_INDEX = _load_v14_index()
     print(f"  Indexed {len(_V14_INDEX)} (site, url) pairs from v1.4 cache.", file=sys.stderr)
-    print(f"Starting parallel content pre-extraction (background)…", file=sys.stderr)
+    print("Starting parallel content pre-extraction (background)…", file=sys.stderr)
     start_preextraction(max_workers=16)
     print(f"\n  Open in browser: http://localhost:{PORT}\n", file=sys.stderr)
     # Disable Flask's noisy default logger
