@@ -15,6 +15,7 @@ Then open: http://localhost:8765
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import re
 import sys
@@ -27,6 +28,10 @@ from flask import Flask, jsonify, redirect, render_template_string, request
 ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "bench" / "calibration_ground_truth_v15.csv"
 V14_RUN = ROOT / "runs" / "run_v13_merged_20260504_203748"
+DRAFTS_PATH = ROOT / "bench" / "calibration_drafts_fable.json"
+# Number of high-confidence drafted rows whose draft is HIDDEN in the UI, so
+# the human vote on them is independent — used to estimate draft error rate.
+BLIND_N = 30
 
 VALID = {"HELPFUL", "NON-HELPFUL"}
 CONTENT_LIMIT = 4000  # chars shown in UI
@@ -286,6 +291,81 @@ def save_rows(rows: list[dict]) -> None:
 # ---------- App state ----------
 
 ROWS = load_rows()
+
+
+def _load_drafts() -> dict[str, dict]:
+    """{url -> draft verdict} from the Fable draft-labeling pass, if present."""
+    if not DRAFTS_PATH.exists():
+        return {}
+    try:
+        return json.loads(DRAFTS_PATH.read_text()).get("drafts", {})
+    except Exception:
+        return {}
+
+
+DRAFTS = _load_drafts()
+
+
+def _blind_sample() -> set[str]:
+    """Deterministic sample of high-confidence drafted rows (md5-ordered, so it
+    is stable across restarts). Drafts stay hidden on these rows."""
+    urls = [r["url"] for r in ROWS
+            if is_active(r) and DRAFTS.get(r["url"], {}).get("confidence") == "high"]
+    urls.sort(key=lambda u: hashlib.md5(u.encode()).hexdigest())
+    return set(urls[:BLIND_N])
+
+
+BLIND_URLS = _blind_sample()
+
+
+# ---- Targeted review queue ----
+# Human eyes are needed only on: (1) rows where an existing human label
+# conflicts with the draft, (2) blind rows (independent draft-error
+# estimate), (3) low/medium-confidence drafts. Remaining high-confidence
+# rows are bulk-accepted from drafts after the blind agreement gate
+# (tools/bulk_accept_drafts.py).
+
+def _build_queue() -> list[int]:
+    conflicts, blind, shaky = [], [], []
+    for i, r in enumerate(ROWS):
+        if not is_active(r):
+            continue
+        d = DRAFTS.get(r["url"])
+        gt = r.get("ground_truth", "").strip()
+        if d and gt in VALID and gt != d["label"]:
+            conflicts.append(i)
+        elif r["url"] in BLIND_URLS:
+            blind.append(i)
+        elif d and d.get("confidence") in ("low", "medium"):
+            shaky.append(i)
+    return conflicts + blind + shaky
+
+
+QUEUE = _build_queue()
+ACTIONED: set[int] = set()
+
+
+def queue_pending(i: int) -> bool:
+    r = ROWS[i]
+    if r.get("ground_truth", "").strip() not in VALID:
+        return True
+    # Filled rows stay pending only while they conflict with the draft and
+    # haven't been revisited this run (SKIP counts as "keep my label").
+    d = DRAFTS.get(r["url"])
+    return bool(d and r["ground_truth"].strip() != d["label"] and i not in ACTIONED)
+
+
+def find_next_queued(after: int | None = None) -> int | None:
+    """Next pending queue item, in queue order, wrapping around."""
+    if not QUEUE:
+        return None
+    start = QUEUE.index(after) + 1 if after in QUEUE else 0
+    for i in QUEUE[start:] + QUEUE[:start]:
+        if queue_pending(i):
+            return i
+    return None
+
+
 CONTENT_CACHE: dict[int, dict] = {}
 EXTRACT_LOCK = threading.Lock()
 EXTRACT_PROGRESS = {"done": 0, "total": len(ROWS)}
@@ -396,6 +476,13 @@ PAGE_HTML = """<!DOCTYPE html>
   .kbd { background: rgba(255,255,255,0.3); padding: 0.05em 0.35em; border-radius: 3px; font-family: ui-monospace, monospace; font-size: 0.85em; margin-left: 0.5em; }
   .open-link { display: inline-block; margin-left: 0.8em; padding: 0.3em 0.7em; background: #2196f3; color: #fff; border-radius: 4px; font-size: 0.85em; text-decoration: none; }
   .current { background: #fff3e0; padding: 0.4em 0.7em; border-radius: 4px; font-size: 0.85em; color: #ef6c00; margin-top: 0.6em; }
+  .draft { border-radius: 8px; padding: 0.8em 1.2em; margin-bottom: 1em; font-size: 0.95em; }
+  .draft.helpful { background: #e8f5e9; border-left: 4px solid #4caf50; }
+  .draft.nonhelpful { background: #ffebee; border-left: 4px solid #e53935; }
+  .draft.blind { background: #eceff1; border-left: 4px solid #90a4ae; color: #555; }
+  .draft .verdict { font-weight: 700; }
+  .draft .rationale { margin-top: 0.3em; color: #444; }
+  .draft .disagree { margin-top: 0.4em; color: #b71c1c; font-weight: 600; }
 </style>
 </head><body>
 
@@ -410,7 +497,7 @@ PAGE_HTML = """<!DOCTYPE html>
     </span>
   </div>
   <div class="progress"><div class="progress-fill" style="width: {{ pct }}%"></div></div>
-  <div class="stats">Extraction cache: {{ extract_done }}/{{ extract_total }} ready</div>
+  <div class="stats">Extraction cache: {{ extract_done }}/{{ extract_total }} ready{% if drafts_loaded %} &middot; {{ drafts_loaded }} Fable drafts loaded &middot; <a href="/disagreements">disagreements</a>{% endif %}</div>
 </div>
 
 <div class="container">
@@ -426,6 +513,18 @@ PAGE_HTML = """<!DOCTYPE html>
       <div class="current">Already judged: {{ row.ground_truth }} (this click will overwrite)</div>
     {% endif %}
   </div>
+
+  {% if blind %}
+    <div class="draft blind">&#127922; Blind row — the Fable draft is hidden here so your vote independently estimates draft accuracy. Judge from the content below.</div>
+  {% elif draft %}
+    <div class="draft {{ 'helpful' if draft.label == 'HELPFUL' else 'nonhelpful' }}">
+      <span class="verdict">Fable draft: {{ draft.label }}</span> &mdash; {{ draft.category }} ({{ draft.confidence }} confidence)
+      <div class="rationale">{{ draft.rationale }}</div>
+      {% if row.ground_truth and row.ground_truth != draft.label %}
+        <div class="disagree">&#9888; Your existing label ({{ row.ground_truth }}) disagrees with this draft — please re-check.</div>
+      {% endif %}
+    </div>
+  {% endif %}
 
   <div class="content">{% if content.text %}{{ content.text }}{% else %}<span class="empty">Couldn't fetch content for this URL{% if content.source %} ({{ content.source }}){% endif %} — click <strong>Open in new tab</strong> above to view the page, then come back and judge.</span>{% endif %}</div>
 </div>
@@ -477,9 +576,9 @@ DONE_HTML = """<!DOCTYPE html><html><head><title>Done</title>
 
 @app.route("/")
 def index():
-    n = find_next_unjudged(0)
+    n = find_next_queued()
     if n is None:
-        return redirect("/done")
+        return redirect("/queue-done")
     return redirect(f"/row/{n}")
 
 
@@ -498,11 +597,14 @@ def row(n):
             save_rows(ROWS)
         elif v == "SKIP":
             pass  # leave ground_truth as-is
-        nxt = find_next_unjudged(n + 1)
-        return redirect(f"/row/{nxt}" if nxt is not None else "/done")
+        ACTIONED.add(n)
+        nxt = find_next_queued(n)
+        return redirect(f"/row/{nxt}" if nxt is not None else "/queue-done")
 
     row = ROWS[n]
     content = get_content(n)
+    blind = row["url"] in BLIND_URLS
+    draft = None if blind else DRAFTS.get(row["url"])
     # Stats: count over ACTIVE rows only (so progress reflects what the user is judging)
     active = [r for r in ROWS if is_active(r)]
     total_active = len(active)
@@ -527,7 +629,62 @@ def row(n):
         prev_n=prev_n,
         extract_done=EXTRACT_PROGRESS["done"],
         extract_total=EXTRACT_PROGRESS["total"],
+        draft=draft,
+        blind=blind,
+        drafts_loaded=len(DRAFTS),
     )
+
+
+@app.route("/queue-done")
+def queue_done():
+    """Review queue exhausted — show blind-audit stats and next step."""
+    blind = [r for r in ROWS if is_active(r) and r["url"] in BLIND_URLS]
+    judged = [r for r in blind if r.get("ground_truth", "").strip() in VALID]
+    agree = sum(1 for r in judged
+                if r["ground_truth"].strip() == DRAFTS.get(r["url"], {}).get("label"))
+    active = [r for r in ROWS if is_active(r)]
+    filled = sum(1 for r in active if r.get("ground_truth", "").strip() in VALID)
+    pct = f"{agree / len(judged):.0%}" if judged else "n/a"
+    return (
+        "<html><head><title>Queue done</title><style>"
+        "body{font-family:-apple-system,sans-serif;max-width:640px;margin:4em auto;padding:0 1em;}"
+        "</style></head><body><h1>Review queue complete</h1>"
+        f"<p>Blind audit: <b>{agree}/{len(judged)}</b> of your independent votes "
+        f"agree with the hidden Fable drafts (<b>{pct}</b>).</p>"
+        f"<p>Labeled so far: <b>{filled}/{len(active)}</b>. The rest can be bulk-filled "
+        "from drafts: tell Claude the queue is done, or run "
+        "<code>tools/bulk_accept_drafts.py</code>.</p>"
+        '<p><a href="/row/0">Browse all rows</a> &middot; '
+        '<a href="/disagreements">disagreements</a></p></body></html>'
+    )
+
+
+@app.route("/disagreements")
+def disagreements():
+    """Rows where an existing human label conflicts with the Fable draft."""
+    items = []
+    for i, r in enumerate(ROWS):
+        if not is_active(r):
+            continue
+        d = DRAFTS.get(r["url"])
+        gt = r.get("ground_truth", "").strip()
+        if d and gt in VALID and gt != d["label"]:
+            items.append((i, r, d))
+    html = ["<html><head><title>Disagreements</title><style>"
+            "body{font-family:-apple-system,sans-serif;max-width:900px;margin:2em auto;padding:0 1em;}"
+            "li{margin:0.5em 0;}</style></head><body>"]
+    html.append(f"<h1>{len(items)} rows where your label disagrees with the Fable draft</h1><ol>")
+    for i, r, d in items:
+        html.append(
+            f'<li><a href="/row/{i}">{r["title"][:70]}</a> — '
+            f'you: <b>{gt_label(r)}</b>, draft: <b>{d["label"]}</b> ({d["category"]})</li>'
+        )
+    html.append('</ol><p><a href="/">Back to judging</a></p></body></html>')
+    return "".join(html)
+
+
+def gt_label(r: dict) -> str:
+    return r.get("ground_truth", "").strip()
 
 
 @app.route("/done")
@@ -559,6 +716,8 @@ def main() -> int:
     print(f"  Indexed {len(_V14_INDEX)} (site, url) pairs from v1.4 cache.", file=sys.stderr)
     print("Starting parallel content pre-extraction (background)…", file=sys.stderr)
     start_preextraction(max_workers=16)
+    if DRAFTS:
+        print(f"  Loaded {len(DRAFTS)} Fable draft labels ({len(BLIND_URLS)} blind rows).", file=sys.stderr)
     print(f"\n  Open in browser: http://localhost:{PORT}\n", file=sys.stderr)
     # Disable Flask's noisy default logger
     import logging
