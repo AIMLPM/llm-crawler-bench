@@ -1,0 +1,2412 @@
+{
+ "meta": {
+  "generated_by": "Claude Fable 5 (claude-fable-5), 3 parallel draft-labeling subagents",
+  "date": "2026-08-16",
+  "rubric": "specs/v15-judge-prompt-v4.md",
+  "evidence": "CSV url + title + 2000-char content_snippet",
+  "status": "DRAFT \u2014 pending human verification; not ground truth",
+  "v4_amendment": "newegg re-labeled under the v4 product-listing rule (owner ruling 2026-08-16): browse grids with product data = helpful-listing; ?N= facet permutations, search, pagination remain non-helpful-search; interactive configurator tools remain non-helpful."
+ },
+ "drafts": {
+  "https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html": {
+   "url": "https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Accepting Command Line Arguments with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch08-02-strings.html": {
+   "url": "https://doc.rust-lang.org/book/ch08-02-strings.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Storing UTF-8 Encoded Text with Strings with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch01-03-hello-cargo.html": {
+   "url": "https://doc.rust-lang.org/book/ch01-03-hello-cargo.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Hello, Cargo! with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch17-05-traits-for-async.html": {
+   "url": "https://doc.rust-lang.org/book/ch17-05-traits-for-async.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on A Closer Look at the Traits for Async with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch10-01-syntax.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch10-01-syntax.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Generic Data Types with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/std/thread/struct.builder.html": {
+   "url": "https://doc.rust-lang.org/std/thread/struct.builder.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Rendered std API reference for thread::Builder with descriptive prose, method docs, and links (not a /src/ viewer).",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch21-02-multithreaded.html": {
+   "url": "https://doc.rust-lang.org/book/ch21-02-multithreaded.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on From Single-Threaded to Multithreaded Server with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/appendix-03-derivable-traits.html": {
+   "url": "https://doc.rust-lang.org/book/appendix-03-derivable-traits.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Appendix C is a substantive reference of all derivable traits with explanations of what each derive does.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch17-04-streams.html": {
+   "url": "https://doc.rust-lang.org/book/ch17-04-streams.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Streams: Futures in Sequence with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-02-reading-a-file.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch12-02-reading-a-file.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Reading a File with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch03-02-data-types.html": {
+   "url": "https://doc.rust-lang.org/book/ch03-02-data-types.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Data Types with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch16-04-extensible-concurrency-sync-and-send.html": {
+   "url": "https://doc.rust-lang.org/book/ch16-04-extensible-concurrency-sync-and-send.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Extensible Concurrency with Send and Sync with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/cargo/reference/profiles.html": {
+   "url": "https://doc.rust-lang.org/cargo/reference/profiles.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Cargo Book reference page documenting profile settings (opt-level etc.) with prose and examples.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch16-00-concurrency.html": {
+   "url": "https://doc.rust-lang.org/book/ch16-00-concurrency.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Chapter opener with multiple substantive paragraphs explaining fearless concurrency, not a bare roadmap stub.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch13-04-performance.html": {
+   "url": "https://doc.rust-lang.org/book/ch13-04-performance.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Performance in Loops vs. Iterators with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch06-01-defining-an-enum.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch06-01-defining-an-enum.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Defining an Enum with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch04-00-understanding-ownership.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch04-00-understanding-ownership.html",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-empty",
+   "confidence": "medium",
+   "rationale": "Chapter-intro stub with roughly 65 words of own prose plus a bullet roadmap; under the ~100-word substantive-content threshold.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch17-06-futures-tasks-threads.html": {
+   "url": "https://doc.rust-lang.org/book/ch17-06-futures-tasks-threads.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Futures, Tasks, and Threads with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch15-06-reference-cycles.html": {
+   "url": "https://doc.rust-lang.org/book/ch15-06-reference-cycles.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Reference Cycles Can Leak Memory with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html": {
+   "url": "https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Validating References with Lifetimes with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch18-02-trait-objects.html": {
+   "url": "https://doc.rust-lang.org/book/ch18-02-trait-objects.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Using Trait Objects to Abstract over Shared Behavior with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/std/sync/atomic/index.html": {
+   "url": "https://doc.rust-lang.org/std/sync/atomic/index.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Rendered module reference for std::sync::atomic with substantive explanatory prose about atomic types.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch05-01-defining-structs.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch05-01-defining-structs.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Defining and Instantiating Structs with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-04-testing-the-librarys-functionality.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch12-04-testing-the-librarys-functionality.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Adding Functionality with Test Driven Development with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch08-03-hash-maps.html": {
+   "url": "https://doc.rust-lang.org/book/ch08-03-hash-maps.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Storing Keys with Associated Values in Hash Maps with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/appendix-02-operators.html": {
+   "url": "https://doc.rust-lang.org/book/appendix-02-operators.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Appendix B is a reference table of Rust operators and symbols with explanations; reference tables are helpful per rubric.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch05-03-method-syntax.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch05-03-method-syntax.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Methods with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/": {
+   "url": "https://doc.rust-lang.org/book/",
+   "label": "HELPFUL",
+   "category": "helpful-other",
+   "confidence": "low",
+   "rationale": "Book title/landing page; mostly meta (authors, assumed Rust version, offline access, print edition) but carries concrete answerable facts, so borderline vs non-helpful-meta.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch15-01-box.html": {
+   "url": "https://doc.rust-lang.org/book/ch15-01-box.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Using Box<T> to Point to Data on the Heap with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch01-00-getting-started.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch01-00-getting-started.html",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-empty",
+   "confidence": "high",
+   "rationale": "Chapter-intro stub (~45 words) that only lists what the chapter will cover; no substantive own content.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-00-an-io-project.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch12-00-an-io-project.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Chapter opener with substantive prose about the minigrep I/O project, grep, stderr handling, and ripgrep.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/std/index.html": {
+   "url": "https://doc.rust-lang.org/std/index.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Crate std landing page carries substantive prose describing the standard library and how to access it, beyond mere links.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/title-page.html": {
+   "url": "https://doc.rust-lang.org/book/title-page.html",
+   "label": "HELPFUL",
+   "category": "helpful-other",
+   "confidence": "low",
+   "rationale": "Identical title-page content to the /book/ root: meta front-matter with some concrete facts (version assumption, rustup doc --book); borderline vs non-helpful-meta.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html": {
+   "url": "https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Separating Modules into Different Files with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch19-03-pattern-syntax.html": {
+   "url": "https://doc.rust-lang.org/book/ch19-03-pattern-syntax.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Pattern Syntax with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch10-03-lifetime-syntax.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch10-03-lifetime-syntax.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Validating References with Lifetimes with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.html": {
+   "url": "https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Graceful Shutdown and Cleanup with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html": {
+   "url": "https://doc.rust-lang.org/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Bringing Paths Into Scope with the use Keyword with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html": {
+   "url": "https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Variables and Mutability with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch06-03-if-let.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch06-03-if-let.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Concise Control Flow with if let and let...else with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch19-02-refutability.html": {
+   "url": "https://doc.rust-lang.org/book/ch19-02-refutability.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Refutability: Whether a Pattern Might Fail to Match with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch04-01-what-is-ownership.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch04-01-what-is-ownership.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on What is Ownership? with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch15-02-deref.html": {
+   "url": "https://doc.rust-lang.org/book/ch15-02-deref.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Treating Smart Pointers Like Regular References with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch14-04-installing-binaries.html": {
+   "url": "https://doc.rust-lang.org/book/ch14-04-installing-binaries.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Installing Binaries with cargo install with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-05-control-flow.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch03-05-control-flow.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Control Flow with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch12-04-testing-the-librarys-functionality.html": {
+   "url": "https://doc.rust-lang.org/book/ch12-04-testing-the-librarys-functionality.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Adding Functionality with Test Driven Development with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch12-05-working-with-environment-variables.html": {
+   "url": "https://doc.rust-lang.org/book/ch12-05-working-with-environment-variables.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Working with Environment Variables with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/std/collections/index.html": {
+   "url": "https://doc.rust-lang.org/std/collections/index.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Rendered module reference for std::collections with extensive guidance prose on choosing collections.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch04-03-slices.html": {
+   "url": "https://doc.rust-lang.org/book/ch04-03-slices.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on The Slice Type with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html": {
+   "url": "https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Recoverable Errors with Result with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch16-01-threads.html": {
+   "url": "https://doc.rust-lang.org/book/ch16-01-threads.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Using Threads to Run Code Simultaneously with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/appendix-07-nightly-rust.html": {
+   "url": "https://doc.rust-lang.org/book/appendix-07-nightly-rust.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Appendix G is a substantive article on Rust's release process, channels, and the nightly/beta/stable train model.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch06-02-match.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch06-02-match.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on The match Control Flow Construct with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/std/net/enum.ipaddr.html": {
+   "url": "https://doc.rust-lang.org/std/net/enum.ipaddr.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Rendered enum reference for std::net::IpAddr with description and usage examples (not a /src/ viewer).",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch10-02-traits.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch10-02-traits.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Defining Shared Behavior with Traits with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/std/primitive.str.html": {
+   "url": "https://doc.rust-lang.org/std/primitive.str.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Rendered primitive-type reference for str with explanatory prose and runnable examples.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch17-02-concurrency-with-async.html": {
+   "url": "https://doc.rust-lang.org/book/ch17-02-concurrency-with-async.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Applying Concurrency with Async with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch13-02-iterators.html": {
+   "url": "https://doc.rust-lang.org/book/ch13-02-iterators.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Processing a Series of Items with Iterators with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html": {
+   "url": "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on References and Borrowing with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch12-06-writing-to-stderr-instead-of-stdout.html": {
+   "url": "https://doc.rust-lang.org/book/ch12-06-writing-to-stderr-instead-of-stdout.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Redirecting Errors to Standard Error with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch14-05-extending-cargo.html": {
+   "url": "https://doc.rust-lang.org/book/ch14-05-extending-cargo.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Extending Cargo with Custom Commands with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Paths for Referring to an Item in the Module Tree with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html": {
+   "url": "https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Cargo Workspaces with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch08-00-common-collections.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch08-00-common-collections.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Chapter intro with substantive own content defining vectors, strings, and hash maps (~180 words beyond nav).",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch17-00-async-await.html": {
+   "url": "https://doc.rust-lang.org/book/ch17-00-async-await.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Chapter opener with substantive explanation of async programming, parallelism vs concurrency, and runtimes.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/std/vec/struct.vec.html": {
+   "url": "https://doc.rust-lang.org/std/vec/struct.vec.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "medium",
+   "rationale": "Rendered std reference page for Vec (rubric explicitly classes rendered struct pages as helpful); snippet shows only the trait-impl sidebar, so prose is inferred from the URL pattern.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch03-03-how-functions-work.html": {
+   "url": "https://doc.rust-lang.org/book/ch03-03-how-functions-work.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Functions with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch06-00-enums.html": {
+   "url": "https://doc.rust-lang.org/book/ch06-00-enums.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "medium",
+   "rationale": "Chapter intro right at the ~100-word threshold, but its prose does define enums and Option beyond a bare roadmap.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch09-01-unrecoverable-errors-with-panic.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch09-01-unrecoverable-errors-with-panic.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Unrecoverable Errors with panic! with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/std/macro.println.html": {
+   "url": "https://doc.rust-lang.org/std/macro.println.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Rendered macro reference for println! with substantive usage docs, caveats, and examples.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch01-00-getting-started.html": {
+   "url": "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-empty",
+   "confidence": "high",
+   "rationale": "Same ~45-word chapter-intro stub as the /stable/ copy; only a roadmap of the chapter, no substantive own content.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html": {
+   "url": "https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Chapter opener with substantive prose on packages, crates, modules, encapsulation, and scope.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/cargo/": {
+   "url": "https://doc.rust-lang.org/cargo/",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-index",
+   "confidence": "medium",
+   "rationale": "Cargo Book landing page is essentially a table of contents: one-line link descriptions to Guide/Reference/Commands/FAQ with no substantive own content.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch14-00-more-about-cargo.html": {
+   "url": "https://doc.rust-lang.org/book/ch14-00-more-about-cargo.html",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-empty",
+   "confidence": "medium",
+   "rationale": "Chapter-intro page (~95 words) consisting solely of a bullet roadmap of chapter topics; no standalone substantive content.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/appendix-05-editions.html": {
+   "url": "https://doc.rust-lang.org/book/appendix-05-editions.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Appendix E substantively explains what Rust editions are and how the edition key works.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/nomicon/index.html": {
+   "url": "https://doc.rust-lang.org/nomicon/index.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rustonomicon introduction with substantive prose on the book's scope, prerequisites, and unsafe Rust.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-01-variables-and-mutability.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch03-01-variables-and-mutability.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Variables and Mutability with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-02-data-types.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch03-02-data-types.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Data Types with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch08-02-strings.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch08-02-strings.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Storing UTF-8 Encoded Text with Strings with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html": {
+   "url": "https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "medium",
+   "rationale": "Chapter intro plus a Keywords subsection with genuine explanatory content about reserved words, pushing it past a bare roadmap stub.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch11-00-testing.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch11-00-testing.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Chapter opener with substantive discussion of program correctness and why Rust includes automated tests.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch05-02-example-structs.html": {
+   "url": "https://doc.rust-lang.org/book/ch05-02-example-structs.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on An Example Program Using Structs with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html": {
+   "url": "https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Publishing a Crate to Crates.io with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/appendix-01-keywords.html": {
+   "url": "https://doc.rust-lang.org/book/appendix-01-keywords.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Appendix A is a keyword reference listing each keyword with its functionality described.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch19-00-patterns.html": {
+   "url": "https://doc.rust-lang.org/book/ch19-00-patterns.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Chapter opener that substantively defines patterns, their components, and how matching works.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html": {
+   "url": "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Control Scope and Privacy with Modules with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-05-working-with-environment-variables.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch12-05-working-with-environment-variables.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Working with Environment Variables with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch15-03-drop.html": {
+   "url": "https://doc.rust-lang.org/book/ch15-03-drop.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Running Code on Cleanup with the Drop Trait with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch21-00-final-project-a-web-server.html": {
+   "url": "https://doc.rust-lang.org/book/ch21-00-final-project-a-web-server.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Chapter opener with a substantive plan and context for building a multithreaded web server.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Bringing Paths Into Scope with the use Keyword with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch03-05-control-flow.html": {
+   "url": "https://doc.rust-lang.org/book/ch03-05-control-flow.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Control Flow with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch19-01-all-the-places-for-patterns.html": {
+   "url": "https://doc.rust-lang.org/book/ch19-01-all-the-places-for-patterns.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on All the Places Patterns Can Be Used with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html": {
+   "url": "https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Programming a Guessing Game with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch14-01-release-profiles.html": {
+   "url": "https://doc.rust-lang.org/book/ch14-01-release-profiles.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Customizing Builds with Release Profiles with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch16-02-message-passing.html": {
+   "url": "https://doc.rust-lang.org/book/ch16-02-message-passing.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Transfer Data Between Threads with Message Passing with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/reference/const_eval.html": {
+   "url": "https://doc.rust-lang.org/reference/const_eval.html",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "Rust Reference page on constant evaluation with substantive normative reference prose.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch11-03-test-organization.html": {
+   "url": "https://doc.rust-lang.org/book/ch11-03-test-organization.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Test Organization with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch12-02-reading-a-file.html": {
+   "url": "https://doc.rust-lang.org/book/ch12-02-reading-a-file.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on Reading a File with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html": {
+   "url": "https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on To panic! or Not to panic! with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://doc.rust-lang.org/stable/book/ch09-03-to-panic-or-not-to-panic.html": {
+   "url": "https://doc.rust-lang.org/stable/book/ch09-03-to-panic-or-not-to-panic.html",
+   "label": "HELPFUL",
+   "category": "helpful-docs",
+   "confidence": "high",
+   "rationale": "Rendered book chapter on To panic! or Not to panic! with substantive explanatory prose and worked code examples a user would ask questions about.",
+   "site": "rust-book"
+  },
+  "https://www.newegg.com/computer-power-cords/subcategory/id-2827": {
+   "url": "https://www.newegg.com/computer-power-cords/subcategory/id-2827",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/cd-dvd-blu-ray-burners-media/category/id-10": {
+   "url": "https://www.newegg.com/cd-dvd-blu-ray-burners-media/category/id-10",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/server-power-supplies/subcategory/id-520": {
+   "url": "https://www.newegg.com/server-power-supplies/subcategory/id-520",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/server-motherboards/subcategory/id-302": {
+   "url": "https://www.newegg.com/server-motherboards/subcategory/id-302",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/tools/memory-finder": {
+   "url": "https://www.newegg.com/tools/memory-finder",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-other",
+   "confidence": "medium",
+   "rationale": "Interactive Memory Finder tool with no own informational content visible; snippet is all nav chrome, judged from URL/title per tools/finders guidance.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/backup-drives/subcategory/id-46": {
+   "url": "https://www.newegg.com/backup-drives/subcategory/id-46",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/memory-cards/subcategory/id-68": {
+   "url": "https://www.newegg.com/memory-cards/subcategory/id-68",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/data-converters/subcategory/id-3028": {
+   "url": "https://www.newegg.com/data-converters/subcategory/id-3028",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/dvi-cables/subcategory/id-2814": {
+   "url": "https://www.newegg.com/dvi-cables/subcategory/id-2814",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/ac-power-cords-for-laptop/subcategory/id-2811": {
+   "url": "https://www.newegg.com/ac-power-cords-for-laptop/subcategory/id-2811",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/displayport-cables/subcategory/id-2813": {
+   "url": "https://www.newegg.com/displayport-cables/subcategory/id-2813",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006676&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-CPU-Processor": {
+   "url": "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006676&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-CPU-Processor",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-search",
+   "confidence": "high",
+   "rationale": "Deals/sale-event browse page with faceted filter param (?N=...) \u2014 a promotional product-tile grid / filter combo with no substantive own content.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/system-specific-memory/subcategory/id-543": {
+   "url": "https://www.newegg.com/system-specific-memory/subcategory/id-543",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/insider/how-to-choose-a-pc-power-supply-buying-guide/": {
+   "url": "https://www.newegg.com/insider/how-to-choose-a-pc-power-supply-buying-guide/",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-error",
+   "confidence": "high",
+   "rationale": "URL would be a buying guide but the crawl captured a Wix \"domain not connected\" error page with title \"Error\".",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/extenders-repeaters/subcategory/id-3029": {
+   "url": "https://www.newegg.com/extenders-repeaters/subcategory/id-3029",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/hard-drive/category/id-15": {
+   "url": "https://www.newegg.com/hard-drive/category/id-15",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/rca-cables/subcategory/id-2831": {
+   "url": "https://www.newegg.com/rca-cables/subcategory/id-2831",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/instrument-professional-cables/subcategory/id-2819": {
+   "url": "https://www.newegg.com/instrument-professional-cables/subcategory/id-2819",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/p/pl?N=100006670+4016": {
+   "url": "https://www.newegg.com/p/pl?N=100006670+4016",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-search",
+   "confidence": "high",
+   "rationale": "Faceted product-listing results page (/p/pl?N=...) \u2014 a filter-combo grid of links to product pages with no substantive own content.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/power-adapters/subcategory/id-3047": {
+   "url": "https://www.newegg.com/power-adapters/subcategory/id-3047",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/card-readers/subcategory/id-69": {
+   "url": "https://www.newegg.com/card-readers/subcategory/id-69",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/power-supply/category/id-32": {
+   "url": "https://www.newegg.com/power-supply/category/id-32",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/cable/category/id-197": {
+   "url": "https://www.newegg.com/cable/category/id-197",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/gpus-video-graphics-cards/subcategory/id-48": {
+   "url": "https://www.newegg.com/gpus-video-graphics-cards/subcategory/id-48",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/usb-gadgets/subcategory/id-59": {
+   "url": "https://www.newegg.com/usb-gadgets/subcategory/id-59",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/hard-drive-ssd-cooling/subcategory/id-577": {
+   "url": "https://www.newegg.com/hard-drive-ssd-cooling/subcategory/id-577",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/server-workstation-system/subcategory/id-386": {
+   "url": "https://www.newegg.com/server-workstation-system/subcategory/id-386",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/mini-displayport-cables/subcategory/id-2823": {
+   "url": "https://www.newegg.com/mini-displayport-cables/subcategory/id-2823",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/computer-case/category/id-9": {
+   "url": "https://www.newegg.com/computer-case/category/id-9",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/components-storage/store/id-1": {
+   "url": "https://www.newegg.com/components-storage/store/id-1",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/server-cpu-processor/subcategory/id-727": {
+   "url": "https://www.newegg.com/server-cpu-processor/subcategory/id-727",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006662&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Video-Card": {
+   "url": "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006662&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Video-Card",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-search",
+   "confidence": "high",
+   "rationale": "Deals/sale-event browse page with faceted filter param (?N=...) \u2014 a promotional product-tile grid / filter combo with no substantive own content.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/desktop-memory/subcategory/id-147": {
+   "url": "https://www.newegg.com/desktop-memory/subcategory/id-147",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/video-card-accessories/subcategory/id-321": {
+   "url": "https://www.newegg.com/video-card-accessories/subcategory/id-321",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/cd-dvd-accessories/subcategory/id-219": {
+   "url": "https://www.newegg.com/cd-dvd-accessories/subcategory/id-219",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/backup-devices-media/category/id-2": {
+   "url": "https://www.newegg.com/backup-devices-media/category/id-2",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/hdd-ssd-accessories/subcategory/id-43": {
+   "url": "https://www.newegg.com/hdd-ssd-accessories/subcategory/id-43",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/blu-ray-burners/subcategory/id-600": {
+   "url": "https://www.newegg.com/blu-ray-burners/subcategory/id-600",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/other-computer-accessories/subcategory/id-95": {
+   "url": "https://www.newegg.com/other-computer-accessories/subcategory/id-95",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/cd-dvd-drives/subcategory/id-55": {
+   "url": "https://www.newegg.com/cd-dvd-drives/subcategory/id-55",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/clearancestore/eventsalestore/id-697?cm_sp=Clearance_entrance-_-RolloverMenu": {
+   "url": "https://www.newegg.com/clearancestore/eventsalestore/id-697?cm_sp=Clearance_entrance-_-RolloverMenu",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "low",
+   "rationale": "Snippet captured an anti-bot interstitial, but the true page is a product-listing browse grid (helpful-listing per v4); please verify by opening the live page.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/adapter-gender-changer/category/id-256": {
+   "url": "https://www.newegg.com/adapter-gender-changer/category/id-256",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/internal-ssds/subcategory/id-636": {
+   "url": "https://www.newegg.com/internal-ssds/subcategory/id-636",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/external-cd-dvd-blu-ray-drives/subcategory/id-420": {
+   "url": "https://www.newegg.com/external-cd-dvd-blu-ray-drives/subcategory/id-420",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/power-extension-cords/subcategory/id-2829": {
+   "url": "https://www.newegg.com/power-extension-cords/subcategory/id-2829",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/motherboard-accessories/subcategory/id-142": {
+   "url": "https://www.newegg.com/motherboard-accessories/subcategory/id-142",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/case-fans/subcategory/id-573": {
+   "url": "https://www.newegg.com/case-fans/subcategory/id-573",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/rca-composite-cables/subcategory/id-2833": {
+   "url": "https://www.newegg.com/rca-composite-cables/subcategory/id-2833",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/case-accessories/subcategory/id-255": {
+   "url": "https://www.newegg.com/case-accessories/subcategory/id-255",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/usb-display-adapters/subcategory/id-3046": {
+   "url": "https://www.newegg.com/usb-display-adapters/subcategory/id-3046",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/laptop-memory/subcategory/id-381": {
+   "url": "https://www.newegg.com/laptop-memory/subcategory/id-381",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/power-protection/category/id-314": {
+   "url": "https://www.newegg.com/power-protection/category/id-314",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/computer-power-adapter-cords/subcategory/id-2828": {
+   "url": "https://www.newegg.com/computer-power-adapter-cords/subcategory/id-2828",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/insider/choosing-the-right-gaming-motherboard-2025/": {
+   "url": "https://www.newegg.com/insider/choosing-the-right-gaming-motherboard-2025/",
+   "label": "HELPFUL",
+   "category": "helpful-howto",
+   "confidence": "low",
+   "rationale": "Newegg Insider buying-guide article (\"How to Choose the Right Gaming Motherboard - 2025\") per URL/title; snippet is entirely nav chrome so article body is unverified.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/laptop-add-on-cards/subcategory/id-421": {
+   "url": "https://www.newegg.com/laptop-add-on-cards/subcategory/id-421",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/laptops-notebooks/subcategory/id-32": {
+   "url": "https://www.newegg.com/laptops-notebooks/subcategory/id-32",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "low",
+   "rationale": "Snippet captured an anti-bot interstitial, but the true page is a product-listing browse grid (helpful-listing per v4); please verify by opening the live page.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/thunderbolt-cables-adapters/subcategory/id-3011": {
+   "url": "https://www.newegg.com/thunderbolt-cables-adapters/subcategory/id-3011",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/computer-cases/subcategory/id-7": {
+   "url": "https://www.newegg.com/computer-cases/subcategory/id-7",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/rackmount-nas/subcategory/id-2982": {
+   "url": "https://www.newegg.com/rackmount-nas/subcategory/id-2982",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006654&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Motherboard": {
+   "url": "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006654&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Motherboard",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-search",
+   "confidence": "high",
+   "rationale": "Deals/sale-event browse page with faceted filter param (?N=...) \u2014 a promotional product-tile grid / filter combo with no substantive own content.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/computer-systems/store/id-3": {
+   "url": "https://www.newegg.com/computer-systems/store/id-3",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/usb-chargers/subcategory/id-3700": {
+   "url": "https://www.newegg.com/usb-chargers/subcategory/id-3700",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/cables/category/id-197": {
+   "url": "https://www.newegg.com/cables/category/id-197",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/usb-converters/subcategory/id-3026": {
+   "url": "https://www.newegg.com/usb-converters/subcategory/id-3026",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/external-ssds/subcategory/id-2022": {
+   "url": "https://www.newegg.com/external-ssds/subcategory/id-2022",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/hdmi-cables/subcategory/id-2809": {
+   "url": "https://www.newegg.com/hdmi-cables/subcategory/id-2809",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/modular-adapters/subcategory/id-3023": {
+   "url": "https://www.newegg.com/modular-adapters/subcategory/id-3023",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/backup-media/subcategory/id-239": {
+   "url": "https://www.newegg.com/backup-media/subcategory/id-239",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/desktop-computer/category/id-228": {
+   "url": "https://www.newegg.com/desktop-computer/category/id-228",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/enterprise-ssds/subcategory/id-2021": {
+   "url": "https://www.newegg.com/enterprise-ssds/subcategory/id-2021",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/portable-external-hard-drives/subcategory/id-3400": {
+   "url": "https://www.newegg.com/portable-external-hard-drives/subcategory/id-3400",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/add-on-cards/subcategory/id-73": {
+   "url": "https://www.newegg.com/add-on-cards/subcategory/id-73",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/desktop-internal-hard-drives/subcategory/id-14": {
+   "url": "https://www.newegg.com/desktop-internal-hard-drives/subcategory/id-14",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/motherboard/category/id-20": {
+   "url": "https://www.newegg.com/motherboard/category/id-20",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/power-inverters/subcategory/id-536": {
+   "url": "https://www.newegg.com/power-inverters/subcategory/id-536",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/computer-accessories/category/id-1": {
+   "url": "https://www.newegg.com/computer-accessories/category/id-1",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/amd-motherboards/subcategory/id-22": {
+   "url": "https://www.newegg.com/amd-motherboards/subcategory/id-22",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/all-in-one-computer/subcategory/id-3309": {
+   "url": "https://www.newegg.com/all-in-one-computer/subcategory/id-3309",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006650&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Memory": {
+   "url": "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006650&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Memory",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-search",
+   "confidence": "high",
+   "rationale": "Deals/sale-event browse page with faceted filter param (?N=...) \u2014 a promotional product-tile grid / filter combo with no substantive own content.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/desktop-external-hard-drives/subcategory/id-414": {
+   "url": "https://www.newegg.com/desktop-external-hard-drives/subcategory/id-414",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/cd-dvd-burners/subcategory/id-5": {
+   "url": "https://www.newegg.com/cd-dvd-burners/subcategory/id-5",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/tools/nas-builder?cm_sp=hamburger-_-shopping-tools-_-nas-buidler": {
+   "url": "https://www.newegg.com/tools/nas-builder?cm_sp=hamburger-_-shopping-tools-_-nas-buidler",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-other",
+   "confidence": "medium",
+   "rationale": "Interactive NAS Builder configurator tool with no own informational content visible; snippet is all nav chrome, judged from URL/title per tools/finders guidance.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/diy-cooling/subcategory/id-3635": {
+   "url": "https://www.newegg.com/diy-cooling/subcategory/id-3635",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/server-memory/subcategory/id-541": {
+   "url": "https://www.newegg.com/server-memory/subcategory/id-541",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/cpu-fans-heatsinks/subcategory/id-574": {
+   "url": "https://www.newegg.com/cpu-fans-heatsinks/subcategory/id-574",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/video-adapters/subcategory/id-3045": {
+   "url": "https://www.newegg.com/video-adapters/subcategory/id-3045",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/speaker-wires/subcategory/id-2837": {
+   "url": "https://www.newegg.com/speaker-wires/subcategory/id-2837",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/desktop-cpu-processor/subcategory/id-343": {
+   "url": "https://www.newegg.com/desktop-cpu-processor/subcategory/id-343",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/usb-flash-drives/subcategory/id-522": {
+   "url": "https://www.newegg.com/usb-flash-drives/subcategory/id-522",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/s-video-cables/subcategory/id-2838": {
+   "url": "https://www.newegg.com/s-video-cables/subcategory/id-2838",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/desktop-nas/subcategory/id-124": {
+   "url": "https://www.newegg.com/desktop-nas/subcategory/id-124",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/audio-video-switch/subcategory/id-3049": {
+   "url": "https://www.newegg.com/audio-video-switch/subcategory/id-3049",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/usb-ieee-1394-firewire-adapters/subcategory/id-3025": {
+   "url": "https://www.newegg.com/usb-ieee-1394-firewire-adapters/subcategory/id-3025",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/intel-motherboards/subcategory/id-280": {
+   "url": "https://www.newegg.com/intel-motherboards/subcategory/id-280",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100011693&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Category-_-SSD": {
+   "url": "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100011693&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Category-_-SSD",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-search",
+   "confidence": "high",
+   "rationale": "Deals/sale-event browse page with faceted filter param (?N=...) \u2014 a promotional product-tile grid / filter combo with no substantive own content.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/computer-glasses/subcategory/id-774": {
+   "url": "https://www.newegg.com/computer-glasses/subcategory/id-774",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/cd-dvd-blu-ray-media/subcategory/id-71": {
+   "url": "https://www.newegg.com/cd-dvd-blu-ray-media/subcategory/id-71",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/ups-replacement-battery-accessories/subcategory/id-626": {
+   "url": "https://www.newegg.com/ups-replacement-battery-accessories/subcategory/id-626",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/computer-power-extension-cords/subcategory/id-2842": {
+   "url": "https://www.newegg.com/computer-power-extension-cords/subcategory/id-2842",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.newegg.com/barebone-mini-computers/category/id-3": {
+   "url": "https://www.newegg.com/barebone-mini-computers/category/id-3",
+   "label": "HELPFUL",
+   "category": "helpful-listing",
+   "confidence": "high",
+   "rationale": "Category browse page displaying product tiles with names and prices - queryable product-listing content per v4 rubric.",
+   "site": "newegg"
+  },
+  "https://www.propublica.org/article/charleston-slave-auction-historical-marker": {
+   "url": "https://www.propublica.org/article/charleston-slave-auction-historical-marker",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/connecticut-towing-reforms": {
+   "url": "https://www.propublica.org/article/connecticut-towing-reforms",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/cookie-zoe-macon-georgia-school-segregation-documentary": {
+   "url": "https://www.propublica.org/article/cookie-zoe-macon-georgia-school-segregation-documentary",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/family-photos-of-shoe-lane-destruction": {
+   "url": "https://www.propublica.org/article/family-photos-of-shoe-lane-destruction",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/salmon-wars-podcast-episodes": {
+   "url": "https://www.propublica.org/article/salmon-wars-podcast-episodes",
+   "label": "HELPFUL",
+   "category": "helpful-other",
+   "confidence": "medium",
+   "rationale": "Podcast series landing page with substantive series description and episode context, not just a link list.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/camden-alabama-segregated-schools-brown-v-board": {
+   "url": "https://www.propublica.org/article/camden-alabama-segregated-schools-brown-v-board",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/trump-social-security-ssi-disability-benefits-cuts-parents-children": {
+   "url": "https://www.propublica.org/article/trump-social-security-ssi-disability-benefits-cuts-parents-children",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/propublica-suing-department-of-education": {
+   "url": "https://www.propublica.org/article/propublica-suing-department-of-education",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/christopher-newport-university-virginia-black-neighborhoods-enrollment": {
+   "url": "https://www.propublica.org/article/christopher-newport-university-virginia-black-neighborhoods-enrollment",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/alabama-researchers-segregation-academies-school-vouchers": {
+   "url": "https://www.propublica.org/article/alabama-researchers-segregation-academies-school-vouchers",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/thomasville-alabama-segregation-academies": {
+   "url": "https://www.propublica.org/article/thomasville-alabama-segregation-academies",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/native-american-remains-returned-repatriation-nagpra": {
+   "url": "https://www.propublica.org/article/native-american-remains-returned-repatriation-nagpra",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/wilcox-county-alabama-segregation-academies": {
+   "url": "https://www.propublica.org/article/wilcox-county-alabama-segregation-academies",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/segregation-academies-public-schools-amite-county-mississippi": {
+   "url": "https://www.propublica.org/article/segregation-academies-public-schools-amite-county-mississippi",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/virginia-commission-investigate-black-community-displacement-universities": {
+   "url": "https://www.propublica.org/article/virginia-commission-investigate-black-community-displacement-universities",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/armor-health-florida-jail-deaths": {
+   "url": "https://www.propublica.org/article/armor-health-florida-jail-deaths",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/macon-georgia-segregation-academies-school-vouchers": {
+   "url": "https://www.propublica.org/article/macon-georgia-segregation-academies-school-vouchers",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/memphis-safe-task-force-police-harassment": {
+   "url": "https://www.propublica.org/article/memphis-safe-task-force-police-harassment",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/syphilis-south-dakota-great-plains-tribes-hhs-becerra": {
+   "url": "https://www.propublica.org/article/syphilis-south-dakota-great-plains-tribes-hhs-becerra",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/have-you-been-denied-a-parent-plus-loan-share-your-story-with-us": {
+   "url": "https://www.propublica.org/article/have-you-been-denied-a-parent-plus-loan-share-your-story-with-us",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-other",
+   "confidence": "medium",
+   "rationale": "Reader-callout/story-submission form page ('share your story') with only a short solicitation paragraph as own content.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/trading-water-in-the-west-limiting-ceo-pay-and-more": {
+   "url": "https://www.propublica.org/article/trading-water-in-the-west-limiting-ceo-pay-and-more",
+   "label": "HELPFUL",
+   "category": "helpful-other",
+   "confidence": "medium",
+   "rationale": "Weekend link-roundup briefing, but each linked story carries a substantive capsule summary of its own.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/lobby-clash-begins-on-consumer-finance-watchdog": {
+   "url": "https://www.propublica.org/article/lobby-clash-begins-on-consumer-finance-watchdog",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/video-shirley-ree-smith-in-her-own-words": {
+   "url": "https://www.propublica.org/article/video-shirley-ree-smith-in-her-own-words",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "medium",
+   "rationale": "Video page, but it carries a substantive contextual paragraph on the Shirley Ree Smith shaken-baby case plus related-story links.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/conservationists-see-rare-nature-sanctuaries-black-farmers-see-a-legacy-bought-out-from-under-them": {
+   "url": "https://www.propublica.org/article/conservationists-see-rare-nature-sanctuaries-black-farmers-see-a-legacy-bought-out-from-under-them",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/natural-gas-drilling-debate-heats-up-read-our-guide": {
+   "url": "https://www.propublica.org/article/natural-gas-drilling-debate-heats-up-read-our-guide",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Curated reading guide with substantive own prose summarizing ProPublica's fracking reporting.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/our-sputtering-economy-by-the-numbers": {
+   "url": "https://www.propublica.org/article/our-sputtering-economy-by-the-numbers",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/report-on-airport-backscatter-body-scanners": {
+   "url": "https://www.propublica.org/article/report-on-airport-backscatter-body-scanners",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/book-bans-texas-libraries": {
+   "url": "https://www.propublica.org/article/book-bans-texas-libraries",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/sean-duffy-trump-transportation-secretary-congress-funding": {
+   "url": "https://www.propublica.org/article/sean-duffy-trump-transportation-secretary-congress-funding",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/ed-rendell-new-york-fracking-op-ed-disclosure": {
+   "url": "https://www.propublica.org/article/ed-rendell-new-york-fracking-op-ed-disclosure",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/minnesota-new-approach-crisis-pregnancy-centers": {
+   "url": "https://www.propublica.org/article/minnesota-new-approach-crisis-pregnancy-centers",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/despite-promises-some-rape-victims-stuck-paying-exam-bills-730": {
+   "url": "https://www.propublica.org/article/despite-promises-some-rape-victims-stuck-paying-exam-bills-730",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/st-lukes-houston-reopens-heart-transplant-program-after-two-week-review": {
+   "url": "https://www.propublica.org/article/st-lukes-houston-reopens-heart-transplant-program-after-two-week-review",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/read-bps-document-on-workers-illnesses-and-injuries-chemical-exposure": {
+   "url": "https://www.propublica.org/article/read-bps-document-on-workers-illnesses-and-injuries-chemical-exposure",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "News blog post analyzing BP's worker illness/injury document with real reporting context, not just an embedded doc.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/propublica-illinois-prior-restraint-court-case-order-cook-county-patricia-martin": {
+   "url": "https://www.propublica.org/article/propublica-illinois-prior-restraint-court-case-order-cook-county-patricia-martin",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/deadnamed-transgender-black-women-murders-jacksonville-police-investigation": {
+   "url": "https://www.propublica.org/article/deadnamed-transgender-black-women-murders-jacksonville-police-investigation",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/newark-beth-israel-lawsuit-darryl-young-heart-transplant": {
+   "url": "https://www.propublica.org/article/newark-beth-israel-lawsuit-darryl-young-heart-transplant",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/black-students-illinois-ticketed-by-police-for-school-behavior": {
+   "url": "https://www.propublica.org/article/black-students-illinois-ticketed-by-police-for-school-behavior",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/two-more-bailouts-two-more-mortgage-modifiers-and-chrysler-repays-715": {
+   "url": "https://www.propublica.org/article/two-more-bailouts-two-more-mortgage-modifiers-and-chrysler-repays-715",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Bailout-tracker news digest with substantive reporting on TARP disbursements to insurers.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/intern-survival-guide-shows-lobbyist-access-to-congressman": {
+   "url": "https://www.propublica.org/article/intern-survival-guide-shows-lobbyist-access-to-congressman",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/la-importancia-del-caso-bush-vs-gore-en-la-eleccion-de-2020": {
+   "url": "https://www.propublica.org/article/la-importancia-del-caso-bush-vs-gore-en-la-eleccion-de-2020",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-mirror",
+   "confidence": "medium",
+   "rationale": "Spanish translation of an English ProPublica article ('Read in English' link) \u2014 a localized mirror per rubric, though the content itself is substantive.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/chicago-police-complaints-racism": {
+   "url": "https://www.propublica.org/article/chicago-police-complaints-racism",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/admissions-directors-at-public-universities-speak-honestly-and-anonymously": {
+   "url": "https://www.propublica.org/article/admissions-directors-at-public-universities-speak-honestly-and-anonymously",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/drug-device-makers-find-receptive-audience-at-for-profit-southern-hospitals": {
+   "url": "https://www.propublica.org/article/drug-device-makers-find-receptive-audience-at-for-profit-southern-hospitals",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/how-some-sheriffs-force-their-inmates-into-medical-debt": {
+   "url": "https://www.propublica.org/article/how-some-sheriffs-force-their-inmates-into-medical-debt",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/nypd-mulkeen-police-body-camera-footage-denied": {
+   "url": "https://www.propublica.org/article/nypd-mulkeen-police-body-camera-footage-denied",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/our-guide-to-the-best-coverage-of-herman-cain": {
+   "url": "https://www.propublica.org/article/our-guide-to-the-best-coverage-of-herman-cain",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Candidate reading guide with substantive own summary of Herman Cain's background and positions.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/propublica-emerging-reporters-2023": {
+   "url": "https://www.propublica.org/article/propublica-emerging-reporters-2023",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "medium",
+   "rationale": "Newsroom program announcement with real own content about the Emerging Reporters program and its participants; borderline press-release-style.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/freddie-mac-didnt-set-out-to-profit-from-homeowners-trapped-in-high-rate-mo": {
+   "url": "https://www.propublica.org/article/freddie-mac-didnt-set-out-to-profit-from-homeowners-trapped-in-high-rate-mo",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/what-we-know-about-the-computer-formulas-making-decisions-in-your-life": {
+   "url": "https://www.propublica.org/article/what-we-know-about-the-computer-formulas-making-decisions-in-your-life",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/recovery-still-a-dream-in-the-city-with-a-barely-beating-heart-416": {
+   "url": "https://www.propublica.org/article/recovery-still-a-dream-in-the-city-with-a-barely-beating-heart-416",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/dte-energy-oversight-debt-collection-sales-michigan": {
+   "url": "https://www.propublica.org/article/dte-energy-oversight-debt-collection-sales-michigan",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/few-strong-cases-govt-rushes-to-plea-deals-for-gitmo-detainees-1113": {
+   "url": "https://www.propublica.org/article/few-strong-cases-govt-rushes-to-plea-deals-for-gitmo-detainees-1113",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/quick-picks-aig-doles-out-dough-while-doctors-rake-it-in-090116": {
+   "url": "https://www.propublica.org/article/quick-picks-aig-doles-out-dough-while-doctors-rake-it-in-090116",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "medium",
+   "rationale": "'Quick Picks' daily roundup, but with substantive reporting paragraphs (e.g. AIG bonus figures), not a bare link list.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/new-details-emerge-in-glover-case": {
+   "url": "https://www.propublica.org/article/new-details-emerge-in-glover-case",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/unseen-toll-wages-of-millions-seized-to-pay-past-debts": {
+   "url": "https://www.propublica.org/article/unseen-toll-wages-of-millions-seized-to-pay-past-debts",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/fannie-freddie-gave-big-support-to-obama-mccain-910": {
+   "url": "https://www.propublica.org/article/fannie-freddie-gave-big-support-to-obama-mccain-910",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/inside-secret-ap3-militia-american-patriots-three-percent": {
+   "url": "https://www.propublica.org/article/inside-secret-ap3-militia-american-patriots-three-percent",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/venezuelans-cecot-el-salvador-trump-familias-video": {
+   "url": "https://www.propublica.org/article/venezuelans-cecot-el-salvador-trump-familias-video",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-mirror",
+   "confidence": "medium",
+   "rationale": "Spanish translation of an English ProPublica article ('Read in English') \u2014 localized mirror per rubric despite substantive content.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/us-hospitals-say-theyre-ready-for-coronavirus-their-infection-control-violations-say-otherwise": {
+   "url": "https://www.propublica.org/article/us-hospitals-say-theyre-ready-for-coronavirus-their-infection-control-violations-say-otherwise",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/my-story-as-a-dmv-edge-case-how-to-battle-bureaucracy-and-win": {
+   "url": "https://www.propublica.org/article/my-story-as-a-dmv-edge-case-how-to-battle-bureaucracy-and-win",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/help-us-report-on-obamas-mortgage-mod-program-04171": {
+   "url": "https://www.propublica.org/article/help-us-report-on-obamas-mortgage-mod-program-04171",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-other",
+   "confidence": "medium",
+   "rationale": "Crowdsourcing callout asking readers to submit mortgage-mod stories; own content is a short solicitation, essentially an engagement/form flow.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/how-the-wests-energy-boom-could-threaten-drinking-water-for-1-in-12-america": {
+   "url": "https://www.propublica.org/article/how-the-wests-energy-boom-could-threaten-drinking-water-for-1-in-12-america",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/how-to-avoid-being-scammed-on-facebook-marketplace": {
+   "url": "https://www.propublica.org/article/how-to-avoid-being-scammed-on-facebook-marketplace",
+   "label": "HELPFUL",
+   "category": "helpful-howto",
+   "confidence": "high",
+   "rationale": "Practical how-to guide on avoiding Facebook Marketplace scams with substantive advice content.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/donald-trump-immigration-executive-orders": {
+   "url": "https://www.propublica.org/article/donald-trump-immigration-executive-orders",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "medium",
+   "rationale": "Executive-order tracker page; snippet is chrome plus republish boilerplate but the tracker carries substantive per-order explanatory entries.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/even-after-doctors-are-sanctioned-or-arrested-medicare-keeps-paying": {
+   "url": "https://www.propublica.org/article/even-after-doctors-are-sanctioned-or-arrested-medicare-keeps-paying",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/aig-lobbied-for-india-nuke-deal-really-1024": {
+   "url": "https://www.propublica.org/article/aig-lobbied-for-india-nuke-deal-really-1024",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/another-8-billion-or-so-on-the-line-for-aig-0316": {
+   "url": "https://www.propublica.org/article/another-8-billion-or-so-on-the-line-for-aig-0316",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/behind-closed-doors-broadcasters-battle-online-disclosure-of-political-ad-b": {
+   "url": "https://www.propublica.org/article/behind-closed-doors-broadcasters-battle-online-disclosure-of-political-ad-b",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/a-republican-tried-to-introduce-a-commonsense-gun-law-then-the-gun-lobby-got-involved": {
+   "url": "https://www.propublica.org/article/a-republican-tried-to-introduce-a-commonsense-gun-law-then-the-gun-lobby-got-involved",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/chicago-ticket-data-chi-hack-night": {
+   "url": "https://www.propublica.org/article/chicago-ticket-data-chi-hack-night",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Blog post recounting the Chi Hack Night presentation of Chicago ticket data reporting, with real narrative content.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/i-received-tips-to-look-into-how-a-hospital-treated-premature-babies-getting-data-was-nearly-impossible": {
+   "url": "https://www.propublica.org/article/i-received-tips-to-look-into-how-a-hospital-treated-premature-babies-getting-data-was-nearly-impossible",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/michigan-lawmakers-attempt-fix-wrongful-imprisonment-compensation": {
+   "url": "https://www.propublica.org/article/michigan-lawmakers-attempt-fix-wrongful-imprisonment-compensation",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/the-cares-act-sent-you-a-1-200-check-but-gave-millionaires-and-billionaires-far-more": {
+   "url": "https://www.propublica.org/article/the-cares-act-sent-you-a-1-200-check-but-gave-millionaires-and-billionaires-far-more",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/republican-national-committee-obscured-how-much-it-pays-its-chief-of-staff": {
+   "url": "https://www.propublica.org/article/republican-national-committee-obscured-how-much-it-pays-its-chief-of-staff",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/four-whistleblowers-who-sounded-the-alarm-on-banks-mortgage-shenanigans": {
+   "url": "https://www.propublica.org/article/four-whistleblowers-who-sounded-the-alarm-on-banks-mortgage-shenanigans",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/philips-respironics-cpap-recall-faqs": {
+   "url": "https://www.propublica.org/article/philips-respironics-cpap-recall-faqs",
+   "label": "HELPFUL",
+   "category": "helpful-reference",
+   "confidence": "high",
+   "rationale": "FAQ page on the Philips CPAP recall with substantive explanatory answers users would query.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/scrutiny-of-doctor-pharma-ties-leads-to-change-090116": {
+   "url": "https://www.propublica.org/article/scrutiny-of-doctor-pharma-ties-leads-to-change-090116",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/stimulus-checks-in-the-mail-but-with-caveats-included-508": {
+   "url": "https://www.propublica.org/article/stimulus-checks-in-the-mail-but-with-caveats-included-508",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/she-was-afraid-of-her-lawyer-then-the-text-messages-started": {
+   "url": "https://www.propublica.org/article/she-was-afraid-of-her-lawyer-then-the-text-messages-started",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/the-billion-dollar-industry-youre-probably-not-thinking-about-and-more-in-m": {
+   "url": "https://www.propublica.org/article/the-billion-dollar-industry-youre-probably-not-thinking-about-and-more-in-m",
+   "label": "HELPFUL",
+   "category": "helpful-other",
+   "confidence": "medium",
+   "rationale": "MuckReads Weekly annotated link roundup; summaries are brief but substantive own editorial content.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/reader-question-fed-data": {
+   "url": "https://www.propublica.org/article/reader-question-fed-data",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Reader-question explainer with substantive methodology discussion of ProPublica's bailout data figures.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/why-havent-bankers-been-punished-just-read-these-insider-sec-emails": {
+   "url": "https://www.propublica.org/article/why-havent-bankers-been-punished-just-read-these-insider-sec-emails",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/class-action-a-challenge-to-the-idea-that-income-can-integrate-americas-cam": {
+   "url": "https://www.propublica.org/article/class-action-a-challenge-to-the-idea-that-income-can-integrate-americas-cam",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/colorado-marijuana-hemp-thc-testing-results": {
+   "url": "https://www.propublica.org/article/colorado-marijuana-hemp-thc-testing-results",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/trump-deportations-deployed-resources-tent-company": {
+   "url": "https://www.propublica.org/article/trump-deportations-deployed-resources-tent-company",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/un-encausado-se-presenta-solo-al-tribunal-de-inmigracion-tiene-6-anos-de-edad": {
+   "url": "https://www.propublica.org/article/un-encausado-se-presenta-solo-al-tribunal-de-inmigracion-tiene-6-anos-de-edad",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-mirror",
+   "confidence": "medium",
+   "rationale": "Spanish translation of an English ProPublica article ('Read in English') \u2014 localized mirror per rubric despite substantive content.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/exxonmobil-plastics-recycling-pyrolysis-lawsuit-california": {
+   "url": "https://www.propublica.org/article/exxonmobil-plastics-recycling-pyrolysis-lawsuit-california",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/heartland-chicago-shelters-immigrant-children-sick-traumatized": {
+   "url": "https://www.propublica.org/article/heartland-chicago-shelters-immigrant-children-sick-traumatized",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/free-file-online-tax-preparation-fees-intuit-turbotax-h-r-block": {
+   "url": "https://www.propublica.org/article/free-file-online-tax-preparation-fees-intuit-turbotax-h-r-block",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/why-america-fails-at-gathering-hate-crime-statistics": {
+   "url": "https://www.propublica.org/article/why-america-fails-at-gathering-hate-crime-statistics",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/epa-gives-bp-24-hours-to-choose-less-toxic-dispersants": {
+   "url": "https://www.propublica.org/article/epa-gives-bp-24-hours-to-choose-less-toxic-dispersants",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/will-the-supreme-courts-lethal-injection-review-kill-the-death-penalty": {
+   "url": "https://www.propublica.org/article/will-the-supreme-courts-lethal-injection-review-kill-the-death-penalty",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/public-vs-private-policing-in-st-louis": {
+   "url": "https://www.propublica.org/article/public-vs-private-policing-in-st-louis",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/education-technology-covid-pandemic-crisis-schools": {
+   "url": "https://www.propublica.org/article/education-technology-covid-pandemic-crisis-schools",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/have-you-filed-a-claim-with-bp-vietnamese": {
+   "url": "https://www.propublica.org/article/have-you-filed-a-claim-with-bp-vietnamese",
+   "label": "NON-HELPFUL",
+   "category": "non-helpful-mirror",
+   "confidence": "high",
+   "rationale": "Vietnamese localized version of a BP-claims reader-callout form page \u2014 both a mirror and a solicitation flow, non-helpful on either ground.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/ceo-of-alaska-pipeline-a-former-bp-exec-steps-down": {
+   "url": "https://www.propublica.org/article/ceo-of-alaska-pipeline-a-former-bp-exec-steps-down",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/brooklyn-judge-gave-political-advice-boroughs-top-prosecutor": {
+   "url": "https://www.propublica.org/article/brooklyn-judge-gave-political-advice-boroughs-top-prosecutor",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  },
+  "https://www.houstonchronicle.com/news/houston-texas/houston/article/harris-county-clerk-s-office-singles-out-three-13334106.php": {
+   "url": "https://www.houstonchronicle.com/news/houston-texas/houston/article/harris-county-clerk-s-office-singles-out-three-13334106.php",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Off-domain Houston Chronicle news article with substantive reporting on Harris County poll scrutiny; helpful content despite not being a propublica.org URL.",
+   "site": "propublica"
+  },
+  "https://www.propublica.org/article/aurora-chicago-lakeshore-hospital-state-legislators-response-dcfs": {
+   "url": "https://www.propublica.org/article/aurora-chicago-lakeshore-hospital-state-legislators-response-dcfs",
+   "label": "HELPFUL",
+   "category": "helpful-article",
+   "confidence": "high",
+   "rationale": "Full ProPublica investigative/news article with substantive body content a user would ask questions about.",
+   "site": "propublica"
+  }
+ }
+}

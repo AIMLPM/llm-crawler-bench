@@ -1,0 +1,24 @@
+{
+  "date_utc": "2026-08-17T04:42:03.973066+00:00",
+  "prompt": "specs/v15-judge-prompt-v4.md",
+  "rows": 300,
+  "sonnet": {
+    "calls": 900,
+    "cost_usd": 2.688234449999997,
+    "input_tokens": 571077,
+    "output_tokens": 33991,
+    "cache_creation_tokens": 1701,
+    "cache_read_tokens": 1529199,
+    "cached_input_tokens": 0
+  },
+  "gpt4omini": {
+    "calls": 900,
+    "cost_usd": 0.1982611499999999,
+    "input_tokens": 1879533,
+    "output_tokens": 27112,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "cached_input_tokens": 1332480
+  },
+  "total_usd": 2.8865
+}

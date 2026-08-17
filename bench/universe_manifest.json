@@ -1,8 +1,11 @@
 {
+  "calibration_iterations_used": 1,
+  "canonical_judge_model": "haiku",
   "git_commit": "027bf36ffe16d97f69553e3401536e09e86345e3",
-  "haiku_model_version": null,
+  "gpt4omini_model_version": "gpt-4o-mini-2024-07-18",
+  "haiku_model_version": "claude-sonnet-4-5-20250929",
   "intersection_pool_total": null,
-  "judge_prompt_version": null,
+  "judge_prompt_version": "specs/v15-judge-prompt-v4.md#sha256:d15c3712f375035bb41658e30bfffaae79eb24af73de391b2f297edd419130b3",
   "sites": {
     "huggingface-transformers": {
       "sitemap_fetch_date": "2026-05-13",
