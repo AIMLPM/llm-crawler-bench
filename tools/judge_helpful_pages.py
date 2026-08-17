@@ -620,9 +620,21 @@ def load_v14_cached_pages(site: str) -> Dict[str, dict]:
     return cache
 
 
-def http_fetch_page(url: str) -> Optional[Tuple[str, str]]:
+_META_REFRESH_RE = re.compile(
+    r'<meta[^>]+http-equiv=["\']?refresh["\']?[^>]*content=["\'][^"\']*'
+    r'url=([^"\'>\s]+)',
+    re.I,
+)
+
+
+def http_fetch_page(url: str, _follow_refresh: bool = True) -> Optional[Tuple[str, str]]:
     """Live HTTP fetch for a URL when v1.4 cache lacks it. Returns
-    (title, text) or None on failure. Strips HTML tags + extracts text."""
+    (title, text) or None on failure. Strips HTML tags + extracts text.
+
+    Follows ONE meta-refresh hop when the page is a near-empty redirect
+    stub (e.g. docs.pytorch.org serves /docs/stable/* as tiny
+    "Redirecting…" shells pointing at the versioned /docs/<ver>/* page —
+    requests only follows HTTP redirects, not meta refresh)."""
     try:
         headers = {"User-Agent": USER_AGENT, "Accept": "text/html"}
         resp = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT_S)
@@ -640,6 +652,16 @@ def http_fetch_page(url: str) -> Optional[Tuple[str, str]]:
     text = re.sub(r"<style[^>]*>.*?</style>", " ", text, flags=re.S | re.I)
     text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
+
+    if _follow_refresh and len(text) < 200:
+        m = _META_REFRESH_RE.search(html)
+        if m:
+            from urllib.parse import urljoin
+            target = urljoin(url, m.group(1))
+            if target != url:
+                time.sleep(FETCH_POLITENESS_S)
+                return http_fetch_page(target, _follow_refresh=False)
+
     return (title, text)
 
 
