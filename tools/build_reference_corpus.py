@@ -357,8 +357,15 @@ def union_of_tools(site_name: str) -> Tuple[List[str], List[str]]:
 
 
 def dedup_normalize(urls: Iterable[str]) -> List[str]:
-    """Normalize each URL via _normalize_url_for_matching, drop empties,
-    dedup while preserving the first-seen normalized form.
+    """Dedup by _normalize_url_for_matching but STORE the first-seen
+    ORIGINAL URL, not the normalized form.
+
+    Normalization lowercases paths, which breaks live fetching on
+    case-sensitive servers (found 2026-08-17: docs.pytorch.org serves
+    /generated/torch.nn.Conv2d.html but 404s the lowercased form —
+    1,339/4,047 pytorch corpus URLs silently skipped; doc.rust-lang.org
+    std/core struct pages likewise). The normalized form is for KEYS
+    (dedup, cache lookup), never for the stored fetchable URL.
 
     Returns an alphabetically sorted list (stable for git diffs)."""
     seen: Set[str] = set()
@@ -370,7 +377,7 @@ def dedup_normalize(urls: Iterable[str]) -> List[str]:
         if not n or n in seen:
             continue
         seen.add(n)
-        out.append(n)
+        out.append(u.strip())
     out.sort()
     return out
 
