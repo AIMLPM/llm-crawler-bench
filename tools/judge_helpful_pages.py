@@ -92,7 +92,8 @@ POOL_PATH = REPO_ROOT / "sites" / "pool_v1.yaml"
 REF_CORPUS_DIR = REPO_ROOT / "bench" / "reference_corpora"
 V14_RUN = REPO_ROOT / "runs" / "run_v13_merged_20260504_203748"
 
-PROMPT_PATH = REPO_ROOT / "specs" / "v15-judge-prompt-v3.md"
+PROMPT_PATH = REPO_ROOT / "specs" / "v15-judge-prompt-v4.md"
+PROMPT_PATH_V3 = REPO_ROOT / "specs" / "v15-judge-prompt-v3.md"  # retained for audit diff
 PROMPT_PATH_V2 = REPO_ROOT / "specs" / "v15-judge-prompt-v2.md"  # retained for audit diff
 PROMPT_PATH_V1 = REPO_ROOT / "specs" / "v15-judge-prompt-v1.md"  # retained for audit diff
 MANIFEST_PATH = REPO_ROOT / "bench" / "universe_manifest.json"
@@ -129,6 +130,37 @@ SANITY_CHECK_SEED = 17
 # Per-page content cap (matches DS-2 spec: "first 2000 chars after chrome-strip").
 MAX_CONTENT_CHARS = 2000
 
+# Listing-aware snippet upgrade (2026-08-17, post-calibration-failure fix).
+_PRICE_RE = re.compile(r"\$[\d,]+\.\d{2}")
+
+
+def build_judge_snippet(raw_text: str) -> str:
+    """First-2000-chars-after-chrome-strip, upgraded to be listing-aware.
+
+    Root cause of the 2026-08-17 calibration failure on newegg: e-commerce
+    listing pages bury the product grid tens of thousands of chars below
+    nav/cookie chrome, so the head-of-document snippet carried zero product
+    data and both judges (correctly, on that evidence) called listing pages
+    non-helpful — 35%/25% agreement vs ground truth.
+
+    Rule (generic, no per-site config): if the stripped head has no price
+    signal but the raw text contains >=3 price matches, compose the snippet
+    from the stripped head plus a window centered on the median price
+    position, so the judge sees the listing's own product names + prices.
+    Pages without deep price clusters are unaffected (byte-identical to the
+    old behavior)."""
+    stripped = strip_nav_chrome(raw_text or "")
+    head = stripped[:MAX_CONTENT_CHARS]
+    if _PRICE_RE.search(head):
+        return head
+    prices = list(_PRICE_RE.finditer(raw_text or ""))
+    if len(prices) < 3:
+        return head
+    center = prices[len(prices) // 2].start()
+    lo = max(0, center - 200)
+    window = raw_text[lo:lo + 1380]
+    return (head[:550] + "\n[listing content from deeper in page:]\n" + window)[:MAX_CONTENT_CHARS]
+
 # Model versions (per spec resolved decisions Q2 + R-E snapshot resolver).
 # 2026-05-13 amendment: primary judge swapped Haiku 4.5 → Sonnet 4.5.
 # Haiku 4.5 silently ignores cache_control on the v2 prefix (verified empirically);
@@ -149,7 +181,7 @@ FETCH_POLITENESS_S = 0.5
 # Two-line judge output regex (tolerant to whitespace + case).
 HELPFUL_PATTERN = re.compile(r"^\s*(HELPFUL|NON[\-\s]?HELPFUL)\s*$", re.I)
 RATIONALE_PATTERN = re.compile(
-    r"^\s*(helpful-(?:docs|article|reference|howto|other)|"
+    r"^\s*(helpful-(?:docs|article|reference|howto|listing|other)|"
     r"non-helpful-(?:nav|index|search|account|error|empty|meta|mirror|other))"
     r"\s*:\s*(.+?)\s*$",
     re.I,
@@ -449,7 +481,7 @@ def _parse_response(
             # Tolerant: find any prefix anywhere.
             joined = "\n".join(lines[1:])
             m4 = re.search(
-                r"(helpful-(?:docs|article|reference|howto|other)|"
+                r"(helpful-(?:docs|article|reference|howto|listing|other)|"
                 r"non-helpful-(?:nav|index|search|account|error|empty|meta|mirror|other))"
                 r"\s*:\s*(.+)",
                 joined, re.I | re.DOTALL,
@@ -905,7 +937,7 @@ def mode_build_calibration_scaffold(args) -> int:
         # Cached sampling.
         for url in cached_in_ref[:take_cached]:
             title, text = cache[_normalize_url_for_matching(url)].get("title", ""), cache[_normalize_url_for_matching(url)].get("text", "")
-            snippet = strip_nav_chrome(text or "")[:MAX_CONTENT_CHARS]
+            snippet = build_judge_snippet(text or "")
             site_rows.append({
                 "site": site,
                 "url": url,
@@ -935,7 +967,7 @@ def mode_build_calibration_scaffold(args) -> int:
             if page is None:
                 continue
             title, text = page
-            snippet = strip_nav_chrome(text or "")[:MAX_CONTENT_CHARS]
+            snippet = build_judge_snippet(text or "")
             if len(snippet) < 100:
                 continue  # too thin, try next
             site_rows.append({
@@ -1045,10 +1077,17 @@ def _run_one_model_calibration_pass(
     prefix_block: str = "",
     suffix_template: str = "",
     n_calls: int = 3,
-) -> List[List[str]]:
-    """Run `n_calls` judge passes on `rows`, returning a list of len(rows)
-    lists each of length n_calls — the classification labels."""
+) -> Tuple[List[List[str]], Dict]:
+    """Run `n_calls` judge passes on `rows`, returning (labels, usage):
+    labels is a list of len(rows) lists each of length n_calls; usage is
+    exact spend metering accumulated from provider usage fields."""
     out: List[List[str]] = [[] for _ in rows]
+    usage = {
+        "calls": 0, "cost_usd": 0.0,
+        "input_tokens": 0, "output_tokens": 0,
+        "cache_creation_tokens": 0, "cache_read_tokens": 0,
+        "cached_input_tokens": 0,
+    }
     for call_i in range(n_calls):
         logger.info(f"    pass {call_i+1}/{n_calls} ...")
         for i, r in enumerate(rows):
@@ -1059,14 +1098,29 @@ def _run_one_model_calibration_pass(
             try:
                 if is_haiku:
                     jr = call_haiku(haiku_client, prefix_block, variable)
+                    usage["cost_usd"] += _haiku_cost_per_call(
+                        jr.input_tokens or 0, jr.output_tokens or 0,
+                        jr.cache_creation_input_tokens or 0,
+                        jr.cache_read_input_tokens or 0)
+                    usage["cache_creation_tokens"] += jr.cache_creation_input_tokens or 0
+                    usage["cache_read_tokens"] += jr.cache_read_input_tokens or 0
                 else:
                     full = prefix_block + "\n\n" + variable
-                    jr = call_gpt4omini(openai_client, openai_model_id, full)
+                    jr, cached_in = call_gpt4omini_with_cache_meta(
+                        openai_client, openai_model_id, full)
+                    usage["cost_usd"] += _gpt4omini_cost_per_call(
+                        jr.input_tokens or 0, jr.output_tokens or 0, cached_in)
+                    usage["cached_input_tokens"] += cached_in
+                usage["calls"] += 1
+                usage["input_tokens"] += jr.input_tokens or 0
+                usage["output_tokens"] += jr.output_tokens or 0
                 out[i].append(jr.classification)
             except RuntimeError as e:
                 logger.warning(f"      [{i+1}/{len(rows)}] call failed: {e}; recording PARSE_FAILURE")
                 out[i].append("PARSE_FAILURE")
-    return out
+            if (i + 1) % 50 == 0:
+                logger.info(f"      [{i+1}/{len(rows)}] running spend ${usage['cost_usd']:.4f}")
+    return out, usage
 
 
 def _summarize_calibration(
@@ -1193,18 +1247,20 @@ def mode_calibration(args) -> int:
 
     # 3-call passes per model.
     logger.info(f"--- Haiku ({HAIKU_MODEL}) ---")
-    haiku_labels_3x = _run_one_model_calibration_pass(
+    haiku_labels_3x, haiku_usage = _run_one_model_calibration_pass(
         rows, is_haiku=True, haiku_client=haiku,
         prefix_block=prefix_block, suffix_template=suffix_template,
         n_calls=3,
     )
+    logger.info(f"    Sonnet spend: ${haiku_usage['cost_usd']:.4f} over {haiku_usage['calls']} calls")
 
     logger.info(f"--- gpt-4o-mini ({gpt_model}) ---")
-    gpt_labels_3x = _run_one_model_calibration_pass(
+    gpt_labels_3x, gpt_usage = _run_one_model_calibration_pass(
         rows, is_haiku=False, openai_client=openai, openai_model_id=gpt_model,
         prefix_block=prefix_block, suffix_template=suffix_template,
         n_calls=3,
     )
+    logger.info(f"    gpt-4o-mini spend: ${gpt_usage['cost_usd']:.4f} over {gpt_usage['calls']} calls")
 
     haiku_summary = _summarize_calibration(haiku_labels_3x, gt_labels, sites)
     gpt_summary = _summarize_calibration(gpt_labels_3x, gt_labels, sites)
@@ -1259,6 +1315,18 @@ def mode_calibration(args) -> int:
             w.writerow(row)
     logger.info(f"Per-row audit written: {CALIB_AUDIT.relative_to(REPO_ROOT)}")
 
+    # Persist the exact spend record (provider-reported usage fields).
+    spend_path = REPO_ROOT / "bench" / "calibration_spend_v15.json"
+    spend_path.write_text(json.dumps({
+        "date_utc": _dt.datetime.now(_dt.UTC).isoformat(),
+        "prompt": str(PROMPT_PATH.relative_to(REPO_ROOT)),
+        "rows": len(rows),
+        "sonnet": haiku_usage,
+        "gpt4omini": gpt_usage,
+        "total_usd": round(haiku_usage["cost_usd"] + gpt_usage["cost_usd"], 4),
+    }, indent=2) + "\n")
+    logger.info(f"Spend record written: {spend_path.relative_to(REPO_ROOT)}")
+
     # Write the human-readable summary markdown.
     md_path = REPO_ROOT / "bench" / "sanity_check_v15.md"
     md_lines = [
@@ -1301,6 +1369,16 @@ def mode_calibration(args) -> int:
         f"- gpt-4o-mini avg per-site agreement: **{gpt_avg:.2f}%**",
         f"- **Canonical**: `{canonical}`",
         "",
+        "## API spend (exact, from provider usage fields)",
+        "",
+        f"- Sonnet: **${haiku_usage['cost_usd']:.4f}** over {haiku_usage['calls']} calls "
+        f"(in {haiku_usage['input_tokens']:,} / out {haiku_usage['output_tokens']:,} / "
+        f"cache-write {haiku_usage['cache_creation_tokens']:,} / cache-read {haiku_usage['cache_read_tokens']:,} tok)",
+        f"- gpt-4o-mini: **${gpt_usage['cost_usd']:.4f}** over {gpt_usage['calls']} calls "
+        f"(in {gpt_usage['input_tokens']:,} / out {gpt_usage['output_tokens']:,} / "
+        f"cached-in {gpt_usage['cached_input_tokens']:,} tok)",
+        f"- **Total: ${haiku_usage['cost_usd'] + gpt_usage['cost_usd']:.4f}**",
+        "",
         "## Next step",
         "",
     ]
@@ -1335,6 +1413,9 @@ def mode_calibration(args) -> int:
     logger.info(f"Canonical model: {canonical}")
     logger.info(f"Haiku gates all_pass: {haiku_summary['gates']['all_pass']}")
     logger.info(f"gpt-4o-mini gates all_pass: {gpt_summary['gates']['all_pass']}")
+    logger.info(
+        f"TOTAL API SPEND: ${haiku_usage['cost_usd'] + gpt_usage['cost_usd']:.4f} "
+        f"(Sonnet ${haiku_usage['cost_usd']:.4f} + gpt-4o-mini ${gpt_usage['cost_usd']:.4f})")
     logger.info("=" * 60)
     return 0 if not needs_iteration else 6
 
@@ -1428,7 +1509,7 @@ def mode_full_pool(args) -> int:
                     }
                     continue
                 title, raw_text = page
-                snippet = strip_nav_chrome(raw_text)[:MAX_CONTENT_CHARS]
+                snippet = build_judge_snippet(raw_text)
                 if len(snippet) < 100:
                     ckpt[url] = {
                         "classification": "SKIPPED_THIN_CONTENT",
@@ -1613,7 +1694,7 @@ def mode_pilot(args) -> int:
                 }
             return None
         title, raw_text = page
-        snippet = strip_nav_chrome(raw_text)[:MAX_CONTENT_CHARS]
+        snippet = build_judge_snippet(raw_text)
         if len(snippet) < 100:
             with lock:
                 primary_ckpt[url] = {
@@ -2062,7 +2143,7 @@ def mode_sanity_confidence(args) -> int:
             if page is None:
                 continue
             title, raw_text = page
-            snippet = strip_nav_chrome(raw_text)[:MAX_CONTENT_CHARS]
+            snippet = build_judge_snippet(raw_text)
             if len(snippet) < 100:
                 continue
             variable = format_suffix(suffix_template, url, title, snippet)
