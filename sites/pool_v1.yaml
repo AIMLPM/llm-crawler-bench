@@ -14,8 +14,14 @@
 # non-200s or content-hash drift exceeding 30% — dead sites shouldn't
 # silently lower everyone's scores.
 
-version: "v1.2"
-released: "2026-04-24"
+# v1.3 (2026-08-17): huggingface-transformers excluded from active benching
+# (has_queries -> false) — HF rate-limits live fetches, which blocked both
+# v1.5 calibration content extraction and full-pool judging, and risks
+# blocking the operator's IP. Replaced in the framework_docs slot by
+# pytorch-docs (docs.pytorch.org: working sitemap.xml, static Sphinx,
+# crawl-friendly robots). Owner ruling, see chat.md 2026-08-17.
+version: "v1.3"
+released: "2026-08-17"
 
 sites:
   # ==========================================================================
@@ -59,6 +65,19 @@ sites:
     max_pages: 300
     render_js: true
     description: "Hugging Face Transformers docs -- model cards, code examples, SPA"
+    # v1.3: excluded from active benching (rate-limits live fetches; would
+    # block the operator). Entry retained for v1.4-era provenance.
+    has_queries: false
+
+  - name: pytorch-docs
+    url: https://docs.pytorch.org/docs/stable/index.html
+    category: framework_docs
+    difficulty: [static]
+    max_pages: 300
+    render_js: false
+    description: "PyTorch docs -- Sphinx API reference + tutorials, sitemap.xml available"
+    # v1.3 replacement for huggingface-transformers (same framework_docs
+    # slot). Queries arrive via the v1.5 universe-anchored generator (D3).
     has_queries: true
 
   - name: kubernetes-docs

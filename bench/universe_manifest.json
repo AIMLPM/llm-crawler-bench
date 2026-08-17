@@ -1,11 +1,11 @@
 {
   "calibration_iterations_used": 1,
-  "canonical_judge_model": "haiku",
-  "git_commit": "027bf36ffe16d97f69553e3401536e09e86345e3",
+  "canonical_judge_model": "gpt4omini",
+  "git_commit": "aebf4869cd824fb70ebc579eb73dc5196e202176",
   "gpt4omini_model_version": "gpt-4o-mini-2024-07-18",
   "haiku_model_version": "claude-sonnet-4-5-20250929",
   "intersection_pool_total": null,
-  "judge_prompt_version": "specs/v15-judge-prompt-v4.md#sha256:d15c3712f375035bb41658e30bfffaae79eb24af73de391b2f297edd419130b3",
+  "judge_prompt_version": "specs/v15-judge-prompt-v5.md#sha256:ca1be4c3232b4e3a795fca8b6629da29603f042c2bbe7e41deef1df01b3450b3",
   "sites": {
     "huggingface-transformers": {
       "sitemap_fetch_date": "2026-05-13",
@@ -74,6 +74,13 @@
       "source": "sitemap",
       "url_count": 5000,
       "url_list_sha256": "5378b1d0d30b705bda14ef505f7efdb1965fe5044cb908afbbcf22c9c958e693"
+    },
+    "pytorch-docs": {
+      "sitemap_fetch_date": "2026-08-17",
+      "sitemap_url_sample_seed": null,
+      "source": "sitemap",
+      "url_count": 4047,
+      "url_list_sha256": "a512acc7d03f491d2a6df1268b9fc667a70eb74e029bea9dc9f159dbd78e6eae"
     },
     "react-dev": {
       "sitemap_fetch_status": "errored_or_missing",
