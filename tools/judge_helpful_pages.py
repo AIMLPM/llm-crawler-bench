@@ -1486,15 +1486,26 @@ def mode_full_pool(args) -> int:
         logger.error("gpt-4o-mini snapshot resolver returned None.")
         return 2
 
+    model_specs = [("haiku", "haiku"), ("gpt4omini", "openai")]
+    if getattr(args, "models", None):
+        wanted = {m.strip() for m in args.models.split(",") if m.strip()}
+        unknown = wanted - {"haiku", "gpt4omini"}
+        if unknown:
+            logger.error(f"Unknown --models entries: {sorted(unknown)} (valid: haiku, gpt4omini)")
+            return 1
+        model_specs = [ms for ms in model_specs if ms[0] in wanted]
+    logger.info(f"Judge models this run: {[m for m, _ in model_specs]}")
+
     total_judged = 0
     total_cost = 0.0
+    model_costs = {"haiku": 0.0, "gpt4omini": 0.0}
 
     for site in target_sites:
         ref_urls = _ref_urls_for_site(site)
         logger.info(f"\n=== {site}: {len(ref_urls)} URLs ===")
         cache = load_v14_cached_pages(site)
 
-        for model_name, judge_fn_kind in [("haiku", "haiku"), ("gpt4omini", "openai")]:
+        for model_name, judge_fn_kind in model_specs:
             ckpt = _load_checkpoint(model_name, site) or {}
             already = set(ckpt.keys())
             remaining = [u for u in ref_urls if u not in already]
@@ -1524,13 +1535,17 @@ def mode_full_pool(args) -> int:
                         h_out = jr.output_tokens or 0
                         h_cw = jr.cache_creation_input_tokens or 0
                         h_cr = jr.cache_read_input_tokens or 0
-                        total_cost += _haiku_cost_per_call(h_in, h_out, h_cw, h_cr)
+                        call_cost = _haiku_cost_per_call(h_in, h_out, h_cw, h_cr)
+                        total_cost += call_cost
+                        model_costs["haiku"] += call_cost
                     else:
                         full = prefix_block + "\n\n" + variable
                         jr, cached_in = call_gpt4omini_with_cache_meta(openai, gpt_model, full)
-                        total_cost += _gpt4omini_cost_per_call(
+                        call_cost = _gpt4omini_cost_per_call(
                             jr.input_tokens or 0, jr.output_tokens or 0, cached_in
                         )
+                        total_cost += call_cost
+                        model_costs["gpt4omini"] += call_cost
                 except RuntimeError as e:
                     logger.warning(f"    [{i}/{len(remaining)}] {url}: judge failed: {e}")
                     continue
@@ -1555,7 +1570,11 @@ def mode_full_pool(args) -> int:
             _save_checkpoint(model_name, site, ckpt)
             logger.info(f"  [{model_name}] DONE. saved {len(ckpt)} entries.")
 
-    logger.info(f"\nFull-pool complete. total_judged={total_judged} estimated_cost=${total_cost:.2f}")
+    logger.info(
+        f"\nFull-pool complete. total_judged={total_judged} "
+        f"EXACT SPEND ${total_cost:.4f} "
+        f"(sonnet ${model_costs['haiku']:.4f} + gpt-4o-mini ${model_costs['gpt4omini']:.4f})"
+    )
     return 0
 
 
@@ -2333,6 +2352,14 @@ def main() -> int:
         "--sites",
         default=None,
         help="Comma-separated subset of site names (for --full-pool).",
+    )
+    parser.add_argument(
+        "--models",
+        default=None,
+        help="For --full-pool: comma-separated subset of judge models to run "
+             "(valid: haiku, gpt4omini; default both). Single-model runs "
+             "support the calibration-gated cheap-judge path (e.g. "
+             "--models gpt4omini at ~$7 vs ~$100 dual).",
     )
     parser.add_argument(
         "--allow-live-fetch",
