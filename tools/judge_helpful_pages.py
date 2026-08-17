@@ -92,7 +92,8 @@ POOL_PATH = REPO_ROOT / "sites" / "pool_v1.yaml"
 REF_CORPUS_DIR = REPO_ROOT / "bench" / "reference_corpora"
 V14_RUN = REPO_ROOT / "runs" / "run_v13_merged_20260504_203748"
 
-PROMPT_PATH = REPO_ROOT / "specs" / "v15-judge-prompt-v4.md"
+PROMPT_PATH = REPO_ROOT / "specs" / "v15-judge-prompt-v5.md"
+PROMPT_PATH_V4 = REPO_ROOT / "specs" / "v15-judge-prompt-v4.md"  # retained for audit diff
 PROMPT_PATH_V3 = REPO_ROOT / "specs" / "v15-judge-prompt-v3.md"  # retained for audit diff
 PROMPT_PATH_V2 = REPO_ROOT / "specs" / "v15-judge-prompt-v2.md"  # retained for audit diff
 PROMPT_PATH_V1 = REPO_ROOT / "specs" / "v15-judge-prompt-v1.md"  # retained for audit diff
@@ -160,6 +161,89 @@ def build_judge_snippet(raw_text: str) -> str:
     lo = max(0, center - 200)
     window = raw_text[lo:lo + 1380]
     return (head[:550] + "\n[listing content from deeper in page:]\n" + window)[:MAX_CONTENT_CHARS]
+
+
+# --- Deterministic pre-classifier (Stage 2a, 2026-08-17) -------------------
+# Three NON-HELPFUL patterns are mechanical, not judgment calls, and the
+# rubric itself treats them as such ("filtered separately" for mirrors; the
+# owner's facet-permutation exclusion; the <100-words-own-content rule).
+# Judging them with an LLM measured worse than deciding them directly
+# (round-2 calibration: per-class NON-HELPFUL 60%/10%), so they are decided
+# BEFORE the judge and the SC-3 gates are computed on the combined system.
+# All rules are generic — no per-site configuration.
+
+_TRACKING_KEYS = {"utm_source", "utm_medium", "utm_campaign", "utm_content",
+                  "utm_term", "ref", "fbclid", "gclid", "cm_sp", "msclkid", "_ga"}
+_FACET_KEYS = {"n", "page", "pg", "pagenumber", "filter", "sort", "order"}
+_THIN_WORDS = 100
+_LANG_MIN_WORDS = 15
+_LANG_MIN_PROB = 0.95
+
+
+def _facet_url(url: str) -> bool:
+    """True if the URL query selects a subset of an existing listing
+    (facet/filter/pagination params). Tracking params are ignored."""
+    from urllib.parse import urlsplit
+    query = urlsplit(url).query
+    if not query:
+        return False
+    for pair in query.split("&"):
+        key = pair.partition("=")[0].lower()
+        if key in _TRACKING_KEYS or key.startswith("utm_"):
+            continue
+        if key in _FACET_KEYS:
+            return True
+    return False
+
+
+def _detect_lang(text: str) -> Optional[str]:
+    """Confident language of `text`, or None. Deterministic (seeded)."""
+    try:
+        from langdetect import DetectorFactory, detect_langs
+        DetectorFactory.seed = 0
+    except ImportError:
+        return None
+    sample = re.sub(r"[^A-Za-zÀ-ỹ\s]", " ", text).strip()
+    if len(sample.split()) < _LANG_MIN_WORDS:
+        return None
+    try:
+        langs = detect_langs(sample[:1200])
+        if langs and langs[0].prob > _LANG_MIN_PROB:
+            return langs[0].lang
+    except Exception:
+        pass
+    return None
+
+
+def deterministic_preclassify(
+    url: str,
+    snippet: str,
+    raw_text: Optional[str],
+    site_lang: str = "en",
+) -> Optional[Tuple[str, str, str]]:
+    """Return (label, category, reason) when the page is mechanically
+    NON-HELPFUL, else None (page goes to the LLM judge).
+
+    Rules (validated on the 300-row ground truth: 11 fires, 0 false):
+      facet  — listing-subset query params in the URL
+      mirror — page language differs from the site's primary language
+               (detected on the snippet TAIL, past any leading chrome)
+      thin   — <100 words after chrome-strip of the full raw text
+               (needs raw_text; skipped when unavailable)
+    """
+    if _facet_url(url):
+        return ("NON-HELPFUL", "non-helpful-search",
+                "facet/filter permutation of a listing (URL query params)")
+    lang = _detect_lang(snippet[-1000:])
+    if lang and lang != site_lang:
+        return ("NON-HELPFUL", "non-helpful-mirror",
+                f"page language '{lang}' differs from site primary '{site_lang}'")
+    if raw_text:
+        words = len(strip_nav_chrome(raw_text).split())
+        if words < _THIN_WORDS:
+            return ("NON-HELPFUL", "non-helpful-empty",
+                    f"{words} words own content after chrome-strip (<{_THIN_WORDS})")
+    return None
 
 # Model versions (per spec resolved decisions Q2 + R-E snapshot resolver).
 # 2026-05-13 amendment: primary judge swapped Haiku 4.5 → Sonnet 4.5.
@@ -1231,6 +1315,36 @@ def mode_calibration(args) -> int:
     sites = [r["site"] for r in rows]
     gt_labels = [r["ground_truth"] for r in rows]
 
+    # Stage 2a: deterministic pre-classification. SC-3 is computed on the
+    # combined system (prefilter + LLM judge) — the same composition that
+    # runs in --full-pool. Prefiltered rows cost zero API calls.
+    site_lang: Dict[str, str] = {}
+    for site in sorted({r["site"] for r in rows}):
+        lang_counts: Dict[str, int] = {}
+        for r in rows:
+            if r["site"] != site:
+                continue
+            lg = _detect_lang((r.get("content_snippet", "") or "")[-1000:])
+            if lg:
+                lang_counts[lg] = lang_counts.get(lg, 0) + 1
+        site_lang[site] = max(lang_counts, key=lang_counts.get) if lang_counts else "en"
+    logger.info(f"Site primary languages: {site_lang}")
+
+    site_caches: Dict[str, dict] = {}
+    prefilter: List[Optional[Tuple[str, str, str]]] = []
+    for r in rows:
+        site = r["site"]
+        if site not in site_caches:
+            site_caches[site] = load_v14_cached_pages(site)
+        rec = site_caches[site].get(_normalize_url_for_matching(r["url"])) or {}
+        raw_text = rec.get("text") or None
+        prefilter.append(deterministic_preclassify(
+            r["url"], r.get("content_snippet", "") or "", raw_text, site_lang[site]))
+    n_pre = sum(1 for p in prefilter if p)
+    logger.info(f"Deterministic pre-classifier fired on {n_pre}/{len(rows)} rows "
+                f"(LLM judges the remaining {len(rows) - n_pre}).")
+    llm_rows = [r for r, p in zip(rows, prefilter) if p is None]
+
     prefix_block, suffix_template = load_prompt_blocks()
 
     haiku = _haiku_client()
@@ -1247,20 +1361,30 @@ def mode_calibration(args) -> int:
 
     # 3-call passes per model.
     logger.info(f"--- Haiku ({HAIKU_MODEL}) ---")
-    haiku_labels_3x, haiku_usage = _run_one_model_calibration_pass(
-        rows, is_haiku=True, haiku_client=haiku,
+    haiku_labels_llm, haiku_usage = _run_one_model_calibration_pass(
+        llm_rows, is_haiku=True, haiku_client=haiku,
         prefix_block=prefix_block, suffix_template=suffix_template,
         n_calls=3,
     )
     logger.info(f"    Sonnet spend: ${haiku_usage['cost_usd']:.4f} over {haiku_usage['calls']} calls")
 
     logger.info(f"--- gpt-4o-mini ({gpt_model}) ---")
-    gpt_labels_3x, gpt_usage = _run_one_model_calibration_pass(
-        rows, is_haiku=False, openai_client=openai, openai_model_id=gpt_model,
+    gpt_labels_llm, gpt_usage = _run_one_model_calibration_pass(
+        llm_rows, is_haiku=False, openai_client=openai, openai_model_id=gpt_model,
         prefix_block=prefix_block, suffix_template=suffix_template,
         n_calls=3,
     )
     logger.info(f"    gpt-4o-mini spend: ${gpt_usage['cost_usd']:.4f} over {gpt_usage['calls']} calls")
+
+    def _merge_with_prefilter(llm_labels: List[List[str]]) -> List[List[str]]:
+        merged: List[List[str]] = []
+        it = iter(llm_labels)
+        for p in prefilter:
+            merged.append([p[0]] * 3 if p else next(it))
+        return merged
+
+    haiku_labels_3x = _merge_with_prefilter(haiku_labels_llm)
+    gpt_labels_3x = _merge_with_prefilter(gpt_labels_llm)
 
     haiku_summary = _summarize_calibration(haiku_labels_3x, gt_labels, sites)
     gpt_summary = _summarize_calibration(gpt_labels_3x, gt_labels, sites)
@@ -1286,7 +1410,7 @@ def mode_calibration(args) -> int:
     # Write the per-row audit CSV.
     CALIB_AUDIT.parent.mkdir(parents=True, exist_ok=True)
     fields = (
-        ["site", "url", "ground_truth"]
+        ["site", "url", "ground_truth", "prefilter"]
         + [f"haiku_call_{i+1}" for i in range(3)]
         + ["haiku_majority", "haiku_agrees"]
         + [f"gpt4omini_call_{i+1}" for i in range(3)]
@@ -1304,6 +1428,7 @@ def mode_calibration(args) -> int:
                 "site": r["site"],
                 "url": r["url"],
                 "ground_truth": r["ground_truth"],
+                "prefilter": prefilter[i][1] if prefilter[i] else "",
                 "haiku_majority": h_maj,
                 "haiku_agrees": h_maj == r["ground_truth"],
                 "gpt4omini_majority": g_maj,
@@ -1337,6 +1462,9 @@ def mode_calibration(args) -> int:
         f"- **Haiku model**: `{HAIKU_MODEL}`",
         f"- **gpt-4o-mini snapshot**: `{gpt_model}`",
         f"- **Ground-truth rows used**: {len(rows)} / {len(rows_all)} filled",
+        f"- **Deterministic pre-classifier**: fired on {n_pre} rows "
+        f"(facet/mirror/thin); SC-3 computed on the combined system "
+        f"(prefilter + LLM judge), matching --full-pool composition",
         "",
         "## Haiku results",
         "",
@@ -1505,6 +1633,14 @@ def mode_full_pool(args) -> int:
         logger.info(f"\n=== {site}: {len(ref_urls)} URLs ===")
         cache = load_v14_cached_pages(site)
 
+        # Site primary language for the mirror rule, from a cache sample.
+        lang_counts: Dict[str, int] = {}
+        for rec in list(cache.values())[:40]:
+            lg = _detect_lang((rec.get("text") or "")[-1000:])
+            if lg:
+                lang_counts[lg] = lang_counts.get(lg, 0) + 1
+        site_primary_lang = max(lang_counts, key=lang_counts.get) if lang_counts else "en"
+
         for model_name, judge_fn_kind in model_specs:
             ckpt = _load_checkpoint(model_name, site) or {}
             already = set(ckpt.keys())
@@ -1520,6 +1656,18 @@ def mode_full_pool(args) -> int:
                     }
                     continue
                 title, raw_text = page
+                pre = deterministic_preclassify(
+                    url, strip_nav_chrome(raw_text), raw_text, site_primary_lang)
+                if pre:
+                    ckpt[url] = {
+                        "classification": pre[0],
+                        "rationale_prefix": pre[1],
+                        "rationale_text": pre[2],
+                        "judged_at": _dt.datetime.now(_dt.UTC).isoformat(),
+                        "judge_call_id": "deterministic-prefilter",
+                    }
+                    total_judged += 1
+                    continue
                 snippet = build_judge_snippet(raw_text)
                 if len(snippet) < 100:
                     ckpt[url] = {
