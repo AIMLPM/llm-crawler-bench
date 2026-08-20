@@ -1,0 +1,2164 @@
+{
+  "https://15.react.dev": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Overview of React as a JavaScript library for building user interfaces, including key concepts and a simple component example, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:04.635412+00:00",
+    "judge_call_id": "chatcmpl-EDs1ws138OhO6nLlJYjm9U9R2XleB",
+    "parse_warning": null
+  },
+  "https://16.react.dev": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for React 16, explaining its features and providing a tutorial \u2014 users might ask questions about building user interfaces with React.",
+    "judged_at": "2026-08-17T13:51:05.765205+00:00",
+    "judge_call_id": "chatcmpl-EDs1x374ylnUoCfKkmcWt5d0Tm6YZ",
+    "parse_warning": null
+  },
+  "https://17.react.dev": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation for React 17, explaining its features and providing a tutorial for building user interfaces, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:06.836455+00:00",
+    "judge_call_id": "chatcmpl-EDs1ynLQ9rII1QZm9v7TuMz0KqfZw",
+    "parse_warning": null
+  },
+  "https://18.react.dev": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to create user interfaces with React components, including code examples and usage instructions.",
+    "judged_at": "2026-08-17T13:51:07.844463+00:00",
+    "judge_call_id": "chatcmpl-EDs1zUrXVGMIlqNfHRQcJLIsqCB3j",
+    "parse_warning": null
+  },
+  "https://18.react.dev/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to create user interfaces with React components, including code examples and usage instructions.",
+    "judged_at": "2026-08-17T13:51:09.290208+00:00",
+    "judge_call_id": "chatcmpl-EDs20LwKMxO4lsNmWZJqNqC45gL2P",
+    "parse_warning": null
+  },
+  "https://18.react.dev//reference/react/component": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for React components, including usage examples and best practices, which users might query about.",
+    "judged_at": "2026-08-17T13:51:10.271016+00:00",
+    "judge_call_id": "chatcmpl-EDs21Cs0ezcJHHHLwnyyLlSP1urwf",
+    "parse_warning": null
+  },
+  "https://18.react.dev/blog": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Official blog providing updates, release notes, and important announcements from the React team, which users might inquire about.",
+    "judged_at": "2026-08-17T13:51:11.024996+00:00",
+    "judge_call_id": "chatcmpl-EDs22tWKotBleKwStOac8hE2mJcEV",
+    "parse_warning": null
+  },
+  "https://18.react.dev/blog/2024/04/25/react-19": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Overview article detailing the new features and improvements in React v19, including upgrade instructions and breaking changes \u2014 users might ask questions about the content covered.",
+    "judged_at": "2026-08-17T13:51:12.042538+00:00",
+    "judge_call_id": "chatcmpl-EDs23wzbGqjC7lwbsERxI2E6ncKlW",
+    "parse_warning": null
+  },
+  "https://18.react.dev/blog/2024/04/25/react-19-upgrade-guide": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Upgrade guide for React 19 detailing improvements, breaking changes, and steps for upgrading, which users might have questions about.",
+    "judged_at": "2026-08-17T13:51:13.039811+00:00",
+    "judge_call_id": "chatcmpl-EDs24urPncZYfMKUzR6Y5H7BHsf2p",
+    "parse_warning": null
+  },
+  "https://18.react.dev/blog/2024/05/22/react-conf-2024-recap": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Recap of React Conf 2024 detailing announcements, talks, and community engagement, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:13.816852+00:00",
+    "judge_call_id": "chatcmpl-EDs25V5vZSc2RDCnikS7AICRSvNXd",
+    "parse_warning": null
+  },
+  "https://18.react.dev/blog/2024/10/21/react-compiler-beta-release": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post announcing the stable release of React Compiler Beta, detailing updates and encouraging community feedback \u2014 users might ask questions about the new features and usage.",
+    "judged_at": "2026-08-17T13:51:14.806953+00:00",
+    "judge_call_id": "chatcmpl-EDs26IuE7FHwjhPle4TybugBvMIm2",
+    "parse_warning": null
+  },
+  "https://18.react.dev/community": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-other",
+    "rationale_text": "The page provides information about React-related communities and resources, which users might inquire about for engagement and learning opportunities.",
+    "judged_at": "2026-08-17T13:51:15.554567+00:00",
+    "judge_call_id": "chatcmpl-EDs27Vki5tcfEThfZYHgfNmCTns2t",
+    "parse_warning": null
+  },
+  "https://18.react.dev/community/acknowledgements": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Acknowledgements page recognizing contributors with no substantive content that a user would query about.",
+    "judged_at": "2026-08-17T13:51:16.437379+00:00",
+    "judge_call_id": "chatcmpl-EDs271Wek4Kvwq81F3iNBWa5udMsz",
+    "parse_warning": null
+  },
+  "https://18.react.dev/community/docs-contributors": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Page primarily thanking contributors with minimal substantive content; users are unlikely to ask questions about this specific content.",
+    "judged_at": "2026-08-17T13:51:17.493386+00:00",
+    "judge_call_id": "chatcmpl-EDs28Skcfy6qCrfNY89ZXYjmZ8xPu",
+    "parse_warning": null
+  },
+  "https://18.react.dev/community/team": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Team member profiles with personal anecdotes and no substantive content that a user would query about React development.",
+    "judged_at": "2026-08-17T13:51:18.317884+00:00",
+    "judge_call_id": "chatcmpl-EDs29FCEemeghsRGK5Ribsxtoolzu",
+    "parse_warning": null
+  },
+  "https://18.react.dev/community/translations": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Page primarily soliciting community contributions for translations without providing substantive content that a user might query.",
+    "judged_at": "2026-08-17T13:51:19.005742+00:00",
+    "judge_call_id": "chatcmpl-EDs2AKTrbei0SIO0tTQ6RFyhJkstx",
+    "parse_warning": null
+  },
+  "https://18.react.dev/learn": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a quick start guide to React, including explanations and code examples for creating components and handling data.",
+    "judged_at": "2026-08-17T13:51:19.945554+00:00",
+    "judge_call_id": "chatcmpl-EDs2B4Ln0NflGhkZV9sd1n5UPG8mn",
+    "parse_warning": null
+  },
+  "https://18.react.dev/learn/add-react-to-an-existing-project": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step guide on adding React to an existing project, providing practical instructions and necessary setup details.",
+    "judged_at": "2026-08-17T13:51:20.829262+00:00",
+    "judge_call_id": "chatcmpl-EDs2CYPUF2URKxdPDOHRzfcmiSsJ0",
+    "parse_warning": null
+  },
+  "https://18.react.dev/learn/adding-interactivity": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on adding interactivity in React, explaining state management and event handling with code examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:21.781307+00:00",
+    "judge_call_id": "chatcmpl-EDs2Dbaxjf2dYkiEKe1OLlYyECXUu",
+    "parse_warning": null
+  },
+  "https://18.react.dev/learn/describing-the-ui": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to create and customize React components, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:22.589673+00:00",
+    "judge_call_id": "chatcmpl-EDs2E9HcP97Y0koms3gEZRanavqFs",
+    "parse_warning": null
+  },
+  "https://18.react.dev/learn/escape-hatches": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining advanced React concepts with code examples, allowing users to ask questions about using refs and external system integration.",
+    "judged_at": "2026-08-17T13:51:24.166652+00:00",
+    "judge_call_id": "chatcmpl-EDs2EKv0iIeIUjyHaiatQxceARGNn",
+    "parse_warning": null
+  },
+  "https://18.react.dev/learn/installation": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing installation instructions and examples for getting started with React, which users might query about.",
+    "judged_at": "2026-08-17T13:51:25.001032+00:00",
+    "judge_call_id": "chatcmpl-EDs2GXjTP7SbyUZ59d9Xq6H69ENJP",
+    "parse_warning": null
+  },
+  "https://18.react.dev/learn/managing-state": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This page provides a tutorial on managing state in React applications, including explanations and code examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:25.824749+00:00",
+    "judge_call_id": "chatcmpl-EDs2H4VlxOhS7NtyOJdTsxeN488uI",
+    "parse_warning": null
+  },
+  "https://18.react.dev/learn/start-a-new-react-project": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step guide on starting a new React project, discussing frameworks and common challenges, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:26.591516+00:00",
+    "judge_call_id": "chatcmpl-EDs2IFU8trPKnH3VN3AkF39wLpcFw",
+    "parse_warning": null
+  },
+  "https://18.react.dev/reference/react": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Detailed reference documentation for working with React, including programmatic features, components, and APIs that users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:27.466537+00:00",
+    "judge_call_id": "chatcmpl-EDs2Ic0CPqsSQDjX2939Skzv5z5UL",
+    "parse_warning": null
+  },
+  "https://18.react.dev/reference/react-dom": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `react-dom` package, detailing methods, usage, and specific APIs relevant for web applications.",
+    "judged_at": "2026-08-17T13:51:28.335580+00:00",
+    "judge_call_id": "chatcmpl-EDs2JLzysGRUagCos6YK2WkcwKkwe",
+    "parse_warning": null
+  },
+  "https://18.react.dev/reference/react-dom/finddomnode": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `findDOMNode` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:51:29.106134+00:00",
+    "judge_call_id": "chatcmpl-EDs2KqHCGKcKv31biz8iXB8erVpUS",
+    "parse_warning": null
+  },
+  "https://18.react.dev/reference/react-dom/hydrate": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `hydrate` function in React, including usage details and links to related concepts.",
+    "judged_at": "2026-08-17T13:51:29.827005+00:00",
+    "judge_call_id": "chatcmpl-EDs2LWWVKF5Gw9I75kxERHffgjZjq",
+    "parse_warning": null
+  },
+  "https://18.react.dev/reference/react-dom/render": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `render` function in React, including usage examples and explanations of its deprecation in React 18.",
+    "judged_at": "2026-08-17T13:51:31.078998+00:00",
+    "judge_call_id": "chatcmpl-EDs2M43NZbAcMi69qq9t82BuJQLjN",
+    "parse_warning": null
+  },
+  "https://18.react.dev/reference/react-dom/server/rendertonodestream": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `renderToNodeStream` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:51:31.768566+00:00",
+    "judge_call_id": "chatcmpl-EDs2Nt6H7pT0b3PQ78xJk0kLizu9o",
+    "parse_warning": null
+  },
+  "https://18.react.dev/reference/react-dom/server/rendertostaticnodestream": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `renderToStaticNodeStream` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:51:32.607108+00:00",
+    "judge_call_id": "chatcmpl-EDs2NN64yUblygbMNYSekX7GLNMdM",
+    "parse_warning": null
+  },
+  "https://18.react.dev/reference/react-dom/unmountcomponentatnode": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:51:33.267670+00:00"
+  },
+  "https://18.react.dev/reference/react/createfactory": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `createFactory` function in React, including usage examples and explanations of its purpose.",
+    "judged_at": "2026-08-17T13:51:34.037776+00:00",
+    "judge_call_id": "chatcmpl-EDs2Pukn9hujT764N1axU4y5GpMrc",
+    "parse_warning": null
+  },
+  "https://18.react.dev/versions": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Page providing structured information about different versions of React, which users might query for details on version changes and features.",
+    "judged_at": "2026-08-17T13:51:34.876432+00:00",
+    "judge_call_id": "chatcmpl-EDs2QjkJiC4WTUXCtRbEbO7F4sMUg",
+    "parse_warning": null
+  },
+  "https://conf.react.dev": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Event page providing information about React Conf 2025, including speakers and talks, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:35.733195+00:00",
+    "judge_call_id": "chatcmpl-EDs2RPJchtV7UAD2dkYVZlP1sdpTq",
+    "parse_warning": null
+  },
+  "https://conf.react.dev/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Event page providing information about React Conf 2025, including speakers and talks, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:36.474904+00:00",
+    "judge_call_id": "chatcmpl-EDs2Sa8fOVJahFwx9TuNkdiP4Khii",
+    "parse_warning": null
+  },
+  "https://conf.react.dev/photos": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "4 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-17T13:51:36.475999+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://conf2024.react.dev/talks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Page listing talks from React Conf 2024 with titles and speakers, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:37.349105+00:00",
+    "judge_call_id": "chatcmpl-EDs2S3aaSQphrO1ooj7rp5wOESbPp",
+    "parse_warning": null
+  },
+  "https://conf2024.react.dev/talks/5": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "The page primarily contains speaker information and links to talks without substantive content that a user might query about.",
+    "judged_at": "2026-08-17T13:51:38.030143+00:00",
+    "judge_call_id": "chatcmpl-EDs2TtLcoaoUeXu7OipY071IKMY4t",
+    "parse_warning": null
+  },
+  "https://legacy.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post explaining the new JSX transform in React, detailing its benefits and upgrade instructions \u2014 a user might ask questions about JSX and its usage.",
+    "judged_at": "2026-08-17T13:51:39.604357+00:00",
+    "judge_call_id": "chatcmpl-EDs2UgvKdai6j4x5E7HjcWJSOGWce",
+    "parse_warning": null
+  },
+  "https://playground.react.dev": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "8 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-17T13:51:39.604511+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://playground.react.dev/": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "8 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-17T13:51:39.604591+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://react.dev": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to build user interfaces with React, including code examples and component usage, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:40.345728+00:00",
+    "judge_call_id": "chatcmpl-EDs2VTY4bJNbeYAERK8OisWq7PPMj",
+    "parse_warning": null
+  },
+  "https://react.dev/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to create user interfaces with React components, including code examples and usage instructions.",
+    "judged_at": "2026-08-17T13:51:41.122346+00:00",
+    "judge_call_id": "chatcmpl-EDs2WUMaHyJOT2ntM4e95lGo5m0Y8",
+    "parse_warning": null
+  },
+  "https://react.dev/blog": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Official blog providing updates, release notes, and development insights from the React team, which users might inquire about.",
+    "judged_at": "2026-08-17T13:51:41.866038+00:00",
+    "judge_call_id": "chatcmpl-EDs2XJXYWA9mn8owc8ktW9VvqPjjh",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2020/12/21/data-fetching-with-react-server-components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post introducing React Server Components with insights, recommendations, and links for further exploration \u2014 a user might ask questions about the content and concepts discussed.",
+    "judged_at": "2026-08-17T13:51:42.776202+00:00",
+    "judge_call_id": "chatcmpl-EDs2YBf8FDUNfGT0vZD1hIThYZz70",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2021/06/08/the-plan-for-react-18": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post detailing updates and features planned for React 18, which users might inquire about.",
+    "judged_at": "2026-08-17T13:51:43.486052+00:00",
+    "judge_call_id": "chatcmpl-EDs2ZP59AMUppC3nbtYlmdbJO2I5z",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2021/12/17/react-conf-2021-recap": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Recap article detailing the highlights and announcements from React Conf 2021, which users might ask questions about regarding React's future and features.",
+    "judged_at": "2026-08-17T13:51:44.298221+00:00",
+    "judge_call_id": "chatcmpl-EDs2ZZvGUQd3EDs7K7beuwiOl6Chs",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2022/03/08/react-18-upgrade-guide": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step guide on upgrading to React 18, including installation instructions and updates to client rendering APIs.",
+    "judged_at": "2026-08-17T13:51:45.045820+00:00",
+    "judge_call_id": "chatcmpl-EDs2a0smY1m24vfQSwBaaRfIXow48",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2022/03/29/react-v18": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Overview article detailing the new features and improvements in React 18, which users might have questions about.",
+    "judged_at": "2026-08-17T13:51:45.766084+00:00",
+    "judge_call_id": "chatcmpl-EDs2bbYYstex6vaX58RuJHGxLuX96",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-202": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:51:46.379383+00:00"
+  },
+  "https://react.dev/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post discussing ongoing projects and insights from the React team, which users might inquire about for updates and features.",
+    "judged_at": "2026-08-17T13:51:47.185360+00:00",
+    "judge_call_id": "chatcmpl-EDs2ctMDw8iylTZBOhPLsQP2UgnNl",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2023/03/16/introducing-react-dev": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Announcement blog post detailing the launch of the new React site, its features, and updates, which users might have questions about.",
+    "judged_at": "2026-08-17T13:51:47.972916+00:00",
+    "judge_call_id": "chatcmpl-EDs2dEb8wzC1s1Zc9yY8XcPXC0Bul",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-20": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:51:48.555189+00:00"
+  },
+  "https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post discussing advancements in React Server Components, providing insights and updates that users might inquire about.",
+    "judged_at": "2026-08-17T13:51:49.273870+00:00",
+    "judge_call_id": "chatcmpl-EDs2eMsrQBwtdl4sb64OChQc8CBku",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2023/05/03/react-canaries": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post discussing the introduction of a new Canary release channel for React, detailing its features and implications for the community.",
+    "judged_at": "2026-08-17T13:51:50.020425+00:00",
+    "judge_call_id": "chatcmpl-EDs2fzmMi1vUGJvkTNE1kP7ToG8mF",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2024/02/15/react-labs-what-we-have-been-working-on-february": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:51:50.612987+00:00"
+  },
+  "https://react.dev/blog/2024/02/15/react-labs-what-we-have-been-working-on-february-2024": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post detailing recent developments in React, including the React Compiler and upcoming React Conf, which users might inquire about.",
+    "judged_at": "2026-08-17T13:51:51.425816+00:00",
+    "judge_call_id": "chatcmpl-EDs2gObxpR8y3HenLhX0b98bmaVh0",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2024/04/25/react-19": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Overview article detailing new features and improvements in React 19, including an upgrade guide and examples, which users might have questions about.",
+    "judged_at": "2026-08-17T13:51:52.277414+00:00",
+    "judge_call_id": "chatcmpl-EDs2hwvMtktQbwTAzGuUGd11q93yN",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2024/04/25/react-19-upgrade-guide": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Upgrade guide for React 19 detailing breaking changes, installation steps, and recommendations for a smooth transition, which users might have questions about.",
+    "judged_at": "2026-08-17T13:51:53.025948+00:00",
+    "judge_call_id": "chatcmpl-EDs2iPM00t4anN8nWrqF05n2KiwOW",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2024/05/22/react-conf-2024-recap": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Recap of React Conf 2024 detailing announcements, talks, and community engagement, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:51:53.877455+00:00",
+    "judge_call_id": "chatcmpl-EDs2jQkzbQ3XmUYNCY0SUR2VCg8U9",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2024/10/21/react-compiler-beta-release": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-mirror",
+    "rationale_text": "page language 'fr' differs from site primary 'en'",
+    "judged_at": "2026-08-17T13:51:53.906515+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://react.dev/blog/2024/12/05/react-19": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Overview of new features in React 19 with links to upgrade instructions and improvements \u2014 users might ask questions about the updates and how to implement them.",
+    "judged_at": "2026-08-17T13:51:54.676990+00:00",
+    "judge_call_id": "chatcmpl-EDs2k4A6D1oKqAd4DrZ1GbhEgRHu8",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/02/14/sunsetting-create-react-app": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Article discussing the deprecation of Create React App and providing guidance on migration options, which users might have questions about.",
+    "judged_at": "2026-08-17T13:51:55.386739+00:00",
+    "judge_call_id": "chatcmpl-EDs2k3i0E95yEg53XPMutec4hk9jf",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/04/21/react-compiler-rc": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Announcement article detailing updates about the React Compiler RC, including installation instructions and optimizations, which users might inquire about.",
+    "judged_at": "2026-08-17T13:51:56.064753+00:00",
+    "judge_call_id": "chatcmpl-EDs2lbWl7SDD9R7AwI23Y40ZXG1et",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/04/23/react-labs-view-transitions-activity-and-more": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation post detailing new experimental features in React, including usage instructions and links to further resources, which users might inquire about.",
+    "judged_at": "2026-08-17T13:51:57.100040+00:00",
+    "judge_call_id": "chatcmpl-EDs2mykpJU31ZaNEWUHHi4nDROtSf",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/10/01/react-19-2": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post detailing the new features in React 19.2, providing examples and explanations that users might inquire about.",
+    "judged_at": "2026-08-17T13:51:57.968118+00:00",
+    "judge_call_id": "chatcmpl-EDs2naLhrNDSaFQwUiVVucA1NqTOb",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/10/07/introducing-the-react-foundation": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Announcement article detailing the creation of the React Foundation and its governance structure, which users might have questions about.",
+    "judged_at": "2026-08-17T13:51:58.862277+00:00",
+    "judge_call_id": "chatcmpl-EDs2oYkU5bxc1ZLH2mOyg0l0ZRzWu",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/10/07/react-compiler-1": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Announcement article detailing the release of React Compiler 1.0, its features, and its impact on the React community \u2014 users might ask questions about the compiler and its usage.",
+    "judged_at": "2026-08-17T13:51:59.661242+00:00",
+    "judge_call_id": "chatcmpl-EDs2p6OCnvFxs5PgwxsNsTZoiVTpG",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/10/16/react-conf-2025-recap": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Recap of React Conf 2025 summarizing key announcements and new features, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:00.348624+00:00",
+    "judge_call_id": "chatcmpl-EDs2pqHgVimPvHlpOGarKRe4ioile",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:52:00.944767+00:00"
+  },
+  "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Article detailing a critical security vulnerability in React Server Components, providing information on the issue and recommended actions for users.",
+    "judged_at": "2026-08-17T13:52:01.683557+00:00",
+    "judge_call_id": "chatcmpl-EDs2rpCRohn55KKxmW2p8OzItPSLl",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2025/12/11/denial-of-service-and-source-code-exposure-in-re": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:52:02.280591+00:00"
+  },
+  "https://react.dev/blog/2025/12/11/denial-of-service-and-source-code-exposure-in-react-server-components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Article detailing newly disclosed vulnerabilities in React Server Components, including severity ratings and recommendations for updates \u2014 users might ask questions about the vulnerabilities and their implications.",
+    "judged_at": "2026-08-17T13:52:03.072050+00:00",
+    "judge_call_id": "chatcmpl-EDs2sIB3QCY9mDZDCQPO2v9iPWAlB",
+    "parse_warning": null
+  },
+  "https://react.dev/blog/2026/02/24/the-react-foundation": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Article announcing the launch of the React Foundation, detailing its governance and founding members, which users might inquire about.",
+    "judged_at": "2026-08-17T13:52:03.800460+00:00",
+    "judge_call_id": "chatcmpl-EDs2t7KwV8hV9oakPhxI0mO1ng58z",
+    "parse_warning": null
+  },
+  "https://react.dev/community": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Community page listing various forums and events without substantive content that a user might query about.",
+    "judged_at": "2026-08-17T13:52:04.493346+00:00",
+    "judge_call_id": "chatcmpl-EDs2uI8fHUu4G4QyGpZcGHm0Wx0Bg",
+    "parse_warning": null
+  },
+  "https://react.dev/community/acknowledgements": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Acknowledgements page recognizing contributors with no substantive content that a user would query about.",
+    "judged_at": "2026-08-17T13:52:05.280413+00:00",
+    "judge_call_id": "chatcmpl-EDs2uEDE1ngEQXBHX8Ba8ynDzxPyb",
+    "parse_warning": null
+  },
+  "https://react.dev/community/conferences": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Page listing upcoming and past React conferences with dates, locations, and links, providing substantive content a user might inquire about.",
+    "judged_at": "2026-08-17T13:52:06.027430+00:00",
+    "judge_call_id": "chatcmpl-EDs2vQVLnyLIllqdz6hE0HcnniYcM",
+    "parse_warning": null
+  },
+  "https://react.dev/community/docs-contributors": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Page primarily thanking contributors with no substantive content that a user would query about.",
+    "judged_at": "2026-08-17T13:52:06.695627+00:00",
+    "judge_call_id": "chatcmpl-EDs2wblpMJkvs7qENdaXzuikOwBU7",
+    "parse_warning": null
+  },
+  "https://react.dev/community/meetups": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "51 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-17T13:52:06.705742+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://react.dev/community/team": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Team member profiles and event announcements without substantive content that a user would query about.",
+    "judged_at": "2026-08-17T13:52:07.405075+00:00",
+    "judge_call_id": "chatcmpl-EDs2wIEUyDRJpRUbnNYu7OI9rXxz0",
+    "parse_warning": null
+  },
+  "https://react.dev/community/translations": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Page primarily focused on community involvement in translations with no substantive content that a user would query about.",
+    "judged_at": "2026-08-17T13:52:08.203903+00:00",
+    "judge_call_id": "chatcmpl-EDs2xkEe4HT3sMgczYQXIPEHzpvZK",
+    "parse_warning": null
+  },
+  "https://react.dev/community/versioning-policy": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This page outlines the versioning policy for React, detailing stable releases, semantic versioning principles, and the handling of breaking changes, which users may have questions about.",
+    "judged_at": "2026-08-17T13:52:09.088317+00:00",
+    "judge_call_id": "chatcmpl-EDs2yg1urXfbMlcvHgW3dJlrY9Yb4",
+    "parse_warning": null
+  },
+  "https://react.dev/community/videos": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Page featuring videos and discussions about React and its ecosystem, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:09.823212+00:00",
+    "judge_call_id": "chatcmpl-EDs2zqerCqDIekorDFNhvOMPZhCxz",
+    "parse_warning": null
+  },
+  "https://react.dev/learn": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page introducing key React concepts with examples and explanations, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:10.516131+00:00",
+    "judge_call_id": "chatcmpl-EDs30YZj3ZyBBRS1SFL3LnSEmZLss",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/add-react-to-an-existing-project": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step guide on adding React to an existing project, providing practical instructions and recommendations for implementation.",
+    "judged_at": "2026-08-17T13:52:11.252999+00:00",
+    "judge_call_id": "chatcmpl-EDs30WDzlhX40CR9fSWM0MwVXb400",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/adding-interactivity": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on adding interactivity in React, explaining state management and event handling with code examples \u2014 users might ask questions about implementing these concepts.",
+    "judged_at": "2026-08-17T13:52:12.038324+00:00",
+    "judge_call_id": "chatcmpl-EDs31T2lR6pyetdlO9CmbN5y128dh",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/build-a-react-app-from-scratch": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step guide on building a React app from scratch, providing insights and considerations for users looking to learn and implement React.",
+    "judged_at": "2026-08-17T13:52:12.891474+00:00",
+    "judge_call_id": "chatcmpl-EDs32A0GLuYcumU4Rt6Pv3DoWCetw",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/choosing-the-state-structure": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Informative article providing guidance on structuring state in React components, with practical tips that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:13.749675+00:00",
+    "judge_call_id": "chatcmpl-EDs33sL6vWkIGzjy8DqDcElnrojWL",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/conditional-rendering": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Tutorial on conditional rendering in React, explaining how to display different components based on conditions with code examples.",
+    "judged_at": "2026-08-17T13:52:14.407190+00:00",
+    "judge_call_id": "chatcmpl-EDs33SCQjApjzLeEfYTgD3BiZwnuP",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/creating-a-react-app": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step guide on creating a React app, recommending frameworks and explaining features, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:15.122678+00:00",
+    "judge_call_id": "chatcmpl-EDs34jIEwup4SICEbw1LoAUa2e1od",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/describing-the-ui": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to create and use React components, with code examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:15.979062+00:00",
+    "judge_call_id": "chatcmpl-EDs35oBwOt0q8aGoc3D9Vq3PAgZax",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/editor-setup": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Guide on setting up a code editor for React development, including recommendations and features, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:16.672626+00:00",
+    "judge_call_id": "chatcmpl-EDs36zsGTAXvD4cwvHZHLGL7el2a3",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/escape-hatches": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This page provides advanced concepts in React, including the use of refs, with code examples and explanations that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:17.439058+00:00",
+    "judge_call_id": "chatcmpl-EDs36seU2mI5hHxeSPgYdKvJe2KHQ",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/extracting-state-logic-into-a-reducer": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Tutorial explaining how to extract state logic into a reducer in React, including practical examples and learning objectives.",
+    "judged_at": "2026-08-17T13:52:18.131532+00:00",
+    "judge_call_id": "chatcmpl-EDs37oHp00b4ScxSCGoP5KKA4waPJ",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/importing-and-exporting-components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on importing and exporting components in React, covering key concepts and practical examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:18.843748+00:00",
+    "judge_call_id": "chatcmpl-EDs38GUAyvAlzZoLQe4axMMYPuQkC",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/installation": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing guidance on installing React, including code examples and links to resources for getting started.",
+    "judged_at": "2026-08-17T13:52:19.532039+00:00",
+    "judge_call_id": "chatcmpl-EDs39QNYAMMApxGy3nXCqgWK9eWhv",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/javascript-in-jsx-with-curly-braces": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Tutorial explaining how to use JavaScript within JSX using curly braces, with examples and learning objectives that a user might ask questions about.",
+    "judged_at": "2026-08-17T13:52:20.447057+00:00",
+    "judge_call_id": "chatcmpl-EDs39pP4RKyBm0MNFmWAKs6b3vECF",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/keeping-components-pure": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Tutorial on keeping React components pure, explaining concepts and rules with examples \u2014 a user might ask questions about component purity and its benefits.",
+    "judged_at": "2026-08-17T13:52:21.157240+00:00",
+    "judge_call_id": "chatcmpl-EDs3AGn4QQ65AdCkzQTWtP0Ovcn6H",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/lifecycle-of-reactive-effects": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation explaining the lifecycle of reactive effects in React, detailing how effects differ from component lifecycles and providing insights on dependencies and synchronization.",
+    "judged_at": "2026-08-17T13:52:21.967505+00:00",
+    "judge_call_id": "chatcmpl-EDs3BhJrrhK2z0q8Oj5iSbKlu3ZCh",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/managing-state": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This page provides a tutorial on managing state in React applications, including explanations and code examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:22.844859+00:00",
+    "judge_call_id": "chatcmpl-EDs3CRutWRJQhyIhJQhMdenbWi1PJ",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/manipulating-the-dom-with-refs": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on manipulating the DOM with refs in React, explaining how to access and modify DOM nodes, which users might have questions about.",
+    "judged_at": "2026-08-17T13:52:23.681561+00:00",
+    "judge_call_id": "chatcmpl-EDs3DqEbo6mpLPgZN0CHDheoCQaqA",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/passing-data-deeply-with-context": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Tutorial explaining how to use context in React to manage data flow, addressing common issues like prop drilling \u2014 users might ask questions about the concepts and techniques discussed.",
+    "judged_at": "2026-08-17T13:52:24.452543+00:00",
+    "judge_call_id": "chatcmpl-EDs3DVkyx03t8LpM40ZSk5pWu52jf",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/passing-props-to-a-component": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on passing props to React components, explaining how to use props with examples and key concepts that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:25.500188+00:00",
+    "judge_call_id": "chatcmpl-EDs3EKzGY03SvMisQXbeNS2Y3GOwy",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/preserving-and-resetting-state": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial explaining how to preserve and reset state in React components, detailing concepts and providing examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:26.305006+00:00",
+    "judge_call_id": "chatcmpl-EDs3FuLJnBHZ9S4TgAkgcKpRrl4p3",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/queueing-a-series-of-state-updates": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Tutorial explaining how React batches state updates with examples, which a user might ask questions about.",
+    "judged_at": "2026-08-17T13:52:27.136005+00:00",
+    "judge_call_id": "chatcmpl-EDs3GPVC2GudmKyxfBpM0wEh3xIvA",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/react-compiler": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the React Compiler, including installation, configuration, and debugging strategies, which users might have questions about.",
+    "judged_at": "2026-08-17T13:52:27.902168+00:00",
+    "judge_call_id": "chatcmpl-EDs3Ho2IuRPHYoqOyGjVm3idkD0BX",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/react-compiler/debugging": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Guide on debugging and troubleshooting with React Compiler, detailing common issues and step-by-step workflows that users might inquire about.",
+    "judged_at": "2026-08-17T13:52:28.621410+00:00",
+    "judge_call_id": "chatcmpl-EDs3IcOsWUB2PGX7jYRoK1yFlhtHf",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/react-compiler/incremental-adoption": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Guide on incremental adoption of the React Compiler, detailing strategies and benefits for integrating it into existing projects.",
+    "judged_at": "2026-08-17T13:52:29.353302+00:00",
+    "judge_call_id": "chatcmpl-EDs3IE82CWXPyz8w3P2PzV8rYZwPU",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/react-compiler/installation": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Installation guide for React Compiler with instructions on setup and configuration, providing substantive content a user might query about.",
+    "judged_at": "2026-08-17T13:52:30.035673+00:00",
+    "judge_call_id": "chatcmpl-EDs3JYiZHcW1BkDRrlPVqmphdXB1u",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/react-compiler/introduction": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Introduction to the React Compiler with explanations of its functionality, usage, and optimization strategies, making it a valuable resource for users seeking to learn about the tool.",
+    "judged_at": "2026-08-17T13:52:30.807138+00:00",
+    "judge_call_id": "chatcmpl-EDs3Kb7vsHUySjocb68AJXlLHRtff",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/react-developer-tools": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to use React Developer Tools, including installation instructions and features, which users might have questions about.",
+    "judged_at": "2026-08-17T13:52:31.534313+00:00",
+    "judge_call_id": "chatcmpl-EDs3KvhmJrkkhyEPhyxP01yWAZO3s",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/reacting-to-input-with-state": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Tutorial explaining how to manage UI state in React, detailing declarative programming concepts and user interaction examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:32.367712+00:00",
+    "judge_call_id": "chatcmpl-EDs3LzPi2nAPkbUoYW23qsUb8NnY1",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/referencing-values-with-refs": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on using refs in React components, explaining how to add and update refs, which a user might ask questions about.",
+    "judged_at": "2026-08-17T13:52:33.201173+00:00",
+    "judge_call_id": "chatcmpl-EDs3MqhpnnwhLIboKH1qTrIWqdDHt",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/removing-effect-dependencies": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on managing Effect dependencies in React, providing guidance on best practices and potential pitfalls \u2014 users might ask questions about the content covered.",
+    "judged_at": "2026-08-17T13:52:34.034309+00:00",
+    "judge_call_id": "chatcmpl-EDs3N1qSrY2JGeyqyKkBMBDiM32cb",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/render-and-commit": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Educational content explaining the rendering process in React, including key concepts and steps involved, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:34.755540+00:00",
+    "judge_call_id": "chatcmpl-EDs3ObEIGIiGd8I5EAAH2rjyi6xAs",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/rendering-lists": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial page explaining how to render lists in React using JavaScript array methods, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:35.610825+00:00",
+    "judge_call_id": "chatcmpl-EDs3PxEP2MIM6FeCB0kW6l82L1Bns",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/responding-to-events": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on adding event handlers in React, explaining concepts and providing code examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:36.392004+00:00",
+    "judge_call_id": "chatcmpl-EDs3PTLUtPzeaH37s6tqeMtaVvhW2",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/reusing-logic-with-custom-hooks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on creating and using custom React Hooks, providing substantive information that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:37.123753+00:00",
+    "judge_call_id": "chatcmpl-EDs3QBgj8siPZh0ynapfOiBKnuICC",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/scaling-up-with-reducer-and-context": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on combining reducers with context in React, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:37.933355+00:00",
+    "judge_call_id": "chatcmpl-EDs3RghQxgFhSy28HgreGZm0KDL1O",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/separating-events-from-effects": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Educational content explaining the differences between event handlers and Effects in React, providing users with knowledge they might query about.",
+    "judged_at": "2026-08-17T13:52:38.846336+00:00",
+    "judge_call_id": "chatcmpl-EDs3SAXvmY2G57qaB4FZR9jMZE0ZD",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/setup": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing setup instructions for React, including editor setup, TypeScript integration, and tools, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:39.885351+00:00",
+    "judge_call_id": "chatcmpl-EDs3TPwZWl5N2dqRAo4FSgyKF5jnt",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/sharing-state-between-components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Tutorial explaining how to share state between components in React, including examples and key concepts that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:40.713040+00:00",
+    "judge_call_id": "chatcmpl-EDs3U7WLv9zAPBnErBFBLyolppFik",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/start-a-new-react-project": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Guide on starting a new React project, recommending frameworks and explaining the benefits of using them \u2014 a user might ask questions about building apps with React.",
+    "judged_at": "2026-08-17T13:52:41.527538+00:00",
+    "judge_call_id": "chatcmpl-EDs3Ukp5Reka7UxdC9PV9XX4PhvqS",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/state-a-components-memory": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on managing state in React components, explaining the use of the `useState` Hook with practical examples \u2014 users might ask questions about state management in React.",
+    "judged_at": "2026-08-17T13:52:42.412794+00:00",
+    "judge_call_id": "chatcmpl-EDs3V6hf8MVATWBqg9qsjjhEjwu4w",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/state-as-a-snapshot": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Educational content explaining how state management works in React, including key concepts and examples that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:43.286820+00:00",
+    "judge_call_id": "chatcmpl-EDs3W9hLN9L3fCUE1u0r2wkBlUNPv",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/synchronizing-with-effects": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial page explaining the concept of Effects in React, including how to declare and manage them, which users might have questions about.",
+    "judged_at": "2026-08-17T13:52:44.006537+00:00",
+    "judge_call_id": "chatcmpl-EDs3XviqMBUGaNQjus2ibdbIUVW0M",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/thinking-in-react": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Tutorial guiding users through the process of building a searchable product data table with React, including steps and example data.",
+    "judged_at": "2026-08-17T13:52:44.764721+00:00",
+    "judge_call_id": "chatcmpl-EDs3YKMQ6aZYss3OWXxI45EP8MG8r",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/tutorial-tic-tac-toe": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step tutorial for building a tic-tac-toe game with React, teaching fundamental concepts and techniques in a hands-on manner.",
+    "judged_at": "2026-08-17T13:52:45.647051+00:00",
+    "judge_call_id": "chatcmpl-EDs3Z5FMUZu5LD1m0BHRathYFjKXH",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/typescript": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to use TypeScript with React, including installation instructions and configuration options.",
+    "judged_at": "2026-08-17T13:52:46.349133+00:00",
+    "judge_call_id": "chatcmpl-EDs3ZbNbC5pKqEypwTfNqGqjH3GWD",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/understanding-your-ui-as-a-tree": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Informative article explaining how React models UI as a tree, covering concepts that users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:47.084784+00:00",
+    "judge_call_id": "chatcmpl-EDs3aYjRZDflFKUhKFS8dEND6MZlw",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/updating-arrays-in-state": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on updating arrays in React state, explaining best practices and providing examples \u2014 users might ask questions about array manipulation in React.",
+    "judged_at": "2026-08-17T13:52:47.951953+00:00",
+    "judge_call_id": "chatcmpl-EDs3bxyHRR9eDcSUllaLDb9RpwGdw",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/updating-objects-in-state": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on updating objects in React state, explaining immutability and providing code examples \u2014 users might ask questions about state management in React.",
+    "judged_at": "2026-08-17T13:52:48.979337+00:00",
+    "judge_call_id": "chatcmpl-EDs3crhjV8Vk0xh8KkmrBZTzemw4Z",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/writing-markup-with-jsx": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on writing markup with JSX in React, explaining its syntax, differences from HTML, and practical usage \u2014 users might ask questions about JSX and its application in React development.",
+    "judged_at": "2026-08-17T13:52:49.843112+00:00",
+    "judge_call_id": "chatcmpl-EDs3dbhIx001aSjhN1ayDcYLLM8Ti",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/you-might-not-need-an-effect": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Informative article explaining when and how to avoid unnecessary Effects in React components, providing valuable insights for users seeking to improve their code.",
+    "judged_at": "2026-08-17T13:52:50.677022+00:00",
+    "judge_call_id": "chatcmpl-EDs3eJJ7HetAiAV3ghPdjhWAqmrQa",
+    "parse_warning": null
+  },
+  "https://react.dev/learn/your-first-component": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Tutorial on React components, explaining their role and how to write them, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:52:51.401973+00:00",
+    "judge_call_id": "chatcmpl-EDs3eV51G8rDC2LhHMTiyhTOYDKDO",
+    "parse_warning": null
+  },
+  "https://react.dev/link/hydration-mismatch": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `hydrateRoot` function in React with code examples and usage details, which users might query about.",
+    "judged_at": "2026-08-17T13:52:52.213505+00:00",
+    "judge_call_id": "chatcmpl-EDs3fydSZQsH1ImdgcByOL092M8Qo",
+    "parse_warning": null
+  },
+  "https://react.dev/link/new-jsx-transform": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Blog post explaining the new JSX transform in React, detailing its purpose and improvements, which users might have questions about.",
+    "judged_at": "2026-08-17T13:52:53.095505+00:00",
+    "judge_call_id": "chatcmpl-EDs3gTfO0NlsvfqD4dIuuhahcGwAX",
+    "parse_warning": null
+  },
+  "https://react.dev/reference": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Detailed reference documentation for working with React, including sections on Hooks, Components, and APIs, which users might query about.",
+    "judged_at": "2026-08-17T13:52:53.846550+00:00",
+    "judge_call_id": "chatcmpl-EDs3hAOO0H9LBqehay8pvnume9gtn",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/dev-tools/react-performance-tracks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining React Performance tracks with details on usage and insights for developers, making it queryable for related questions.",
+    "judged_at": "2026-08-17T13:52:54.566681+00:00",
+    "judge_call_id": "chatcmpl-EDs3i43ANeB9G2aAJQCtwMdEknY3b",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the eslint-plugin-react-hooks, explaining its purpose, rules, and how it helps enforce React's rules for correctness and performance.",
+    "judged_at": "2026-08-17T13:52:55.467550+00:00",
+    "judge_call_id": "chatcmpl-EDs3iF8qdbPq6lPV4zPf1EBLYMJaY",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/component-hook-factori": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:52:56.057881+00:00"
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/component-hook-factories": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the eslint-plugin-react-hooks rule for component-hook-factories, including explanations and examples that users might query about.",
+    "judged_at": "2026-08-17T13:52:56.876173+00:00",
+    "judge_call_id": "chatcmpl-EDs3kVVxrDQIMpHqz3MIjl7Uo07MZ",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/config": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the configuration options for the eslint-plugin-react-hooks, including rule details and examples of incorrect code.",
+    "judged_at": "2026-08-17T13:52:57.542445+00:00",
+    "judge_call_id": "chatcmpl-EDs3lXULw4C0gpi02mgKSATrjQIla",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/error-boundaries": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the usage of Error Boundaries in React, including rule details and examples, which users might query about.",
+    "judged_at": "2026-08-17T13:52:58.307156+00:00",
+    "judge_call_id": "chatcmpl-EDs3l7svsI42LZQ5TVLfMGM1TWFs5",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/exhaustive-deps": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the `exhaustive-deps` rule for React hooks, including explanations and common violations, which users might query about.",
+    "judged_at": "2026-08-17T13:52:59.120385+00:00",
+    "judge_call_id": "chatcmpl-EDs3mXX46LN6S3EisKPGSZ1SsdMEG",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/gating": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the \"gating\" rule for the eslint-plugin-react-hooks, including configuration validation and examples of incorrect code.",
+    "judged_at": "2026-08-17T13:52:59.901122+00:00",
+    "judge_call_id": "chatcmpl-EDs3nWmu6SKZ26APyvYuRZMca5GOw",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/globals": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the globals rule for the eslint-plugin-react-hooks, including explanations and examples that users might query about.",
+    "judged_at": "2026-08-17T13:53:00.619300+00:00",
+    "judge_call_id": "chatcmpl-EDs3o19D19tGufkSmaz29W60u5Lcf",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/immutability": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the immutability rule for React components, including explanations and common violations, which users might query about.",
+    "judged_at": "2026-08-17T13:53:01.391899+00:00",
+    "judge_call_id": "chatcmpl-EDs3oivSJJqs1PxmCuFCKZTw8bvIh",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/incompatible-library": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the rules for using incompatible libraries with React's memoization, providing substantive content that users might query about.",
+    "judged_at": "2026-08-17T13:53:02.448348+00:00",
+    "judge_call_id": "chatcmpl-EDs3pVpnVDTrn9IPrMex7TM8ys3Cf",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/preserve-manual-memoiz": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:53:03.070597+00:00"
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/preserve-manual-memoization": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the `preserve-manual-memoization` rule for the eslint-plugin-react-hooks, including explanations and usage details that users might query about.",
+    "judged_at": "2026-08-17T13:53:04.076627+00:00",
+    "judge_call_id": "chatcmpl-EDs3r3IZH7FmtcHDQHyWizrVMhFmv",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/purity": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the purity rule for React components, including explanations and common violations, which users might query about.",
+    "judged_at": "2026-08-17T13:53:04.947241+00:00",
+    "judge_call_id": "chatcmpl-EDs3s5xmZH6Smo8B13vn1aGytmrwi",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/refs": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the rules for using refs in React, including explanations and usage examples that users might query about.",
+    "judged_at": "2026-08-17T13:53:05.792486+00:00",
+    "judge_call_id": "chatcmpl-EDs3txqYnkNJmY68S8axBTbfkHGCz",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/rules-of-hooks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the Rules of Hooks for React, including explanations and common violations, which users might query about.",
+    "judged_at": "2026-08-17T13:53:06.625120+00:00",
+    "judge_call_id": "chatcmpl-EDs3u7RKoLQUQ93yrrJ0YvqSG9lcp",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/set-state-in-effect": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the `set-state-in-effect` rule for the eslint-plugin-react-hooks, explaining its purpose and implications for performance in React applications.",
+    "judged_at": "2026-08-17T13:53:07.393825+00:00",
+    "judge_call_id": "chatcmpl-EDs3uEnSCAulyQZn9wF783aOhU9OZ",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/set-state-in-render": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the ESLint rule against unconditionally setting state during render, including explanations and examples that users might query about.",
+    "judged_at": "2026-08-17T13:53:08.503386+00:00",
+    "judge_call_id": "chatcmpl-EDs3v2d13EszuWgiSB3kvGzNHBx9v",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/static-components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the ESLint rule for static components, including explanations and examples that users might query about.",
+    "judged_at": "2026-08-17T13:53:09.251725+00:00",
+    "judge_call_id": "chatcmpl-EDs3wr9Nfk4ZBCpSzey8RMKBRp4Wn",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/unsupported-syntax": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the unsupported syntax rule for the eslint-plugin-react-hooks, including explanations and examples that users might query about.",
+    "judged_at": "2026-08-17T13:53:10.275864+00:00",
+    "judge_call_id": "chatcmpl-EDs3xzH88ZEx7vKsdXWPmeNHMG8Gr",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/eslint-plugin-react-hooks/lints/use-memo": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the `useMemo` hook with explanations, rule details, and code examples, which users might query about its usage.",
+    "judged_at": "2026-08-17T13:53:11.033539+00:00",
+    "judge_call_id": "chatcmpl-EDs3ye9AKR1dHl6Cc5xopSV1dZEA5",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Detailed reference documentation for working with React, including sections on hooks, components, and APIs that users might query about.",
+    "judged_at": "2026-08-17T13:53:11.806586+00:00",
+    "judge_call_id": "chatcmpl-EDs3zMv6o0lNxWbk6ylWM2oNw2K2j",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/compilationmode": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `compilationMode` option for the React Compiler, including its type, default value, and options, which users might query about.",
+    "judged_at": "2026-08-17T13:53:12.730647+00:00",
+    "judge_call_id": "chatcmpl-EDs40Z7RenEyeCgm3MlpMepbakXD7",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/compiling-libraries": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation guide for library authors on using React Compiler to optimize library code, including setup instructions and benefits.",
+    "judged_at": "2026-08-17T13:53:13.478382+00:00",
+    "judge_call_id": "chatcmpl-EDs40oAPOUghxIOCWnmntsdf5dRaV",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/configuration": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page listing configuration options for the React Compiler, including examples and explanations that users might query about.",
+    "judged_at": "2026-08-17T13:53:14.321276+00:00",
+    "judge_call_id": "chatcmpl-EDs41CcMlTRmDHXjuScJNYwSsIGkb",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/directives": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining React Compiler directives with examples and usage details, which users might query about.",
+    "judged_at": "2026-08-17T13:53:14.994523+00:00",
+    "judge_call_id": "chatcmpl-EDs42Y8dKJvJlv0TN0I8ZYnIWyd5e",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/directives/use-memo": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `\"use memo\"` directive in React, including its purpose and usage examples, which users might query about.",
+    "judged_at": "2026-08-17T13:53:15.716311+00:00",
+    "judge_call_id": "chatcmpl-EDs43QhTI1R9lnYOoQWfl2fwTbQMT",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/directives/use-no-memo": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `\"use no memo\"` directive in React, including usage examples and caveats, which users might query about.",
+    "judged_at": "2026-08-17T13:53:16.500756+00:00",
+    "judge_call_id": "chatcmpl-EDs43tHMe3Qmy3d2BdJ1sxl5RcUJy",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/gating": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `gating` option in React, including configuration details and code examples that users might query about.",
+    "judged_at": "2026-08-17T13:53:17.276498+00:00",
+    "judge_call_id": "chatcmpl-EDs44ih1rwdrxPy1DTlkwkwUQdFRr",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/logger": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `logger` option in React Compiler, detailing its configuration, type, and methods, which users might query about.",
+    "judged_at": "2026-08-17T13:53:18.018317+00:00",
+    "judge_call_id": "chatcmpl-EDs45wQ3r9ViIYpK0BKPp21ycNodo",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/panicthreshold": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the `panicThreshold` option in the React Compiler, including its type, default value, and usage examples.",
+    "judged_at": "2026-08-17T13:53:18.728131+00:00",
+    "judge_call_id": "chatcmpl-EDs46LMORbre2gPNXA2jPEdYXQKin",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-compiler/target": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `target` option in the React compiler, detailing configuration, types, and valid values.",
+    "judged_at": "2026-08-17T13:53:19.556685+00:00",
+    "judge_call_id": "chatcmpl-EDs46fbbOaW1NXeKmLF38fEztgPzC",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `react-dom` package, detailing methods, usage, and examples that users might query about.",
+    "judged_at": "2026-08-17T13:53:20.333931+00:00",
+    "judge_call_id": "chatcmpl-EDs47I2xZ1KM7TynwrFqIPQMn0z1q",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/client": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the `react-dom/client` APIs with explanations and usage examples, which users might query about.",
+    "judged_at": "2026-08-17T13:53:21.035225+00:00",
+    "judge_call_id": "chatcmpl-EDs48QRL3PWrIB2lxmAd04RgqN7fb",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/client/createroot": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `createRoot` function in React, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:23.226465+00:00",
+    "judge_call_id": "chatcmpl-EDs4ALWmHs3Mg2pXwVqTsNP5RCPZS",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/client/hydrateroot": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `hydrateRoot` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:23.986956+00:00",
+    "judge_call_id": "chatcmpl-EDs4B2V3nWQsOPw5mUgl36C4qryQk",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing React DOM components, including props and events, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:53:24.709147+00:00",
+    "judge_call_id": "chatcmpl-EDs4CAbuDy2htb4ViseAR2ciYMMrD",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/common": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for common React components, including props and usage examples, which users might query about.",
+    "judged_at": "2026-08-17T13:53:25.391910+00:00",
+    "judge_call_id": "chatcmpl-EDs4CTZP4yoK6ADut3d6447YECCtI",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/form": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `<form>` component in React, providing explanations, examples, and usage details that users might query about.",
+    "judged_at": "2026-08-17T13:53:26.178585+00:00",
+    "judge_call_id": "chatcmpl-EDs4DOzl0p7vOvJrBBsqnOmbKdT5A",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/input": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the `<input>` component in React, including usage examples, props, and links to related resources.",
+    "judged_at": "2026-08-17T13:53:27.025939+00:00",
+    "judge_call_id": "chatcmpl-EDs4EAHpzKMre1LfSBFMDAQxv89Rd",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/link": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `<link>` component in React, providing explanations, usage examples, and references that users might query about.",
+    "judged_at": "2026-08-17T13:53:27.745475+00:00",
+    "judge_call_id": "chatcmpl-EDs4FE47eLHUyYLA8tgHKUvCjQlNg",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/meta": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `<meta>` component in React, including usage examples and props, which users might query about.",
+    "judged_at": "2026-08-17T13:53:28.460108+00:00",
+    "judge_call_id": "chatcmpl-EDs4FfWpw96kOUA0C5SI1dtMIZYz3",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/option": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the `<option>` component in React, including usage examples and links to related components, which users might query about.",
+    "judged_at": "2026-08-17T13:53:30.916433+00:00",
+    "judge_call_id": "chatcmpl-EDs4IziItdblWZnVSiTcevRuPCiuJ",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/progress": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `<progress>` component in React, including usage examples and references, which users might query about.",
+    "judged_at": "2026-08-17T13:53:31.930659+00:00",
+    "judge_call_id": "chatcmpl-EDs4JC4CN5HdBrNv73cC3XSrdkAQW",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/script": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the usage of the `<script>` component in React, including examples and references that users might query about.",
+    "judged_at": "2026-08-17T13:53:32.656961+00:00",
+    "judge_call_id": "chatcmpl-EDs4KlWwgM2G73sz58tmOdPcqvzN1",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/select": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `<select>` component in React, including usage examples and props, which users might query about.",
+    "judged_at": "2026-08-17T13:53:33.446499+00:00",
+    "judge_call_id": "chatcmpl-EDs4KRzIvcSADxEyHIEibGeKquoxg",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/style": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the usage of the `<style>` component in React, including examples and references that users might query about.",
+    "judged_at": "2026-08-17T13:53:34.240129+00:00",
+    "judge_call_id": "chatcmpl-EDs4LYUSYpJsu2iZKZqsdUppHWsbV",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/textarea": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the `<textarea>` component in React, including usage examples and props, which users might query about.",
+    "judged_at": "2026-08-17T13:53:35.137598+00:00",
+    "judge_call_id": "chatcmpl-EDs4MrqgBVp4WQ5t2hxD36f2qXfTX",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/components/title": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `<title>` component in React, providing usage examples and explanations that users might query about.",
+    "judged_at": "2026-08-17T13:53:36.174056+00:00",
+    "judge_call_id": "chatcmpl-EDs4NSqHaBjl83LQgjIHL9HDiQDC2",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/createportal": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `createPortal` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:37.025354+00:00",
+    "judge_call_id": "chatcmpl-EDs4O5KpJnoYwBAPc7Wbu0hDvEfhz",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/finddomnode": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `findDOMNode` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:37.777171+00:00",
+    "judge_call_id": "chatcmpl-EDs4Ps6hYMfFVauqnmJOPX4qMxWt5",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/flushsync": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `flushSync` function in React, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:38.721425+00:00",
+    "judge_call_id": "chatcmpl-EDs4QFgLLo60QPrAuz6CsXiKGVzN1",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/hooks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing built-in React DOM Hooks with explanations and usage examples, allowing users to ask questions about specific hooks and their applications.",
+    "judged_at": "2026-08-17T13:53:39.622739+00:00",
+    "judge_call_id": "chatcmpl-EDs4RUPL0riDzsJf0ZwfGZUcPnQad",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/hooks/useformstatus": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useFormStatus` Hook, including usage examples and explanations of its functionality.",
+    "judged_at": "2026-08-17T13:53:40.352901+00:00",
+    "judge_call_id": "chatcmpl-EDs4RWWwwTwl51KT2HPDpf6f9xtBL",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/preconnect": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `preconnect` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:42.084355+00:00",
+    "judge_call_id": "chatcmpl-EDs4SnZRkucvTu3OM1Sl0evEmFyAV",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/prefetchdns": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `prefetchDNS` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:42.899489+00:00",
+    "judge_call_id": "chatcmpl-EDs4UDxXPx9CJmpFx8TWhs4CQzjGw",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/preinit": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `preinit` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:43.673660+00:00",
+    "judge_call_id": "chatcmpl-EDs4VvTkVDxuTzV77atmv1qmDmnUs",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/preinitmodule": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `preinitModule` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:44.504051+00:00",
+    "judge_call_id": "chatcmpl-EDs4VNq50dZY8D4dgiwULPSqNW4wL",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/preload": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `preload` function in React, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:46.278060+00:00",
+    "judge_call_id": "chatcmpl-EDs4WrdqStysenxYLpoIqgp5z46tj",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/preloadmodule": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `preloadModule` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:47.110587+00:00",
+    "judge_call_id": "chatcmpl-EDs4YUZYbT7Z8uEx6OaddQOeOCFaC",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/server": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the `react-dom/server` APIs for server-side rendering of React components, including usage and method descriptions.",
+    "judged_at": "2026-08-17T13:53:47.937398+00:00",
+    "judge_call_id": "chatcmpl-EDs4Z3cUf5qcmZC4BJRKfOVx5OQXu",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/server/rendertopipeablestream": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `renderToPipeableStream` function, including usage examples and context for Node.js environments.",
+    "judged_at": "2026-08-17T13:53:48.821914+00:00",
+    "judge_call_id": "chatcmpl-EDs4aYAXGGox8bpGBBB5mUhfgPMH1",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/server/rendertoreadablestream": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `renderToReadableStream` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:49.858939+00:00",
+    "judge_call_id": "chatcmpl-EDs4bjyyl8ozWuWJE2yvb9zW3GGj1",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/server/rendertostaticmarkup": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `renderToStaticMarkup` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:50.631423+00:00",
+    "judge_call_id": "chatcmpl-EDs4cfPqbyIkes3yW1V5ryc5RMcDw",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/server/rendertostring": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `renderToString` function, including usage examples and explanations of its parameters and behavior.",
+    "judged_at": "2026-08-17T13:53:51.572898+00:00",
+    "judge_call_id": "chatcmpl-EDs4cZWszRVCaKPZNFrbF3lHQnby7",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/server/resume": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `resume` function in React, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:52.354553+00:00",
+    "judge_call_id": "chatcmpl-EDs4dshG4fuTieS7TF4t6sJeqiDTE",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/server/resumetopipeablestream": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for `resumeToPipeableStream` with explanations, parameters, and usage examples, which users might query about.",
+    "judged_at": "2026-08-17T13:53:54.986381+00:00",
+    "judge_call_id": "chatcmpl-EDs4gjwg4MyVpWAd0oJsdCgpnwroj",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/static": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the static React DOM APIs, including usage and functionality, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:53:55.815079+00:00",
+    "judge_call_id": "chatcmpl-EDs4hjlaoZNYFtH0qDax30mZAVi8s",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/static/index": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "54 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-17T13:53:55.817361+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://react.dev/reference/react-dom/static/prerender": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `prerender` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:56.656668+00:00",
+    "judge_call_id": "chatcmpl-EDs4iUigtz3eXbU3CaD15FjqBeD8Y",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/static/prerendertonodestream": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `prerenderToNodeStream` function, including usage examples and specific details relevant to Node.js environments.",
+    "judged_at": "2026-08-17T13:53:57.434605+00:00",
+    "judge_call_id": "chatcmpl-EDs4iZt239qzHHCpZec4cwPagYy62",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/static/resumeandprerender": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `resumeAndPrerender` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:58.156363+00:00",
+    "judge_call_id": "chatcmpl-EDs4jLQzYvpvZWkfU927lyGf1x44z",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/static/resumeandprerendertonodestream": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `resumeAndPrerenderToNodeStream` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:53:59.101479+00:00",
+    "judge_call_id": "chatcmpl-EDs4kQFqtL1KqyAerrGPI7blS5nlC",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react-dom/unmountcomponentatnode": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `unmountComponentAtNode` function, including usage details and examples, which users might query about.",
+    "judged_at": "2026-08-17T13:54:00.050724+00:00",
+    "judge_call_id": "chatcmpl-EDs4lsI98p9I6O0hEEWwej20JMpTW",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/act": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `act` test helper in React, including usage examples and context for testing UI components.",
+    "judged_at": "2026-08-17T13:54:00.931732+00:00",
+    "judge_call_id": "chatcmpl-EDs4moQIHbXUGEAvk4JFQmNJs76qj",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/activity": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `<Activity>` component in React, providing usage examples and explanations of its functionality.",
+    "judged_at": "2026-08-17T13:54:02.016959+00:00",
+    "judge_call_id": "chatcmpl-EDs4nOfsTqi5IwPkYEj7wZugsHUSV",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/addtransitiontype": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `addTransitionType` function, including parameters and usage examples, which users might query about.",
+    "judged_at": "2026-08-17T13:54:02.873346+00:00",
+    "judge_call_id": "chatcmpl-EDs4oeLxNtTxaYw6VEM7JQtW4Nx85",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/apis": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page listing built-in React APIs with explanations and usage examples, which users might query about.",
+    "judged_at": "2026-08-17T13:54:03.603340+00:00",
+    "judge_call_id": "chatcmpl-EDs4pQDoW9Ui2U8IctAWtLcJJa3nD",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/cache": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `cache` function in React, including usage examples and context for React Server Components.",
+    "judged_at": "2026-08-17T13:54:04.533516+00:00",
+    "judge_call_id": "chatcmpl-EDs4pAkujFePLb0ylV4AUK6IrSkBX",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/cachesignal": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for `cacheSignal` in React, including usage examples and explanations of its functionality.",
+    "judged_at": "2026-08-17T13:54:05.404197+00:00",
+    "judge_call_id": "chatcmpl-EDs4q55nljgPJ9WMkm6Rluw7v95i3",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/captureownerstack": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `captureOwnerStack` function, including usage examples and details about parameters and return values.",
+    "judged_at": "2026-08-17T13:54:06.145099+00:00",
+    "judge_call_id": "chatcmpl-EDs4r1i7oc2UFpKmFGusMDFyFFNxS",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/children": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `Children` utility in React, including usage examples and reference material that users might query about.",
+    "judged_at": "2026-08-17T13:54:07.124867+00:00",
+    "judge_call_id": "chatcmpl-EDs4sNhQJIOz7tsJf2G5hGIsUXm7A",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/cloneelement": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `cloneElement` function in React, including usage examples and explanations of parameters.",
+    "judged_at": "2026-08-17T13:54:07.872341+00:00",
+    "judge_call_id": "chatcmpl-EDs4t9t6OixCAE2qWhAH3Mg3dUGvM",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/component": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the React `Component` class, including explanations, code examples, and best practices for defining components.",
+    "judged_at": "2026-08-17T13:54:08.701267+00:00",
+    "judge_call_id": "chatcmpl-EDs4uZlAqpFPIcOUABh2hsMkyJLBa",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing built-in React components with explanations and usage examples, allowing users to ask questions about specific components and their functionality.",
+    "judged_at": "2026-08-17T13:54:09.444040+00:00",
+    "judge_call_id": "chatcmpl-EDs4uVuImeIP80tWI0vzVZy7hpzj3",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/createcontext": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `createContext` function in React, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:10.445201+00:00",
+    "judge_call_id": "chatcmpl-EDs4vS5mXAh0zf0VNpiZf3bV7YVNu",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/createelement": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `createElement` function in React, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:11.421155+00:00",
+    "judge_call_id": "chatcmpl-EDs4whH6SA2v0NwsVP9FmoM5gdgNa",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/createref": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `createRef` function in React, including usage examples and explanations relevant to users' queries.",
+    "judged_at": "2026-08-17T13:54:12.203929+00:00",
+    "judge_call_id": "chatcmpl-EDs4x0v3a3vGTfFePzz0GYwrMyZhY",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/experimental/taintobjectreference": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:54:12.804941+00:00"
+  },
+  "https://react.dev/reference/react/experimental/taintuniquevalue": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-17T13:54:13.397014+00:00"
+  },
+  "https://react.dev/reference/react/experimental_taintobjectreference": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the experimental `taintObjectReference` feature in React, including usage examples and warnings about its experimental status.",
+    "judged_at": "2026-08-17T13:54:14.183344+00:00",
+    "judge_call_id": "chatcmpl-EDs4zVvoxpbNTisDfNKZCiPY3xsq2",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/experimental_taintuniquevalue": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the experimental `taintUniqueValue` feature in React, including usage details and examples.",
+    "judged_at": "2026-08-17T13:54:15.108903+00:00",
+    "judge_call_id": "chatcmpl-EDs50T5NwQNpQxhs7pxtkomOx0hCR",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/forwardref": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `forwardRef` function in React, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:15.949767+00:00",
+    "judge_call_id": "chatcmpl-EDs51xtdguX1AfSZ0aYPPdundc1KA",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/fragment": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the `<Fragment>` component in React, including usage examples and props, which users might query about.",
+    "judged_at": "2026-08-17T13:54:16.803079+00:00",
+    "judge_call_id": "chatcmpl-EDs52QC14PwvzENkeBewGrZIYCPcP",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/hooks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page listing built-in React Hooks with explanations and usage examples, allowing users to ask questions about specific hooks and their functionality.",
+    "judged_at": "2026-08-17T13:54:17.570626+00:00",
+    "judge_call_id": "chatcmpl-EDs53OhvRKGQmco0P9x3wzoqNz52C",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/isvalidelement": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `isValidElement` function in React, including usage examples and explanations that users might query about.",
+    "judged_at": "2026-08-17T13:54:18.407674+00:00",
+    "judge_call_id": "chatcmpl-EDs53Ro3a5YbM56eHSd3Kwcb2Jw6L",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/lazy": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the `lazy` function in React, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:19.587814+00:00",
+    "judge_call_id": "chatcmpl-EDs54JgfWPfALHFJvN5J0dFgZHpCg",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/legacy": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing legacy React APIs with explanations and links to alternatives, which users might query about.",
+    "judged_at": "2026-08-17T13:54:20.286315+00:00",
+    "judge_call_id": "chatcmpl-EDs55FmANxrlZdxlyYDb0b8AdDM7l",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/memo": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `memo` function in React, including usage examples and performance optimization details that users might query about.",
+    "judged_at": "2026-08-17T13:54:21.196350+00:00",
+    "judge_call_id": "chatcmpl-EDs56JBGrpxp1HwoCLpw0P7CqO89W",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/profiler": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `<Profiler>` component in React, including usage examples, props, and performance measurement details.",
+    "judged_at": "2026-08-17T13:54:22.007397+00:00",
+    "judge_call_id": "chatcmpl-EDs57IkJz8hBII0j0IOGZLTK8iptb",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/purecomponent": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for `PureComponent` in React, explaining its usage, benefits, and providing code examples that users might query about.",
+    "judged_at": "2026-08-17T13:54:22.853766+00:00",
+    "judge_call_id": "chatcmpl-EDs58P07yAtMLLCEX7dMtiT6o1qK2",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/starttransition": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `startTransition` function, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:23.636480+00:00",
+    "judge_call_id": "chatcmpl-EDs59d3GiLJFAJ5y96l21u0KdZfKV",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/strictmode": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `<StrictMode>` component in React, including usage examples and development behaviors, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:54:24.414802+00:00",
+    "judge_call_id": "chatcmpl-EDs59ZdyaLSCKCfksw4BHWYUhyRce",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/suspense": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the `<Suspense>` component in React, including props and usage examples that users might query about.",
+    "judged_at": "2026-08-17T13:54:25.259176+00:00",
+    "judge_call_id": "chatcmpl-EDs5AmhPfZigfkssnhcyN3Vae1TG5",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/use": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `use` API in React, providing explanations, code examples, and usage details that users might query about.",
+    "judged_at": "2026-08-17T13:54:26.112788+00:00",
+    "judge_call_id": "chatcmpl-EDs5BkahHb4WJQ4epbOdVH2gcIHEc",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/useactionstate": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `useActionState` React Hook, including its usage, parameters, and code examples that users might query about.",
+    "judged_at": "2026-08-17T13:54:26.932180+00:00",
+    "judge_call_id": "chatcmpl-EDs5CZAgT8aNt74k35pcue4MG4Wge",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usecallback": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `useCallback` React Hook, including explanations, code examples, and usage guidance that users might query about.",
+    "judged_at": "2026-08-17T13:54:27.680704+00:00",
+    "judge_call_id": "chatcmpl-EDs5DhaDSmixrbQmzAvXL2biYwndK",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usecontext": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useContext` React Hook, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:28.531724+00:00",
+    "judge_call_id": "chatcmpl-EDs5D2OPL8OVVfWYiA2YEWp6ySaWx",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usedebugvalue": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useDebugValue` React Hook, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:29.262205+00:00",
+    "judge_call_id": "chatcmpl-EDs5Ekpq3HTR2hPSs3ZA7dazp2nPO",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usedeferredvalue": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useDeferredValue` React Hook, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:30.123659+00:00",
+    "judge_call_id": "chatcmpl-EDs5FQMWQxOu5fp9s9nVVtDHVyiOA",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/useeffect": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `useEffect` React Hook, including explanations, usage examples, and code snippets that users might query about.",
+    "judged_at": "2026-08-17T13:54:30.974697+00:00",
+    "judge_call_id": "chatcmpl-EDs5GZlqf58d5h6GBaYNJhxieVRkF",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/useeffectevent": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `useEffectEvent` React Hook, including explanations, code examples, and usage details that users might query about.",
+    "judged_at": "2026-08-17T13:54:31.828273+00:00",
+    "judge_call_id": "chatcmpl-EDs5HDo9JzJs80LxiG7BeHSvNSYwX",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/useid": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useId` React Hook, including usage examples, parameters, and return values, which users might query about.",
+    "judged_at": "2026-08-17T13:54:32.631028+00:00",
+    "judge_call_id": "chatcmpl-EDs5Im5Ii5z9sMLBIrfaIRp9GdtEH",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/useimperativehandle": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useImperativeHandle` React Hook, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:33.435923+00:00",
+    "judge_call_id": "chatcmpl-EDs5Ig84L0RRDOfEPEJx5XWf5qJ9R",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/useinsertioneffect": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useInsertionEffect` hook, including usage details and examples relevant to CSS-in-JS library authors.",
+    "judged_at": "2026-08-17T13:54:34.334978+00:00",
+    "judge_call_id": "chatcmpl-EDs5JZz35dXtwUoNW6fx2n1ZIHMjf",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/uselayouteffect": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useLayoutEffect` hook, including its usage, parameters, and examples, which users might query about.",
+    "judged_at": "2026-08-17T13:54:35.286609+00:00",
+    "judge_call_id": "chatcmpl-EDs5K931Ek8eJdH4qahC1RfYqOakM",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usememo": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `useMemo` React Hook, including explanations, code examples, and usage guidance that users might query about.",
+    "judged_at": "2026-08-17T13:54:36.222214+00:00",
+    "judge_call_id": "chatcmpl-EDs5LaBQj2a34GYKGofSNeBHxal2M",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/useoptimistic": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `useOptimistic` React Hook, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:36.966094+00:00",
+    "judge_call_id": "chatcmpl-EDs5MKEnMf60RKyYtuip5qs9HYm0m",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usereducer": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useReducer` hook, including usage examples, parameters, and explanations that users might query about.",
+    "judged_at": "2026-08-17T13:54:37.749954+00:00",
+    "judge_call_id": "chatcmpl-EDs5NDeMSx98SbXso1tcX8nLW3cHm",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/useref": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useRef` React Hook, including usage examples, parameters, and explanations that users might query about.",
+    "judged_at": "2026-08-17T13:54:38.515869+00:00",
+    "judge_call_id": "chatcmpl-EDs5NDWI4l25ePqx4iGz4PIF5mFQ9",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usestate": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useState` React Hook, including usage examples and explanations of parameters.",
+    "judged_at": "2026-08-17T13:54:39.243088+00:00",
+    "judge_call_id": "chatcmpl-EDs5OI60PU6ztw31iJJxEB404A8uG",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usesyncexternalstore": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useSyncExternalStore` React Hook, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:40.128124+00:00",
+    "judge_call_id": "chatcmpl-EDs5PN4rTQOrVGkYKt5AZTvVggkWP",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/usetransition": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `useTransition` React Hook, including usage examples and parameters, which users might query about.",
+    "judged_at": "2026-08-17T13:54:40.961846+00:00",
+    "judge_call_id": "chatcmpl-EDs5Qm5VfulqgFQqAL7fsDWrFI6vV",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/react/viewtransition": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `<ViewTransition>` API in React, including usage examples and explanations that users might query about.",
+    "judged_at": "2026-08-17T13:54:41.709610+00:00",
+    "judge_call_id": "chatcmpl-EDs5Revq2utDcASn9umfUW8j9Gy0F",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rsc/directives": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining directives for React Server Components, including usage instructions and examples that users might query about.",
+    "judged_at": "2026-08-17T13:54:42.474246+00:00",
+    "judge_call_id": "chatcmpl-EDs5RErcFJRJqKj1FHNeNr9LIcefO",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rsc/server-actions": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining Server Functions in React, including usage and distinctions from Server Actions, which users might query about.",
+    "judged_at": "2026-08-17T13:54:43.223865+00:00",
+    "judge_call_id": "chatcmpl-EDs5SMCjvPIX2VCgsqOrwcxm6nLX0",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rsc/server-components": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining React Server Components with details on their functionality and usage, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:54:43.887868+00:00",
+    "judge_call_id": "chatcmpl-EDs5TlynhryuZ0rsZnoffCTDHOjDq",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rsc/server-functions": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining Server Functions in React, including usage and stability information, which users might ask questions about.",
+    "judged_at": "2026-08-17T13:54:44.603746+00:00",
+    "judge_call_id": "chatcmpl-EDs5Uv5MJ8jvgh8CAraKVwLoqVfb4",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rsc/use-client": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `'use client'` directive in React Server Components, including usage examples and context for users to ask questions about its implementation.",
+    "judged_at": "2026-08-17T13:54:45.579894+00:00",
+    "judge_call_id": "chatcmpl-EDs5U7zKfknrmA9B24KnNkGx3hcGL",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rsc/use-server": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `'use server'` directive in React Server Components, including usage examples and explanations that users might query about.",
+    "judged_at": "2026-08-17T13:54:46.636478+00:00",
+    "judge_call_id": "chatcmpl-EDs5V5uGlsC8bMoHiERPuIYAT1y9X",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rules": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page outlining the rules of React, providing guidelines for writing idiomatic React code that users might ask questions about.",
+    "judged_at": "2026-08-17T13:54:47.414255+00:00",
+    "judge_call_id": "chatcmpl-EDs5W6U0NNG3L4HAaWFAP6cRBiwUM",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rules/components-and-hooks-must-be-pure": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation explaining the concept of pure components and hooks in React, including definitions and key principles that users might ask questions about.",
+    "judged_at": "2026-08-17T13:54:48.276295+00:00",
+    "judge_call_id": "chatcmpl-EDs5X9fSjMBNAIO99OlVPOpdO2xTG",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rules/react-calls-components-and-hooks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the rules for how React calls components and hooks, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-17T13:54:49.044846+00:00",
+    "judge_call_id": "chatcmpl-EDs5Y5mBaG1Jn6wSB6tWj2MedmBs3",
+    "parse_warning": null
+  },
+  "https://react.dev/reference/rules/rules-of-hooks": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the rules of Hooks in React, detailing how and when to use them, which users might have questions about.",
+    "judged_at": "2026-08-17T13:54:49.829667+00:00",
+    "judge_call_id": "chatcmpl-EDs5ZS6UsuqF9P0LxaE0ajqhjwOB6",
+    "parse_warning": null
+  },
+  "https://react.dev/versions": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "The page provides structured documentation on React, including sections on getting started, learning resources, and API references, which users might query about.",
+    "judged_at": "2026-08-17T13:54:50.670327+00:00",
+    "judge_call_id": "chatcmpl-EDs5azzjPjzz11PtW1tHdKzgf2DWG",
+    "parse_warning": null
+  },
+  "https://react.dev/warnings/react-dom-test-utils": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing deprecation warnings for the react-dom/test-utils, which users might query about for understanding changes and updates.",
+    "judged_at": "2026-08-17T13:54:51.444070+00:00",
+    "judge_call_id": "chatcmpl-EDs5afRwRRtRP5FS3Sy3ji2my2lqy",
+    "parse_warning": null
+  },
+  "https://translations.react.dev/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-other",
+    "rationale_text": "The page provides information on the translation status of React into various languages, which users might inquire about.",
+    "judged_at": "2026-08-17T13:54:52.161949+00:00",
+    "judge_call_id": "chatcmpl-EDs5bT5ZmMFUDDj7K9bQvMub1ERM3",
+    "parse_warning": null
+  }
+}

@@ -74,7 +74,7 @@ import sys
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 import requests
 
@@ -92,7 +92,8 @@ POOL_PATH = REPO_ROOT / "sites" / "pool_v1.yaml"
 REF_CORPUS_DIR = REPO_ROOT / "bench" / "reference_corpora"
 V14_RUN = REPO_ROOT / "runs" / "run_v13_merged_20260504_203748"
 
-PROMPT_PATH = REPO_ROOT / "specs" / "v15-judge-prompt-v5.md"
+PROMPT_PATH = REPO_ROOT / "specs" / "v15-judge-prompt-v6.md"
+PROMPT_PATH_V5 = REPO_ROOT / "specs" / "v15-judge-prompt-v5.md"  # retained for audit diff
 PROMPT_PATH_V4 = REPO_ROOT / "specs" / "v15-judge-prompt-v4.md"  # retained for audit diff
 PROMPT_PATH_V3 = REPO_ROOT / "specs" / "v15-judge-prompt-v3.md"  # retained for audit diff
 PROMPT_PATH_V2 = REPO_ROOT / "specs" / "v15-judge-prompt-v2.md"  # retained for audit diff
@@ -196,6 +197,77 @@ def _facet_url(url: str) -> bool:
     return False
 
 
+# ISO 639-1 codes. Used only to recognize locale-shaped path segments; the
+# site's OWN canonical locale is learned from its corpus, never assumed.
+_ISO639_1 = {
+    "aa","ab","ae","af","ak","am","an","ar","as","av","ay","az","ba","be","bg","bh",
+    "bi","bm","bn","bo","br","bs","ca","ce","ch","co","cr","cs","cu","cv","cy","da",
+    "de","dv","dz","ee","el","en","eo","es","et","eu","fa","ff","fi","fj","fo","fr",
+    "fy","ga","gd","gl","gn","gu","gv","ha","he","hi","ho","hr","ht","hu","hy","hz",
+    "ia","id","ie","ig","ii","ik","io","is","it","iu","ja","jv","ka","kg","ki","kj",
+    "kk","kl","km","kn","ko","kr","ks","ku","kv","kw","ky","la","lb","lg","li","ln",
+    "lo","lt","lu","lv","mg","mh","mi","mk","ml","mn","mr","ms","mt","my","na","nb",
+    "nd","ne","ng","nl","nn","no","nr","nv","ny","oc","oj","om","or","os","pa","pi",
+    "pl","ps","pt","qu","rm","rn","ro","ru","rw","sa","sc","sd","se","sg","si","sk",
+    "sl","sm","sn","so","sq","sr","ss","st","su","sv","sw","ta","te","tg","th","ti",
+    "tk","tl","tn","to","tr","ts","tt","tw","ty","ug","uk","ur","uz","ve","vi","vo",
+    "wa","wo","xh","yi","yo","za","zh","zu",
+}
+_LOCALE_SEG_RE = re.compile(r"/([a-z]{2})(?:[-_][a-zA-Z]{2,4})?(?=/)")
+# A site must show this many distinct locale segments before we treat ANY of
+# them as i18n — otherwise a lone /os/ or /it/ path is just a directory name.
+_MIN_LOCALES_FOR_I18N = 3
+# A locale tree must cover at least this many URLs (absolute and share) to
+# count — keeps stray two-letter directories from looking like translations.
+_MIN_LOCALE_URLS = 5
+_MIN_LOCALE_SHARE = 0.002
+
+
+def url_locales(url: str) -> List[str]:
+    """Locale-shaped path segments in `url` (e.g. /ja/, /zh-CN/), lowercased."""
+    return [m.group(1) for m in _LOCALE_SEG_RE.finditer(url.lower())
+            if m.group(1) in _ISO639_1]
+
+
+def detect_locale_scheme(urls: Iterable[str]) -> Tuple[Optional[str], Set[str]]:
+    """Learn a site's localization scheme from its own URL corpus.
+
+    Returns (canonical_locale, mirror_locales); canonical is None when the
+    canonical content is served WITHOUT a locale segment (the common case:
+    kubernetes.io/docs/... is English, kubernetes.io/ja/docs/... is the
+    translation).
+
+    Site-agnostic and self-calibrating — it never assumes which language a
+    site is written in. Guards against false positives two ways: a locale
+    code must appear on enough URLs to be a real localization tree, and the
+    site must show several distinct locales before any are treated as
+    mirrors, so a lone /os/ or /it/ directory on a non-i18n site is ignored.
+
+    Rationale (2026-08-20): the Sonnet audit attributed 112/234 of the cheap
+    judge's over-inclusions to localized mirrors, which the rubric filters
+    separately. Locale-segmented URLs are a property of i18n sites in
+    general, not of any particular site, so this survives pool rotation.
+    """
+    urls = list(urls)
+    if not urls:
+        return None, set()
+    counts: Dict[str, int] = {}
+    for u in urls:
+        for code in set(url_locales(u)):
+            counts[code] = counts.get(code, 0) + 1
+    # A real localization tree covers many pages; drop incidental matches.
+    floor = max(_MIN_LOCALE_URLS, int(len(urls) * _MIN_LOCALE_SHARE))
+    kept = {c: n for c, n in counts.items() if n >= floor}
+    if len(kept) < _MIN_LOCALES_FOR_I18N:
+        return None, set()
+    unprefixed = sum(1 for u in urls if not any(c in kept for c in url_locales(u)))
+    top_code = max(kept, key=lambda c: kept[c])
+    if unprefixed >= kept[top_code]:
+        # Canonical content carries no locale segment; every locale is a mirror.
+        return None, set(kept)
+    return top_code, {c for c in kept if c != top_code}
+
+
 def _detect_lang(text: str) -> Optional[str]:
     """Confident language of `text`, or None. Deterministic (seeded)."""
     try:
@@ -220,12 +292,15 @@ def deterministic_preclassify(
     snippet: str,
     raw_text: Optional[str],
     site_lang: str = "en",
+    mirror_locales: Optional[Set[str]] = None,
 ) -> Optional[Tuple[str, str, str]]:
     """Return (label, category, reason) when the page is mechanically
     NON-HELPFUL, else None (page goes to the LLM judge).
 
     Rules (validated on the 300-row ground truth: 11 fires, 0 false):
       facet  — listing-subset query params in the URL
+      locale — URL carries a locale segment that is not the site's
+               canonical one (mirror_locales, learned per site)
       mirror — page language differs from the site's primary language
                (detected on the snippet TAIL, past any leading chrome)
       thin   — <100 words after chrome-strip of the full raw text
@@ -234,6 +309,12 @@ def deterministic_preclassify(
     if _facet_url(url):
         return ("NON-HELPFUL", "non-helpful-search",
                 "facet/filter permutation of a listing (URL query params)")
+    if mirror_locales:
+        for code in url_locales(url):
+            if code in mirror_locales:
+                return ("NON-HELPFUL", "non-helpful-mirror",
+                        f"URL locale segment '/{code}/' is a translation of the "
+                        f"site's canonical locale")
     lang = _detect_lang(snippet[-1000:])
     if lang and lang != site_lang:
         return ("NON-HELPFUL", "non-helpful-mirror",
@@ -1352,6 +1433,11 @@ def mode_calibration(args) -> int:
         site_lang[site] = max(lang_counts, key=lang_counts.get) if lang_counts else "en"
     logger.info(f"Site primary languages: {site_lang}")
 
+    site_mirrors: Dict[str, Set[str]] = {}
+    for site in sorted({r["site"] for r in rows}):
+        _, site_mirrors[site] = detect_locale_scheme(
+            [r["url"] for r in rows if r["site"] == site])
+
     site_caches: Dict[str, dict] = {}
     prefilter: List[Optional[Tuple[str, str, str]]] = []
     for r in rows:
@@ -1361,7 +1447,8 @@ def mode_calibration(args) -> int:
         rec = site_caches[site].get(_normalize_url_for_matching(r["url"])) or {}
         raw_text = rec.get("text") or None
         prefilter.append(deterministic_preclassify(
-            r["url"], r.get("content_snippet", "") or "", raw_text, site_lang[site]))
+            r["url"], r.get("content_snippet", "") or "", raw_text, site_lang[site],
+            site_mirrors.get(site)))
     n_pre = sum(1 for p in prefilter if p)
     logger.info(f"Deterministic pre-classifier fired on {n_pre}/{len(rows)} rows "
                 f"(LLM judges the remaining {len(rows) - n_pre}).")
@@ -1662,6 +1749,10 @@ def mode_full_pool(args) -> int:
             if lg:
                 lang_counts[lg] = lang_counts.get(lg, 0) + 1
         site_primary_lang = max(lang_counts, key=lang_counts.get) if lang_counts else "en"
+        _, mirror_locales = detect_locale_scheme(ref_urls)
+        if mirror_locales:
+            logger.info(f"  i18n detected: {len(mirror_locales)} mirror locales "
+                        f"({', '.join(sorted(mirror_locales)[:8])}...)")
 
         for model_name, judge_fn_kind in model_specs:
             ckpt = _load_checkpoint(model_name, site) or {}
@@ -1679,7 +1770,8 @@ def mode_full_pool(args) -> int:
                     continue
                 title, raw_text = page
                 pre = deterministic_preclassify(
-                    url, strip_nav_chrome(raw_text), raw_text, site_primary_lang)
+                    url, strip_nav_chrome(raw_text), raw_text, site_primary_lang,
+                    mirror_locales)
                 if pre:
                     ckpt[url] = {
                         "classification": pre[0],

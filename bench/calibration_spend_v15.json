@@ -1,24 +1,24 @@
 {
-  "date_utc": "2026-08-17T08:12:06.064636+00:00",
-  "prompt": "specs/v15-judge-prompt-v4.md",
+  "date_utc": "2026-08-17T09:08:40.502081+00:00",
+  "prompt": "specs/v15-judge-prompt-v5.md",
   "rows": 300,
   "sonnet": {
-    "calls": 900,
-    "cost_usd": 2.8419244499999965,
-    "input_tokens": 617157,
-    "output_tokens": 35021,
-    "cache_creation_tokens": 1701,
-    "cache_read_tokens": 1529199,
+    "calls": 870,
+    "cost_usd": 2.824178400000001,
+    "input_tokens": 589362,
+    "output_tokens": 34582,
+    "cache_creation_tokens": 2032,
+    "cache_read_tokens": 1765808,
     "cached_input_tokens": 0
   },
   "gpt4omini": {
-    "calls": 900,
-    "cost_usd": 0.20491230000000013,
-    "input_tokens": 1918962,
-    "output_tokens": 29380,
+    "calls": 870,
+    "cost_usd": 0.2235732,
+    "input_tokens": 2103456,
+    "output_tokens": 28406,
     "cache_creation_tokens": 0,
     "cache_read_tokens": 0,
-    "cached_input_tokens": 1340800
+    "cached_input_tokens": 1453184
   },
-  "total_usd": 3.0468
+  "total_usd": 3.0478
 }

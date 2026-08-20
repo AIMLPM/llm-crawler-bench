@@ -1,0 +1,2237 @@
+{
+  "https://secure.newegg.com/login/signin?nextpage=https%3A%2F%2Fwww.newegg.com%2F": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "95 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-19T09:08:09.979964+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:10.820344+00:00",
+    "judge_call_id": "chatcmpl-EEWZGawhjEVoe3vnCgxHkvlzd9qNv",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/2-in-1-laptop/category/id-259?mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:11.631709+00:00"
+  },
+  "https://www.newegg.com/3-5mm-2-5mm-stereo-cables/subcategory/id-2810": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:12.525762+00:00",
+    "judge_call_id": "chatcmpl-EEWZHmUjOwjtXQIfK71OyMKymCk6a",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/abs-flux-ii-aqua-gaming-desktop-pc-geforce-rtx-5060-ti-inte": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:13.136011+00:00"
+  },
+  "https://www.newegg.com/ac-power-cords-for-laptop/subcategory/id-2811": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:14.168219+00:00",
+    "judge_call_id": "chatcmpl-EEWZJu7UXtD95lE6tI5ifJsKbFZEa",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/accessories-barebone/subcategory/id-428": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:14.932673+00:00",
+    "judge_call_id": "chatcmpl-EEWZKCAfXRTV3gR30I0av05IrNQdN",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/acer-america-aspire-go-15-15-6-fhd-non-touch-screen-intel-c": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:15.535296+00:00"
+  },
+  "https://www.newegg.com/acer-america-aspire-go-15-15-6-non-touch-screen-intel-core-": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:16.135688+00:00"
+  },
+  "https://www.newegg.com/acer-america-aspire-go-15-6-full-hd-ips-amd-ryzen-7-7730u-a": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:16.755241+00:00"
+  },
+  "https://www.newegg.com/acer-america-aspire-go-15-steel-gray/p/n82e16834360410": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:17.355115+00:00"
+  },
+  "https://www.newegg.com/acer-america-aspire-go-15-steel-gray/p/n82e16834360410?Item": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:17.968400+00:00"
+  },
+  "https://www.newegg.com/acer-america/brandstore/id-1146": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:18.558947+00:00"
+  },
+  "https://www.newegg.com/adapter-gender-changer/category/id-256": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:19.517606+00:00",
+    "judge_call_id": "chatcmpl-EEWZOXMfOovDDcUm0h6ZQwNnaq0j6",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/adapters-gender-changers/category/id-256": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:20.371396+00:00",
+    "judge_call_id": "chatcmpl-EEWZP2KQAm4KRtRGuesbKy0nMsi8q",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/add-on-cards/subcategory/id-73": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:21.241958+00:00",
+    "judge_call_id": "chatcmpl-EEWZQbr7mpSXznqFuHYPuaov597Zt",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/ai-accelerator-cards/subcategory/id-3927": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:22.182659+00:00",
+    "judge_call_id": "chatcmpl-EEWZRn6JtEGcO4kar5i3zTBC5NtNR",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/all-in-one-computer/subcategory/id-3309": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:23.090057+00:00",
+    "judge_call_id": "chatcmpl-EEWZSGilqzjksvgnfBf5ERr0YxdSw",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/all-laptop/subcategory/id-32": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:23.704127+00:00"
+  },
+  "https://www.newegg.com/all-laptop/subcategory/id-32/page-2": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:24.324874+00:00"
+  },
+  "https://www.newegg.com/all-laptop/subcategory/id-32/page-20": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:24.924320+00:00"
+  },
+  "https://www.newegg.com/all-laptop/subcategory/id-32/page-3": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:25.536206+00:00"
+  },
+  "https://www.newegg.com/all-laptop/subcategory/id-32/page-4": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:26.134953+00:00"
+  },
+  "https://www.newegg.com/all-laptop/subcategory/id-32/page-5": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:26.736967+00:00"
+  },
+  "https://www.newegg.com/all-laptop/subcategory/id-32/page-6": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:27.346271+00:00"
+  },
+  "https://www.newegg.com/all-laptop/subcategory/id-32/page-7": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:27.935706+00:00"
+  },
+  "https://www.newegg.com/amd-cpu-free-storage/eventsalestore/id-10389?cm/sp=Head/Nav": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:28.539726+00:00"
+  },
+  "https://www.newegg.com/amd-motherboards/subcategory/id-22": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:29.416893+00:00",
+    "judge_call_id": "chatcmpl-EEWZYe6YdkC0J0PFsUMtl8wZsq5wL",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/areyouahuman?referer=%2Fareyouahuman%3Freferer%3Dhttps%3A%2F%2Fwww.newegg.com%2FLaptops-Notebooks%2FSubCategory%2FID-32": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-error",
+    "rationale_text": "CAPTCHA verification page with no substantive content, only a request for user interaction.",
+    "judged_at": "2026-08-19T09:08:30.067424+00:00",
+    "judge_call_id": "chatcmpl-EEWZZYnBvV9dcKtroNeIQmGt7EjGr",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/areyouahuman?referer=/areyouahuman?referer=https%3A%2F%2Fwww.newegg.com%2FLaptops-Notebooks%2FSubCategory%2FID-32": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:30.669199+00:00"
+  },
+  "https://www.newegg.com/asus-14-0-fhd-non-touch-screen-intel-core-i3-1315u-intel-uh": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:31.272049+00:00"
+  },
+  "https://www.newegg.com/asus-nuc-configurator?cm_sp=hamburger-_-shopping-tools-_-asus-nuc-config": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "The page provides detailed information about ASUS NUCs, including their features, benefits, and customization options, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:08:31.999161+00:00",
+    "judge_call_id": "chatcmpl-EEWZbY09uswBTr8VT4O2DnKMdYoCe",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/asus-vivobook-14-0-touch-screen-intel-core-ultra-7-256v-int": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:32.613027+00:00"
+  },
+  "https://www.newegg.com/asus-vivobook-15-6-fhd-non-touch-screen-intel-core-i9-13900": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:33.223619+00:00"
+  },
+  "https://www.newegg.com/asus-vivobook-16-0-3-2k-non-touch-screen-amd-ryzen-ai-9-365": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:33.814304+00:00"
+  },
+  "https://www.newegg.com/asus-vivobook-16-0-amd-ryzen-ai-7-350-ddr5-16gb-16gb-ddr5-o": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:34.413646+00:00"
+  },
+  "https://www.newegg.com/asus-vivobook-16-2880x1800-oled-intel-core-ultra-7-255h-int": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:35.003380+00:00"
+  },
+  "https://www.newegg.com/asus-zenbook-14-0-yes-amd-ryzen-ai-7-350-amd-radeon-graphic": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:35.606668+00:00"
+  },
+  "https://www.newegg.com/asus/brandstore/id-1315": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:36.186091+00:00"
+  },
+  "https://www.newegg.com/audio-adapters/subcategory/id-3020": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what audio adapters are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:39.708735+00:00",
+    "judge_call_id": "chatcmpl-EEWZiFbIcGZvMflplreYGuOvUe7yt",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/audio-video-converters/subcategory/id-3048": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:40.698237+00:00",
+    "judge_call_id": "chatcmpl-EEWZj1EqpC5Vnc2aN7YsLnKhtE7fU",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/audio-video-splitters/subcategory/id-3050": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:41.529316+00:00",
+    "judge_call_id": "chatcmpl-EEWZkEnTj0YYbzmScY7veTeKTNPQf",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/audio-video-switch/subcategory/id-3049": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:42.440236+00:00",
+    "judge_call_id": "chatcmpl-EEWZljA32DjdvviQBejeRFzNcS6PM",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/backup-devices-media/category/id-2": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:43.391487+00:00",
+    "judge_call_id": "chatcmpl-EEWZmh81J5PA0zkQLEHEpMgeSKZwN",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/backup-drives/subcategory/id-46": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:44.183166+00:00",
+    "judge_call_id": "chatcmpl-EEWZn81WealJFOo344dJ44BF6gNch",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/backup-media/subcategory/id-239": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:45.135637+00:00",
+    "judge_call_id": "chatcmpl-EEWZoz4YTDVC1wdMpGUpRHbN4aLJN",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/barebone-mini-computers/category/id-3": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:46.668895+00:00",
+    "judge_call_id": "chatcmpl-EEWZpxOcla9yZGjtWGDc6OjeLIs2D",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/barebone-pcs/subcategory/id-3": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:47.415053+00:00",
+    "judge_call_id": "chatcmpl-EEWZqoFlFEqrvBgiGqDXSbNfSu7lO",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/battery-backup-ups/subcategory/id-72": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:48.206207+00:00",
+    "judge_call_id": "chatcmpl-EEWZrmV4embCynwOhbFcRfz2Exrk3",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/bitecool-15-6-non-touch-screen-intel-celeron-n5095-intel-uh": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:48.797695+00:00"
+  },
+  "https://www.newegg.com/bitecool-15-6/p/1ts-00gj-00010": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:49.399227+00:00"
+  },
+  "https://www.newegg.com/bitecool-15-6/p/1ts-00gj-00010?Item=9SIBZ0YKFR3414": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:49.999964+00:00"
+  },
+  "https://www.newegg.com/bitecool-15-6/p/1ts-00gj-00016": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:50.600109+00:00"
+  },
+  "https://www.newegg.com/blu-ray-burners/subcategory/id-600": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:51.439404+00:00",
+    "judge_call_id": "chatcmpl-EEWZuR0bTAMkfwGypbPi5rorEPiCP",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/blu-ray-drives/subcategory/id-598": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:53.329207+00:00",
+    "judge_call_id": "chatcmpl-EEWZv9ewfsUArdfp5HHv8wHTVrYEu",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/business-laptops/subcategory/id-3413?mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:08:53.924983+00:00"
+  },
+  "https://www.newegg.com/cable-management/subcategory/id-3705": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:55.043600+00:00",
+    "judge_call_id": "chatcmpl-EEWZy9Tea4IaH2BzhZgMkDz3ttHdu",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cable/category/id-197": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:56.054332+00:00",
+    "judge_call_id": "chatcmpl-EEWZzFZOcIVoVNC2Qn3vfPXvIfRDe",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cables/category/id-197": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:56.867535+00:00",
+    "judge_call_id": "chatcmpl-EEWa0HgNPxiZ3EF4qbwsJal1l7BBx",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/card-readers/subcategory/id-69": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:58.207112+00:00",
+    "judge_call_id": "chatcmpl-EEWa1T4KsR5cb2nicZSM3OeXrZMhS",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/case-accessories/subcategory/id-255": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:08:59.197252+00:00",
+    "judge_call_id": "chatcmpl-EEWa2Wwu1RqPcvLKUNxSTx6BJikEL",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/case-fans/subcategory/id-573": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:00.077756+00:00",
+    "judge_call_id": "chatcmpl-EEWa3dNNgn1kc7I3LUZTzc7AyejgT",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/category": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:00.671518+00:00"
+  },
+  "https://www.newegg.com/cd-dvd-accessories/subcategory/id-219": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:01.680106+00:00",
+    "judge_call_id": "chatcmpl-EEWa55ExYyAQzTMmmGLUl7pU9vIgc",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cd-dvd-blu-ray-burners-media/category/id-10": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:03.313316+00:00",
+    "judge_call_id": "chatcmpl-EEWa6NCBtjt0HGqOrKr8USVYg1sWa",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cd-dvd-blu-ray-media/subcategory/id-71": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:04.962530+00:00",
+    "judge_call_id": "chatcmpl-EEWa8KPUoVr0m9WSUg2enBvG4uv9I",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cd-dvd-burners/subcategory/id-5": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:05.915248+00:00",
+    "judge_call_id": "chatcmpl-EEWa9DKXODvg33adjDbAozFVSbAYv",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cd-dvd-drives/subcategory/id-55": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:06.811996+00:00",
+    "judge_call_id": "chatcmpl-EEWaA2zj6icxkGfiXLvgmeRGpzlEV",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/chargers-cables/subcategory/id-613": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:07.689096+00:00",
+    "judge_call_id": "chatcmpl-EEWaBVEaC9TlAriR1YBIAcs5yZNPF",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/chromebox-desktop-mini-pc/store/id-2047763?cm_sp=cat_barebone-mini-computers_2-_-topnav-_-chromebox-desktops-mini-pcs": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:08.507207+00:00",
+    "judge_call_id": "chatcmpl-EEWaBXLkYvu9g6bqwUxtzvKOIQ11u",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/clearance-store/eventsalestore/id-697?cm/sp=EventStore-cate": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:09.099341+00:00"
+  },
+  "https://www.newegg.com/clearance-store/eventsalestore/id-697?cm/sp=Head/Navigation": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:09.691548+00:00"
+  },
+  "https://www.newegg.com/clearancestore/eventsalestore/id-697?cm_sp=Clearance_entrance-_-RolloverMenu": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-error",
+    "rationale_text": "Error page indicating a CAPTCHA check with no substantive content for users to query.",
+    "judged_at": "2026-08-19T09:09:10.518605+00:00",
+    "judge_call_id": "chatcmpl-EEWaDjyiXxdGDMbcDDRS5cHDQXipo",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/clearancestore/eventsalestore/id-697?cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Clearance": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:11.511982+00:00",
+    "judge_call_id": "chatcmpl-EEWaEgGBtO1A9uIaKRcAVVpihEJWe",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/components-storage/store/id-1": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:12.350607+00:00",
+    "judge_call_id": "chatcmpl-EEWaFvq4XtsH2QF5ReOrNHxPCvMT3",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/computer-accessories/category/id-1": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:13.301802+00:00",
+    "judge_call_id": "chatcmpl-EEWaG8F8EVdfbphnzRaxnXoAg6rzB",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/computer-case/category/id-9": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:14.212666+00:00",
+    "judge_call_id": "chatcmpl-EEWaHE1vmvUQh0iLz6vEydN7ZCNyw",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/computer-cases/subcategory/id-7": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what computer cases are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:15.073546+00:00",
+    "judge_call_id": "chatcmpl-EEWaIVhhCSC3EXJh9nKAPpEFHbqPm",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/computer-glasses/subcategory/id-774": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:15.888448+00:00",
+    "judge_call_id": "chatcmpl-EEWaJCIN7elOlaVH7bqVepucpHSXl",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/computer-power-adapter-cords/subcategory/id-2828": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:17.015852+00:00",
+    "judge_call_id": "chatcmpl-EEWaKgqm2lLZ8keLFjoeS0HsfLoFn",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/computer-power-cords/subcategory/id-2827": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:17.855565+00:00",
+    "judge_call_id": "chatcmpl-EEWaLjHqBtR46uifqGPef1CdokFIQ",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/computer-power-extension-cords/subcategory/id-2842": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:18.822963+00:00",
+    "judge_call_id": "chatcmpl-EEWaM7JqF7fb7DCJo1mCEaoqM1htt",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/computer-systems/store/id-3": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:19.642200+00:00",
+    "judge_call_id": "chatcmpl-EEWaN0rnTR8y4LSDUjqVTAcDkIoFj",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/connectors/subcategory/id-3027": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:20.488000+00:00",
+    "judge_call_id": "chatcmpl-EEWaNu1ngrlVdR2XrgUmghMvsuQEd",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/controller-panels/subcategory/id-11": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:21.485944+00:00",
+    "judge_call_id": "chatcmpl-EEWaOnO3uUZUihxmU2kcI2IiZV0bF",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/controllers-raid-cards/subcategory/id-410": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:22.441457+00:00",
+    "judge_call_id": "chatcmpl-EEWaP65uQ3NZdKb8IwCo7BPFplufF",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/corporate/about": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:23.055580+00:00"
+  },
+  "https://www.newegg.com/corporate/awards": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:23.662692+00:00"
+  },
+  "https://www.newegg.com/corporate/officehours": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:24.254975+00:00"
+  },
+  "https://www.newegg.com/cpu-accessories/subcategory/id-151": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:25.033728+00:00",
+    "judge_call_id": "chatcmpl-EEWaSOwe82kpPaVCWWE4SXvrN2BQp",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cpu-air-coolers/subcategory/id-574": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:26.143887+00:00",
+    "judge_call_id": "chatcmpl-EEWaTHx5xMSmSd449DcJ5sntINjO5",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cpu-fans-heatsinks/subcategory/id-574": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what CPU fans and heatsinks are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:27.108978+00:00",
+    "judge_call_id": "chatcmpl-EEWaU1QqyABqIvEfssZBzFWx4eT0r",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/cpu-processor/category/id-34": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:28.349071+00:00",
+    "judge_call_id": "chatcmpl-EEWaVxgwNechnJWW3X03tkgrsaSfs",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/crypto-mining/subcategory/id-3924": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:30.497800+00:00",
+    "judge_call_id": "chatcmpl-EEWaW5tMB1iamavikMejp726fyLey",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/d/best-sellers/all-laptop/s/id-32": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:31.123027+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/appliances/t/id-13": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:31.734764+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/automotive-tools/t/id-192": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:32.332569+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/components-storage/t/id-1": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:32.934430+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/computer-case/c/id-9": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:33.513053+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/computer-peripherals/t/id-380": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:34.126050+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/computer-systems/t/id-3": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:34.733641+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/cpu-processor/c/id-34": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:35.336208+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/electronics/t/id-10": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:35.937035+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/gaming-desktop-pc/s/id-3742": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:36.550115+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/gaming-laptops/s/id-3365": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:37.144983+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/gaming-vr/t/id-8": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:37.738864+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/gpu-video-graphics-device/c/id-38": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:38.351099+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/health-sports/t/id-78": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:38.950891+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/home-outdoors/t/id-15": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:39.541427+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/laptop-notebook/c/id-223": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:40.140031+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/memory/c/id-17": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:40.719730+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/monitor/c/id-19": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:41.322436+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/motherboard/c/id-20": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:41.922439+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/networking/t/id-889": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:42.521026+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/office-solutions/t/id-133": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:43.103258+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/power-supply/c/id-32": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:43.715284+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/server-components/t/id-5": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:44.323491+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/smart-home-security/t/id-2": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:44.916459+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/software-services/t/id-6": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:45.515460+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/ssd/c/id-119": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:46.117703+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers/toys-drones-maker/t/id-266": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:46.718082+00:00"
+  },
+  "https://www.newegg.com/d/best-sellers?cm/sp=Head/Navigation-/-Under/Search/Bar-/-B": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:47.317533+00:00"
+  },
+  "https://www.newegg.com/d/browsing-history": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:47.919175+00:00"
+  },
+  "https://www.newegg.com/d/product/powersearch?SubCategory=32&N=100006740&IsNodeId=1": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:48.509084+00:00"
+  },
+  "https://www.newegg.com/d/productsort/brandlist?Depa=0": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:49.097580+00:00"
+  },
+  "https://www.newegg.com/data-adapters/subcategory/id-3021": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:50.353736+00:00",
+    "judge_call_id": "chatcmpl-EEWarItO7uga0TKi3Um9wEdDnJDLZ",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/data-converters/subcategory/id-3028": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:51.200638+00:00",
+    "judge_call_id": "chatcmpl-EEWas6qHOsq9WHE4HJ5hC9bNNEtHp",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/dealcember-after-christmas-sale/eventsalestore/id-1132": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:51.782842+00:00"
+  },
+  "https://www.newegg.com/dealcember-power-up-the-season/eventsalestore/id-1259": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:52.373130+00:00"
+  },
+  "https://www.newegg.com/dell-latitude-14-0-fhd-non-touch-screen-intel-core-i5-8350u": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:52.963115+00:00"
+  },
+  "https://www.newegg.com/dell-latitude-14-0-non-touch-screen-intel-core-i5-1145g7-in": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:53.562898+00:00"
+  },
+  "https://www.newegg.com/dell-latitude-5420-14-0-non-touch-screen-2-60-16gb-memory-5": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:54.165270+00:00"
+  },
+  "https://www.newegg.com/dell-lt-de5420-i5-g11-16-512-14-no-16gb-memory-512-gb-ssd-s": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:54.755969+00:00"
+  },
+  "https://www.newegg.com/dell-lt-de5430-i5-g12-32-512-r-14-no-32gb-memory-512-gb-ssd": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:55.357714+00:00"
+  },
+  "https://www.newegg.com/dell-lt-de7430-i7-g12-32-512-2n1-14-0-yes-32gb-memory-512-g": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:55.957156+00:00"
+  },
+  "https://www.newegg.com/dell/brandstore/id-10772": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:09:56.557738+00:00"
+  },
+  "https://www.newegg.com/desktop-computer/category/id-228": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what desktop computers are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:57.527363+00:00",
+    "judge_call_id": "chatcmpl-EEWayJeP2S4epRle3mvevOJM1Fwej",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/desktop-computer/subcategory/id-10": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:58.454481+00:00",
+    "judge_call_id": "chatcmpl-EEWazh6BmZsQCMJUrSWyskLGHYzQv",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/desktop-cpu-processor/subcategory/id-343": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:09:59.376442+00:00",
+    "judge_call_id": "chatcmpl-EEWb05SR7Dc4JWaAaaAcUibuaCZHD",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/desktop-external-hard-drives/subcategory/id-414": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:00.129392+00:00",
+    "judge_call_id": "chatcmpl-EEWb10CuASwWM8s4dngg54IYCoS7W",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/desktop-internal-hard-drives/subcategory/id-14": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:00.938419+00:00",
+    "judge_call_id": "chatcmpl-EEWb2ghKe4scK7U0yaarmCevXlM28",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/desktop-memory/subcategory/id-147": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:01.850364+00:00",
+    "judge_call_id": "chatcmpl-EEWb3KfrznUACEMvwgLhaheIrEkFK",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/desktop-nas/subcategory/id-124": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:02.691901+00:00",
+    "judge_call_id": "chatcmpl-EEWb4iHcAMIUSx6q7D8EcfnWUlKgW",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/digital-games/category/id-377?cm/sp=Head/Navigation-/-Under": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:03.285039+00:00"
+  },
+  "https://www.newegg.com/displayport-cables/subcategory/id-2813": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:04.142479+00:00",
+    "judge_call_id": "chatcmpl-EEWb518djtxpqYLZk0HNgQzMSlRsZ",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/diy-cooling/subcategory/id-3635": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:05.143561+00:00",
+    "judge_call_id": "chatcmpl-EEWb6cpB9aCYZoqWiGXrvM6hZXV3h",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/duplicators/subcategory/id-528": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:05.973567+00:00",
+    "judge_call_id": "chatcmpl-EEWb7p2rUvbZHml1beevXFgNb95Hv",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/dvi-cables/subcategory/id-2814": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:06.916542+00:00",
+    "judge_call_id": "chatcmpl-EEWb84FfD2qaWzxzujADGJvaiNXFF",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/email-deals/eventsalestore/id-10382?cm/sp=EventStore-catego": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:07.508101+00:00"
+  },
+  "https://www.newegg.com/embedded-solutions/subcategory/id-446": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:08.519842+00:00",
+    "judge_call_id": "chatcmpl-EEWb9yoE5xPYxsSHbsA94m51vlMvU",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/enterprise-ssds/subcategory/id-2021": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:09.588303+00:00",
+    "judge_call_id": "chatcmpl-EEWbAFnXFMCwBXo0QLDy0VYRBEGwc",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006644&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Computer-Case": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:10:09.613273+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006650&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Memory": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:10:09.626378+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006654&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Motherboard": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:10:09.636884+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006656&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Power-Supply": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:10:09.646566+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006662&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-Video-Card": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:10:09.656036+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100006676&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Categroy-_-CPU-Processor": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:10:09.664199+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/everyday-saving-trending-deals/eventsalestore/id-9447?N=100011693&cm_sp=Tab_Components-_-Flyout-_-Deals-by-Category-_-SSD": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:10:09.671979+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/exsurf-15-6/p/1ts-00ty-00006": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:10.269845+00:00"
+  },
+  "https://www.newegg.com/exsurf-16-0/p/1ts-00ty-00002": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:10.863047+00:00"
+  },
+  "https://www.newegg.com/exsurf-16-0/p/1ts-00ty-00007": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:11.452293+00:00"
+  },
+  "https://www.newegg.com/extenders-repeaters/subcategory/id-3029": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:12.451107+00:00",
+    "judge_call_id": "chatcmpl-EEWbDeOpZfVSlS66cIkoyj9HyddD0",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/external-cd-dvd-blu-ray-drives/subcategory/id-420": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:13.433447+00:00",
+    "judge_call_id": "chatcmpl-EEWbEakHacIZ2Ui6nj4gS0VpoTY2t",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/external-ssds/subcategory/id-2022": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:14.615302+00:00",
+    "judge_call_id": "chatcmpl-EEWbFs8ngzRiMk9kBMiLOcLWdv8zZ",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/fans-pc-cooling/category/id-11": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:15.760717+00:00",
+    "judge_call_id": "chatcmpl-EEWbHbvFPqmD5dbsersxaa3u8ET8R",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/floppy-drive-diskette/subcategory/id-131": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:16.697540+00:00",
+    "judge_call_id": "chatcmpl-EEWbInuzQD96Btykc1XiBocOHD65c",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/floppy-drives/subcategory/id-13": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-nav",
+    "rationale_text": "The page primarily contains navigation elements and links without substantive content or product data.",
+    "judged_at": "2026-08-19T09:10:17.501002+00:00",
+    "judge_call_id": "chatcmpl-EEWbIFxpgfsTo8T8ByINNFZB4rMiX",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/gamer/community/?cm/sp=Head/Navigation-/-Under/Search/Bar-/": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:18.120314+00:00"
+  },
+  "https://www.newegg.com/gaming-desktop-pc/subcategory/id-3742": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:19.938068+00:00",
+    "judge_call_id": "chatcmpl-EEWbLcWjJiJpwPaLDh0GaPw99VhAS",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/gaming-laptops/subcategory/id-3365?mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:20.572501+00:00"
+  },
+  "https://www.newegg.com/gpu-video-graphics-device/category/id-38": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:21.490877+00:00",
+    "judge_call_id": "chatcmpl-EEWbMsFgc0FlevHq2jXwd07H5bcYW",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/gpus-video-graphics-cards/subcategory/id-48": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:22.642483+00:00",
+    "judge_call_id": "chatcmpl-EEWbN17wutY1tSvIbfJA6L35oCa5f",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/gpus-video-graphics-cards/subcategory/id-48?Tpk=GPU&mid1=Pa": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:23.255220+00:00"
+  },
+  "https://www.newegg.com/gpus-video-graphics-cards/subcategory/id-48?mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:23.855336+00:00"
+  },
+  "https://www.newegg.com/hard-drive-adapters/subcategory/id-3022": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:25.387033+00:00",
+    "judge_call_id": "chatcmpl-EEWbQTrCnDQMkYbzmItHiGQkI0I3o",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/hard-drive-ssd-cooling/subcategory/id-577": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:26.365962+00:00",
+    "judge_call_id": "chatcmpl-EEWbREMnnhFh1VLu7mW3eJpa04S0X",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/hard-drive-ssd-enclosures/subcategory/id-92": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:27.434334+00:00",
+    "judge_call_id": "chatcmpl-EEWbSDou3wVPlZpsx8l6RIrFWFhxc",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/hard-drive/category/id-15": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what hard drives are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:28.447019+00:00",
+    "judge_call_id": "chatcmpl-EEWbT5zpCnW85ZDVQQHVaybum5KJO",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/hasee-x5-15-6-fhd-non-touch-screen-intel-core-i9-12900h-int": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:29.050815+00:00"
+  },
+  "https://www.newegg.com/hdd-ssd-accessories/subcategory/id-43": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:29.994503+00:00",
+    "judge_call_id": "chatcmpl-EEWbV0RQgUHXBYqW1lGs8mEY8yS2K",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/hdmi-cables/subcategory/id-2809": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what HDMI cables are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:30.931315+00:00",
+    "judge_call_id": "chatcmpl-EEWbWAA1OiTFxjxSUQHaS1Qc9zANz",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/hub/subcategory/id-26": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:32.111753+00:00",
+    "judge_call_id": "chatcmpl-EEWbXFdg6MmyNLQ9LiHYGRXEupuGz",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/ide-cables/subcategory/id-2818": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:33.022959+00:00",
+    "judge_call_id": "chatcmpl-EEWbYBdoneoQWodmyWsN3MQ3ffTZX",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/insider": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "The page features how-to tips, buying guides, and product overviews, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-19T09:10:33.852660+00:00",
+    "judge_call_id": "chatcmpl-EEWbZkPxBWhZ2qPKD04f3x237r8Nd",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/insider/": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:34.446755+00:00"
+  },
+  "https://www.newegg.com/insider/?s=Laptop&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:35.037175+00:00"
+  },
+  "https://www.newegg.com/insider/choosing-the-right-gaming-motherboard-2025/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Informative article discussing the importance of motherboards in PC builds, providing insights that users might ask questions about.",
+    "judged_at": "2026-08-19T09:10:35.987763+00:00",
+    "judge_call_id": "chatcmpl-EEWbbpJPietZpPQOxx4igOgVqaCgd",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/insider/computer-case-size-buying-guide-a-technical-overview-for-pc-builders/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Comprehensive guide on computer case sizes for PC builders, providing technical insights and information that users might inquire about.",
+    "judged_at": "2026-08-19T09:10:36.822233+00:00",
+    "judge_call_id": "chatcmpl-EEWbcHYzKYaz0SnT0vdIrzYA0kMil",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/insider/how-to-choose-a-pc-power-supply-buying-guide/": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "67 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-19T09:10:36.830645+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/insider/how-to-choose-the-best-desktop-processor-cpu-buying-guide/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Informative guide on choosing the best desktop processor, providing insights and advice that users might ask questions about.",
+    "judged_at": "2026-08-19T09:10:37.599215+00:00",
+    "judge_call_id": "chatcmpl-EEWbdxIIc8jHxOCRyBOCCvjudkCJ6",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/instrument-professional-cables/subcategory/id-2819": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:38.488450+00:00",
+    "judge_call_id": "chatcmpl-EEWbdy1rCzhoqja22O8FhlDhqoEH1",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/intel-motherboards/subcategory/id-280": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:39.309621+00:00",
+    "judge_call_id": "chatcmpl-EEWbek3WoPrVpFby0wu7lzAG30tCe",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/internal-power-cables/subcategory/id-2820": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:40.402010+00:00",
+    "judge_call_id": "chatcmpl-EEWbftb08NWNEizZ7Egfk4edkYcaf",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/internal-ssds/subcategory/id-636": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:41.465402+00:00",
+    "judge_call_id": "chatcmpl-EEWbgJ289RV7Sq8khTk9rIdjfulng",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/international-power-cords/subcategory/id-2821": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:42.611469+00:00",
+    "judge_call_id": "chatcmpl-EEWbh3kVs1VC2Xl7O6LKUeega9MrN",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/iot-edge-device-development-board/subcategory/id-3739": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:43.603158+00:00",
+    "judge_call_id": "chatcmpl-EEWbiDZldBRxvo219HIqdT6Fh5C7i",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/kvm-switch/subcategory/id-143": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:44.695464+00:00",
+    "judge_call_id": "chatcmpl-EEWbjUomttCbW87vFXkQ4oRSQEli6",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/laptop-add-on-cards/subcategory/id-421": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:45.524907+00:00",
+    "judge_call_id": "chatcmpl-EEWbksZkl0CnhUov79ieWDliJ1DLJ",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/laptop-internal-hard-drives/subcategory/id-380": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:46.790908+00:00",
+    "judge_call_id": "chatcmpl-EEWblM2njRMyRxTDFletljzFJfBtX",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/laptop-memory/subcategory/id-381": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:47.777003+00:00",
+    "judge_call_id": "chatcmpl-EEWbnaG1ozvT8Hf9tdKWSdef7EOE0",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/laptop-networking/subcategory/id-34": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:48.733948+00:00",
+    "judge_call_id": "chatcmpl-EEWboCnZyp2EzRzMfd5eez8krwiFy",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/laptop-notebook/category/id-223": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:49.330186+00:00"
+  },
+  "https://www.newegg.com/laptops-notebooks/subcategory/id-32": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-error",
+    "rationale_text": "Page displaying a CAPTCHA verification message with no substantive content or information for users.",
+    "judged_at": "2026-08-19T09:10:50.058020+00:00",
+    "judge_call_id": "chatcmpl-EEWbpGvbhIv71xbGBajT79X2xnvjW",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/lenovo-14-0-intel-uhd-graphics-16gb-memory-256-gb-ssd-black": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:50.680508+00:00"
+  },
+  "https://www.newegg.com/lenovo-15-6-non-touch-screen-amd-ryzen-7-7730u-amd-radeon-g": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:51.284317+00:00"
+  },
+  "https://www.newegg.com/lenovo-15-6-non-touch-screen-intel-core-i5-13420h-intel-uhd": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:51.904738+00:00"
+  },
+  "https://www.newegg.com/lenovo-16-gb-memory-512-gb-ssd/p/1ts-000e-1c9s7": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:52.492958+00:00"
+  },
+  "https://www.newegg.com/lenovo-thinkpad-14-0-fhd-non-touch-screen-intel-core-i7-116": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:53.086031+00:00"
+  },
+  "https://www.newegg.com/lenovo-thinkpad-14-0-non-touch-screen-amd-ryzen-7-pro-4750u": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:53.682405+00:00"
+  },
+  "https://www.newegg.com/lenovo-thinkpad-14-0-non-touch-screen-intel-core-i5-8250u-1": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:54.266286+00:00"
+  },
+  "https://www.newegg.com/lenovo-thinkpad-14-0-non-touch-screen-intel-core-i7-8650u-1": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:54.846177+00:00"
+  },
+  "https://www.newegg.com/lenovo-thinkpad-14-0-touch-screen-intel-core-i5-10310u-inte": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:55.425671+00:00"
+  },
+  "https://www.newegg.com/lenovo-thinkpad-14-0-touch-screen-intel-core-i7-1165g7-inte": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:56.017403+00:00"
+  },
+  "https://www.newegg.com/lenovo-v-series-15-6-fhd-amd-radeon-graphics-24-memory-1-tb": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:56.628546+00:00"
+  },
+  "https://www.newegg.com/lenovo/brandstore/id-10418": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:10:57.238970+00:00"
+  },
+  "https://www.newegg.com/lightning-cables/subcategory/id-3562": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:58.259725+00:00",
+    "judge_call_id": "chatcmpl-EEWbxSivIuYUPkCafMcSEBX3vlUL8",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/memory-cards/subcategory/id-68": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what memory cards are carried and at what price.",
+    "judged_at": "2026-08-19T09:10:59.217276+00:00",
+    "judge_call_id": "chatcmpl-EEWbynpH6QBfavvCvRi2EH68Q5vf9",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/memory-chipset-cooling/subcategory/id-572": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:00.099440+00:00",
+    "judge_call_id": "chatcmpl-EEWbzxW5KdR17XOyKErTj1PT7YhwT",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/memory/category/id-17": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:00.892226+00:00",
+    "judge_call_id": "chatcmpl-EEWc039rpR11e9mf50EKcuTJMWMJ5",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/mini-displayport-cables/subcategory/id-2823": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:01.930952+00:00",
+    "judge_call_id": "chatcmpl-EEWc1glbiYy7UhEBGAissPER30FLH",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/mini-pc-barebone/subcategory/id-309": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:02.893978+00:00",
+    "judge_call_id": "chatcmpl-EEWc2hHRNwwN1Y9cM2X3gGvXfJyjp",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/mini-pc/subcategory/id-407": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:03.514501+00:00"
+  },
+  "https://www.newegg.com/mobile": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:04.106181+00:00"
+  },
+  "https://www.newegg.com/mobile-cpu-processor/subcategory/id-759": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:05.549936+00:00",
+    "judge_call_id": "chatcmpl-EEWc42vQyG4ZIirrTnT2hBPboneOF",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/modular-adapters/subcategory/id-3023": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:06.506365+00:00",
+    "judge_call_id": "chatcmpl-EEWc5eA2DxOmNGUhKTPpFuPMapU2y",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/motherboard-accessories/subcategory/id-142": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:07.372198+00:00",
+    "judge_call_id": "chatcmpl-EEWc6cYGKPQnu7xaW2eHpGj4Tisg4",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/motherboard/category/id-20": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:08.293061+00:00",
+    "judge_call_id": "chatcmpl-EEWc75SD86QjogaAhWlraAfTNI8Jw",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/mouse-keyboard-ps2-adapters/subcategory/id-3024": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:09.316080+00:00",
+    "judge_call_id": "chatcmpl-EEWc8PRpfEP7vgng3xwKAMq0MXtK2",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/msi-16-0-fhd-touch-screen-intel-core-ultra-7-255h-intel-arc": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:09.921186+00:00"
+  },
+  "https://www.newegg.com/msi-venture-16-ai-16-fhd-touch-screen-intel-core-ultra-9-28": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:10.511832+00:00"
+  },
+  "https://www.newegg.com/msi/brandstore/id-1312": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:11.112230+00:00"
+  },
+  "https://www.newegg.com/msi/p/n82e16834156851": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:11.713100+00:00"
+  },
+  "https://www.newegg.com/network-attached-storage-nas/category/id-241": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:12.798726+00:00",
+    "judge_call_id": "chatcmpl-EEWcBYFvaHbcvYCeELkqFDFsEtcZY",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/network-connectors-adapters/subcategory/id-3051": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:13.973775+00:00",
+    "judge_call_id": "chatcmpl-EEWcDyTjkFwwNmzGuO0ChC8k0cAvk",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/newegg-deals/eventsalestore/id-9447?N=4890&cm/sp=EventStore": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:14.577619+00:00"
+  },
+  "https://www.newegg.com/newegg-deals/eventsalestore/id-9447?cm/sp=EventStore-catego": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:15.175441+00:00"
+  },
+  "https://www.newegg.com/newegg-select/eventsalestore/id-1836": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:15.779006+00:00"
+  },
+  "https://www.newegg.com/ningmei-15-6/p/1ts-00ts-00002": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:16.377693+00:00"
+  },
+  "https://www.newegg.com/ningmei-15-6/p/1ts-00ts-00004": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:16.969954+00:00"
+  },
+  "https://www.newegg.com/ningmei-15-6/p/1ts-00ts-00004?Item=9SIBNWPKT76727": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:17.568911+00:00"
+  },
+  "https://www.newegg.com/ningmei/brandstore/id-212692": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:18.169013+00:00"
+  },
+  "https://www.newegg.com/other-adapters-gender-changers/subcategory/id-353": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:19.148356+00:00",
+    "judge_call_id": "chatcmpl-EEWcIZJFxQBiRhDJgYDS9rxZWCXMU",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/other-computer-accessories/subcategory/id-95": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:20.161319+00:00",
+    "judge_call_id": "chatcmpl-EEWcJL0QGx3r2OWtZuIlc4YivTzdH",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/p/n82e16832112059?Item=N82E16832112059": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:20.773016+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006519%204016": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:21.362412+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006519+4016": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:11:21.383111+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/p/pl?N=100006640%204016": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:21.985641+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006640+4016": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:11:22.003727+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/p/pl?N=100006670%204016": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:22.594090+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006670+4016": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:11:22.610743+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%204131%20601183898%204814%204841&mid1=Page": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:23.225071+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%2050001146": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:23.832975+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%2050001146&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:24.428876+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%2050001186&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:25.037837+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%2050001314": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:25.627656+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%2050001315&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:26.226414+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%2050010418%20600003811%20600003742%2060000": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:26.829726+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601439320": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:27.439735+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601439322": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:28.041132+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601439332": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:28.638824+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601439335": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:29.231338+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601439341": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:29.822169+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601439350": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:30.400993+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601451280": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:30.992949+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601451280&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:31.594743+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601470197": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:32.204410+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601470250": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:32.795348+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=100006740%20601470832": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:33.376022+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=101702297%204016": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:33.966508+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=101702297+4016": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-search",
+    "rationale_text": "facet/filter permutation of a listing (URL query params)",
+    "judged_at": "2026-08-19T09:11:33.986262+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://www.newegg.com/p/pl?N=4803%204801": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:34.566272+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=4889": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:35.167765+00:00"
+  },
+  "https://www.newegg.com/p/pl?N=5000062%205000061%205000058%205000056%205000052%2010": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:35.778214+00:00"
+  },
+  "https://www.newegg.com/p/pl?d=AI+NPU&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:36.368601+00:00"
+  },
+  "https://www.newegg.com/p/pl?d=AI-ready+laptops&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:36.969367+00:00"
+  },
+  "https://www.newegg.com/p/pl?d=CPU&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:37.556946+00:00"
+  },
+  "https://www.newegg.com/p/pl?d=Copilot%2B+laptop&N=601451183%20100006740&Tpk=copilo": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:38.160367+00:00"
+  },
+  "https://www.newegg.com/p/pl?d=HP+Envy%2C&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:38.759182+00:00"
+  },
+  "https://www.newegg.com/p/pl?d=MacBook+Pro+M3&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:39.352584+00:00"
+  },
+  "https://www.newegg.com/p/pl?d=NPU&mid1=PageSEO": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:39.950800+00:00"
+  },
+  "https://www.newegg.com/pc-tools-testers/subcategory/id-133": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:41.984599+00:00",
+    "judge_call_id": "chatcmpl-EEWcfP7tUz57KUjKyYqdXMCTKY2Rj",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/portable-external-hard-drives/subcategory/id-3400": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:43.993566+00:00",
+    "judge_call_id": "chatcmpl-EEWchtemmxey9FMNrbqa0qyAAhnpO",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-adapters/subcategory/id-3047": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:44.834840+00:00",
+    "judge_call_id": "chatcmpl-EEWci5FNOFI2RHwrCmE3uXg9nyFOZ",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-distribution-unit/subcategory/id-1042": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:45.675939+00:00",
+    "judge_call_id": "chatcmpl-EEWcj4HiNSIV3lTU7e4B2BHbHDKVU",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-extension-cords/subcategory/id-2829": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:46.669407+00:00",
+    "judge_call_id": "chatcmpl-EEWcjMmnEpHNNqFmeh3kmGzergfJC",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-inverters/subcategory/id-536": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:47.877250+00:00",
+    "judge_call_id": "chatcmpl-EEWckHFQy4hOmN0SngS3ippjggdgV",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-protection/category/id-314": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:48.758290+00:00",
+    "judge_call_id": "chatcmpl-EEWcmTXF6cAUXncWDiQEdKqRczOc8",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-splitter-cords/subcategory/id-2830": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:49.750021+00:00",
+    "judge_call_id": "chatcmpl-EEWcm1msLJtRNbdF1gD24z0Ac5Wkr",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-strips/subcategory/id-350": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:51.006065+00:00",
+    "judge_call_id": "chatcmpl-EEWcn0vZ551obiMSTwcTPFSNdGtCh",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-supplies/subcategory/id-58": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:51.804242+00:00",
+    "judge_call_id": "chatcmpl-EEWcphDnb9LTwDuWOx6do7UdhJNbh",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/power-supply/category/id-32": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:11:52.691805+00:00",
+    "judge_call_id": "chatcmpl-EEWcqzfKttiAG50g7P4S9LZCbyH2J",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/premium-laptops-upgrade/eventsalestore/id-10391?cm/sp=Head/": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:53.284766+00:00"
+  },
+  "https://www.newegg.com/promotions/likewize/25-0978/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-reference",
+    "rationale_text": "Page provides detailed information about the Likewize Home Tech Protect service, including coverage details and repair cost examples, which users might inquire about.",
+    "judged_at": "2026-08-19T09:11:54.084340+00:00",
+    "judge_call_id": "chatcmpl-EEWcrpVvBRU5pc11EVYlI1b4bTa7w",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/promotions/nepro/18-1881/index.html?cm/sp=Head/Navigation-/": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:54.676839+00:00"
+  },
+  "https://www.newegg.com/promotions/nepro/18-1881/index.html?cm/sp=newegg/footer-/-n": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:55.258605+00:00"
+  },
+  "https://www.newegg.com/promotions/nepro/18-1881/index.html?cm_sp=neweggstorecreditcard_entrance-_-RolloverMenu": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-account",
+    "rationale_text": "Page primarily focused on account management and credit card offers with no substantive informational content.",
+    "judged_at": "2026-08-19T09:11:55.967068+00:00",
+    "judge_call_id": "chatcmpl-EEWctOP1nqGTAtjtMhiD4Uf4kAMg9",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/promotions/nepro/22-0073/index.html?cm/sp=cs/menu-/-return/": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:56.569177+00:00"
+  },
+  "https://www.newegg.com/promotions/nepro/23-1322/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying trade-in options with specific product details and estimated values, answering what trade-in offers are available.",
+    "judged_at": "2026-08-19T09:11:57.327752+00:00",
+    "judge_call_id": "chatcmpl-EEWcuVkqgDzj5rgs4NIZm2xERn8Ha",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/promotions/nepro/23-1322/index.html?cm/sp=Head/Navigation-/": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:57.931028+00:00"
+  },
+  "https://www.newegg.com/promotions/nepro/23-1322/index.html?cm/sp=newegg/footer-/-t": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:11:58.541035+00:00"
+  },
+  "https://www.newegg.com/promotions/nepro/23-1322/index.html?cm_sp=Tradein_entrance-_-RolloverMenu": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names and estimated trade-in values \u2014 the listing itself answers what products are available for trade-in and their values.",
+    "judged_at": "2026-08-19T09:11:59.468676+00:00",
+    "judge_call_id": "chatcmpl-EEWcwuXr9Czd1AEkOJyc7V07fw89g",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/promotions/nepro/25-1020/index.html?cm/sp=newegg/footer-/-l": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:12:00.081087+00:00"
+  },
+  "https://www.newegg.com/rackmount-nas/subcategory/id-2982": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:01.012584+00:00",
+    "judge_call_id": "chatcmpl-EEWcyigtUhKHpkznZQaGHblCUzORJ",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/rca-cables/subcategory/id-2831": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:02.015319+00:00",
+    "judge_call_id": "chatcmpl-EEWczPMkPdqlxQfWEubrz7IpNbKUP",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/rca-component-cables/subcategory/id-2832": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:03.002379+00:00",
+    "judge_call_id": "chatcmpl-EEWd0JnoPSqyS65jfDHGvUiCOAtps",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/rca-composite-cables/subcategory/id-2833": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:03.986808+00:00",
+    "judge_call_id": "chatcmpl-EEWd1gf70ChQy3W6NyHWlU0eY8tgy",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/s-video-cables/subcategory/id-2838": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:04.944720+00:00",
+    "judge_call_id": "chatcmpl-EEWd2mCOYffrD9FwcPO1O7pFbCyVY",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/sellers/?cm/sp=sell/on/newegg/footer": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:12:05.527326+00:00"
+  },
+  "https://www.newegg.com/server-chassis/subcategory/id-412": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what server chassis are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:06.917486+00:00",
+    "judge_call_id": "chatcmpl-EEWd3QnJl9Nbw3slbPz2igy2sozh7",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/server-components/category/id-449": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what server components are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:07.738754+00:00",
+    "judge_call_id": "chatcmpl-EEWd50KRz211eZCg3qyy43Fb8y48Z",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/server-cpu-processor/subcategory/id-727": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:08.719806+00:00",
+    "judge_call_id": "chatcmpl-EEWd6VKeCeGJdCbXCwMTQOeWzOFOq",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/server-memory/subcategory/id-541": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:09.769734+00:00",
+    "judge_call_id": "chatcmpl-EEWd7FnCfV3NMu3lnwxfPuxOYQtII",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/server-motherboards/subcategory/id-302": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:10.881784+00:00",
+    "judge_call_id": "chatcmpl-EEWd8Nfzeu1w4GQEciolaPBNB9JPy",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/server-power-supplies/subcategory/id-520": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:12.562227+00:00",
+    "judge_call_id": "chatcmpl-EEWd9O5PTdetkV4YmEocqu9ct1N3d",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/server-system-configurator": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product data for various server systems, including descriptions and brand information, answering what products are available.",
+    "judged_at": "2026-08-19T09:12:13.363034+00:00",
+    "judge_call_id": "chatcmpl-EEWdARrUq5ocb22L1GphNGrzd9tSe",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/server-system-configurator/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product data for various server systems, including descriptions and brand information, answering what products are available.",
+    "judged_at": "2026-08-19T09:12:14.345868+00:00",
+    "judge_call_id": "chatcmpl-EEWdB1p4FPceWv8Hm95lMy3lLBfWh",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/server-workstation-system/subcategory/id-386": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:15.145437+00:00",
+    "judge_call_id": "chatcmpl-EEWdCPSJidcXCkTeiUwzalxnwi4OV",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/share/desktoppagefooter": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:12:15.758819+00:00"
+  },
+  "https://www.newegg.com/shell-shocker/eventsalestore/id-10381": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:12:16.350277+00:00"
+  },
+  "https://www.newegg.com/shell-shocker/eventsalestore/id-10381?cm/sp=EventStore-cate": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:12:16.930528+00:00"
+  },
+  "https://www.newegg.com/shell-shocker/eventsalestore/id-10381?cm/sp=Head/Navigation": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:12:17.521416+00:00"
+  },
+  "https://www.newegg.com/shell-shocker/eventsalestore/id-10381?cm_sp=todaysdeal_alldeals_entrance-_-RolloverMenu": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-error",
+    "rationale_text": "Page is a CAPTCHA verification screen with no substantive content for users to query.",
+    "judged_at": "2026-08-19T09:12:18.437095+00:00",
+    "judge_call_id": "chatcmpl-EEWdFnMqRcrnHrjtEbBN5j8FQUKoS",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/sound-card-accessories/subcategory/id-337": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what sound card accessories are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:19.570841+00:00",
+    "judge_call_id": "chatcmpl-EEWdG0Ryp1IRAYSMGNPUQQMWdaTZK",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/sound-card/category/id-36": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:20.391433+00:00",
+    "judge_call_id": "chatcmpl-EEWdHyontw7ZjPO188znMcmSzLhiG",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/sound-card/subcategory/id-57": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:21.408195+00:00",
+    "judge_call_id": "chatcmpl-EEWdI7QWkiLc3t5f08KJeZijNFP6g",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/speaker-wires/subcategory/id-2837": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:22.150951+00:00",
+    "judge_call_id": "chatcmpl-EEWdJapuqj3cnSPt5V6FYCRgpwuNP",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/ssd/category/id-119": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:23.093569+00:00",
+    "judge_call_id": "chatcmpl-EEWdKj2kOYp5kyKGXcvYWVah2MaQz",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/surge-protectors/subcategory/id-535": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:24.023929+00:00",
+    "judge_call_id": "chatcmpl-EEWdL9qtMh2lv5vow01qLJvVWAbKw",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/system-specific-memory/subcategory/id-543": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:25.118214+00:00",
+    "judge_call_id": "chatcmpl-EEWdMDsBZXg12GpL9nACqwitdwKbL",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/thermal-compound-grease/subcategory/id-85": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what thermal compounds are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:26.047502+00:00",
+    "judge_call_id": "chatcmpl-EEWdNOIui6iFLnRSanULwIiBkIT7f",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/thunderbolt-cables-adapters/subcategory/id-3011": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:27.147653+00:00",
+    "judge_call_id": "chatcmpl-EEWdOSz9YFlNkeTMNOwJ84NFPjhUY",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/custom-pc-builder/showcase/featured-builds": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:12:27.770164+00:00"
+  },
+  "https://www.newegg.com/tools/custom-pc-builder?cm/sp=Head/Navigation-/-Under/Searc": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:12:28.391639+00:00"
+  },
+  "https://www.newegg.com/tools/custom-pc-builder?cm_sp=hamburger-_-shopping-tools-_-PC-Builder": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:29.262046+00:00",
+    "judge_call_id": "chatcmpl-EEWdQu8bacrrivtbQiT9xmKv1dggh",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/game-room-builder?cm_sp=hamburger-_-shopping-tools-_-game-room-builder": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:30.530404+00:00",
+    "judge_call_id": "chatcmpl-EEWdRLrxjpffKxJtcD0Zzd0ru7DZl",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/gaming-pc-finder/": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-nav",
+    "rationale_text": "Page primarily consists of navigation elements and cookie notices, lacking substantive content for user queries.",
+    "judged_at": "2026-08-19T09:12:31.872480+00:00",
+    "judge_call_id": "chatcmpl-EEWdSlORWJup23S4aTGDpBVgEXdpz",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/laptop-finder?cm_sp=hamburger-_-shopping-tools-_-laptop-finder": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-nav",
+    "rationale_text": "Page primarily consists of navigation elements and cookie notices, lacking substantive content for user queries.",
+    "judged_at": "2026-08-19T09:12:32.717423+00:00",
+    "judge_call_id": "chatcmpl-EEWdUzQLTs8J7uTJE6TYpTP6LDtJE",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/memory-finder": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-nav",
+    "rationale_text": "Page primarily consists of navigation elements and cookie notices with no substantive content for users to query.",
+    "judged_at": "2026-08-19T09:12:33.745173+00:00",
+    "judge_call_id": "chatcmpl-EEWdUfLUP62WEiRpdQ3COLKrK7HBW",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/memory-finder?cm_sp=hamburger-_-shopping-tools-_-memory-finder": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-nav",
+    "rationale_text": "Navigation and tool interface page with no substantive content for users to query.",
+    "judged_at": "2026-08-19T09:12:34.566124+00:00",
+    "judge_call_id": "chatcmpl-EEWdWLZEwG3Bc75KHrT2W0IS2whzu",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/nas-builder": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:35.526028+00:00",
+    "judge_call_id": "chatcmpl-EEWdWDuItSpCiYnvaRhk9202lbCo5",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/nas-builder?cm_sp=hamburger-_-shopping-tools-_-nas-buidler": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:36.525928+00:00",
+    "judge_call_id": "chatcmpl-EEWdXg0XL6LbhDBo3bnyfTTF8eAWO",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/networking-builder?cm_sp=hamburger-_-shopping-tools-_-network-builder": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product options for building a custom network, including access points and surveillance cameras, with relevant selection options.",
+    "judged_at": "2026-08-19T09:12:37.591924+00:00",
+    "judge_call_id": "chatcmpl-EEWdYkZC4rmgC7SGKc6vCMkioDIc7",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/pc-upgrader": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-nav",
+    "rationale_text": "Page primarily consists of navigation elements and cookie consent notices, lacking substantive content for user queries.",
+    "judged_at": "2026-08-19T09:12:38.408315+00:00",
+    "judge_call_id": "chatcmpl-EEWdZoDHnIggrXZv7PVqY49FL7mzN",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/pc-upgrader?cm_sp=shopping-tools-_-pc-upgrader": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-nav",
+    "rationale_text": "The page primarily contains navigation elements and links without substantive content that a user might query.",
+    "judged_at": "2026-08-19T09:12:39.312568+00:00",
+    "judge_call_id": "chatcmpl-EEWdaASTReuRerN9xqlk4WUs1La62",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/power-supply-calculator": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what power supplies are available and at what price.",
+    "judged_at": "2026-08-19T09:12:40.223627+00:00",
+    "judge_call_id": "chatcmpl-EEWdbWQal6NTqYOWAWgWerTifUCeW",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/tools/power-supply-calculator?cm_sp=hamburger-_-shopping-tools-_-power-supply-calculator": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:41.171256+00:00",
+    "judge_call_id": "chatcmpl-EEWdcTLJiGU7APsdl4pjtrSMNLvVg",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/toslink-digital-optical-audio-cables/subcategory/id-2839": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:42.172391+00:00",
+    "judge_call_id": "chatcmpl-EEWddsj0viKlThM3rSgCj0qedSWuS",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/ups-replacement-battery-accessories/subcategory/id-626": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:43.206005+00:00",
+    "judge_call_id": "chatcmpl-EEWdeqKaXW3iLJhU7KaKQfbeWBNfU",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/usb-cables/subcategory/id-2840": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what USB cables are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:44.076455+00:00",
+    "judge_call_id": "chatcmpl-EEWdf69pNNlHlSTbCXKSz57slH9hm",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/usb-chargers/subcategory/id-3700": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what USB chargers are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:44.954178+00:00",
+    "judge_call_id": "chatcmpl-EEWdgiWQGdAkfq1tOc1YT8ZMElruN",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/usb-converters/subcategory/id-3026": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:46.058146+00:00",
+    "judge_call_id": "chatcmpl-EEWdhUyQziJIhacPbkBq5rwXFFjC3",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/usb-display-adapters/subcategory/id-3046": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:47.078015+00:00",
+    "judge_call_id": "chatcmpl-EEWdimFDpePgLkIRWXVhbW3fubnPD",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/usb-flash-drive-memory-card/category/id-324": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:48.017774+00:00",
+    "judge_call_id": "chatcmpl-EEWdj1RxbBhzYsvqUJMJWgW5q3ebY",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/usb-flash-drives/subcategory/id-522": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what USB flash drives are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:49.092298+00:00",
+    "judge_call_id": "chatcmpl-EEWdko7hDxGkHqYz2LpGjqeE57S7P",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/usb-gadgets/subcategory/id-59": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and spec snippets \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:50.100768+00:00",
+    "judge_call_id": "chatcmpl-EEWdl2qLdyugbJWjxK8F8U0IhnZRx",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/usb-ieee-1394-firewire-adapters/subcategory/id-3025": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:51.104363+00:00",
+    "judge_call_id": "chatcmpl-EEWdmrZX6dk1pBkRJkv4UPjQQRocK",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/vga-cooling/subcategory/id-576": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:52.244697+00:00",
+    "judge_call_id": "chatcmpl-EEWdn8B13Y42qOuYPIxUy7VMS3sNc",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/vga-svga-cables/subcategory/id-2841": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:53.358837+00:00",
+    "judge_call_id": "chatcmpl-EEWdoHFKoDA4vbaNOBjEjjzXt8InF",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/video-adapters/subcategory/id-3045": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:54.244448+00:00",
+    "judge_call_id": "chatcmpl-EEWdpNBRlcpaM8P8ESwpWa80qq7H5",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/video-card-accessories/subcategory/id-321": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:55.629609+00:00",
+    "judge_call_id": "chatcmpl-EEWdqHFLn1Sxt1xHung46FdM2POne",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/water-liquid-cooling/subcategory/id-575": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:56.538155+00:00",
+    "judge_call_id": "chatcmpl-EEWdrhHQ3s78ufnXRrJN28ocFUMYd",
+    "parse_warning": null
+  },
+  "https://www.newegg.com/workstation-graphics-cards/subcategory/id-449": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-listing",
+    "rationale_text": "Category browse page displaying product tiles with names, prices, and specifications \u2014 the listing itself answers what products are carried and at what price.",
+    "judged_at": "2026-08-19T09:12:57.387233+00:00",
+    "judge_call_id": "chatcmpl-EEWdswNUpLRebgMtZtKzn7pBQcRIO",
+    "parse_warning": null
+  }
+}

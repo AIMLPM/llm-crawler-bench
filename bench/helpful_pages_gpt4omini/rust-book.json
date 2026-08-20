@@ -1,0 +1,2840 @@
+{
+  "https://doc.rust-lang.org/book/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Comprehensive documentation for the Rust programming language, including installation instructions and links to chapters, which users might query about.",
+    "judged_at": "2026-08-19T09:00:47.310148+00:00",
+    "judge_call_id": "chatcmpl-EEWS6dgxyHythvqw0seC7iHcJyoEJ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/appendix-00.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "90 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-19T09:00:47.320819+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://doc.rust-lang.org/book/appendix-01-keywords.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-reference",
+    "rationale_text": "Appendix listing reserved keywords in the Rust programming language with descriptions, which users might query about.",
+    "judged_at": "2026-08-19T09:00:48.150482+00:00",
+    "judge_call_id": "chatcmpl-EEWS7oeUjij5E8pjzc7O4vZIcDhK2",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/appendix-02-operators.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-reference",
+    "rationale_text": "Appendix containing a glossary of Rust's syntax, including operators with examples and explanations, which users might query about.",
+    "judged_at": "2026-08-19T09:00:48.892334+00:00",
+    "judge_call_id": "chatcmpl-EEWS8xS0wV67wydrQTogfc0pJczMg",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/appendix-03-derivable-traits.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation on the `derive` attribute in Rust, detailing traits, their implementations, and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:00:49.779370+00:00",
+    "judge_call_id": "chatcmpl-EEWS9Bav6axTByLCuz2huE1Z4nREQ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/appendix-04-useful-development-tools.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Appendix providing information on useful development tools for Rust, including automatic formatting and code fixing, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:00:50.623610+00:00",
+    "judge_call_id": "chatcmpl-EEWSAQlBTnFVzQTADkY6edd1Xm4bI",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/appendix-05-editions.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Appendix discussing Rust editions, their purpose, and the changes introduced in each edition, providing substantive content a user might query about.",
+    "judged_at": "2026-08-19T09:00:51.403818+00:00",
+    "judge_call_id": "chatcmpl-EEWSAsY8oGZ4CcOicwGv9a9TLpqkB",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/appendix-06-translation.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "91 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-19T09:00:51.413188+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://doc.rust-lang.org/book/appendix-07-nightly-rust.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Appendix providing substantive information on Rust's development process and release channels, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:00:52.449360+00:00",
+    "judge_call_id": "chatcmpl-EEWSB308yRCxYMzTKU7ZrDWqPP5op",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch00-00-introduction.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Introduction to the Rust programming language, explaining its benefits and target audience, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:00:53.215894+00:00",
+    "judge_call_id": "chatcmpl-EEWSCuYzPmMDh1DILjDcWmdwln5f8",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch01-00-getting-started.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter providing instructions on installing Rust and writing a basic program, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:00:53.978892+00:00",
+    "judge_call_id": "chatcmpl-EEWSDiz5uw5eugZJYDtf3setbSL5Q",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch01-01-installation.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing step-by-step instructions for installing Rust, including command line notation and alternative installation methods.",
+    "judged_at": "2026-08-19T09:00:54.747418+00:00",
+    "judge_call_id": "chatcmpl-EEWSERxn6FkOpmkvGgbgASYmO5ory",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch01-02-hello-world.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step instructions for writing a basic \"Hello, world!\" program in Rust, including project setup and terminal commands.",
+    "judged_at": "2026-08-19T09:00:55.538879+00:00",
+    "judge_call_id": "chatcmpl-EEWSEccLMjBapCfXbBR6InJ61Xz6v",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch01-03-hello-cargo.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining Cargo, Rust's build system and package manager, with instructions on creating a project and checking installation.",
+    "judged_at": "2026-08-19T09:00:56.641335+00:00",
+    "judge_call_id": "chatcmpl-EEWSFmejKOJI44mIBSfPCDKMLGrAX",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step tutorial for programming a guessing game in Rust, teaching fundamental concepts and project setup.",
+    "judged_at": "2026-08-19T09:00:57.470163+00:00",
+    "judge_call_id": "chatcmpl-EEWSGQRoNtFVXi20iLPASOwFzTiye",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This chapter provides foundational programming concepts in Rust, including variables, types, functions, and control flow, which users may have questions about.",
+    "judged_at": "2026-08-19T09:00:58.503285+00:00",
+    "judge_call_id": "chatcmpl-EEWSHJDwqlgail2g6FqSN9xATBiVL",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation explaining variables and mutability in Rust, including code examples and explanations that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:00:59.507064+00:00",
+    "judge_call_id": "chatcmpl-EEWSILwpDzSGLYsUkd1zmABSHHuW6",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch03-02-data-types.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining data types in Rust, including examples and code snippets that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:01:00.563537+00:00",
+    "judge_call_id": "chatcmpl-EEWSJ0K4iWJnRiO5DshloTA4dULj7",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch03-03-how-functions-work.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how functions work in Rust, including examples and usage details that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:01:01.506913+00:00",
+    "judge_call_id": "chatcmpl-EEWSK5iX6Iju2v6HTgXMTh1gkOGzH",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch03-04-comments.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to use comments in Rust code, including examples and best practices that users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:02.275551+00:00",
+    "judge_call_id": "chatcmpl-EEWSLx6YDUyMNKLhisOC6F5d4la33",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch03-05-control-flow.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining control flow in Rust with examples of `if` expressions and loops, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:03.326087+00:00",
+    "judge_call_id": "chatcmpl-EEWSMPzZ8FcATIIf2OteOTeoK18nS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter explaining the concept of ownership in Rust, including its implications and related features, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:04.378976+00:00",
+    "judge_call_id": "chatcmpl-EEWSNnaNpXfxGbIHx8FVqHd15NXDV",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation explaining the concept of ownership in Rust, including rules and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:05.298259+00:00",
+    "judge_call_id": "chatcmpl-EEWSOZsxnuFa2vBtnMIDDN2WXBzg9",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining references and borrowing in Rust with code examples, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:01:06.749811+00:00",
+    "judge_call_id": "chatcmpl-EEWSPENazs609g33ZBixYFIQ9JByy",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch04-03-slices.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the concept of slices in Rust with a programming problem and code examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:07.701014+00:00",
+    "judge_call_id": "chatcmpl-EEWSR79izAvrvLilrrhEkIbOAmG1G",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch05-00-structs.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter explaining structs in Rust, including definitions, comparisons, and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:01:08.701318+00:00",
+    "judge_call_id": "chatcmpl-EEWSRmQRvYS1xeeFLwXoplOjsR2Kb",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch05-01-defining-structs.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to define and instantiate structs in Rust, including examples and code snippets that users might query about.",
+    "judged_at": "2026-08-19T09:01:09.842644+00:00",
+    "judge_call_id": "chatcmpl-EEWSTJiJ9yaP5Kk13H7g7pQZt68wx",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch05-02-example-structs.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on using structs in Rust, including a code example for calculating the area of a rectangle, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:10.674140+00:00",
+    "judge_call_id": "chatcmpl-EEWSUyvTqUcIZczjGVviFAqzF00Y6",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch05-03-method-syntax.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining method syntax in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:01:11.592138+00:00",
+    "judge_call_id": "chatcmpl-EEWSUtgKfwmbJqDPEZGCASeI9EsFG",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch06-00-enums.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter explaining enumerations in Rust, including definitions, usage, and pattern matching, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:12.586125+00:00",
+    "judge_call_id": "chatcmpl-EEWSV6GM1RSZgdXK7ZTkOf59xqzqp",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining enums in Rust with examples and use cases, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:01:13.857588+00:00",
+    "judge_call_id": "chatcmpl-EEWSWFfHxrLPugesc3ssV916ePc6F",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch06-02-match.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `match` control flow construct in Rust, including examples and usage, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:14.618193+00:00",
+    "judge_call_id": "chatcmpl-EEWSYpcAp8KKIWRb7682MYXShXkm6",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch06-03-if-let.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `if let` syntax in Rust with code examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:15.484035+00:00",
+    "judge_call_id": "chatcmpl-EEWSYcLbjxayrEBo5vceEnsSlx27H",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter discussing code organization, modules, and packages in Rust programming, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:16.222500+00:00",
+    "judge_call_id": "chatcmpl-EEWSZyeHikafdKBKn4IC2Mru5Aakl",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch07-01-packages-and-crates.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining packages and crates in Rust, including definitions and examples that users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:17.192618+00:00",
+    "judge_call_id": "chatcmpl-EEWSagFCRNuDDkDyFo1lglEsDesIB",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on modules in Rust, explaining keywords and structure with examples, which users might query about.",
+    "judged_at": "2026-08-19T09:01:17.940155+00:00",
+    "judge_call_id": "chatcmpl-EEWSb5G8jVwyC6lhlpb0Xo1OPm47S",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to refer to items in the module tree in Rust, including examples of absolute and relative paths.",
+    "judged_at": "2026-08-19T09:01:19.272428+00:00",
+    "judge_call_id": "chatcmpl-EEWSc0Yh4z6dB8su5gH9V6oLgvDac",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the use of the `use` keyword in Rust, with examples and code snippets that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:01:21.999256+00:00",
+    "judge_call_id": "chatcmpl-EEWSdFoFQNYerTkKXnYGDtmrCB823",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to separate modules into different files in Rust, providing examples and code snippets that users might query about.",
+    "judged_at": "2026-08-19T09:01:22.896199+00:00",
+    "judge_call_id": "chatcmpl-EEWSgNV71kjBxZhHYUpetth2VQSyu",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch08-00-common-collections.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter discussing common collections in Rust, including vectors, strings, and hash maps, with explanations and usage details.",
+    "judged_at": "2026-08-19T09:01:23.987672+00:00",
+    "judge_call_id": "chatcmpl-EEWSh2qmmcaUVdXuiGRErkjchfqKF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch08-01-vectors.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to create and use vectors in Rust, including code examples and explanations that users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:24.778372+00:00",
+    "judge_call_id": "chatcmpl-EEWSiiDbQBY3dAnBF3g29F5Vhr5Jq",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch08-02-strings.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing strings in Rust, including definitions, operations, and complexities, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:25.649101+00:00",
+    "judge_call_id": "chatcmpl-EEWSjMTAu67q3Bz0PZGPTgL3uU73l",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch08-03-hash-maps.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on hash maps in Rust, explaining their structure, usage, and providing examples \u2014 a user might ask questions about how to implement or use hash maps.",
+    "judged_at": "2026-08-19T09:01:26.708511+00:00",
+    "judge_call_id": "chatcmpl-EEWSjxAn2LY1LX61ua4PzOgTYsiYj",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch09-00-error-handling.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on error handling in Rust, explaining recoverable and unrecoverable errors with examples and usage guidelines.",
+    "judged_at": "2026-08-19T09:01:27.464622+00:00",
+    "judge_call_id": "chatcmpl-EEWSk9vtfgJmEzv9tTdoatNuO2QjA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `panic!` macro in Rust, including its usage and implications, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:28.451547+00:00",
+    "judge_call_id": "chatcmpl-EEWSlcqsnNS4Uyezp33eGvUWJ5DCu",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to handle recoverable errors in Rust using the `Result` type, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:01:29.274162+00:00",
+    "judge_call_id": "chatcmpl-EEWSmAVTnf4NISiOqpjQV2IOkOTgK",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing when to use `panic!` versus returning `Result` in Rust programming, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:30.242563+00:00",
+    "judge_call_id": "chatcmpl-EEWSngXrUOBHLbIqL5tmXQkSsXb3D",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch10-00-generics.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining generics in Rust, including definitions and usage examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:30.947457+00:00",
+    "judge_call_id": "chatcmpl-EEWSoeu95uT8JIRF7MdOFqxmQZTRq",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch10-01-syntax.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on generic data types in Rust, including function definitions and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:01:31.734702+00:00",
+    "judge_call_id": "chatcmpl-EEWSptHdlcUmupz6cZybxv3yE5Xrq",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch10-02-traits.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining traits in Rust, including definitions and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:32.595808+00:00",
+    "judge_call_id": "chatcmpl-EEWSpCxtBCsbX7K3CWXO8YkStZIJQ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining lifetimes in Rust with detailed descriptions and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:33.507144+00:00",
+    "judge_call_id": "chatcmpl-EEWSqnntBEu8x55PUhFl2OGoOnVDa",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch11-00-testing.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to write automated tests in Rust, including examples and concepts that users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:34.320005+00:00",
+    "judge_call_id": "chatcmpl-EEWSrIhnnHeApAE5mGf6hA7FwZi1g",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch11-01-writing-tests.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to write tests in Rust, including structure and attributes, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:35.144184+00:00",
+    "judge_call_id": "chatcmpl-EEWSsy6LwiovWVv2gDT2cj2B300NS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch11-02-running-tests.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to control test execution in Rust, including command line options and behavior, which users might query about.",
+    "judged_at": "2026-08-19T09:01:35.951344+00:00",
+    "judge_call_id": "chatcmpl-EEWStyvXPgNr7i8l5NAE6rDtZzO5V",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch11-03-test-organization.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining test organization in Rust, covering unit and integration tests with detailed descriptions and examples.",
+    "judged_at": "2026-08-19T09:01:36.891638+00:00",
+    "judge_call_id": "chatcmpl-EEWSu8KEeKddgweKf3py2lHvrIWCy",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch12-00-an-io-project.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This chapter provides a tutorial on building a command line program in Rust, detailing concepts and features relevant to the project, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:37.909373+00:00",
+    "judge_call_id": "chatcmpl-EEWSvoHslIBHy3LunWmwTjFQ5PmEb",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on accepting command line arguments in Rust, including code examples and explanations.",
+    "judged_at": "2026-08-19T09:01:39.034264+00:00",
+    "judge_call_id": "chatcmpl-EEWSwsB1hxDAo13XBP3bqIHzsqu08",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch12-02-reading-a-file.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on reading a file in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:01:39.956006+00:00",
+    "judge_call_id": "chatcmpl-EEWSx6a0TXm7q3sjZnNRectdFfjNB",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch12-03-improving-error-handling-and-modularity.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing refactoring techniques to improve modularity and error handling in Rust programming, providing substantive content a user might ask questions about.",
+    "judged_at": "2026-08-19T09:01:40.834648+00:00",
+    "judge_call_id": "chatcmpl-EEWSyY0PnLapLZJqEuyeWzmljporN",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch12-04-testing-the-librarys-functionality.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation section explaining test-driven development in Rust with step-by-step instructions and code examples.",
+    "judged_at": "2026-08-19T09:01:41.687514+00:00",
+    "judge_call_id": "chatcmpl-EEWSzfokd70s7mCNHj97yABJbfCrd",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch12-05-working-with-environment-variables.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to work with environment variables in Rust, including code examples and testing procedures.",
+    "judged_at": "2026-08-19T09:01:42.518082+00:00",
+    "judge_call_id": "chatcmpl-EEWSzJwnx7D6UUQSJsKRzVdNBpnLl",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch12-06-writing-to-stderr-instead-of-stdout.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to redirect errors to standard error in Rust, with examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:01:43.376771+00:00",
+    "judge_call_id": "chatcmpl-EEWT0N5tJywanSvGIj0ajHL4bcBoP",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch13-00-functional-features.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This chapter discusses functional programming features in Rust, including closures and iterators, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:44.117611+00:00",
+    "judge_call_id": "chatcmpl-EEWT1O7sDX6AHE5X4c9Bu2Ajn1ExP",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch13-01-closures.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining Rust closures with examples and context, allowing users to ask questions about their usage and implementation.",
+    "judged_at": "2026-08-19T09:01:45.008543+00:00",
+    "judge_call_id": "chatcmpl-EEWT26hSNxJ2CS6zWE7Hkno0wL6B4",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch13-02-iterators.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the iterator pattern in Rust with code examples and usage details, which users might query about.",
+    "judged_at": "2026-08-19T09:01:48.021049+00:00",
+    "judge_call_id": "chatcmpl-EEWT5KDh4MuKOya97b8pP7HeL58TA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch13-03-improving-our-io-project.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to improve an I/O project in Rust, with code examples and explanations that users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:48.867277+00:00",
+    "judge_call_id": "chatcmpl-EEWT6Pe5yChXyUi7clcenrAZr3rPw",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch13-04-performance.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation discussing performance comparisons between loops and iterators in Rust, providing benchmarks and insights that users might query about.",
+    "judged_at": "2026-08-19T09:01:49.913148+00:00",
+    "judge_call_id": "chatcmpl-EEWT7Xqew7eycy1XYQBR2mBHj7fy0",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch14-00-more-about-cargo.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter discussing advanced features of Cargo, including customization, publishing, and project organization, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:50.814243+00:00",
+    "judge_call_id": "chatcmpl-EEWT8Z1P9idAFBlE8ESyyhMFm4Za6",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch14-01-release-profiles.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining customizable release profiles in Rust, including configurations and examples that users might query about.",
+    "judged_at": "2026-08-19T09:01:51.675301+00:00",
+    "judge_call_id": "chatcmpl-EEWT9stOkmRKZD73J2Gm2xZx7ihbN",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to publish a crate to crates.io, including useful tips on writing documentation comments and features for package visibility.",
+    "judged_at": "2026-08-19T09:01:52.518015+00:00",
+    "judge_call_id": "chatcmpl-EEWT9iieGCEt4QTABHwSlZ3BroXsv",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to create and manage Cargo workspaces in Rust, providing substantive content that users might query about.",
+    "judged_at": "2026-08-19T09:01:53.268928+00:00",
+    "judge_call_id": "chatcmpl-EEWTAvgjLrfbEn7qgIaEHEp4mABfm",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch14-04-installing-binaries.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to use the `cargo install` command to install binary crates, including examples and important details for Rust developers.",
+    "judged_at": "2026-08-19T09:01:54.251073+00:00",
+    "judge_call_id": "chatcmpl-EEWTBkTlpd37UwgoW7nB0Hc6C8FS7",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch14-05-extending-cargo.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to extend Cargo with custom commands, providing substantive content that users might query about.",
+    "judged_at": "2026-08-19T09:01:55.162177+00:00",
+    "judge_call_id": "chatcmpl-EEWTCGQS8o4p9KjBysfTNGalGVywp",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch15-00-smart-pointers.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining smart pointers in Rust, including definitions and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:56.080775+00:00",
+    "judge_call_id": "chatcmpl-EEWTDQOw6VqCpxAkkSaAeePQGsTjN",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch15-01-box.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the use of `Box<T>` in Rust, detailing its purpose, benefits, and scenarios for use, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:56.920315+00:00",
+    "judge_call_id": "chatcmpl-EEWTEMY3aEC8LqUSDFCRvpp8JWyG9",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch15-02-deref.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `Deref` trait in Rust, including code examples and detailed explanations that users might query about.",
+    "judged_at": "2026-08-19T09:01:58.052002+00:00",
+    "judge_call_id": "chatcmpl-EEWTF7JTx1Tm9swFiho9A2gPEBQhA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch15-03-drop.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `Drop` trait in Rust, including its purpose and implementation details, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:01:59.003945+00:00",
+    "judge_call_id": "chatcmpl-EEWTGoRerTNDwugeZACXmklIMTCVo",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch15-04-rc.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `Rc<T>` type in Rust, including its purpose and usage examples, which users might query about.",
+    "judged_at": "2026-08-19T09:01:59.775087+00:00",
+    "judge_call_id": "chatcmpl-EEWTHF8jOXvnZrr9KjqwxxKOSA49I",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch15-05-interior-mutability.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation explaining the interior mutability pattern in Rust, including the `RefCell<T>` type and its usage, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:01.164034+00:00",
+    "judge_call_id": "chatcmpl-EEWTI2kEHqvi7iIvFDqNd32QtKmxY",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch15-06-reference-cycles.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation explaining reference cycles in Rust, including examples and code snippets that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:02:01.865801+00:00",
+    "judge_call_id": "chatcmpl-EEWTJRSUNWYsl2ukeKj8s2Ne6xXdh",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch16-00-concurrency.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on concurrent programming in Rust, explaining concepts and benefits of memory safety and concurrency management, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:02.706295+00:00",
+    "judge_call_id": "chatcmpl-EEWTKKuNeMLQJIrB6WStL2ZNtQd9I",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch16-01-threads.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the use of threads in Rust programming, including potential issues and considerations, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:03.613903+00:00",
+    "judge_call_id": "chatcmpl-EEWTKPyDCZmjJBJHWgSCPnE1hFv8D",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch16-02-message-passing.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining message passing in Rust with examples and concepts related to concurrency, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:04.532689+00:00",
+    "judge_call_id": "chatcmpl-EEWTLmtTrjo2tdnkUcuSkBw4pJ8MF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch16-03-shared-state.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on shared-state concurrency in Rust, explaining concepts like mutexes and their role in managing access to shared data, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:05.660529+00:00",
+    "judge_call_id": "chatcmpl-EEWTM3W0TVnQRWJZ2ePFbWZpEJrRJ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch16-04-extensible-concurrency-sync-and-send.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining concurrency features in Rust, including the `Send` and `Sync` traits, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:06.583473+00:00",
+    "judge_call_id": "chatcmpl-EEWTNEnl9aRs1zklrLGa9g92IjKkp",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch17-00-async-await.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This chapter provides substantive content on asynchronous programming in Rust, including concepts, examples, and explanations that users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:07.500429+00:00",
+    "judge_call_id": "chatcmpl-EEWTOO6EGmHNAGGAVSQef9ccrMvvw",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch17-01-futures-and-syntax.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining asynchronous programming in Rust, including key concepts like futures and the async/await syntax, which users might have questions about.",
+    "judged_at": "2026-08-19T09:02:08.554784+00:00",
+    "judge_call_id": "chatcmpl-EEWTPGts90VyViB2bOyvG9WFAHhzH",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch17-02-concurrency-with-async.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation section explaining concurrency with async in Rust, including comparisons to threads and practical examples, which users might query about.",
+    "judged_at": "2026-08-19T09:02:09.443362+00:00",
+    "judge_call_id": "chatcmpl-EEWTQ94xgJHIEMdkhJzl9zCmYGiGS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch17-03-more-futures.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the concept of yielding control in Rust's async programming, with examples and code snippets that users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:10.646030+00:00",
+    "judge_call_id": "chatcmpl-EEWTR0snZ5JFOuMXDaVajJKhgO2De",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch17-04-streams.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the concept of streams in Rust, including examples and comparisons to iterators, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:02:11.495161+00:00",
+    "judge_call_id": "chatcmpl-EEWTSOZ3TpQZ9GJN3kmN9s0t03CTQ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch17-05-traits-for-async.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a detailed explanation of the `Future` trait in Rust, including its definition and usage, which users might query about.",
+    "judged_at": "2026-08-19T09:02:12.816287+00:00",
+    "judge_call_id": "chatcmpl-EEWTTJHe8jaKVTaHdmiaqBydgSDoe",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch17-06-futures-tasks-threads.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing futures, tasks, and threads in Rust, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:13.899058+00:00",
+    "judge_call_id": "chatcmpl-EEWTVkYydcdo2AR9I28GFSimeWPQF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch18-00-oop.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter discussing object-oriented programming features in Rust, including definitions, characteristics, and implementation patterns.",
+    "judged_at": "2026-08-19T09:02:14.660912+00:00",
+    "judge_call_id": "chatcmpl-EEWTWI3sIYHIfWx2wVtHul92u3BuR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch18-01-what-is-oo.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing characteristics of object-oriented languages in Rust, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:15.830954+00:00",
+    "judge_call_id": "chatcmpl-EEWTX2ZkIV8OPqSyNOfVfNsY5DqsH",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch18-02-trait-objects.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the use of trait objects in Rust with examples and context, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:16.671984+00:00",
+    "judge_call_id": "chatcmpl-EEWTYXiABqxghCVqcaT5vJydPeY0S",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch18-03-oo-design-patterns.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the state pattern in object-oriented design, with a practical example in Rust \u2014 users might ask questions about its implementation and usage.",
+    "judged_at": "2026-08-19T09:02:17.641217+00:00",
+    "judge_call_id": "chatcmpl-EEWTYJjy7SNrZCqEA7BSbTTHq3u8s",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch19-00-patterns.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter explaining patterns in Rust, including syntax, usage, and examples \u2014 users might ask questions about pattern matching concepts.",
+    "judged_at": "2026-08-19T09:02:18.481958+00:00",
+    "judge_call_id": "chatcmpl-EEWTZtGHMUBLhPWRgZ45a20PFz2P3",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch19-01-all-the-places-for-patterns.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation discussing the use of patterns in Rust, including examples and explanations that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:02:19.293621+00:00",
+    "judge_call_id": "chatcmpl-EEWTa8Maidk5v0gAwSAxVFZWYfgc7",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch19-02-refutability.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the concept of refutability in Rust patterns with examples and usage context, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:20.368080+00:00",
+    "judge_call_id": "chatcmpl-EEWTbaB7w2urf0Zvv3DYI0udu06Jl",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch19-03-pattern-syntax.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation section discussing pattern syntax in Rust with examples and explanations, which users might query about.",
+    "judged_at": "2026-08-19T09:02:21.328148+00:00",
+    "judge_call_id": "chatcmpl-EEWTc5fzKgPW0hvpEpyOLd1NapZae",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch20-00-advanced-features.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This chapter provides substantive content on advanced features of the Rust programming language, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:22.453956+00:00",
+    "judge_call_id": "chatcmpl-EEWTdCQyYoeUuz2dSXS1OebV2o1QR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining unsafe Rust in the context of memory safety guarantees, with substantive content that users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:23.988274+00:00",
+    "judge_call_id": "chatcmpl-EEWTecAQ4GlhzTCMyRNVrjQIUah3d",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch20-02-advanced-traits.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page covering advanced traits in Rust, including definitions and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:24.889226+00:00",
+    "judge_call_id": "chatcmpl-EEWTgeA4u3tfhpOiq4bCM0oxNw3Ad",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch20-03-advanced-types.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing advanced types in Rust, including newtypes and type aliases, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:25.852610+00:00",
+    "judge_call_id": "chatcmpl-EEWThWmGjWfFvsB3qGhNlgjNlsNv4",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch20-04-advanced-functions-and-closures.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation section exploring advanced functions and closures in Rust, including function pointers and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:02:26.695576+00:00",
+    "judge_call_id": "chatcmpl-EEWTiTQF5bX6Hw21urt0W4FThfgSA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch20-05-macros.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining macros in Rust, including their types and differences from functions, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:02:27.731342+00:00",
+    "judge_call_id": "chatcmpl-EEWTiGECZsk30KQi0djG5uDSgmYUy",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch21-00-final-project-a-web-server.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter providing a step-by-step guide to building a multithreaded web server in Rust, covering key concepts and implementation details.",
+    "judged_at": "2026-08-19T09:02:28.955635+00:00",
+    "judge_call_id": "chatcmpl-EEWTjMY3VIAk1j4r8G6hUHTuerut2",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch21-01-single-threaded.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on building a single-threaded web server, including explanations of protocols and practical coding steps.",
+    "judged_at": "2026-08-19T09:02:30.066608+00:00",
+    "judge_call_id": "chatcmpl-EEWTlOnG9y3yXkh47w9pr1pU2Vi1m",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch21-02-multithreaded.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the transition from a single-threaded to a multithreaded server in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:02:31.255601+00:00",
+    "judge_call_id": "chatcmpl-EEWTmt8U3KKv7FWMVXLpBkkhTMv5d",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on graceful shutdown and cleanup in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:02:32.305696+00:00",
+    "judge_call_id": "chatcmpl-EEWTnnPaVV5hh4CNhaAvSWGS6ollE",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/foreword.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "Foreword page with introductory content that does not provide substantive information or documentation for users to query.",
+    "judged_at": "2026-08-19T09:02:33.057037+00:00",
+    "judge_call_id": "chatcmpl-EEWTogZvFRSD3GJUz3mdEAJjBRqom",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/print.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "The page provides documentation for the Rust programming language, including installation instructions and links to additional resources, making it a valuable reference for users.",
+    "judged_at": "2026-08-19T09:02:34.127459+00:00",
+    "judge_call_id": "chatcmpl-EEWTpAMWZwYl9HEiKVaAbTLJWCuYf",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/book/title-page.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "Title page of a book with minimal content and no substantive information for querying.",
+    "judged_at": "2026-08-19T09:02:35.059419+00:00",
+    "judge_call_id": "chatcmpl-EEWTq9pmOqaYB8cKudRlRVymeXBRA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing an introduction to Cargo, including links to guides, commands, and FAQs that users might query about.",
+    "judged_at": "2026-08-19T09:02:35.949599+00:00",
+    "judge_call_id": "chatcmpl-EEWTrFf3JmCT0os4Ud1ZDHqLy6hqb",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/CHANGELOG.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Changelog documentation for the Cargo tool, detailing updates, changes, and fixes across versions, which users might query about.",
+    "judged_at": "2026-08-19T09:02:37.712830+00:00",
+    "judge_call_id": "chatcmpl-EEWTs6E4XzwdqAiirRoFw7OZB6Pk2",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/appendix/glossary.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-reference",
+    "rationale_text": "Glossary entry providing definitions and explanations of key terms related to the Cargo package manager, which users might query for understanding specific concepts.",
+    "judged_at": "2026-08-19T09:02:39.205556+00:00",
+    "judge_call_id": "chatcmpl-EEWTuZGj4mKYCgYaHEy7iev4hyTcr",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/commands/cargo-tree.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `cargo tree` command, detailing its usage, options, and providing examples of dependency visualization.",
+    "judged_at": "2026-08-19T09:02:40.995126+00:00",
+    "judge_call_id": "chatcmpl-EEWTw31vsH04nZADlEiX0pHIcqwvk",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/commands/cargo-vendor.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `cargo vendor` command, detailing its usage, options, and behavior, which users might query about.",
+    "judged_at": "2026-08-19T09:02:42.349473+00:00",
+    "judge_call_id": "chatcmpl-EEWTxE4NQB422IVxAU4diAvVH68xM",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/commands/deprecated-and-removed.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing deprecated and removed commands in Rust, providing critical information that users might query about command status and functionality.",
+    "judged_at": "2026-08-19T09:02:44.039406+00:00",
+    "judge_call_id": "chatcmpl-EEWTzmChJbQn6OszP24FMRbLOYnSC",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/faq.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "FAQ page providing detailed answers about the Cargo package manager, addressing common questions that users might have.",
+    "judged_at": "2026-08-19T09:02:45.520304+00:00",
+    "judge_call_id": "chatcmpl-EEWU01E5hm7P4wbUeSET2c5KEKGX1",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/reference/build-scripts.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining build scripts in Cargo with examples and use cases, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:02:46.860880+00:00",
+    "judge_call_id": "chatcmpl-EEWU2ZMKqS9KnFOpRroczeAzmARtE",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/reference/features.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining Cargo features with examples and usage details, which users might query about.",
+    "judged_at": "2026-08-19T09:02:48.144147+00:00",
+    "judge_call_id": "chatcmpl-EEWU3PV2PDCMbQ30shmPJj3UkNLVe",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/reference/profiles.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing Cargo profiles, including settings and examples for optimizing compiler behavior, which users might query about.",
+    "judged_at": "2026-08-19T09:02:48.952900+00:00",
+    "judge_call_id": "chatcmpl-EEWU4VeTZpYvq03HN32mMrxeUb2mB",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/reference/publishing.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing detailed instructions on publishing a crate to crates.io, including necessary steps and commands.",
+    "judged_at": "2026-08-19T09:02:52.155671+00:00",
+    "judge_call_id": "chatcmpl-EEWU7h8P5onm3GOP7NeVeeT1c45sX",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/reference/resolver.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on dependency resolution in Cargo, explaining the process and providing pseudo-code examples, which users might query about.",
+    "judged_at": "2026-08-19T09:02:53.527507+00:00",
+    "judge_call_id": "chatcmpl-EEWU8fiFPrUe6UBPjT0Y35GhTI4Xz",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/cargo/reference/workspaces.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining workspaces in Cargo with key points, commands, and configuration details that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:02:54.868190+00:00",
+    "judge_call_id": "chatcmpl-EEWUAVCnWAHnrda1OUqUnygRwDAWP",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/any/struct.TypeId.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the TypeId struct in Rust, including details on its methods, traits, and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:02:56.453762+00:00",
+    "judge_call_id": "chatcmpl-EEWUB2LShCvi7HyuQIvqSMGMY9Kul",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/any/trait.Any.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Any` trait in Rust, including method descriptions, examples, and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:02:57.992601+00:00",
+    "judge_call_id": "chatcmpl-EEWUDyuutROj6jJnNVkYTP58s1FoA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/arch/arm/struct.int8x16_t.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `int8x16_t` struct in Rust, including trait implementations and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:02:59.963451+00:00",
+    "judge_call_id": "chatcmpl-EEWUFMqMA99cUdviu5IFnpUJngDRF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/arch/arm/struct.uint16x8x4_t.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `uint16x8x4_t` struct in Rust, including its fields, trait implementations, and usage details.",
+    "judged_at": "2026-08-19T09:03:02.136291+00:00",
+    "judge_call_id": "chatcmpl-EEWUHGsw0jARBIlaGmrG6MhPQsGoF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/arch/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the Rust core::arch module, detailing architecture-specific intrinsic functions and their usage, which users might query about.",
+    "judged_at": "2026-08-19T09:03:04.238481+00:00",
+    "judge_call_id": "chatcmpl-EEWUJ8R1NCnr1M7ZTvKyX5mqIM3Xr",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/cmp/trait.Eq.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Eq trait in Rust, explaining its properties, implementation details, and usage examples.",
+    "judged_at": "2026-08-19T09:03:05.819118+00:00",
+    "judge_call_id": "chatcmpl-EEWULhtwvx2JBfHlVYam91qZRZcqY",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/convert/enum.Infallible.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the Infallible enum in Rust, explaining its purpose, implementations, and future compatibility \u2014 a user might ask questions about its usage and behavior.",
+    "judged_at": "2026-08-19T09:03:07.441172+00:00",
+    "judge_call_id": "chatcmpl-EEWUMrs4YsJwKSeFrXmfXNQnnRyYo",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/convert/trait.AsMut.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the AsMut trait in Rust, including method descriptions and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:03:09.038439+00:00",
+    "judge_call_id": "chatcmpl-EEWUOsVIcaRReT0FG7bYXfrfVkBco",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/convert/trait.AsRef.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the AsRef trait in Rust, including method descriptions, examples, and implementation details that users might query about.",
+    "judged_at": "2026-08-19T09:03:10.686481+00:00",
+    "judge_call_id": "chatcmpl-EEWUQjB8Puxd94O9yWvn5XGuIK6og",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/convert/trait.TryInto.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the TryInto trait in Rust, including method signatures and implementation details that users might query about.",
+    "judged_at": "2026-08-19T09:03:12.176070+00:00",
+    "judge_call_id": "chatcmpl-EEWURfabVoOk7Hu6ZteqnIeWwTUIE",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ffi/c_str/struct.Bytes.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Bytes` struct in Rust, including trait implementations and method descriptions that users might query about.",
+    "judged_at": "2026-08-19T09:03:14.739557+00:00",
+    "judge_call_id": "chatcmpl-EEWUTPoujO7fYZQ36DIxFBgucVjtt",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/fmt/derive.Debug.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "55 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-19T09:03:15.330616+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://doc.rust-lang.org/core/fmt/fn.write.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `write` function in Rust, including parameters, usage examples, and explanations.",
+    "judged_at": "2026-08-19T09:03:20.564564+00:00",
+    "judge_call_id": "chatcmpl-EEWUWAB9ZuGNGkR4CDjgM64PzqgB5",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/fmt/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Rust core::fmt module, detailing structs, enums, traits, and functions related to formatting and printing strings.",
+    "judged_at": "2026-08-19T09:03:22.897445+00:00",
+    "judge_call_id": "chatcmpl-EEWUbnbe4x9UPn5JAo5cSIUQaHnBa",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/fmt/trait.Pointer.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Pointer trait in Rust, including required methods, examples, and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:03:24.617776+00:00",
+    "judge_call_id": "chatcmpl-EEWUdvyunXbuW9luCUBUiZ2owvm3r",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/hash/trait.Hash.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Hash trait in Rust, including required methods, implementation details, and examples for users to query about hashing behavior.",
+    "judged_at": "2026-08-19T09:03:26.460031+00:00",
+    "judge_call_id": "chatcmpl-EEWUfWzUBdWGt5RURrvNglvCTkyah",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/hash/trait.Hasher.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Hasher trait in Rust, detailing methods and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:03:27.894238+00:00",
+    "judge_call_id": "chatcmpl-EEWUha9k46P47MECoc9Kc96S41Rcc",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/marker/trait.StructuralPartialEq.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the StructuralPartialEq trait in Rust, including its purpose, implementation details, and examples.",
+    "judged_at": "2026-08-19T09:03:29.463686+00:00",
+    "judge_call_id": "chatcmpl-EEWUintv82XsMoK5aa9wSZH0jNdbq",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/mem/fn.align_of.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `align_of` function in Rust, including its description, usage, and examples.",
+    "judged_at": "2026-08-19T09:03:30.945954+00:00",
+    "judge_call_id": "chatcmpl-EEWUk8eITff1GqLFP71DmWFpiZPew",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/mem/fn.size_of.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `size_of` function in Rust, including descriptions, examples, and size information for various types.",
+    "judged_at": "2026-08-19T09:03:32.611088+00:00",
+    "judge_call_id": "chatcmpl-EEWUlmKDxQZD8p6sCmvcNrrfiLDTV",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/mem/fn.transmute.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `transmute` function in Rust, including its description, usage, and safety considerations, which users might query about.",
+    "judged_at": "2026-08-19T09:03:34.240754+00:00",
+    "judge_call_id": "chatcmpl-EEWUnXOdjrxHhaxc9BOtiKaJcxFFy",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/mem/fn.transmute_copy.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `transmute_copy` function in Rust, including its description, usage examples, and safety considerations.",
+    "judged_at": "2026-08-19T09:03:35.880274+00:00",
+    "judge_call_id": "chatcmpl-EEWUpX8okzjbv9XSQuOcykTESzS5e",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/mem/type_info/enum.TypeKind.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `TypeKind` enum in Rust, detailing its variants and usage, which users might query about.",
+    "judged_at": "2026-08-19T09:03:37.532371+00:00",
+    "judge_call_id": "chatcmpl-EEWUqSKv95E7cGfLmTC11Smgdl7cq",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/enum.CoroutineState.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the CoroutineState enum in Rust, detailing its variants and implementations, which users might query about.",
+    "judged_at": "2026-08-19T09:03:39.256972+00:00",
+    "judge_call_id": "chatcmpl-EEWUsnKqBLDF69xl0D4IbpoDHyOQd",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining operator overloading in Rust, including traits and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:03:40.827390+00:00",
+    "judge_call_id": "chatcmpl-EEWUu2s0Rhz9TqGm7FFrdHPBVxktK",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/trait.Deref.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Deref trait in Rust, including method descriptions, examples, and usage guidance.",
+    "judged_at": "2026-08-19T09:03:42.430818+00:00",
+    "judge_call_id": "chatcmpl-EEWUvRFP83zP2PbQ5WA8f0KRym99b",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/trait.DispatchFromDyn.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the DispatchFromDyn trait in Rust, explaining its purpose, implementation details, and usage examples.",
+    "judged_at": "2026-08-19T09:03:44.009847+00:00",
+    "judge_call_id": "chatcmpl-EEWUxWtEAuDGWkv1r45eP7wyZEkzP",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/trait.FnOnce.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the FnOnce trait in Rust, including method descriptions, examples, and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:03:45.642740+00:00",
+    "judge_call_id": "chatcmpl-EEWUzOXGyNq93CcNCybgW4Yj6q4s8",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/trait.FromResidual.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the FromResidual trait in Rust, including method signatures, usage examples, and implementation details.",
+    "judged_at": "2026-08-19T09:03:47.094775+00:00",
+    "judge_call_id": "chatcmpl-EEWV0XgLf6aCOXPRq3pcr7cKJEpJI",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/trait.IntoBounds.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the IntoBounds trait in Rust, including method signatures, examples, and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:03:48.836099+00:00",
+    "judge_call_id": "chatcmpl-EEWV2CYJsA7umgSoJ3bAUbRbkmgKf",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/trait.OneSidedRange.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the OneSidedRange trait in Rust, including method definitions and implementation details that users might query about.",
+    "judged_at": "2026-08-19T09:03:50.345581+00:00",
+    "judge_call_id": "chatcmpl-EEWV3tHBnOV4pbvANrE5gUoXTfBr2",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ops/trait.Reborrow.html": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:03:51.060753+00:00"
+  },
+  "https://doc.rust-lang.org/core/ops/trait.Receiver.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Receiver trait in Rust, including explanations and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:03:52.657952+00:00",
+    "judge_call_id": "chatcmpl-EEWV6KBiGR8MrHEYavMU0MxCGmgxA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/option/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the Rust `Option` type with examples and usage scenarios, which users might query about.",
+    "judged_at": "2026-08-19T09:03:54.329491+00:00",
+    "judge_call_id": "chatcmpl-EEWV7ZOiW1SzBYNC1OBlaZLhS4jfT",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/panic/trait.UnwindSafe.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the UnwindSafe trait in Rust, including its purpose, implementation details, and usage context, which users might query about.",
+    "judged_at": "2026-08-19T09:03:55.920517+00:00",
+    "judge_call_id": "chatcmpl-EEWV9lRWCnSm92okS8NsVV9MXDCJR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/pin/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the concept of pinning in Rust, including examples and detailed descriptions that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:03:57.623001+00:00",
+    "judge_call_id": "chatcmpl-EEWVBPB8NwYhmJ6NATpOK8gM0e3bM",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/pin/trait.PinCoerceUnsized.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the PinCoerceUnsized trait in Rust, including safety information and implementors, which users might query about its usage and behavior.",
+    "judged_at": "2026-08-19T09:03:59.487551+00:00",
+    "judge_call_id": "chatcmpl-EEWVCj5wv4txX5YYFkaeQtZopAYBM",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/primitive.fn.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for function pointers in Rust, including explanations, examples, and safety considerations that users might query about.",
+    "judged_at": "2026-08-19T09:04:00.968033+00:00",
+    "judge_call_id": "chatcmpl-EEWVEgmix8EzWxhSry3JzHHLbuI4K",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ptr/fn.dangling.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `dangling` function in Rust, including its purpose, usage, and details about its behavior.",
+    "judged_at": "2026-08-19T09:04:02.706838+00:00",
+    "judge_call_id": "chatcmpl-EEWVFiN2GY3mqCLyN7Y3sF2iGQUu1",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/ptr/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Rust core::ptr module, detailing safety, memory management, and function usage, which users might query about.",
+    "judged_at": "2026-08-19T09:04:04.289094+00:00",
+    "judge_call_id": "chatcmpl-EEWVHPJbXZ2H1mZJ7VZ6OQzhI3Ih9",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/str/pattern/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API documentation for the Rust string Pattern module, including examples and explanations of its functionality, which users might query about.",
+    "judged_at": "2026-08-19T09:04:05.821503+00:00",
+    "judge_call_id": "chatcmpl-EEWVJTDEqKZIIz6XT1Frsi6k77Or9",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/str/pattern/trait.ReverseSearcher.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the ReverseSearcher trait in Rust, detailing required and provided methods, which users might query about.",
+    "judged_at": "2026-08-19T09:04:07.453369+00:00",
+    "judge_call_id": "chatcmpl-EEWVKzyEthEX0KjxzpVlrTFAq3C7D",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/str/pattern/trait.Searcher.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Searcher trait in Rust, detailing required methods and their functionality, which users might query about.",
+    "judged_at": "2026-08-19T09:04:09.773441+00:00",
+    "judge_call_id": "chatcmpl-EEWVMmFMBtAsDUgZTRjuBvkVZlLxM",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/core/str/struct.ParseBoolError.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the ParseBoolError struct in Rust, including trait implementations and method descriptions that users might query about.",
+    "judged_at": "2026-08-19T09:04:11.536302+00:00",
+    "judge_call_id": "chatcmpl-EEWVOWcx4ejtJBBLn7gm6xEXmtbQY",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/cargo/commands/cargo-new.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the `cargo new` command, detailing its usage, options, and descriptions, which users might query about.",
+    "judged_at": "2026-08-19T09:04:13.257394+00:00",
+    "judge_call_id": "chatcmpl-EEWVQbYahAmwcKi8L78sFDoWX8Ghc",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/cargo/commands/cargo-package.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing the `cargo package` command with its usage, options, and descriptions, which a user might query about.",
+    "judged_at": "2026-08-19T09:04:14.940333+00:00",
+    "judge_call_id": "chatcmpl-EEWVSoaVSz8dt5I6rVorsf5JSPz4I",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/cargo/commands/cargo-rustdoc.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API documentation for the `cargo rustdoc` command, detailing its usage, options, and parameters, which users might query about.",
+    "judged_at": "2026-08-19T09:04:16.635647+00:00",
+    "judge_call_id": "chatcmpl-EEWVTocROoyf46BxxfBI0C4VfPQ0r",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/cargo/reference/environment-variables.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing environment variables used by Cargo, including descriptions and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:04:18.168235+00:00",
+    "judge_call_id": "chatcmpl-EEWVVhHFPKgPRmOzVQF7R19p5D4WF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/cargo/reference/unstable.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining unstable features in Cargo with examples and usage instructions, which users might query about.",
+    "judged_at": "2026-08-19T09:04:20.218899+00:00",
+    "judge_call_id": "chatcmpl-EEWVXDS9odvhUwOXhegsyJ8Hxx5Jr",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/edition-guide/rust-2021/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Comprehensive guide detailing the changes in the Rust 2021 Edition, including migration guidance and new capabilities, which users might inquire about.",
+    "judged_at": "2026-08-19T09:04:21.822606+00:00",
+    "judge_call_id": "chatcmpl-EEWVZhNKB8nEMTaPcnYpiUHJVxloG",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/reference/conditional-compilation.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation on conditional compilation in Rust, including syntax, configuration options, and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:04:23.697382+00:00",
+    "judge_call_id": "chatcmpl-EEWVaAaV3QUnVVsPZsZuN6Bjwba2C",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/std/macro.env.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `env` macro in Rust, including its usage, examples, and explanations of parameters.",
+    "judged_at": "2026-08-19T09:04:25.250858+00:00",
+    "judge_call_id": "chatcmpl-EEWVc6LhBAQTFUCMEgk7mHPWnMrmv",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/unstable-book/language-features/lahfsahf-target-feature.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "61 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-19T09:04:26.021602+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://doc.rust-lang.org/nightly/unstable-book/language-features/lang-items.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining lang items in Rust, detailing their functionality and usage examples, which users might query about.",
+    "judged_at": "2026-08-19T09:04:27.590848+00:00",
+    "judge_call_id": "chatcmpl-EEWVfVKBY8q9Dgas7k8Mccu1mRgdk",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nightly/unstable-book/language-features/large-assignments.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "64 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-19T09:04:28.373095+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://doc.rust-lang.org/nomicon/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "The Rustonomicon provides detailed documentation on writing Unsafe Rust programs, including important concepts and warnings, making it a valuable resource for users seeking to understand this advanced topic.",
+    "judged_at": "2026-08-19T09:04:29.306732+00:00",
+    "judge_call_id": "chatcmpl-EEWVgXAqxEf7USlgDjPxfpzZNo8TW",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/aliasing.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation discussing aliasing in Rust with definitions, examples, and explanations relevant to programming concepts.",
+    "judged_at": "2026-08-19T09:04:30.755373+00:00",
+    "judge_call_id": "chatcmpl-EEWViGpubahc833MOvjaHESudOvFV",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/arc-mutex/arc-final.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "The page contains final code for a Rust programming concept with explanations and comments, making it a reference material that users might query about.",
+    "judged_at": "2026-08-19T09:04:32.286948+00:00",
+    "judge_call_id": "chatcmpl-EEWVjZBrCD5JiiPyLSEeW08xg8Jyt",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/beneath-std.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation section detailing features for #[no_std] development in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:04:34.141825+00:00",
+    "judge_call_id": "chatcmpl-EEWVlVVc7gwyiSTYrPQber8wXUTIK",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/borrow-splitting.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on splitting borrows in Rust, explaining mutable references and providing code examples \u2014 a user might ask questions about the borrow checker and its behavior.",
+    "judged_at": "2026-08-19T09:04:35.602730+00:00",
+    "judge_call_id": "chatcmpl-EEWVm38qDyoWH7s5hKlaT7036ubTR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/checked-uninit.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining checked uninitialized memory in Rust with code examples and analysis, which users might query about.",
+    "judged_at": "2026-08-19T09:04:37.142249+00:00",
+    "judge_call_id": "chatcmpl-EEWVoXhdazBupOI2mbG608GgNkyeP",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/concurrency.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on concurrency in Rust, discussing its approach to concurrency and parallelism, which users might have questions about.",
+    "judged_at": "2026-08-19T09:04:38.514188+00:00",
+    "judge_call_id": "chatcmpl-EEWVp7dC3XcCNwzh5w30De9eLAxNS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/conversions.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on type conversions in Rust, explaining concepts and providing code examples that users might query about.",
+    "judged_at": "2026-08-19T09:04:40.085936+00:00",
+    "judge_call_id": "chatcmpl-EEWVrPDMKEzo15Ve2PtRGvie94fAE",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/destructors.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining destructors in Rust, including code examples and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:04:41.620064+00:00",
+    "judge_call_id": "chatcmpl-EEWVtR5KtfwUc06DO3tHhwknFaCgL",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/drop-flags.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining drop flags in Rust with examples and detailed explanations relevant to Rust programming concepts.",
+    "judged_at": "2026-08-19T09:04:43.138044+00:00",
+    "judge_call_id": "chatcmpl-EEWVuwGXNqZQ63q09yYsfxgeI0x0s",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/dropck.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the drop check mechanism in Rust with examples and detailed explanations relevant to the language's memory management.",
+    "judged_at": "2026-08-19T09:04:44.588784+00:00",
+    "judge_call_id": "chatcmpl-EEWVvoWDNLS3NyL40zI4mZXxntFcB",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/exception-safety.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on exception safety in Rust, discussing concepts and practices relevant to programming, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:04:46.291428+00:00",
+    "judge_call_id": "chatcmpl-EEWVxhjT2UZ4mFZzWjOVUo0e7TCVV",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/ffi.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on the Foreign Function Interface in Rust, including examples and setup instructions for using foreign libraries, which users might query about.",
+    "judged_at": "2026-08-19T09:04:47.642023+00:00",
+    "judge_call_id": "chatcmpl-EEWVzJ46pudIGlGPJltbariUZczey",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/hrtb.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining Higher-Rank Trait Bounds in Rust with code examples and detailed explanations, which users might query about.",
+    "judged_at": "2026-08-19T09:04:51.997583+00:00",
+    "judge_call_id": "chatcmpl-EEWW3cnQbD381nlainSeHOfBI77F8",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "The Rustonomicon provides detailed documentation on writing Unsafe Rust programs, including important concepts and warnings, making it a valuable resource for users seeking to understand this advanced topic.",
+    "judged_at": "2026-08-19T09:04:52.850385+00:00",
+    "judge_call_id": "chatcmpl-EEWW4S3ceYgz9OJKzMy8eiR4RlfQR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/leaking.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing resource management in Rust, including ownership and potential resource leaks, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:04:54.383114+00:00",
+    "judge_call_id": "chatcmpl-EEWW5dRMgSvLoQWL5mSRlg1vlnhYx",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/lifetime-elision.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining lifetime elision in Rust with rules and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:04:55.841335+00:00",
+    "judge_call_id": "chatcmpl-EEWW7NQZVx4WKzxzXJot34SO8dxlY",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/lifetime-mismatch.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation explaining the limits of lifetimes in Rust with code examples and detailed reasoning, which users might query about.",
+    "judged_at": "2026-08-19T09:04:57.151574+00:00",
+    "judge_call_id": "chatcmpl-EEWW8fqLFnS7LydnNJxlHN32oz77y",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/lifetimes.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on lifetimes in Rust, explaining their rules and usage with examples, which users might query about.",
+    "judged_at": "2026-08-19T09:04:58.464786+00:00",
+    "judge_call_id": "chatcmpl-EEWW9apnNBg23t1XNIklIXFas2JGw",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/panic-handler.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the #[panic_handler] attribute in Rust, including usage examples and context for its application in no_std environments.",
+    "judged_at": "2026-08-19T09:05:00.074479+00:00",
+    "judge_call_id": "chatcmpl-EEWWBByEa6JpxcBx2le1r0dhsFNnQ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/phantom-data.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the use of PhantomData in Rust, including examples and technical details that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:05:01.478398+00:00",
+    "judge_call_id": "chatcmpl-EEWWCRwRU8F07fwY9UvwI0QUg0I12",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/poisoning.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the concept of poisoning in Rust, including examples and implications for safe code practices.",
+    "judged_at": "2026-08-19T09:05:02.799555+00:00",
+    "judge_call_id": "chatcmpl-EEWWErSSvee26CVDCKwYLsBPh7Iq9",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/races.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on data races and race conditions in Rust, explaining concepts and providing examples relevant to safe programming practices.",
+    "judged_at": "2026-08-19T09:05:04.181607+00:00",
+    "judge_call_id": "chatcmpl-EEWWFVl6M1W6vATEEfVZBXisKnfS0",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/references.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation discussing shared and mutable references in Rust, including rules and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:05:05.473447+00:00",
+    "judge_call_id": "chatcmpl-EEWWGcpx3jtBa4ILqt34cQnJ5wqgm",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/subtyping.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining subtyping and variance in Rust with examples, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:05:06.712137+00:00",
+    "judge_call_id": "chatcmpl-EEWWInUPXjMaLHTzKUhqDcdJIvBQo",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/transmutes.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on transmuting types in Rust, explaining the mechanics and dangers of the operation, which users might have questions about.",
+    "judged_at": "2026-08-19T09:05:08.241903+00:00",
+    "judge_call_id": "chatcmpl-EEWWJaRa9SYFsbQ3h36f8UnW4pUOo",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/unbounded-lifetimes.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining unbounded lifetimes in Rust with examples and guidance on memory safety, which users might query about.",
+    "judged_at": "2026-08-19T09:05:09.525998+00:00",
+    "judge_call_id": "chatcmpl-EEWWLWUtYYbhY9cMRVRAzEAvzMVdJ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/unchecked-uninit.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing uninitialized memory in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:05:11.066463+00:00",
+    "judge_call_id": "chatcmpl-EEWWM0d4g08o9sWqfBN2vZG22mtYV",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/uninitialized.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on working with uninitialized memory in Rust, explaining concepts and providing guidance on safe and unsafe practices.",
+    "judged_at": "2026-08-19T09:05:12.539537+00:00",
+    "judge_call_id": "chatcmpl-EEWWNoAKugyy13UJHdkeo4zAgcqog",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/unwinding.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on Rust's error-handling scheme, including explanations of Option, Result, and panic mechanisms, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:05:14.420286+00:00",
+    "judge_call_id": "chatcmpl-EEWWPdF6dTawoGmTyOYpjCRCbfQhO",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/nomicon/vec/vec.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a detailed guide on implementing `std::Vec` in Rust, which includes advanced concepts and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:05:15.273479+00:00",
+    "judge_call_id": "chatcmpl-EEWWQm7FN2wEaK9qqiEO06sIXJYAk",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/reference/attributes.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation on Rust attributes, including syntax and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:05:16.040903+00:00",
+    "judge_call_id": "chatcmpl-EEWWR70Isx5Z3ogBuMEYrq0hiLBOZ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/reference/const/eval.html": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:05:16.757884+00:00"
+  },
+  "https://doc.rust-lang.org/reference/const_eval.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining constant evaluation in Rust, including definitions and contexts for constant expressions, which users might query about.",
+    "judged_at": "2026-08-19T09:05:18.034871+00:00",
+    "judge_call_id": "chatcmpl-EEWWTz4kg9qBrwyiOXvhHOS0GQJjN",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/reference/items/external-blocks.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for external blocks in Rust, including syntax, usage, and related concepts that users might query about.",
+    "judged_at": "2026-08-19T09:05:18.795805+00:00",
+    "judge_call_id": "chatcmpl-EEWWUTF9mwmn1ip9tFkbKgyyyeAh0",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/reference/items/traits.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation on traits in Rust, including syntax and associated items, which users might query about.",
+    "judged_at": "2026-08-19T09:05:19.505129+00:00",
+    "judge_call_id": "chatcmpl-EEWWVGaTYsKjqe2jkq9qNfuRFMPXR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/reference/items/unions.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for unions in Rust, including syntax, examples, and explanations that a user might query about.",
+    "judged_at": "2026-08-19T09:05:21.096941+00:00",
+    "judge_call_id": "chatcmpl-EEWWWXcSvur3vnLlCrtD3IZ8MfPqm",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/reference/macros-by-example.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation on macros in Rust, including syntax and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:05:22.368082+00:00",
+    "judge_call_id": "chatcmpl-EEWWXUue8iA9azZU2qE9vCz0aY3JJ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/reference/trait-bounds.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation on trait and lifetime bounds in Rust, including syntax and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:05:23.177826+00:00",
+    "judge_call_id": "chatcmpl-EEWWYw1gXHCuxO0R8KRJaOs8xo5Wv",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/rustc/check-cfg.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to check conditional configurations in Rust, including command line usage and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:05:24.831291+00:00",
+    "judge_call_id": "chatcmpl-EEWWar9oKuRV2hQ3ss0ZcfUlOsox8",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/rustc/check-cfg/cargo-specifics.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation summarizing how Cargo interacts with the `unexpected_cfgs` lint and `--check-cfg` flag, providing substantive details a user might query about.",
+    "judged_at": "2026-08-19T09:05:26.876115+00:00",
+    "judge_call_id": "chatcmpl-EEWWbrvzFeXSSUG0yJbvB7VHSnlp1",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/rustc/remap-source-paths.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to remap source paths in rustc, including flags, examples, and use cases that users might query about.",
+    "judged_at": "2026-08-19T09:05:28.907033+00:00",
+    "judge_call_id": "chatcmpl-EEWWdG9LgU7VzhuBxF9pu2zFJ8X0l",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/rustc/tests/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to write and run tests in Rust, including code examples and references to related topics.",
+    "judged_at": "2026-08-19T09:05:29.625344+00:00",
+    "judge_call_id": "chatcmpl-EEWWf820Xm4GMSiMuVaHrPxXFvdUx",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/rustdoc/how-to-write-documentation.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on how to write effective documentation for Rust libraries, providing guidance and examples that users might query about.",
+    "judged_at": "2026-08-19T09:05:30.967168+00:00",
+    "judge_call_id": "chatcmpl-EEWWgf0cJ17zGMh4PELeJnwJYESiA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/alloc/vec/cow.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:05:32.538168+00:00",
+    "judge_call_id": "chatcmpl-EEWWhH1rvyAsqFRacZNgpblaBpGwi",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/alloc/vec/into_iter.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw source view.",
+    "judged_at": "2026-08-19T09:05:34.501865+00:00",
+    "judge_call_id": "chatcmpl-EEWWjpHdcdbEMO9crNOoKw31XdtWO",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/array/equality.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:05:36.051645+00:00",
+    "judge_call_id": "chatcmpl-EEWWlbJRoNtPAMJB0YdRMAajAasd2",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/array/iter.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw source view.",
+    "judged_at": "2026-08-19T09:05:37.836255+00:00",
+    "judge_call_id": "chatcmpl-EEWWnmWqloKELaqd7dIRT5VfDnkyC",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/cell/lazy.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:05:39.474230+00:00",
+    "judge_call_id": "chatcmpl-EEWWoHMCAhQbVIPqcNozsMKhptvrp",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/char/decode.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:05:41.127594+00:00",
+    "judge_call_id": "chatcmpl-EEWWqSDtWp3KJ8OSHhCgPS9Fa626H",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/error.rs.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Error` trait in Rust, including explanations, examples, and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:05:43.450013+00:00",
+    "judge_call_id": "chatcmpl-EEWWrmiwkAp9JNCH8vBaZdraJ848J",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/ffi/c_str.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw source view.",
+    "judged_at": "2026-08-19T09:05:45.211807+00:00",
+    "judge_call_id": "chatcmpl-EEWWukvOW5kod2joQBTuUz3QNW85D",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/ffi/primitives.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:05:46.845749+00:00",
+    "judge_call_id": "chatcmpl-EEWWwpr5El9F1vrQAquOfNpniFnkj",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/iter/adapters/array_chunks.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:05:48.594591+00:00",
+    "judge_call_id": "chatcmpl-EEWWxnT1bSMbr2B08aVV88k4JpXIO",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/iter/adapters/fuse.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:05:50.208214+00:00",
+    "judge_call_id": "chatcmpl-EEWWzt3LwCRVNxmHPfcdHMa99cFSA",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/iter/adapters/inspect.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:05:51.849343+00:00",
+    "judge_call_id": "chatcmpl-EEWX11ECN1AGojndh2OnQLTIt5OOR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/iter/traits/exact_size.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw `.rs` source view.",
+    "judged_at": "2026-08-19T09:05:53.578465+00:00",
+    "judge_call_id": "chatcmpl-EEWX2dz6TB6SMAerPlRtkkzD0oFte",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/mem/drop_guard.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw source view.",
+    "judged_at": "2026-08-19T09:05:55.292084+00:00",
+    "judge_call_id": "chatcmpl-EEWX4VKW1NM0vo2hmoLPLiLYy5Zp3",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/mem/manually_drop.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw `.rs` source view.",
+    "judged_at": "2026-08-19T09:05:56.996188+00:00",
+    "judge_call_id": "chatcmpl-EEWX60ZK072gFfTQrQuQJ9uKXsRbF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/mem/maybe_uninit.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw `.rs` source view.",
+    "judged_at": "2026-08-19T09:05:58.874630+00:00",
+    "judge_call_id": "chatcmpl-EEWX843eEqxf8tRdFgwkLDWknvpGI",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/ops/coroutine.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw source view.",
+    "judged_at": "2026-08-19T09:06:00.597075+00:00",
+    "judge_call_id": "chatcmpl-EEWX9b4hyysioSDxKBdkreL8dh0iC",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/ops/reborrow.rs.html": {
+    "classification": "SKIPPED_NO_CONTENT",
+    "judged_at": "2026-08-19T09:06:01.339021+00:00"
+  },
+  "https://doc.rust-lang.org/src/core/pat.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:06:02.658775+00:00",
+    "judge_call_id": "chatcmpl-EEWXCJ5tP5WtVXjt3EroSeY9zWWEj",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/pin/unsafe_pinned.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw `.rs` source view.",
+    "judged_at": "2026-08-19T09:06:04.320509+00:00",
+    "judge_call_id": "chatcmpl-EEWXDFD6oD63QcJLda71arBt4rBke",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/random.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw source view.",
+    "judged_at": "2026-08-19T09:06:06.001878+00:00",
+    "judge_call_id": "chatcmpl-EEWXFMDGA8mMaF18QntdrT2mb6bLd",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/range.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw source view.",
+    "judged_at": "2026-08-19T09:06:07.633585+00:00",
+    "judge_call_id": "chatcmpl-EEWXHod3gwxlhKOZYCLu99mtdStU9",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/range/iter.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:06:09.378366+00:00",
+    "judge_call_id": "chatcmpl-EEWXIdz5wXEIPJn9Z2b4lPcd2hZU6",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/slice/index.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw `.rs.html` source view.",
+    "judged_at": "2026-08-19T09:06:11.325947+00:00",
+    "judge_call_id": "chatcmpl-EEWXK1oukBlZGre3hRWigFmLrL7bw",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/stdarch/crates/core_arch/src/arm_shared/neon/mod.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples.",
+    "judged_at": "2026-08-19T09:06:12.861044+00:00",
+    "judge_call_id": "chatcmpl-EEWXMUWR7uk5xQUnr0pLBNIO0D2AC",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/str/pattern.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw source view.",
+    "judged_at": "2026-08-19T09:06:14.842672+00:00",
+    "judge_call_id": "chatcmpl-EEWXNNVjoH2Fkh0GmlA89rmTCgL5x",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/core/task/wake.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw `.rs.html` source view.",
+    "judged_at": "2026-08-19T09:06:16.616500+00:00",
+    "judge_call_id": "chatcmpl-EEWXPGbXxiYONzAWYh0Xps04BQMDJ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/src/std/random.rs.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-other",
+    "rationale_text": "Raw source code file viewer with syntax-highlighted code but no explanatory prose, parameter documentation, or usage examples. Users would query the rendered docs, not the raw `.rs` source view.",
+    "judged_at": "2026-08-19T09:06:18.390645+00:00",
+    "judge_call_id": "chatcmpl-EEWXRnll6SKmWhGPeRkM5rOU13TZI",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "The Rust Programming Language book provides comprehensive documentation on Rust programming concepts, making it a valuable resource for users seeking to learn or ask questions about Rust.",
+    "judged_at": "2026-08-19T09:06:19.312892+00:00",
+    "judge_call_id": "chatcmpl-EEWXSDbq0ffr1GMBapFBK4w65deJo",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/appendix-04-useful-development-tools.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Appendix discussing useful development tools for Rust, including automatic formatting and code fixing, providing substantive content a user might query about.",
+    "judged_at": "2026-08-19T09:06:20.717870+00:00",
+    "judge_call_id": "chatcmpl-EEWXU0GLLGa20VAboLfD8dDFLMNPP",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/appendix-05-editions.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Appendix discussing Rust editions, their purpose, and changes over time, providing substantive information a user might query about.",
+    "judged_at": "2026-08-19T09:06:22.279414+00:00",
+    "judge_call_id": "chatcmpl-EEWXVwhhlrx1cQMECjOtHL4dRCWMp",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/appendix-06-translation.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "Appendix page listing translations of the book without substantive content or explanations, not providing queryable information.",
+    "judged_at": "2026-08-19T09:06:23.780285+00:00",
+    "judge_call_id": "chatcmpl-EEWXXkB64BTr6HWwTSbMZg5PGrbXY",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/appendix-07-nightly-rust.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Appendix providing detailed information on Rust's development process and release channels, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:25.149767+00:00",
+    "judge_call_id": "chatcmpl-EEWXY5QxtRE7u1HeqnOFXCk8lODHU",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch00-00-introduction.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Introduction to the Rust programming language, explaining its benefits and target audience, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:25.964104+00:00",
+    "judge_call_id": "chatcmpl-EEWXZMLrTj7xXHNzS6ACJcgny0hKG",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch01-00-getting-started.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter introducing Rust programming with installation instructions and a simple program example, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:26.682720+00:00",
+    "judge_call_id": "chatcmpl-EEWXa9gXpiyEk2h5o3mxloKmrDK4G",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch01-01-installation.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing step-by-step instructions for installing Rust, including command line notation and alternative installation methods.",
+    "judged_at": "2026-08-19T09:06:27.504319+00:00",
+    "judge_call_id": "chatcmpl-EEWXaeMGqpgq10n5nBa3x2OVEAMrF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch01-02-hello-world.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on writing a basic \"Hello, world!\" program in Rust, including setup instructions and code examples.",
+    "judged_at": "2026-08-19T09:06:28.215376+00:00",
+    "judge_call_id": "chatcmpl-EEWXbzu2jChe9f0zuII4AtRlTcEAQ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch01-03-hello-cargo.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining Cargo, Rust's build system and package manager, with instructions on installation and project creation.",
+    "judged_at": "2026-08-19T09:06:28.997266+00:00",
+    "judge_call_id": "chatcmpl-EEWXcqZaKNDzVcojMtIlCGURAESZy",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch02-00-guessing-game-tutorial.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-howto",
+    "rationale_text": "Step-by-step tutorial for programming a guessing game in Rust, teaching fundamental concepts and project setup.",
+    "judged_at": "2026-08-19T09:06:29.718454+00:00",
+    "judge_call_id": "chatcmpl-EEWXdvvZY03Ah5xbHrbnPiJDOau2G",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-00-common-programming-concepts.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This chapter provides foundational programming concepts in Rust, including variables, types, functions, and control flow, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:30.576578+00:00",
+    "judge_call_id": "chatcmpl-EEWXdDy1CVJsuRG9oIl9Lv4XRDAIw",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-01-variables-and-mutability.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation explaining variables and mutability in Rust, including code examples and explanations that users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:31.319182+00:00",
+    "judge_call_id": "chatcmpl-EEWXeZF63nsGJmQ7lGtoHjqEAcoZe",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-02-data-types.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining data types in Rust with examples and code snippets, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:06:32.250222+00:00",
+    "judge_call_id": "chatcmpl-EEWXfKZjmSEhX49ni48sUNlJB2hvs",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-03-how-functions-work.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how functions work in Rust, including examples and usage details that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:06:33.041032+00:00",
+    "judge_call_id": "chatcmpl-EEWXg2Lhl0IrzkrYfvkMzL4STmKq7",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-04-comments.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to use comments in Rust code, including examples and best practices, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:33.790926+00:00",
+    "judge_call_id": "chatcmpl-EEWXhpvnDzNh1qvZgLvwbsOLdo0LO",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch03-05-control-flow.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining control flow in Rust with examples of `if` expressions and loops, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:34.490741+00:00",
+    "judge_call_id": "chatcmpl-EEWXhsGiYB37n06DkXiFHolnRbsLB",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch04-00-understanding-ownership.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter explaining the concept of ownership in Rust, including its implications and related features, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:35.285407+00:00",
+    "judge_call_id": "chatcmpl-EEWXiZlmxdvfXr5nRx0tr7HqA2ApO",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch04-01-what-is-ownership.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation explaining the concept of ownership in Rust, including rules and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:35.992280+00:00",
+    "judge_call_id": "chatcmpl-EEWXj9TfFqKfETuOakkgPTlwRlCSK",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch04-02-references-and-borrowing.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining references and borrowing in Rust with code examples, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:06:36.872056+00:00",
+    "judge_call_id": "chatcmpl-EEWXkMEOhuIGYKNAAs1OFJEsDgDUW",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch04-03-slices.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the concept of slices in Rust with a programming problem and code examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:37.655177+00:00",
+    "judge_call_id": "chatcmpl-EEWXlryR9dVXKkUmxo0BpnfGvVHEW",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch05-00-structs.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter explaining structs in Rust, including definitions, comparisons, and usage examples that users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:38.515794+00:00",
+    "judge_call_id": "chatcmpl-EEWXl87oQ444xSqCw8pjTUHnsDugb",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch05-01-defining-structs.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to define and instantiate structs in Rust, including examples and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:06:39.486100+00:00",
+    "judge_call_id": "chatcmpl-EEWXm9FreR8pRe7Pc43efPWb6RuAK",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch05-02-example-structs.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on using structs in Rust with a complete example program for calculating the area of a rectangle.",
+    "judged_at": "2026-08-19T09:06:40.306537+00:00",
+    "judge_call_id": "chatcmpl-EEWXnQ4X3AT0OA2paxMmKfM5tk0qH",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch05-03-method-syntax.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining method syntax in Rust, including code examples and explanations that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:06:41.017230+00:00",
+    "judge_call_id": "chatcmpl-EEWXouUm7LHqZb2pptc3QO5GLrwob",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch06-00-enums.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter explaining enumerations in Rust, including definitions, usage, and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:06:41.838654+00:00",
+    "judge_call_id": "chatcmpl-EEWXpbvVmYvI5CjFlVs5YKX0xrFjM",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch06-01-defining-an-enum.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining enums in Rust with examples and use cases, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:06:42.659978+00:00",
+    "judge_call_id": "chatcmpl-EEWXq4OkT7XFIFweUP5PoScnLTj3T",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch06-02-match.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `match` control flow construct in Rust, including examples and usage, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:43.450640+00:00",
+    "judge_call_id": "chatcmpl-EEWXq7k5E14ShHPseMxSCK6EKG3ye",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch06-03-if-let.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `if let` syntax in Rust with examples, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:06:44.339848+00:00",
+    "judge_call_id": "chatcmpl-EEWXrZKEO1NLaUdOEW33bbWSEgHyW",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter discussing code organization, modules, and packages in Rust programming, providing substantive content a user might query about.",
+    "judged_at": "2026-08-19T09:06:45.120359+00:00",
+    "judge_call_id": "chatcmpl-EEWXsp88nxBLjfkzgtSCa4pbJseLi",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch07-01-packages-and-crates.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining packages and crates in Rust, providing substantive content that users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:45.805474+00:00",
+    "judge_call_id": "chatcmpl-EEWXte3qgNxZMghy3R2pUlKNfU7Dt",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch07-02-defining-modules-to-control-scope-and-privacy.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing modules in Rust, including keywords and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:06:46.553495+00:00",
+    "judge_call_id": "chatcmpl-EEWXtIZkqWZj3LqFK0hfEvzixUu5n",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to refer to items in the module tree in Rust, including examples of absolute and relative paths.",
+    "judged_at": "2026-08-19T09:06:47.534205+00:00",
+    "judge_call_id": "chatcmpl-EEWXuYlH9Dl2666b7fWHJu5fzMvJS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the use of the `use` keyword in Rust, with examples and code snippets that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:06:48.346446+00:00",
+    "judge_call_id": "chatcmpl-EEWXvxv4JBBGhxKf8fcYCnbNdgAu7",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch07-05-separating-modules-into-different-files.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to separate modules into different files in Rust, providing code examples and instructions that users might query about.",
+    "judged_at": "2026-08-19T09:06:49.346335+00:00",
+    "judge_call_id": "chatcmpl-EEWXwomAAM7IL0J1RBgHG18f9LjuY",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch08-00-common-collections.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter discussing common collections in Rust, including vectors, strings, and hash maps, with explanations that users might query about.",
+    "judged_at": "2026-08-19T09:06:50.173450+00:00",
+    "judge_call_id": "chatcmpl-EEWXxEsuYHhdiN526IutfVKL6P5Jr",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch08-01-vectors.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to create and use vectors in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:06:51.261104+00:00",
+    "judge_call_id": "chatcmpl-EEWXyMEcyFTcmRB8894Sh5wRbHJPb",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch08-02-strings.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing strings in Rust, including definitions, operations, and complexities, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:51.978838+00:00",
+    "judge_call_id": "chatcmpl-EEWXzfQE5suaBX5F647IKdRsJY8c0",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch08-03-hash-maps.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining hash maps in Rust, including their structure, usage, and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:06:52.739939+00:00",
+    "judge_call_id": "chatcmpl-EEWY0ku8sUipYrMpEelZe666owwHR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch09-00-error-handling.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation chapter on error handling in Rust, explaining recoverable and unrecoverable errors with practical implications for programming.",
+    "judged_at": "2026-08-19T09:06:53.419749+00:00",
+    "judge_call_id": "chatcmpl-EEWY0rM3psWzvnCY8sGzPG13kLHrq",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch09-01-unrecoverable-errors-with-panic.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `panic!` macro in Rust, including its usage and implications, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:54.300117+00:00",
+    "judge_call_id": "chatcmpl-EEWY1AHPBVwjemrJ3F2uANgHcevPP",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch09-02-recoverable-errors-with-result.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to handle recoverable errors in Rust using the `Result` type, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:06:55.462413+00:00",
+    "judge_call_id": "chatcmpl-EEWY26sLXgxHyTN9uRpOE3x64qt0J",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch09-03-to-panic-or-not-to-panic.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing when to use `panic!` versus returning `Result` in Rust programming, providing substantive content that users might query about.",
+    "judged_at": "2026-08-19T09:06:56.165606+00:00",
+    "judge_call_id": "chatcmpl-EEWY3TZYqbGb0tzm3pKmbtNVd3mfR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch10-00-generics.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining generics in Rust, including definitions and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:56.934683+00:00",
+    "judge_call_id": "chatcmpl-EEWY4pkw284BjVdw9m8LKiXaecP88",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch10-01-syntax.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on generic data types in Rust, including function definitions and examples, which users might query about.",
+    "judged_at": "2026-08-19T09:06:57.816868+00:00",
+    "judge_call_id": "chatcmpl-EEWY5jMGUEw0wf7wix7sPlAlD2YnG",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch10-02-traits.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining traits in Rust, including definitions and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:58.555441+00:00",
+    "judge_call_id": "chatcmpl-EEWY6BNgqQWNWpUOAQCC376mDvhaS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch10-03-lifetime-syntax.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining lifetimes in Rust with detailed descriptions and examples, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:06:59.352559+00:00",
+    "judge_call_id": "chatcmpl-EEWY6XmBY9hKqgurLhxXOJaoh9HWS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch11-00-testing.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to write automated tests in Rust, including examples and concepts that users might ask questions about.",
+    "judged_at": "2026-08-19T09:07:00.155743+00:00",
+    "judge_call_id": "chatcmpl-EEWY7R8yxpcycugCP7iNulr8hG0cL",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch11-01-writing-tests.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to write tests in Rust, including structure and attributes of test functions, which users might query about.",
+    "judged_at": "2026-08-19T09:07:00.939888+00:00",
+    "judge_call_id": "chatcmpl-EEWY8zLz949p0gFH80syrvX50nkCy",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch11-02-running-tests.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to control test execution in Rust, including command line options and behavior, which users might query about.",
+    "judged_at": "2026-08-19T09:07:01.710104+00:00",
+    "judge_call_id": "chatcmpl-EEWY9kKF5if1Ck70PWLE3iWT2FhST",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch11-03-test-organization.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on test organization in Rust, explaining unit and integration tests with guidelines on writing them \u2014 a user might ask questions about testing practices in Rust.",
+    "judged_at": "2026-08-19T09:07:02.699277+00:00",
+    "judge_call_id": "chatcmpl-EEWYAkvVf1A2fgOIMe2neGT7NV3oW",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-00-an-io-project.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "This chapter provides a tutorial on building a command line program in Rust, detailing concepts and features relevant to the project, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:07:03.652229+00:00",
+    "judge_call_id": "chatcmpl-EEWYAorr2lIpi8WeJi1AnmJhwyclq",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-01-accepting-command-line-arguments.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on accepting command line arguments in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:07:04.563619+00:00",
+    "judge_call_id": "chatcmpl-EEWYBrDNbVxyD82AKtzxKaqgFartL",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-02-reading-a-file.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing a tutorial on reading a file in Rust, including code examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:07:05.392476+00:00",
+    "judge_call_id": "chatcmpl-EEWYCKPGwNoNaHb30RxUCTVKfgLhB",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-03-improving-error-handling-and-modularity.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page discussing refactoring techniques in Rust, addressing program structure and error handling, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:07:06.234564+00:00",
+    "judge_call_id": "chatcmpl-EEWYDUeNFwBECVa4dsJZIemz2sKHj",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-04-testing-the-librarys-functionality.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation on adding functionality with test-driven development, including steps and explanations that a user might ask questions about.",
+    "judged_at": "2026-08-19T09:07:07.936213+00:00",
+    "judge_call_id": "chatcmpl-EEWYFYFTopmiQEO2BJ99MPhbNAD8g",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-05-working-with-environment-variables.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to work with environment variables in Rust, including code examples and testing procedures.",
+    "judged_at": "2026-08-19T09:07:08.878894+00:00",
+    "judge_call_id": "chatcmpl-EEWYGxqoZYgPocEdCyM2vOwJquq2r",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/ch12-06-writing-to-stderr-instead-of-stdout.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining how to redirect errors to standard error in Rust, with examples and explanations that users might query about.",
+    "judged_at": "2026-08-19T09:07:09.745218+00:00",
+    "judge_call_id": "chatcmpl-EEWYHS0VAsSWEnqubBHM5KVF87Ibs",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/foreword.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-article",
+    "rationale_text": "Foreword discussing the evolution and significance of the Rust programming language, providing context that users might inquire about.",
+    "judged_at": "2026-08-19T09:07:10.604958+00:00",
+    "judge_call_id": "chatcmpl-EEWYHJqm2k5IBxp9D4DGDYk5VtIJk",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/print.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "The Rust Programming Language is a comprehensive guide that covers installation, usage, and features of Rust, making it a valuable resource for users seeking to learn or reference the language.",
+    "judged_at": "2026-08-19T09:07:12.452219+00:00",
+    "judge_call_id": "chatcmpl-EEWYJO8KACYbWNq7d0HMj2zPDgHVJ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/book/title-page.html": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "Title page of a book with minimal content previewing the chapters; the substantive content is in the sub-pages.",
+    "judged_at": "2026-08-19T09:07:13.174765+00:00",
+    "judge_call_id": "chatcmpl-EEWYKVqQdU3xr31UBL4ZL0Uwwm8uh",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/edition-guide": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "The Rust Edition Guide provides substantive information about Rust editions, including changes and migration guidance, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:07:14.113796+00:00",
+    "judge_call_id": "chatcmpl-EEWYLpzCgz2AwtjfyCYrcbIjVqyaP",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/stable/edition-guide/": {
+    "classification": "NON-HELPFUL",
+    "rationale_prefix": "non-helpful-empty",
+    "rationale_text": "96 words own content after chrome-strip (<100)",
+    "judged_at": "2026-08-19T09:07:14.691425+00:00",
+    "judge_call_id": "deterministic-prefilter"
+  },
+  "https://doc.rust-lang.org/std/collections/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page providing an overview of Rust's standard collection library, including descriptions and recommendations for various collection types.",
+    "judged_at": "2026-08-19T09:07:15.492630+00:00",
+    "judge_call_id": "chatcmpl-EEWYMRQiDlQuuqqwZc2GWeYdBV4xr",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/error/struct.Request.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Request struct in Rust, including data flow, methods, and trait implementations, which users might query about.",
+    "judged_at": "2026-08-19T09:07:16.993584+00:00",
+    "judge_call_id": "chatcmpl-EEWYOnZ0LJkkkyJLkFNhZsUcVG35U",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/ffi/enum.FromBytesWithNulError.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the FromBytesWithNulError enum in Rust, including examples, variants, and trait implementations that users might query about.",
+    "judged_at": "2026-08-19T09:07:18.625501+00:00",
+    "judge_call_id": "chatcmpl-EEWYQJTcYbtY5gS6fb9MIRoHpmjMp",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/ffi/struct.CStr.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the CStr struct in Rust, including methods, associated functions, and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:07:20.129404+00:00",
+    "judge_call_id": "chatcmpl-EEWYRGq6GuX5d6Ur8ZzymzyzdjOKW",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/ffi/struct.FromBytesUntilNulError.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the FromBytesUntilNulError struct, including trait implementations and method descriptions, which users might query about.",
+    "judged_at": "2026-08-19T09:07:21.676689+00:00",
+    "judge_call_id": "chatcmpl-EEWYTN3fHSozavnGdY21TPNyjPKEt",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/ffi/struct.IntoStringError.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `IntoStringError` struct in Rust, detailing its methods, implementations, and usage examples.",
+    "judged_at": "2026-08-19T09:07:23.342712+00:00",
+    "judge_call_id": "chatcmpl-EEWYU2BU2IWPUnbe7IpA3slyM1D9V",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/ffi/type.c_char.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `c_char` type in Rust, explaining its equivalence to C's char type and usage details.",
+    "judged_at": "2026-08-19T09:07:24.931780+00:00",
+    "judge_call_id": "chatcmpl-EEWYWuZ0AxA1MSPPTGtC04kc1QyEo",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/fmt/trait.Write.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Write` trait in Rust, including required methods, provided methods, and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:07:26.333029+00:00",
+    "judge_call_id": "chatcmpl-EEWYXzMYcxa6k8bvlhsEogF2ZRkVN",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page for the Rust Standard Library, providing core types, operations, and macros, which users might ask questions about.",
+    "judged_at": "2026-08-19T09:07:27.104435+00:00",
+    "judge_call_id": "chatcmpl-EEWYYz3REdf68y8TFDzoT1skzwLyS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/io/struct.Stdin.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Stdin` struct, detailing its usage, methods, and considerations, which users might query about.",
+    "judged_at": "2026-08-19T09:07:28.304132+00:00",
+    "judge_call_id": "chatcmpl-EEWYZzo8FrHfh6tsdqA1caJNMqpUs",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/iter/struct.ArrayChunks.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the ArrayChunks struct in Rust, including method descriptions, trait implementations, and usage examples.",
+    "judged_at": "2026-08-19T09:07:29.678355+00:00",
+    "judge_call_id": "chatcmpl-EEWYblP5eFTVLX5i7cetiIhRW94Ey",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/iter/struct.Fuse.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Fuse struct in Rust, including trait implementations and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:07:31.487994+00:00",
+    "judge_call_id": "chatcmpl-EEWYczx5ROFiB1hNG8wfy425ogXhx",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/iter/struct.Inspect.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Inspect struct in Rust, detailing its implementations, methods, and usage examples.",
+    "judged_at": "2026-08-19T09:07:33.290877+00:00",
+    "judge_call_id": "chatcmpl-EEWYeM4b0fOkETHNZDiqIXgh5aVIr",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/iter/trait.Step.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Step trait in Rust, detailing required and provided methods, which users might query about.",
+    "judged_at": "2026-08-19T09:07:34.831622+00:00",
+    "judge_call_id": "chatcmpl-EEWYgSgJnvpRVQY1raGBdOT8hdfY6",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/iter/trait.TrustedLen.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the TrustedLen trait in Rust, detailing its purpose, implementation, and safety considerations, which users might query about.",
+    "judged_at": "2026-08-19T09:07:36.614051+00:00",
+    "judge_call_id": "chatcmpl-EEWYhSyUlcHMHECVC4lEGMWTha1ht",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/macro.dbg.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `dbg` macro in Rust, including usage examples and detailed explanations of its functionality.",
+    "judged_at": "2026-08-19T09:07:37.505297+00:00",
+    "judge_call_id": "chatcmpl-EEWYiZIuhd0i6bj4xL2Tjy73cC4DF",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/macro.println.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `println` macro, including syntax, usage examples, and performance considerations.",
+    "judged_at": "2026-08-19T09:07:38.675363+00:00",
+    "judge_call_id": "chatcmpl-EEWYjrObgnPqhuys9008qYY1cnS9S",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/net/enum.IpAddr.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `IpAddr` enum, including its variants and usage examples, which users might query about.",
+    "judged_at": "2026-08-19T09:07:39.587040+00:00",
+    "judge_call_id": "chatcmpl-EEWYk2t3wkrIsuz0x4DtORlGx8rHd",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/ops/enum.Bound.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Bound` enum in Rust, including examples, variants, and method implementations that users might query about.",
+    "judged_at": "2026-08-19T09:07:41.199279+00:00",
+    "judge_call_id": "chatcmpl-EEWYmFgQsNbFM7loKyTg9tmFxWWw4",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/ops/struct.RangeFull.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `RangeFull` struct in Rust, including examples and trait implementations, which users might query about.",
+    "judged_at": "2026-08-19T09:07:42.671258+00:00",
+    "judge_call_id": "chatcmpl-EEWYnsMRZJhiV4ck0DlwuJZicl6Dk",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/ops/trait.IntoBounds.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the IntoBounds trait in Rust, including method signatures, examples, and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:07:44.462416+00:00",
+    "judge_call_id": "chatcmpl-EEWYpJZBBUO6elBNV2yaNL5i2F0XR",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/option/enum.Option.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Option` enum in Rust, including its variants and usage examples, which users might query about.",
+    "judged_at": "2026-08-19T09:07:45.342536+00:00",
+    "judge_call_id": "chatcmpl-EEWYqdptpNmJGQklpnCuFSCrQnZuw",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/prelude/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the Rust prelude, including its purpose and usage, which a user might ask questions about.",
+    "judged_at": "2026-08-19T09:07:46.182311+00:00",
+    "judge_call_id": "chatcmpl-EEWYrgpAeBFPWv8bPYbZHSF9S2lj2",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/primitive.str.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Reference documentation for the `str` type in Rust, including basic usage examples and explanations, which users might query about.",
+    "judged_at": "2026-08-19T09:07:47.067737+00:00",
+    "judge_call_id": "chatcmpl-EEWYshuNExNxAT5rQs8LZqsbfVCSB",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/process/trait.Termination.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Termination` trait in Rust, including method definitions and usage details that users might query about.",
+    "judged_at": "2026-08-19T09:07:47.867720+00:00",
+    "judge_call_id": "chatcmpl-EEWYtGvRzXMHrAoCfJ0Gl7bmSb0NN",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/random/struct.DefaultRandomSource.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the DefaultRandomSource struct in Rust, detailing its purpose, implementations, and underlying sources, which users might query about.",
+    "judged_at": "2026-08-19T09:07:49.557047+00:00",
+    "judge_call_id": "chatcmpl-EEWYuw0lfAFLWyypFMkMWgYEncUps",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/random/trait.Distribution.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Distribution trait in Rust, including method signatures and implementation details that users might query about.",
+    "judged_at": "2026-08-19T09:07:51.372358+00:00",
+    "judge_call_id": "chatcmpl-EEWYwoX7vs39m3AJBg0SWs58f3YJl",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/random/trait.RandomSource.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the RandomSource trait in Rust, detailing required methods and implementation notes that users might query about.",
+    "judged_at": "2026-08-19T09:07:52.952694+00:00",
+    "judge_call_id": "chatcmpl-EEWYyMgPJJsQG0mLRIjqoMBwgUIUg",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/range/struct.Range.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Range struct in Rust, including fields, methods, and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:07:54.221653+00:00",
+    "judge_call_id": "chatcmpl-EEWYzpHi9XpZme9RowCDuyraCvdyE",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/range/struct.RangeIter.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the RangeIter struct in Rust, including method descriptions, trait implementations, and usage examples.",
+    "judged_at": "2026-08-19T09:07:55.712668+00:00",
+    "judge_call_id": "chatcmpl-EEWZ0Uw9V9CLJUcAAZxJ9THLEDeFb",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/result/enum.Result.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Result` enum in Rust, including its variants and usage examples, which users might query about.",
+    "judged_at": "2026-08-19T09:07:56.674316+00:00",
+    "judge_call_id": "chatcmpl-EEWZ2sNUUe31BpK5PVUCNSfJ1shYh",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/str/struct.RSplit.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the RSplit struct in Rust, including method descriptions, trait implementations, and usage examples.",
+    "judged_at": "2026-08-19T09:07:58.336041+00:00",
+    "judge_call_id": "chatcmpl-EEWZ3Euu8zvQMTCqNGBxwY4EBK467",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/str/struct.RSplitN.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the RSplitN struct in Rust, including method descriptions, trait implementations, and usage examples.",
+    "judged_at": "2026-08-19T09:08:00.091757+00:00",
+    "judge_call_id": "chatcmpl-EEWZ5SaVFcPKbrliG4guYduVRFUlJ",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/str/struct.RSplitTerminator.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the RSplitTerminator struct in Rust, including method descriptions, trait implementations, and usage examples.",
+    "judged_at": "2026-08-19T09:08:01.889617+00:00",
+    "judge_call_id": "chatcmpl-EEWZ7mVM6xgX0I47vR2fLJzrU9QO1",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/str/struct.SplitN.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the SplitN struct in Rust, including method descriptions, trait implementations, and usage examples.",
+    "judged_at": "2026-08-19T09:08:03.622162+00:00",
+    "judge_call_id": "chatcmpl-EEWZ8Rem7MOQMnZkc82QTYCoQRJnS",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/str/struct.SplitTerminator.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the SplitTerminator struct in Rust, including method descriptions, trait implementations, and usage examples.",
+    "judged_at": "2026-08-19T09:08:05.089035+00:00",
+    "judge_call_id": "chatcmpl-EEWZA8Kpina6WIM1pc1Cz9gg0WEY5",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/string/struct.String.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `String` struct in Rust, including its description, examples, and related methods, which users might query about.",
+    "judged_at": "2026-08-19T09:08:06.063216+00:00",
+    "judge_call_id": "chatcmpl-EEWZBasC9qUuUs1YCXtpvbPS6cw7Q",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/sync/atomic/index.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page detailing atomic types in Rust, including definitions and links to specific atomic structures, which users might query about.",
+    "judged_at": "2026-08-19T09:08:06.823720+00:00",
+    "judge_call_id": "chatcmpl-EEWZCz8RpPNIRMZlfIQKxoRF7Dsa7",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/thread/struct.Builder.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the `Builder` struct in Rust, detailing its methods and usage examples, which users might query about.",
+    "judged_at": "2026-08-19T09:08:07.714543+00:00",
+    "judge_call_id": "chatcmpl-EEWZDlf4DmVRphe2bI423dAoPIg60",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/std/vec/struct.Vec.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "API reference documentation for the Vec struct in Rust, including methods and usage examples that users might query about.",
+    "judged_at": "2026-08-19T09:08:09.016215+00:00",
+    "judge_call_id": "chatcmpl-EEWZDdXCohCvTuiOGJbv3e7Yes5KU",
+    "parse_warning": null
+  },
+  "https://doc.rust-lang.org/unstable-book/library-features/test.html": {
+    "classification": "HELPFUL",
+    "rationale_prefix": "helpful-docs",
+    "rationale_text": "Documentation page explaining the `test` crate in Rust with code examples and usage details, which users might query about.",
+    "judged_at": "2026-08-19T09:08:09.804283+00:00",
+    "judge_call_id": "chatcmpl-EEWZFrNGhhkSzHGtQTT6L0CCtrpkl",
+    "parse_warning": null
+  }
+}

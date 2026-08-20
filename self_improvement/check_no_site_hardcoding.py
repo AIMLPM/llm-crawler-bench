@@ -37,6 +37,16 @@ SCAN_DIRS = [ROOT / "runners"]
 SCAN_FILES = [ROOT / "crawlee_worker.py"]
 
 IGNORED_SUFFIXES = {".pyc", ".log", ".md", ".json", ".lock"}
+
+# The judge prompt lives in a .md spec, but its fenced "Block 1" IS the text
+# sent to the model — so it needs the same no-hardcoded-hostname guarantee as
+# runner code (the pool ROTATES; naming a site teaches the judge about hosts
+# that may not appear next cycle). Only the ACTIVE prompt is checked;
+# superseded versions are retained verbatim for audit diff and are exempt.
+JUDGE_TOOL = ROOT / "tools" / "judge_helpful_pages.py"
+_ACTIVE_PROMPT_RE = re.compile(
+    r'^PROMPT_PATH\s*=\s*REPO_ROOT\s*/\s*"specs"\s*/\s*"([^"]+)"', re.M)
+_BLOCK1_RE = re.compile(r"### Block 1 .*?```\s*\n(.*?)\n```", re.DOTALL)
 IGNORED_DIRS = {"__pycache__", "node_modules", ".git", "dist", "build"}
 
 
@@ -57,6 +67,25 @@ def _candidate_files() -> list[Path]:
         if p.is_file():
             files.append(p)
     return files
+
+
+def _active_prompt_block() -> tuple[Path, int, str] | None:
+    """(path, first_line_of_block, block_text) for the prompt currently wired
+    into the judge tool, or None if it cannot be resolved."""
+    if not JUDGE_TOOL.is_file():
+        return None
+    m = _ACTIVE_PROMPT_RE.search(JUDGE_TOOL.read_text(encoding="utf-8", errors="ignore"))
+    if not m:
+        return None
+    spec = ROOT / "specs" / m.group(1)
+    if not spec.is_file():
+        return None
+    text = spec.read_text(encoding="utf-8", errors="ignore")
+    bm = _BLOCK1_RE.search(text)
+    if not bm:
+        return None
+    start_line = text[: bm.start(1)].count("\n") + 1
+    return spec, start_line, bm.group(1)
 
 
 def _strip_comments_and_docstrings(text: str) -> str:
@@ -120,6 +149,16 @@ def main() -> int:
                 if pat.search(line):
                     offenses.append((f.relative_to(ROOT), lineno, host, line.strip()))
 
+    prompt_scanned = "none"
+    active = _active_prompt_block()
+    if active:
+        spec, start_line, block = active
+        prompt_scanned = spec.name
+        for i, line in enumerate(block.splitlines(), start_line):
+            for host, pat in patterns.items():
+                if pat.search(line):
+                    offenses.append((spec.relative_to(ROOT), i, host, line.strip()))
+
     if offenses:
         print(f"FAIL: {len(offenses)} hardcoded pool hostname reference(s) found:\n")
         for path, lineno, host, snippet in offenses:
@@ -129,7 +168,8 @@ def main() -> int:
         print("move it out of runners/ and tools/, or add a narrow allowlist here.")
         return 1
 
-    print(f"PASS: no pool hostnames hardcoded in {len(_candidate_files())} scanned files.")
+    print(f"PASS: no pool hostnames hardcoded in {len(_candidate_files())} scanned files")
+    print(f"      + active judge prompt block ({prompt_scanned}).")
     print(f"      ({len(hostnames)} hostnames checked from pool {pool.version})")
     return 0
 
