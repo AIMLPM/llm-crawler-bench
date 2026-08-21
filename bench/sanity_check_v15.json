@@ -1,0 +1,313 @@
+{
+  "started_at": "2026-05-13T16:00:25.012400+00:00",
+  "site": "rust-book",
+  "n_sampled": 10,
+  "n_judged": 10,
+  "haiku_model_version": "claude-haiku-4-5-20251001",
+  "gpt4omini_model_version": "gpt-4o-mini-2024-07-18",
+  "judge_prompt_version": "specs/v15-judge-prompt-v1.md (sha256: 3794734638d3e3f1...)",
+  "inter_model_agreement_pct": 100.0,
+  "haiku_parse_warnings": 0,
+  "gpt4omini_parse_warnings": 0,
+  "haiku_avg_tokens": {
+    "input": 1594,
+    "output": 41
+  },
+  "gpt4omini_avg_tokens": {
+    "input": 1416,
+    "output": 30
+  },
+  "cost_per_page": {
+    "haiku": 0.001438,
+    "gpt4omini": 0.00023,
+    "combined": 0.001669
+  },
+  "projected_full_pool_usd": 88.97,
+  "universe_size_assumed": 53316,
+  "haiku_pricing_assumed_per_million": {
+    "input": 0.8,
+    "output": 4.0
+  },
+  "gpt4omini_pricing_assumed_per_million": {
+    "input": 0.15,
+    "output": 0.6
+  },
+  "gates": {
+    "format_compliance": "PASS",
+    "cost_projection": "FAIL"
+  },
+  "budget_cap_usd": 30,
+  "escalation_threshold_usd": 36,
+  "results": [
+    {
+      "url": "https://doc.rust-lang.org/stable/book/ch02-00-guessing-game-tutorial.html",
+      "title": "Programming a Guessing Game - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-howto",
+        "rationale_text": "Step-by-step tutorial walking through building a Rust guessing game program, introducing core language concepts with practical code examples and explanations.",
+        "raw_response": "HELPFUL\nhelpful-howto: Step-by-step tutorial walking through building a Rust guessing game program, introducing core language concepts with practical code examples and explanations.",
+        "judged_at": "2026-05-13T15:59:50.824942+00:00",
+        "judge_call_id": "msg_01KfXgLWsdpsegovNsp9g4Pg",
+        "parse_warning": null,
+        "input_tokens": 1611,
+        "output_tokens": 40
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Tutorial on programming a guessing game in Rust, covering project setup and fundamental concepts, which users might ask questions about.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Tutorial on programming a guessing game in Rust, covering project setup and fundamental concepts, which users might ask questions about.",
+        "judged_at": "2026-05-13T15:59:52.433743+00:00",
+        "judge_call_id": "chatcmpl-Df6HupQ7YEvl1vauWTblQkHitKCFv",
+        "parse_warning": null,
+        "input_tokens": 1436,
+        "output_tokens": 31
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/book/ch21-00-final-project-a-web-server.html",
+      "title": "Final Project: Building a Multithreaded Web Server - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-howto",
+        "rationale_text": "Tutorial chapter providing step-by-step instructions for building a multithreaded web server in Rust, demonstrating practical programming concepts with a concrete project.",
+        "raw_response": "HELPFUL\nhelpful-howto: Tutorial chapter providing step-by-step instructions for building a multithreaded web server in Rust, demonstrating practical programming concepts with a concrete project.",
+        "judged_at": "2026-05-13T15:59:53.432140+00:00",
+        "judge_call_id": "msg_01Lh37YjRHgzqpvVb6pWB4ET",
+        "parse_warning": null,
+        "input_tokens": 1597,
+        "output_tokens": 43
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation for building a multithreaded web server in Rust, covering key concepts and providing a step-by-step guide for implementation.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Documentation for building a multithreaded web server in Rust, covering key concepts and providing a step-by-step guide for implementation.",
+        "judged_at": "2026-05-13T15:59:55.291384+00:00",
+        "judge_call_id": "chatcmpl-Df6HxNxcFk8qFXUsIiHuRG7FSwI0p",
+        "parse_warning": null,
+        "input_tokens": 1431,
+        "output_tokens": 34
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/book/ch15-04-rc.html",
+      "title": "Rc<T>, the Reference Counted Smart Pointer - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Tutorial documentation page explaining the Rc<T> reference-counted smart pointer in Rust with conceptual explanations, use cases, and analogies that users would ask questions about.",
+        "raw_response": "HELPFUL\nhelpful-docs: Tutorial documentation page explaining the Rc<T> reference-counted smart pointer in Rust with conceptual explanations, use cases, and analogies that users would ask questions about.",
+        "judged_at": "2026-05-13T15:59:56.797005+00:00",
+        "judge_call_id": "msg_01Uofq6wLzw9Dk7iVKRnc3Lv",
+        "parse_warning": null,
+        "input_tokens": 1559,
+        "output_tokens": 47
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation page explaining the `Rc<T>` type in Rust, including its purpose and usage, which users might have questions about.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Documentation page explaining the `Rc<T>` type in Rust, including its purpose and usage, which users might have questions about.",
+        "judged_at": "2026-05-13T15:59:58.426752+00:00",
+        "judge_call_id": "chatcmpl-Df6I1XAECRkHfaNTG2CxB8o0ri2ul",
+        "parse_warning": null,
+        "input_tokens": 1401,
+        "output_tokens": 33
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/book/ch18-01-what-is-oo.html",
+      "title": "Characteristics of Object-Oriented Languages - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Chapter from The Rust Programming Language book explaining object-oriented characteristics and how Rust supports them\u2014substantive educational content users would ask questions about.",
+        "raw_response": "HELPFUL\nhelpful-docs: Chapter from The Rust Programming Language book explaining object-oriented characteristics and how Rust supports them\u2014substantive educational content users would ask questions about.",
+        "judged_at": "2026-05-13T15:59:59.448269+00:00",
+        "judge_call_id": "msg_014x5ZtJ2bzGNq8KCsPU639n",
+        "parse_warning": null,
+        "input_tokens": 1568,
+        "output_tokens": 40
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation page discussing the characteristics of object-oriented languages in Rust, providing substantive content that users might inquire about.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Documentation page discussing the characteristics of object-oriented languages in Rust, providing substantive content that users might inquire about.",
+        "judged_at": "2026-05-13T16:00:01.237821+00:00",
+        "judge_call_id": "chatcmpl-Df6I31miXAR9vuudaaWfqZtnLJDWZ",
+        "parse_warning": null,
+        "input_tokens": 1395,
+        "output_tokens": 29
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/book/ch15-01-box.html",
+      "title": "Using Box<T> to Point to Data on the Heap - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Tutorial chapter from The Rust Programming Language book explaining the Box<T> smart pointer with use cases, concepts, and references to related sections \u2014 substantive educational content users would ask questions about.",
+        "raw_response": "HELPFUL\nhelpful-docs: Tutorial chapter from The Rust Programming Language book explaining the Box<T> smart pointer with use cases, concepts, and references to related sections \u2014 substantive educational content users would ask questions about.",
+        "judged_at": "2026-05-13T16:00:02.660777+00:00",
+        "judge_call_id": "msg_01Drjho6w2JCzP7iyzZDSwo4",
+        "parse_warning": null,
+        "input_tokens": 1572,
+        "output_tokens": 49
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation page explaining the use of Box<T> in Rust for heap data management, which users might have questions about.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Documentation page explaining the use of Box<T> in Rust for heap data management, which users might have questions about.",
+        "judged_at": "2026-05-13T16:00:04.962128+00:00",
+        "judge_call_id": "chatcmpl-Df6I7HOLREcZA3LFW2F6s3zJZBTSQ",
+        "parse_warning": null,
+        "input_tokens": 1416,
+        "output_tokens": 31
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html",
+      "title": "Unrecoverable Errors with panic! - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation page from The Rust Programming Language book explaining the panic! macro, error handling mechanisms, and stack unwinding behavior with technical details and examples.",
+        "raw_response": "HELPFUL\nhelpful-docs: Documentation page from The Rust Programming Language book explaining the panic! macro, error handling mechanisms, and stack unwinding behavior with technical details and examples.",
+        "judged_at": "2026-05-13T16:00:06.077024+00:00",
+        "judge_call_id": "msg_01C5Yb8EydLY4w3uPNhrJcaP",
+        "parse_warning": null,
+        "input_tokens": 1601,
+        "output_tokens": 40
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation page explaining the `panic!` macro in Rust, including its usage and implications, which users might have questions about.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Documentation page explaining the `panic!` macro in Rust, including its usage and implications, which users might have questions about.",
+        "judged_at": "2026-05-13T16:00:07.663793+00:00",
+        "judge_call_id": "chatcmpl-Df6IAt4BfLnilA5wx0gDzUPnUg4wD",
+        "parse_warning": null,
+        "input_tokens": 1422,
+        "output_tokens": 33
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/std/sync/atomic/index.html",
+      "title": "std::sync::atomic - Rust",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "API reference documentation for Rust's atomic types module, explaining atomic primitives, their purpose in concurrent programming, and linking to detailed type documentation that users would query about.",
+        "raw_response": "HELPFUL\nhelpful-docs: API reference documentation for Rust's atomic types module, explaining atomic primitives, their purpose in concurrent programming, and linking to detailed type documentation that users would query about.",
+        "judged_at": "2026-05-13T16:00:09.821016+00:00",
+        "judge_call_id": "msg_01Q12fdAVPwQsEwPEUmDPGJW",
+        "parse_warning": null,
+        "input_tokens": 1700,
+        "output_tokens": 44
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "API reference documentation for atomic types in Rust, detailing their usage and providing links to specific types and operations.",
+        "raw_response": "HELPFUL  \nhelpful-docs: API reference documentation for atomic types in Rust, detailing their usage and providing links to specific types and operations.",
+        "judged_at": "2026-05-13T16:00:12.028463+00:00",
+        "judge_call_id": "chatcmpl-Df6IDm5Ymh5c7z8UnRRYpXvlucC3U",
+        "parse_warning": null,
+        "input_tokens": 1444,
+        "output_tokens": 29
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/stable/book/ch12-06-writing-to-stderr-instead-of-stdout.html",
+      "title": "Redirecting Errors to Standard Error - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Tutorial chapter from The Rust Programming Language book explaining how to redirect errors to standard error with explanations and practical examples.",
+        "raw_response": "HELPFUL\nhelpful-docs: Tutorial chapter from The Rust Programming Language book explaining how to redirect errors to standard error with explanations and practical examples.",
+        "judged_at": "2026-05-13T16:00:13.001858+00:00",
+        "judge_call_id": "msg_01RsNRSQRTc7bPADd1jGPja3",
+        "parse_warning": null,
+        "input_tokens": 1551,
+        "output_tokens": 34
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation page explaining how to redirect error messages to standard error in Rust, which users might have questions about.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Documentation page explaining how to redirect error messages to standard error in Rust, which users might have questions about.",
+        "judged_at": "2026-05-13T16:00:15.643533+00:00",
+        "judge_call_id": "chatcmpl-Df6IHGWdAzpa19b9CbLzyOgNENhgC",
+        "parse_warning": null,
+        "input_tokens": 1393,
+        "output_tokens": 29
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/stable/book/ch03-04-comments.html",
+      "title": "Comments - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Tutorial documentation page explaining Rust comment syntax with code examples and best practices that users would reference when learning the language.",
+        "raw_response": "HELPFUL\nhelpful-docs: Tutorial documentation page explaining Rust comment syntax with code examples and best practices that users would reference when learning the language.",
+        "judged_at": "2026-05-13T16:00:16.745459+00:00",
+        "judge_call_id": "msg_01DWRLhzgTWqW1risDjwMKm9",
+        "parse_warning": null,
+        "input_tokens": 1618,
+        "output_tokens": 33
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation page explaining how to use comments in Rust programming, including examples and best practices.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Documentation page explaining how to use comments in Rust programming, including examples and best practices.",
+        "judged_at": "2026-05-13T16:00:20.576663+00:00",
+        "judge_call_id": "chatcmpl-Df6ILUSzssQ37sRwpXLLxPx9pzYks",
+        "parse_warning": null,
+        "input_tokens": 1429,
+        "output_tokens": 25
+      },
+      "agreement": true
+    },
+    {
+      "url": "https://doc.rust-lang.org/stable/book/ch10-03-lifetime-syntax.html",
+      "title": "Validating References with Lifetimes - The Rust Programming Language",
+      "haiku": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Tutorial chapter from The Rust Programming Language book explaining lifetime syntax, concepts, and validation of references with substantive explanatory content and examples.",
+        "raw_response": "HELPFUL\nhelpful-docs: Tutorial chapter from The Rust Programming Language book explaining lifetime syntax, concepts, and validation of references with substantive explanatory content and examples.",
+        "judged_at": "2026-05-13T16:00:21.871240+00:00",
+        "judge_call_id": "msg_01Lc55bfgzjmQns1GeB6uTno",
+        "parse_warning": null,
+        "input_tokens": 1564,
+        "output_tokens": 38
+      },
+      "gpt4omini": {
+        "classification": "HELPFUL",
+        "rationale_prefix": "helpful-docs",
+        "rationale_text": "Documentation page explaining lifetimes in Rust with examples and concepts that users might inquire about.",
+        "raw_response": "HELPFUL  \nhelpful-docs: Documentation page explaining lifetimes in Rust with examples and concepts that users might inquire about.",
+        "judged_at": "2026-05-13T16:00:25.011475+00:00",
+        "judge_call_id": "chatcmpl-Df6IQa21NjH36TrrGzvHBDO61UukC",
+        "parse_warning": null,
+        "input_tokens": 1393,
+        "output_tokens": 25
+      },
+      "agreement": true
+    }
+  ]
+}

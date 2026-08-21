@@ -15,9 +15,15 @@ dependencies = [
     "python-dotenv",
     "psutil",
     "openai",
+    "anthropic",
     "numpy",
     "rank_bm25",
     "sentence-transformers",
+    # Hand-judging web UI (tools/hand_judge_web.py)
+    "flask",
+    "trafilatura",
+    # Deterministic mirror-page pre-classifier (tools/judge_helpful_pages.py)
+    "langdetect",
 ]
 
 [project.optional-dependencies]

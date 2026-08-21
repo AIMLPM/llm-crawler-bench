@@ -1,0 +1,1010 @@
+{
+  "started_at": "2026-05-13T21:07:16.997031+00:00",
+  "pilot_sites": [
+    "rust-book"
+  ],
+  "primary_judge_model": "claude-sonnet-4-5-20250929",
+  "gpt4omini_model_version": "gpt-4o-mini-2024-07-18",
+  "judge_prompt_version": "specs/v15-judge-prompt-v3.md (sha256: 0ebba1c0efde98fd...)",
+  "concurrency": 6,
+  "cost_cap_usd": 2.0,
+  "aborted_mid_run": false,
+  "wall_clock_seconds": 217.9,
+  "primary": {
+    "calls": 303,
+    "cache_writes": 6,
+    "cache_hits": 297,
+    "cache_hit_rate_pct": 98.02,
+    "input_tokens_total_noncached": 187658,
+    "output_tokens_total": 10826,
+    "cache_creation_tokens_total": 8076,
+    "cache_read_tokens_total": 399762,
+    "cost_total_usd": 0.8756,
+    "cost_per_page_avg_usd": 0.00289,
+    "cost_per_page_steady_state_usd": 0.002875
+  },
+  "gpt4omini": {
+    "calls": 303,
+    "input_tokens_total": 532898,
+    "output_tokens_total": 9644,
+    "cached_input_tokens_total": 327680,
+    "cost_total_usd": 0.0611,
+    "cost_per_page_avg_usd": 0.000202
+  },
+  "combined": {
+    "cost_total_usd": 0.9367,
+    "cost_per_page_avg_usd": 0.003091
+  },
+  "inter_model_agreement_pct": 99.01,
+  "comparisons_with_both_classified": 303,
+  "projection": {
+    "full_pool_universe_size": 33316,
+    "projected_full_pool_usd": 103.0,
+    "escalation_threshold_usd": 50.0,
+    "expected_option_e_usd": 42.0,
+    "verdict": "FAIL_ESCALATE"
+  },
+  "sample_per_call_records": [
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/appendix-04-useful-development-tools.html",
+      "primary": {
+        "input_tokens": 628,
+        "output_tokens": 39,
+        "cache_creation_input_tokens": 1346,
+        "cache_read_input_tokens": 0,
+        "per_call_cost_usd": 0.0075165,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1759,
+        "output_tokens": 30,
+        "cached_input_tokens": 0,
+        "per_call_cost_usd": 0.00028184999999999994,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/appendix-00.html",
+      "primary": {
+        "input_tokens": 361,
+        "output_tokens": 43,
+        "cache_creation_input_tokens": 1346,
+        "cache_read_input_tokens": 0,
+        "per_call_cost_usd": 0.0067755,
+        "classification": "NON-HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1527,
+        "output_tokens": 29,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.00016005,
+        "classification": "NON-HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/",
+      "primary": {
+        "input_tokens": 607,
+        "output_tokens": 49,
+        "cache_creation_input_tokens": 1346,
+        "cache_read_input_tokens": 0,
+        "per_call_cost_usd": 0.0076035,
+        "classification": "NON-HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1736,
+        "output_tokens": 30,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.000192,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/appendix-01-keywords.html",
+      "primary": {
+        "input_tokens": 652,
+        "output_tokens": 27,
+        "cache_creation_input_tokens": 1346,
+        "cache_read_input_tokens": 0,
+        "per_call_cost_usd": 0.0074085,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1812,
+        "output_tokens": 29,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.0002028,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/appendix-02-operators.html",
+      "primary": {
+        "input_tokens": 773,
+        "output_tokens": 34,
+        "cache_creation_input_tokens": 1346,
+        "cache_read_input_tokens": 0,
+        "per_call_cost_usd": 0.0078765,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1891,
+        "output_tokens": 38,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00022964999999999997,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/appendix-03-derivable-traits.html",
+      "primary": {
+        "input_tokens": 568,
+        "output_tokens": 33,
+        "cache_creation_input_tokens": 1346,
+        "cache_read_input_tokens": 0,
+        "per_call_cost_usd": 0.0072465,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1739,
+        "output_tokens": 34,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020445,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/appendix-07-nightly-rust.html",
+      "primary": {
+        "input_tokens": 651,
+        "output_tokens": 37,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0029118,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1784,
+        "output_tokens": 27,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.00019739999999999997,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/appendix-05-editions.html",
+      "primary": {
+        "input_tokens": 612,
+        "output_tokens": 34,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027498,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1759,
+        "output_tokens": 31,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020565,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch00-00-introduction.html",
+      "primary": {
+        "input_tokens": 575,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0026088,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1722,
+        "output_tokens": 32,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002007,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/appendix-06-translation.html",
+      "primary": {
+        "input_tokens": 317,
+        "output_tokens": 42,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0019848,
+        "classification": "NON-HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1494,
+        "output_tokens": 33,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.0001575,
+        "classification": "NON-HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+      "primary": {
+        "input_tokens": 410,
+        "output_tokens": 37,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0021888000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1574,
+        "output_tokens": 28,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00017610000000000002,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch01-01-installation.html",
+      "primary": {
+        "input_tokens": 590,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0026538,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1739,
+        "output_tokens": 26,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00019965,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch01-02-hello-world.html",
+      "primary": {
+        "input_tokens": 626,
+        "output_tokens": 38,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028518000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1769,
+        "output_tokens": 32,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020775,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch01-03-hello-cargo.html",
+      "primary": {
+        "input_tokens": 601,
+        "output_tokens": 37,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027618,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1750,
+        "output_tokens": 39,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002091,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html",
+      "primary": {
+        "input_tokens": 614,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027258,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1759,
+        "output_tokens": 30,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020505000000000002,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html",
+      "primary": {
+        "input_tokens": 684,
+        "output_tokens": 31,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0029208000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1808,
+        "output_tokens": 29,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021179999999999997,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html",
+      "primary": {
+        "input_tokens": 646,
+        "output_tokens": 38,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0029118,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1787,
+        "output_tokens": 34,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021165,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch03-02-data-types.html",
+      "primary": {
+        "input_tokens": 671,
+        "output_tokens": 29,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028518000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1806,
+        "output_tokens": 29,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002115,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch03-03-how-functions-work.html",
+      "primary": {
+        "input_tokens": 598,
+        "output_tokens": 30,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0026478,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1742,
+        "output_tokens": 28,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020130000000000001,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch03-04-comments.html",
+      "primary": {
+        "input_tokens": 661,
+        "output_tokens": 29,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028218,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1783,
+        "output_tokens": 31,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020924999999999996,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html",
+      "primary": {
+        "input_tokens": 432,
+        "output_tokens": 30,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0021498000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1584,
+        "output_tokens": 29,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00017820000000000002,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html",
+      "primary": {
+        "input_tokens": 572,
+        "output_tokens": 31,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0025848000000000004,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1735,
+        "output_tokens": 33,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020325,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch03-05-control-flow.html",
+      "primary": {
+        "input_tokens": 617,
+        "output_tokens": 37,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028098000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1763,
+        "output_tokens": 33,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020745,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html",
+      "primary": {
+        "input_tokens": 630,
+        "output_tokens": 31,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027588,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1783,
+        "output_tokens": 26,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020624999999999997,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch05-01-defining-structs.html",
+      "primary": {
+        "input_tokens": 648,
+        "output_tokens": 35,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028728,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1792,
+        "output_tokens": 31,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002106,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch05-00-structs.html",
+      "primary": {
+        "input_tokens": 534,
+        "output_tokens": 36,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0025458,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1686,
+        "output_tokens": 41,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002007,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch05-03-method-syntax.html",
+      "primary": {
+        "input_tokens": 671,
+        "output_tokens": 29,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028518000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1799,
+        "output_tokens": 32,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021225,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch05-02-example-structs.html",
+      "primary": {
+        "input_tokens": 676,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0029118,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1806,
+        "output_tokens": 31,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002127,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch06-00-enums.html",
+      "primary": {
+        "input_tokens": 506,
+        "output_tokens": 35,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0024468000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1654,
+        "output_tokens": 42,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0001965,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch04-03-slices.html",
+      "primary": {
+        "input_tokens": 645,
+        "output_tokens": 34,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028488000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1785,
+        "output_tokens": 32,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021014999999999999,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html",
+      "primary": {
+        "input_tokens": 600,
+        "output_tokens": 33,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0026988000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1761,
+        "output_tokens": 30,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020535,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch06-02-match.html",
+      "primary": {
+        "input_tokens": 646,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028218,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1782,
+        "output_tokens": 32,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002097,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch06-03-if-let.html",
+      "primary": {
+        "input_tokens": 693,
+        "output_tokens": 35,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0030078,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1821,
+        "output_tokens": 32,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021554999999999998,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
+      "primary": {
+        "input_tokens": 580,
+        "output_tokens": 37,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0026988000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1730,
+        "output_tokens": 33,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002025,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch07-01-packages-and-crates.html",
+      "primary": {
+        "input_tokens": 633,
+        "output_tokens": 29,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027378000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1773,
+        "output_tokens": 26,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020474999999999996,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html",
+      "primary": {
+        "input_tokens": 654,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028458000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1793,
+        "output_tokens": 31,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.00020114999999999998,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html",
+      "primary": {
+        "input_tokens": 688,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0029478,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1805,
+        "output_tokens": 27,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021014999999999999,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html",
+      "primary": {
+        "input_tokens": 711,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0030168,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1819,
+        "output_tokens": 33,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021585000000000002,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html",
+      "primary": {
+        "input_tokens": 696,
+        "output_tokens": 38,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0030618000000000004,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1810,
+        "output_tokens": 31,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021329999999999998,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch08-00-common-collections.html",
+      "primary": {
+        "input_tokens": 588,
+        "output_tokens": 38,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027378000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1749,
+        "output_tokens": 32,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020475,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch08-03-hash-maps.html",
+      "primary": {
+        "input_tokens": 640,
+        "output_tokens": 35,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028488000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1807,
+        "output_tokens": 31,
+        "cached_input_tokens": 0,
+        "per_call_cost_usd": 0.00028965,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch08-01-vectors.html",
+      "primary": {
+        "input_tokens": 666,
+        "output_tokens": 32,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028818000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1816,
+        "output_tokens": 32,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002148,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch09-00-error-handling.html",
+      "primary": {
+        "input_tokens": 590,
+        "output_tokens": 43,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028188,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1742,
+        "output_tokens": 32,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.00019409999999999997,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html",
+      "primary": {
+        "input_tokens": 640,
+        "output_tokens": 36,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028638,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1777,
+        "output_tokens": 32,
+        "cached_input_tokens": 0,
+        "per_call_cost_usd": 0.00028575,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch08-02-strings.html",
+      "primary": {
+        "input_tokens": 587,
+        "output_tokens": 37,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027198,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1751,
+        "output_tokens": 31,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020444999999999998,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html",
+      "primary": {
+        "input_tokens": 651,
+        "output_tokens": 34,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028668,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1787,
+        "output_tokens": 32,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.00020084999999999998,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch10-00-generics.html",
+      "primary": {
+        "input_tokens": 591,
+        "output_tokens": 39,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027618,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1750,
+        "output_tokens": 29,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.0002031,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch10-02-traits.html",
+      "primary": {
+        "input_tokens": 602,
+        "output_tokens": 37,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027648,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1757,
+        "output_tokens": 26,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00020234999999999999,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch10-01-syntax.html",
+      "primary": {
+        "input_tokens": 653,
+        "output_tokens": 30,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0028128000000000003,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1780,
+        "output_tokens": 29,
+        "cached_input_tokens": 1152,
+        "per_call_cost_usd": 0.000198,
+        "classification": "HELPFUL"
+      }
+    },
+    {
+      "site": "rust-book",
+      "url": "https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html",
+      "primary": {
+        "input_tokens": 623,
+        "output_tokens": 35,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1346,
+        "per_call_cost_usd": 0.0027978,
+        "classification": "HELPFUL"
+      },
+      "gpt4omini": {
+        "input_tokens": 1779,
+        "output_tokens": 45,
+        "cached_input_tokens": 1024,
+        "per_call_cost_usd": 0.00021705000000000002,
+        "classification": "HELPFUL"
+      }
+    }
+  ],
+  "anthropic_sonnet45_pricing_per_million": {
+    "input": 3.0,
+    "output": 15.0,
+    "cache_creation_5m": 3.75,
+    "cache_read": 0.3
+  },
+  "gpt4omini_pricing_per_million": {
+    "input": 0.15,
+    "output": 0.6,
+    "cached_input": 0.075
+  }
+}

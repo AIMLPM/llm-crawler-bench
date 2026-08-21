@@ -1,0 +1,133 @@
+{
+  "calibration_iterations_used": 1,
+  "canonical_judge_model": "gpt4omini",
+  "git_commit": "d7f0a2088617bfb6db4dfbd033ae660e1d4dc4a7",
+  "gpt4omini_model_version": "gpt-4o-mini-2024-07-18",
+  "haiku_model_version": "claude-sonnet-4-5-20250929",
+  "intersection_pool_total": null,
+  "judge_prompt_version": "specs/v15-judge-prompt-v5.md#sha256:ca1be4c3232b4e3a795fca8b6629da29603f042c2bbe7e41deef1df01b3450b3",
+  "sites": {
+    "huggingface-transformers": {
+      "sitemap_fetch_date": "2026-05-13",
+      "sitemap_url_sample_seed": 42,
+      "sitemap_url_total_pre_sample": 33876,
+      "source": "sitemap",
+      "url_count": 5000,
+      "url_list_sha256": "157025f64d73f0162dcd9d20ee69eed1fbfcfd56ab142fa899b174ddd03d534d"
+    },
+    "ikea": {
+      "sitemap_fetch_status": "errored_or_missing",
+      "source": "union_of_tools",
+      "union_of_tools_run_id": "run_v13_merged_20260504_203748",
+      "union_of_tools_tools_with_data": [
+        "crawl4ai",
+        "crawl4ai-raw",
+        "crawlee",
+        "playwright",
+        "colly+md",
+        "scrapy+md",
+        "markcrawl"
+      ],
+      "url_count": 662,
+      "url_list_sha256": "7bdaee4fa75b0292551d9c9770da8b2305c892d47e55eba10c605af880ec2e12"
+    },
+    "kubernetes-docs": {
+      "sitemap_fetch_date": "2026-05-12",
+      "sitemap_url_sample_seed": null,
+      "source": "sitemap",
+      "url_count": 6256,
+      "url_list_sha256": "778f5d47c613ff93cce791f14eb1565aeab4eb052eaa042b59f938da758d87cc"
+    },
+    "mdn-css": {
+      "sitemap_fetch_date": "2026-05-13",
+      "sitemap_url_sample_seed": 42,
+      "sitemap_url_total_pre_sample": 65723,
+      "source": "sitemap",
+      "url_count": 5000,
+      "url_list_sha256": "1ce485a409d803260179d836b03abd915c0b19c14b842f656d361c7cf595821a"
+    },
+    "newegg": {
+      "sitemap_fetch_status": "errored_or_missing",
+      "source": "union_of_tools",
+      "union_of_tools_run_id": "run_v13_merged_20260504_203748",
+      "union_of_tools_tools_with_data": [
+        "crawl4ai",
+        "crawl4ai-raw",
+        "playwright",
+        "colly+md"
+      ],
+      "url_count": 362,
+      "url_list_sha256": "91845af4673f021579cb789e0ab1444b1d14291063f9bf8e0aa7c271ef5c1f14"
+    },
+    "postgres-docs": {
+      "sitemap_fetch_date": "2026-05-13",
+      "sitemap_url_sample_seed": 42,
+      "sitemap_url_total_pre_sample": 28360,
+      "source": "sitemap",
+      "url_count": 5000,
+      "url_list_sha256": "7f46c71772416339772890e061ab027c88915d956b76a433f2d6a9cb71b35399"
+    },
+    "propublica": {
+      "sitemap_fetch_date": "2026-05-13",
+      "sitemap_url_sample_seed": 42,
+      "sitemap_url_total_pre_sample": 12207,
+      "source": "sitemap",
+      "url_count": 5000,
+      "url_list_sha256": "5378b1d0d30b705bda14ef505f7efdb1965fe5044cb908afbbcf22c9c958e693"
+    },
+    "pytorch-docs": {
+      "sitemap_fetch_date": "2026-08-17",
+      "sitemap_url_sample_seed": null,
+      "source": "sitemap",
+      "url_count": 4047,
+      "url_list_sha256": "dac56d6e628d433b8c64c2117fd7dd6818b62682db738e4b5e1a4abc527beb3b"
+    },
+    "react-dev": {
+      "sitemap_fetch_status": "errored_or_missing",
+      "source": "union_of_tools",
+      "union_of_tools_run_id": "run_v13_merged_20260504_203748",
+      "union_of_tools_tools_with_data": [
+        "crawl4ai",
+        "crawl4ai-raw",
+        "crawlee",
+        "playwright",
+        "colly+md",
+        "scrapy+md",
+        "markcrawl"
+      ],
+      "url_count": 276,
+      "url_list_sha256": "a1b2c05a10a0132687697c54d79ecf154a950d417b8b65429cc4c20ca5fa5fb6"
+    },
+    "rust-book": {
+      "sitemap_fetch_status": "errored_or_missing",
+      "source": "union_of_tools",
+      "union_of_tools_run_id": "run_v13_merged_20260504_203748",
+      "union_of_tools_tools_with_data": [
+        "crawl4ai",
+        "crawl4ai-raw",
+        "crawlee",
+        "playwright",
+        "colly+md",
+        "scrapy+md",
+        "markcrawl"
+      ],
+      "url_count": 357,
+      "url_list_sha256": "53cba74a8921854b0e8cc173bf00a86331345bf2546deb1e539529b757b9525d"
+    },
+    "smittenkitchen": {
+      "sitemap_fetch_date": "2026-05-12",
+      "sitemap_url_sample_seed": null,
+      "source": "sitemap",
+      "url_count": 1001,
+      "url_list_sha256": "a28ae8da3c9f49680cc65200ab2375412167e51adf45e0cb2a6d2877ed594243"
+    },
+    "stripe-docs": {
+      "sitemap_fetch_date": "2026-05-12",
+      "sitemap_url_sample_seed": null,
+      "source": "sitemap",
+      "url_count": 4402,
+      "url_list_sha256": "60c3739ee213942289afb38ea093846775330e7ceb2c514bbe64d80266313495"
+    }
+  },
+  "universe_built_at": "2026-05-13T01:45:03Z"
+}
