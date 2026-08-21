@@ -243,6 +243,10 @@ _LOCALE_SUBDOMAIN_PREFIXES = frozenset([
 # exposes its canonical content under multiple URL paths — e.g., rust-book
 # is published at both /book/ and /stable/book/ which are the same content
 # version-pinned, both are legitimately "the book").
+# DEPRECATED (v1.5): only the legacy --source crawl path consults this.
+# A hand-maintained per-site table cannot survive a rotating pool; the
+# universe-sourced path derives scope from each site's own corpus instead.
+# Retained so v1.4 query corpora stay reproducible for audit.
 SCOPE_PREFIXES: dict[str, str | tuple[str, ...]] = {
     "react-dev":               "https://react.dev",
     "stripe-docs":             "https://docs.stripe.com",
@@ -305,6 +309,90 @@ def is_locale_mirror_url(url: str) -> bool:
         return False
     first = netloc.partition(".")[0]
     return first in _LOCALE_SUBDOMAIN_PREFIXES
+
+
+HELPFUL_PAGES_DIR = _REPO_ROOT / "bench" / "helpful_pages_gpt4omini"
+
+
+def stratified_sample(urls: list[str], n: int, rng: random.Random) -> list[str]:
+    """Sample `n` URLs spread across a site's structure, not clustered.
+
+    Groups by first path segment and round-robins across groups, so a site
+    whose universe is 80% one subtree still yields queries touching its
+    other subtrees. Structural, not topical — no per-site knowledge, so it
+    behaves the same on whatever sites the rotating pool supplies.
+    """
+    if n >= len(urls):
+        return list(urls)
+    groups: dict[str, list[str]] = {}
+    for u in urls:
+        groups.setdefault(first_path_segment(u), []).append(u)
+    for g in groups.values():
+        rng.shuffle(g)
+    ordered = sorted(groups.values(), key=len, reverse=True)
+    out: list[str] = []
+    i = 0
+    while len(out) < n and any(ordered):
+        bucket = ordered[i % len(ordered)]
+        if bucket:
+            out.append(bucket.pop())
+        i += 1
+        if i % len(ordered) == 0:
+            ordered = [b for b in ordered if b]
+            if not ordered:
+                break
+    return out[:n]
+
+
+def load_universe_pages(site: str, sample_size: int, seed: int) -> list[dict]:
+    """Sample pages for `site` from the v1.5 judged helpful-pages universe.
+
+    This replaces v1.4's "sample from crawl4ai-raw's crawl", which anchored
+    the query corpus to one crawler's coverage — the exact bias v1.5 exists
+    to remove. Queries now come from pages an independent judge called
+    helpful, so every crawler is measured against the same target set.
+
+    Scope filtering is implicit and needs no per-site configuration: the
+    universe was built from the site's own sitemap (or union-of-tools) and
+    then judged, so off-topic and locale-mirror URLs are already excluded.
+    That retires v1.4's hand-maintained SCOPE_PREFIXES table, which had to
+    be edited by hand for every pool change — untenable now that the pool
+    rotates.
+    """
+    path = HELPFUL_PAGES_DIR / f"{site}.json"
+    if not path.is_file():
+        logger.warning(f"[{site}] no judged universe at {path.name} — skipping")
+        return []
+    recs = json.loads(path.read_text())
+    helpful = [u for u, v in recs.items() if v.get("classification") == "HELPFUL"]
+    if not helpful:
+        logger.warning(f"[{site}] universe has 0 HELPFUL pages — skipping")
+        return []
+
+    rng = random.Random(seed + abs(hash(site)) % 1000)
+    # Oversample: some URLs will fail to yield content, and we want the
+    # requested sample size to survive those drops.
+    candidates = stratified_sample(helpful, min(len(helpful), sample_size * 3), rng)
+
+    from tools.judge_helpful_pages import get_page_text, load_v14_cached_pages
+
+    cache = load_v14_cached_pages(site)
+    pages: list[dict] = []
+    for url in candidates:
+        if len(pages) >= sample_size:
+            break
+        got = get_page_text(url, cache, allow_live_fetch=True)
+        if not got:
+            continue
+        title, text = got
+        if not text or len(text) < 200:
+            continue
+        pages.append({"url": url, "text": text, "title": title})
+    logger.info(
+        f"[{site}] universe: {len(helpful)} helpful pages → "
+        f"{len(pages)} sampled with content"
+    )
+    return pages
 
 
 def load_pages_for_site(run_dir: Path, tool: str, site: str) -> list[dict]:
@@ -516,7 +604,12 @@ def main():
     logging.basicConfig(level=logging.INFO, format="%(message)s")
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run", required=True, help="Run directory name (e.g. run_v13_merged_20260504_203748)")
+    parser.add_argument("--run", default=None,
+                        help="Run directory name — required only for --source crawl")
+    parser.add_argument("--source", choices=("universe", "crawl"), default="universe",
+                        help="universe (default, v1.5): sample judged helpful pages. "
+                             "crawl (legacy v1.4): sample one tool's crawl — anchor-biased, "
+                             "retained only to reproduce v1.4 corpora.")
     parser.add_argument("--source-tool", default="crawl4ai-raw",
                         help="Tool whose pages.jsonl to sample from (default: crawl4ai-raw — highest coverage)")
     parser.add_argument("--sites", default=None,
@@ -524,24 +617,30 @@ def main():
     parser.add_argument("--sample-urls", type=int, default=SAMPLE_URLS_PER_SITE,
                         help=f"URLs to sample per site (default: {SAMPLE_URLS_PER_SITE})")
     parser.add_argument("--seed", type=int, default=42, help="RNG seed for sampling determinism")
-    parser.add_argument("--queries-out", default="queries/v14_queries.json")
-    parser.add_argument("--rejected-out", default="queries/v14_rejected.json")
+    parser.add_argument("--queries-out", default="queries/v15_queries.json")
+    parser.add_argument("--rejected-out", default="queries/v15_rejected.json")
     args = parser.parse_args()
 
-    run_dir = _REPO_ROOT / "runs" / args.run
-    if not run_dir.is_dir():
-        logger.error(f"Run dir not found: {run_dir}")
-        sys.exit(1)
-
-    source_tool_dir = run_dir / args.source_tool
-    if not source_tool_dir.is_dir():
-        logger.error(f"Source-tool dir not found: {source_tool_dir}")
-        sys.exit(1)
+    run_dir = None
+    if args.source == "crawl":
+        if not args.run:
+            logger.error("--source crawl requires --run")
+            sys.exit(1)
+        run_dir = _REPO_ROOT / "runs" / args.run
+        if not run_dir.is_dir():
+            logger.error(f"Run dir not found: {run_dir}")
+            sys.exit(1)
+        if not (run_dir / args.source_tool).is_dir():
+            logger.error(f"Source-tool dir not found: {run_dir / args.source_tool}")
+            sys.exit(1)
 
     if args.sites:
         sites = [s.strip() for s in args.sites.split(",")]
+    elif args.source == "universe":
+        sites = sorted(f.stem for f in HELPFUL_PAGES_DIR.glob("*.json"))
     else:
-        sites = sorted(d.name for d in source_tool_dir.iterdir() if d.is_dir())
+        sites = sorted(d.name for d in (run_dir / args.source_tool).iterdir() if d.is_dir())
+    logger.info(f"Source: {args.source}; sites: {len(sites)}")
 
     if not os.environ.get("OPENAI_API_KEY"):
         logger.error("OPENAI_API_KEY env var required")
@@ -555,7 +654,10 @@ def main():
 
     for site in sites:
         logger.info(f"\n=== {site} ===")
-        pages = load_pages_for_site(run_dir, args.source_tool, site)
+        if args.source == "universe":
+            pages = load_universe_pages(site, args.sample_urls, args.seed)
+        else:
+            pages = load_pages_for_site(run_dir, args.source_tool, site)
         logger.info(f"  {len(pages)} pages available")
         accepted, rejected = generate_for_site(client, site, pages, args.sample_urls, args.seed)
         all_accepted[site] = accepted

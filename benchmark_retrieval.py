@@ -118,6 +118,10 @@ HYDE_PROMPT_TEMPLATE = (
 # Categories: api-function, code-example, conceptual, structured-data,
 # factual-lookup, cross-page, navigation, js-rendered.
 TEST_QUERY_SOURCES = [
+    # v1.5: generated from the judged helpful-pages universe (unanchored).
+    # Falls through to the older anchored corpora when it is absent, so a
+    # partially-migrated checkout still runs.
+    BENCH_DIR / "queries" / "v15_queries.json",
     BENCH_DIR / "queries" / "v14_queries.json",
     BENCH_DIR / "queries" / "v13_queries.json",
 ]
