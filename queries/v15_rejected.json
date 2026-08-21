@@ -1,0 +1,81 @@
+{
+  "ikea": [],
+  "kubernetes-docs": [
+    {
+      "query": "How does Kubernetes v1.35 enhance debugging with versioned z-pages APIs?",
+      "url": "https://kubernetes.io/blog/2025/12/17/kubernetes-v1-35-release/",
+      "url_match": "kubernetes-v1-35-release",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The specific details about how Kubernetes v1.35 enhances debugging with versioned z-pages APIs are not present in the content."
+    },
+    {
+      "query": "How can you change the access mode of a PersistentVolume?",
+      "url": "https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/",
+      "url_match": "volume",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide specific instructions on changing the access mode of a PersistentVolume."
+    }
+  ],
+  "mdn-css": [],
+  "newegg": [
+    {
+      "query": "How does the Power Supply Calculator determine the required watts and amps for a PC build?",
+      "url": "https://www.newegg.com/tools/power-supply-calculator",
+      "url_match": "power-supply-calculator",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page provides a tool for calculating power supply needs but does not explain how the calculations are made."
+    }
+  ],
+  "postgres-docs": [],
+  "propublica": [],
+  "pytorch-docs": [
+    {
+      "query": "What is the purpose of the Llama Android Demo App?",
+      "url": "https://docs.pytorch.org/executorch/stable/android-examples.html",
+      "url_match": "android-examples.html",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide specific information about the purpose of the Llama Android Demo App."
+    }
+  ],
+  "react-dev": [],
+  "rust-book": [],
+  "smittenkitchen": [
+    {
+      "query": "What is the recipe for spaghetti aglio e olio?",
+      "url": "https://smittenkitchen.com/tiktok/",
+      "url_match": "tiktok",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The specific recipe for spaghetti aglio e olio is not provided in the content."
+    },
+    {
+      "query": "How do you make the ultimate zucchini bread?",
+      "url": "https://smittenkitchen.com/tiktok/",
+      "url_match": "tiktok",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide the recipe or instructions for making the ultimate zucchini bread."
+    }
+  ],
+  "stripe-docs": [
+    {
+      "query": "What is the purpose of the CheckoutElementsProvider in React Stripe.js?",
+      "url": "https://docs.stripe.com/js/react_stripe_js/checkout/update_email",
+      "url_match": "update_email",
+      "page_match": "",
+      "category": "",
+      "description": "",
+      "verifier_rationale": "answer-not-in-page: The page does not provide a clear explanation of the purpose of the CheckoutElementsProvider."
+    }
+  ]
+}
