@@ -56,6 +56,9 @@ from markcrawl.chunker import chunk_markdown  # noqa: E402
 from tools.page_level_mrr import collapse_chunks_to_pages  # noqa: E402
 from tools.page_level_mrr import hit_at_k as _page_hit_at_k  # noqa: E402
 from tools.page_level_mrr import reciprocal_rank as _page_reciprocal_rank  # noqa: E402
+from tools.three_metric import format_coverage as _format_coverage  # noqa: E402
+from tools.three_metric import load_helpful_urls as _load_helpful_urls  # noqa: E402
+from tools.three_metric import three_metrics as _three_metrics  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -212,6 +215,16 @@ class ToolSiteRetrievalResult:
     mode_results: Dict[str, RetrievalModeResult] = field(default_factory=dict)
     chunk_config_label: str = ""  # e.g. "~512tok"
     page_mrr: float = 0.0  # DS-1: page-level MRR for embedding mode
+    # DS-4 (spec SC-6): decomposition against the helpful-pages universe.
+    # coverage_pct / retrieval_on_covered_mrr are None when not measurable
+    # (no universe file for the site, or nothing covered) — None must not be
+    # rendered as 0.0, which would read as a ranking failure.
+    coverage_covered: int = 0
+    coverage_total: int = 0
+    coverage_pct: Optional[float] = None
+    retrieval_on_covered_mrr: Optional[float] = None
+    retrieval_on_covered_n: int = 0
+    end_to_end_mrr: float = 0.0
 
 
 # ---------------------------------------------------------------------------
@@ -825,6 +838,31 @@ def _compute_hits_at_k(query_results: List[QueryResult]) -> Dict[int, int]:
     }
 
 
+def _page_rr_per_query(query_results: List[QueryResult]) -> List[dict]:
+    """Per-query page-level reciprocal rank, for the DS-4 decomposition.
+
+    Mirrors _compute_page_level_mrr_and_hits exactly (same collapse, same
+    matcher) but keeps the per-query value instead of averaging, so
+    coverage-split metrics and the headline MRR can never disagree.
+    """
+    out: List[dict] = []
+    for qr in query_results:
+        url_match = (qr.expected_url_match or "").lower()
+        page_match = (qr.expected_page_match or "").lower()
+
+        def _matches(url: str, _um=url_match, _pm=page_match) -> bool:
+            normalized = _normalize_url_for_matching(url)
+            return bool((_um and _um in normalized) or (_pm and _pm in normalized))
+
+        pages = collapse_chunks_to_pages(qr.top_k_urls, key_fn=_normalize_url_for_matching)
+        out.append({
+            "url_match": url_match,
+            "page_match": page_match,
+            "rr": _page_reciprocal_rank(pages, _matches),
+        })
+    return out
+
+
 def _compute_page_level_mrr_and_hits(
     query_results: List[QueryResult],
 ) -> Tuple[float, Dict[int, int]]:
@@ -1266,6 +1304,24 @@ def run_retrieval_test(
             page_hits_at_k=page_hits_at_k,
         )
 
+    # DS-4: three-metric decomposition over the helpful-pages universe.
+    # Indexed URLs come from the tool's own page list for this site.
+    emb_for_triple = mode_results["embedding"]
+    indexed_urls = list(page_text_by_url.keys()) if page_text_by_url else [
+        c.get("url", "") for c in chunks
+    ]
+    triple = _three_metrics(
+        _page_rr_per_query(emb_for_triple.query_results),
+        indexed_urls,
+        _load_helpful_urls(site),
+        normalize=_normalize_url_for_matching,
+    )
+    logger.info(
+        f"    DS-4 {tool}/{site}: coverage {_format_coverage(triple['coverage_covered'], triple['coverage_total'], triple['coverage_pct'])}"
+        f" | on-covered MRR {triple['retrieval_on_covered_mrr']}"
+        f" | end-to-end MRR {triple['end_to_end_mrr']:.4f}"
+    )
+
     # Primary result uses embedding mode for backward compatibility
     emb = mode_results["embedding"]
     max_k = max(REPORT_AT_K)
@@ -1288,6 +1344,12 @@ def run_retrieval_test(
         mode_results=mode_results,
         chunk_config_label=chunk_config_label,
         page_mrr=emb.page_mrr,
+        coverage_covered=triple["coverage_covered"],
+        coverage_total=triple["coverage_total"],
+        coverage_pct=triple["coverage_pct"],
+        retrieval_on_covered_mrr=triple["retrieval_on_covered_mrr"],
+        retrieval_on_covered_n=triple["retrieval_on_covered_n"],
+        end_to_end_mrr=triple["end_to_end_mrr"],
     )
 
 
